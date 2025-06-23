@@ -16,15 +16,15 @@ public class MenuManager : MonoBehaviour
     public GameObject SettingMenu;
     private Button _settingOkButton;
     private Button _settingBackButton;
-
     
-    
-
     private void Start()
     {
         MainMenuButtons();
         SettingMenuButtons();
         ExitMenuButtons();
+        
+        AudioSystem.Instance.PlayBGMByName("MainBGM");
+        AudioSystem.Instance.PlaySFXByName("MainSFX");
     }
     
     

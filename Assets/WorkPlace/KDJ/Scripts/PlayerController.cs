@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private Vector2 _mouseInput;
     private float _totalMouseY = 0f;
     private TestItem _interactableItem;
+    private LayerMask _ignoreMask = ~(1 << 3);
 
     private void Awake()
     {
@@ -122,7 +123,7 @@ public class PlayerController : MonoBehaviour
     private void AimControl()
     {
         Vector2 mouseInput = _mouseInput * _mouseSensitivity;
-        _totalMouseY = Mathf.Clamp(_totalMouseY - mouseInput.y, -50, 50);
+        _totalMouseY = Mathf.Clamp(_totalMouseY - mouseInput.y, -75, 75);
 
         float clampedMouseY = _virCam.transform.localEulerAngles.x - mouseInput.y;
         if (clampedMouseY > 180)
@@ -130,20 +131,7 @@ public class PlayerController : MonoBehaviour
             clampedMouseY -= 360;
         }
 
-        // 가능하면 y축 시점이 일정 각도를 넘어갔을때 카메라도 회전만 하는게 아닌 위치가 이동하도록 수정
-        // 카메라가 상하로 과도한 각도로 회전하는 경우 카메라는 일정 부분만 이동하고 그 이후론 축을 회전
-        if (_totalMouseY > 30)
-        {
-            _virCamAxis.transform.localRotation = Quaternion.Euler(_totalMouseY - 30, 0, 0);
-        }
-        else if (_totalMouseY < -30)
-        {
-            _virCamAxis.transform.localRotation = Quaternion.Euler(_totalMouseY + 30, 0, 0);
-        }
-        else
-        {
-            _virCam.transform.localRotation = Quaternion.Euler(clampedMouseY, 0, 0);
-        }
+        _virCamAxis.transform.localRotation = Quaternion.Euler(_totalMouseY, 0, 0);
 
         transform.Rotate(Vector3.up * mouseInput.x);
     }
@@ -153,22 +141,23 @@ public class PlayerController : MonoBehaviour
         // 카메라가 벽에 부딪히는 경우 벽 위치만큼 앞으로 이동
         // 축에서 카메라로 레이를 발사하여 벽에 부딪히는 경우, 부딛히는 위치를 계산하여 카메라를 이동시킴
         RaycastHit hit;
-        if (Physics.Raycast(_virCamAxis.position, (_virCam.transform.position - _virCamAxis.position).normalized, out hit, 9.3f))
+        if (Physics.Raycast(_virCamAxis.position, -_virCamAxis.forward, out hit, 4.3f, _ignoreMask))
         {
             Vector3 targetPos = hit.point + _virCam.transform.forward * 0.3f;
-            _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, targetPos, 0.5f); // 카메라가 벽에 너무 붙지 않도록 약간의 오프셋 추가
+            _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, targetPos, 0.5f);
         }
         else
         {
-            Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 9f;
-            _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f); // 벽에 부딪히지 않는 경우 기본 위치로 이동
+            // 벽에 부딪히지 않는 경우 위치 리셋
+            Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 4f;
+            _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
         }
     }
 
     private void OnDrawGizmos()
     {
         // Gizmos를 사용하여 레이 표시
-        Gizmos.color = Color.red; // 레이 색상 설정
-        Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 9f); // 레이 표시용
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
     }
 }

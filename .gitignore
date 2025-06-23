@@ -73,4 +73,12 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+<<<<<<< HEAD
+Assets/.DS_Store
+/Assets/WorkPlace/JGH/.idea
+/Assets/WorkPlace/JGH/Import
+.idea/
+.DS_Store
+=======
 /Assets/Import
+>>>>>>> 13183acb23519a20c52148e034f05a51911ffcb2

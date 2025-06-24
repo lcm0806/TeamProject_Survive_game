@@ -1,25 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShelterUI : MonoBehaviour
 {
     public void OnClickMonitor()
     {
-        Debug.Log("¸ğ´ÏÅÍ Å¬¸¯µÊ.");
-        //(Äù½ºÆ®ÅÇ ¼±ÅÃµÈ Ã¤·Î) ¸Ş´ºÃ¢ ÆË¾÷
+        Debug.Log("ëª¨ë‹ˆí„° í´ë¦­ë¨.");
+        //(í€˜ìŠ¤íŠ¸íƒ­ ì„ íƒëœ ì±„ë¡œ) ë©”ë‰´ì°½ íŒì—…
     }
 
     public void OnClickWorkBench()
     {
-        Debug.Log("ÀÛ¾÷´ë Å¬¸¯µÊ.");
-        //(Á¦ÀÛÅÇ ¼±ÅÃµÈ Ã¤·Î) ¸Ş´ºÃ¢ ÆË¾÷
+        Debug.Log("ì‘ì—…ëŒ€ í´ë¦­ë¨.");
+        //(ì œì‘íƒ­ ì„ íƒëœ ì±„ë¡œ) ë©”ë‰´ì°½ íŒì—…
     }
 
     public void OnClickEntrance()
     {
-        Debug.Log("ÃâÀÔ±¸ Å¬¸¯µÊ.");
-        //(ÁöµµÅÇ ¼±ÅÃµÈ Ã¤·Î) ¸Ş´ºÃ¢ ÆË¾÷
+        Debug.Log("ì¶œì…êµ¬ í´ë¦­ë¨.");
+        //(ì§€ë„íƒ­ ì„ íƒëœ ì±„ë¡œ) ë©”ë‰´ì°½ íŒì—…
     }
 
     

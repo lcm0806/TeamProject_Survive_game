@@ -1,26 +1,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShelterUI : MonoBehaviour
 {
-    public void OnClickMonitor()
-    {
-        Debug.Log("모니터 클릭됨.");
-        //(퀘스트탭 선택된 채로) 메뉴창 팝업
-    }
-
-    public void OnClickWorkBench()
-    {
-        Debug.Log("작업대 클릭됨.");
-        //(제작탭 선택된 채로) 메뉴창 팝업
-    }
-
-    public void OnClickEntrance()
-    {
-        Debug.Log("출입구 클릭됨.");
-        //(지도탭 선택된 채로) 메뉴창 팝업
-    }
+    public GameObject[] ShelterMenu, Tabs;
+    public Image[] TabButtons;
+    public Sprite InactiveTabBG, ActiveTabBG; // 탭 활성화 백그라운드 이미지와 비활성화 백그라운드 이미지
+    
 
     
+
+    
+
+
+    public void ActiveUI(int ShelterMenuID)
+    {
+        ShelterMenu[ShelterMenuID].SetActive(true);
+        Debug.Log($"{ShelterMenuID.ToString()} UI 활성화");
+    }
+    public void DeactiveUI(int ShelterMenuID)
+    {
+        ShelterMenu[ShelterMenuID].SetActive(false);
+        Debug.Log($"{ShelterMenuID.ToString()} UI 비활성화");
+    }
+
+    public void ExitUI(GameObject go)
+    {
+        go.SetActive(false);
+        Debug.Log($"{go.name} 닫음");
+    }
+    
+
+    public void SwitchToTab(int TabID)
+    {
+        foreach (GameObject go in Tabs)
+        {
+            go.SetActive(false);
+            
+        }
+        Tabs[TabID].SetActive(true);
+        
+        
+        
+
+        foreach (Image im in TabButtons)
+        {
+            im.sprite = InactiveTabBG; 
+        }
+        TabButtons[TabID].sprite = ActiveTabBG;
+    }
 }

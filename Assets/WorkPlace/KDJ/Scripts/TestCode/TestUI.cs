@@ -16,12 +16,12 @@ public class TestUI : MonoBehaviour
 
     private void Update()
     {
-        _isInInteract.Value = TestPlayerManager.Instance.IsInIntercation;
+        _isInInteract.Value = SamplePlayerManager.Instance.IsInIntercation;
 
-        if (TestPlayerManager.Instance.InteractableItem != null)
-            if (!_itemName.text.Equals(TestPlayerManager.Instance.InteractableItem.name))
+        if (SamplePlayerManager.Instance.InteractableItem != null)
+            if (!_itemName.text.Equals(SamplePlayerManager.Instance.InteractableItem.name))
             {
-                _itemName.text = TestPlayerManager.Instance.InteractableItem.name;
+                _itemName.text = SamplePlayerManager.Instance.InteractableItem.name;
             }
     }
 

@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
     //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
     //     {
     //         _interactableItem = interact as TestItem;
-    //         TestPlayerManager.Instance.IsInIntercation = true;
+    //         SamplePlayerManager.Instance.IsInIntercation = true;
     //         // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
     //         // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
     //         // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
     // {
     //     if (other.TryGetComponent<IInteractable>(out IInteractable interact))
     //     {
-    //         TestPlayerManager.Instance.IsInIntercation = false;
+    //         SamplePlayerManager.Instance.IsInIntercation = false;
     //         _interactableItem = null;
     //     }
     // }
@@ -80,18 +80,18 @@ public class PlayerController : MonoBehaviour
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 //_interactableItem = interactable as TestItem;
-                TestPlayerManager.Instance.InteractableItem = interactable as TestItem;
-                TestPlayerManager.Instance.IsInIntercation = true;
+                SamplePlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                SamplePlayerManager.Instance.IsInIntercation = true;
             }
         }
         else
         {
             // 주변에 인터렉션 가능한 오브젝트가 없으면 _interactableItem을 null로 설정
-            if (TestPlayerManager.Instance.InteractableItem != null)
+            if (SamplePlayerManager.Instance.InteractableItem != null)
             {
                 //_interactableItem = null;
-                TestPlayerManager.Instance.InteractableItem = null;
-                TestPlayerManager.Instance.IsInIntercation = false;
+                SamplePlayerManager.Instance.InteractableItem = null;
+                SamplePlayerManager.Instance.IsInIntercation = false;
             }
         }
     }
@@ -137,9 +137,14 @@ public class PlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if(Input.GetKeyDown(KeyCode.E) && TestPlayerManager.Instance.InteractableItem != null)
+        if(Input.GetKeyDown(KeyCode.E) && SamplePlayerManager.Instance.InteractableItem != null)
         {
-            TestPlayerManager.Instance.InteractableItem.Interact();
+            SamplePlayerManager.Instance.InteractableItem.Interact();
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            SampleUIManager.Instance.ToggleInventoryUI();
         }
     }
 

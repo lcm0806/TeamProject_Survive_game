@@ -34,19 +34,19 @@ public class PlayerController : MonoBehaviour
         HandlePlayer();
     }
 
-    // overlapsphere·Î ±³Ã¼ÇÏ±â¿¡ ÁÖ¼®Ã³¸®.
-    // ÇöÀç ÀÎÅÍ·º¼Ç ¹æ½ÄÀº ÇÑ°÷¿¡ ÇÏ³ªÀÇ ¿ÀºêÁ§Æ®¸¸ ÀÖ´Ù´Â °É ÀüÁ¦·Î Á¦ÀÛµÊ
-    // ¹«Á¶°Ç Ã³À½ Á¢±ÙÇÑ ¿ÀºêÁ§Æ®¸¸ ÀÎÅÍ·º¼ÇÀÌ °¡´ÉÇÏµµ·Ï Á¦ÀÛ
-    // ¿©·¯ ¿ÀºêÁ§Æ®°¡ ÀÖÀ» °æ¿ì, Áö±Ý ¹æ½ÄÀÌ ¾Æ´Ñ ´Ù¸¥ ¹æ½ÄÀ¸·Î ÄÚµå¸¦ ÀÛ¼ºÇÏ¿©¾ß ÇÔ
+    // overlapsphereï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½Ï±â¿¡ ï¿½Ö¼ï¿½Ã³ï¿½ï¿½.
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö´Ù´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ûµï¿½
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµå¸¦ ï¿½Û¼ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ ï¿½ï¿½
     // private void OnTriggerEnter(Collider other)
     // {
     //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
     //     {
     //         _interactableItem = interact as TestItem;
     //         TestPlayerManager.Instance.IsInIntercation = true;
-    //         // ³ªÁß¿¡ ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë ¹°Ã¼°¡ ³ª´¶´Ù°í ÇÏ¸é
-    //         // _interactableItem¿¡ as·Î ³ÖÀ»¶§ Á¶°Ç¹®À» ÀÌ¿ëÇÏ¿© »óÈ²¿¡ ¸Â°Ô ³Ö´Â ·ÎÁ÷ ÇÊ¿ä
-    //         // ItemÀÌ¶ó¸é as ItemÀ¸·Î, ±¸Á¶¹°ÀÌ¶ó¸é as Structure·Î ³Ö´Â ½ÄÀ¸·Î
+    //         // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù°ï¿½ ï¿½Ï¸ï¿½
+    //         // _interactableItemï¿½ï¿½ asï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½È²ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
+    //         // Itemï¿½Ì¶ï¿½ï¿½ as Itemï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ as Structureï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //     }
     // }
     // 
@@ -61,36 +61,36 @@ public class PlayerController : MonoBehaviour
 
     private void FindInteractableItem()
     {
-        // Æ®¸®°Å¸¦ »ç¿ëÇÏÁö ¾Ê°í overlapsphere¸¦ »ç¿ëÇÏ¿© ÁÖº¯ÀÇ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ® °¨Áö
-        // °¡Àå °¡±îÀÌ ÀÖ´Â ¿ÀºêÁ§Æ®¸¦ _interactableItem·Î ¼³Á¤
+        // Æ®ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ overlapsphereï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Öºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ _interactableItemï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position, 2f, _colls, _layerMask);
         if (collsCount > 0)
         {
             for (int i = 0; i < collsCount; i++)
             {
-                // ÇÃ·¹ÀÌ¾î¿Í ¿ÀºêÁ§Æ®ÀÇ °Å¸® ÃøÁ¤
+                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
                 float distance = Vector3.Distance(transform.position, _colls[i].transform.position);
-                // closestCollÀÌ nullÀÌ°Å³ª ÇöÀç ¿ÀºêÁ§Æ®°¡ closestCollº¸´Ù °¡±î¿î °æ¿ì ÇöÀç ÀÎµ¦½ºÀÇ ÄÝ¶óÀÌ´õ¸¦ closestColl·Î ¼³Á¤
+                // closestCollï¿½ï¿½ nullï¿½Ì°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ closestCollï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ closestCollï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
                 {
-                    closestColl = _colls[i]; 
+                    closestColl = _colls[i];
                 }
             }
-            // ³¡³ª¸é closestCollÀÇ ³»¿ëÀ» _interactableItem¿¡ ÇÒ´ç
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ closestCollï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ _interactableItemï¿½ï¿½ ï¿½Ò´ï¿½
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 //_interactableItem = interactable as TestItem;
                 PlayerManager.Instance.InteractableItem = interactable as TestItem;
                 PlayerManager.Instance.IsInIntercation = true;
-                // ³ªÁß¿¡ ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë ¹°Ã¼°¡ ³ª´¶´Ù°í ÇÏ¸é
-                // _interactableItem¿¡ as·Î ³ÖÀ»¶§ Á¶°Ç¹®À» ÀÌ¿ëÇÏ¿© »óÈ²¿¡ ¸Â°Ô ³Ö´Â ·ÎÁ÷ ÇÊ¿ä
-                // ItemÀÌ¶ó¸é as ItemÀ¸·Î, ±¸Á¶¹°ÀÌ¶ó¸é as Structure·Î ³Ö´Â ½ÄÀ¸·Î
+                // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù°ï¿½ ï¿½Ï¸ï¿½
+                // _interactableItemï¿½ï¿½ asï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½È²ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
+                // Itemï¿½Ì¶ï¿½ï¿½ as Itemï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ as Structureï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             }
         }
         else
         {
-            // ÁÖº¯¿¡ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ®°¡ ¾øÀ¸¸é _interactableItemÀ» null·Î ¼³Á¤
+            // ï¿½Öºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ _interactableItemï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (PlayerManager.Instance.InteractableItem != null)
             {
                 //_interactableItem = null;
@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour
 
     private void Init()
     {
-        // Å×½ºÆ®¿ë ¸¶¿ì½º ¼û±â±â
+        // ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _speed = _baseSpeed;
@@ -120,10 +120,10 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        // Ä«¸Þ¶ó¸¦ ±âÁØÀ¸·Î Á¤¸éÀ» Àâ°í ¿òÁ÷ÀÌµµ·Ï ¼öÁ¤ÇØ¾ßÇÔ
+        // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
         Vector3 move = transform.TransformDirection(_moveDir) * _speed;
 
-        // È­¼ºÀÌ ¹è°æÀÌ´Ï Áß·ÂÀº 3.73
+        // È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ß·ï¿½ï¿½ï¿½ 3.73
         _verVelocity.y -= 3.73f * Time.deltaTime;
 
         _controller.Move((move + _verVelocity) * Time.deltaTime);
@@ -148,7 +148,7 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0) && _selectItem != null)
         {
-            // ¾ÆÀÌÅÛ »ç¿ë ·ÎÁ÷ÀÌ ±¸ÇöµÈ´Ù¸é, »ç¿ë. Áö±ÝÀº Å×½ºÆ®·Î Interact ¸Þ¼­µå È£Ãâ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½È´Ù¸ï¿½, ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½ Interact ï¿½Þ¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
             //_selectItem.Interact();
         }
     }
@@ -163,8 +163,8 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        // ´Þ¸®±â ±â´ÉÀÌ ÇÊ¿äÇÏÁö ¾ÊÀ» ¼öµµ ÀÖÀ½.
-        // ³Ö´Â´Ù¸é ½½·Î¿ì¶û »óÈ£ÀÛ¿ë °í·ÁÇÒ°Í.
+        // ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
+        // ï¿½Ö´Â´Ù¸ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½.
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             _speed *= 2;
@@ -193,8 +193,8 @@ public class PlayerController : MonoBehaviour
 
     private void CameraLimit()
     {
-        // Ä«¸Þ¶ó°¡ º®¿¡ ºÎµúÈ÷´Â °æ¿ì º® À§Ä¡¸¸Å­ ¾ÕÀ¸·Î ÀÌµ¿
-        // Ãà¿¡¼­ Ä«¸Þ¶ó·Î ·¹ÀÌ¸¦ ¹ß»çÇÏ¿© º®¿¡ ºÎµúÈ÷´Â °æ¿ì, ºÎµóÈ÷´Â À§Ä¡¸¦ °è»êÇÏ¿© Ä«¸Þ¶ó¸¦ ÀÌµ¿½ÃÅ´
+        // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
+        // ï¿½à¿¡ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ß»ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å´
         RaycastHit hit;
         if (Physics.Raycast(_virCamAxis.position, -_virCamAxis.forward, out hit, 4.3f, _ignoreMask))
         {
@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // º®¿¡ ºÎµúÈ÷Áö ¾Ê´Â °æ¿ì À§Ä¡ ¸®¼Â
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
             Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 4f;
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
         }
@@ -211,28 +211,28 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Gizmos¸¦ »ç¿ëÇÏ¿© ·¹ÀÌ Ç¥½Ã
+        // Gizmosï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, 2.5f);
         //Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
     }
 
     /// <summary>
-    /// ½½·Î¿ì °­µµ¸¦ ÆÛ¼¾Å×ÀÌÁö·Î ÀÔ·Â ¹Þ¾Æ ÇÃ·¹ÀÌ¾î °¨¼Ó
+    /// ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Þ¾ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
     /// </summary>
-    /// <param name="percentage"></param>0~100 »çÀÌÀÇ °ªÀ¸·Î ÀÔ·Â, 0Àº °¨¼Ó ¾øÀ½, 100Àº Á¤Áö
+    /// <param name="percentage"></param>0~100 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½, 0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 100ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void PlayerSlow(float percentage)
     {
         _speed = _speed * (1f - percentage / 100f);
     }
 
     /// <summary>
-    /// ½½·Î¿ìÀÇ ¿ª¼øÀ¸·Î °è»êÇÏ±â¿¡ ½½·Î¿ì ÇÑ ÆÛ¼¾Å×ÀÌÁö¸¦ ±×´ë·Î ÀÔ·ÂÇØ¾ßÇÔ
+    /// ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±â¿¡ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="percentage"></param>
     public void OutOfSlow(float percentage)
     {
-        // ½½·Î¿ìÀÇ ¿ª¼ø
+        // ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         _speed = _speed / (1f - percentage / 100f);
     }
 }

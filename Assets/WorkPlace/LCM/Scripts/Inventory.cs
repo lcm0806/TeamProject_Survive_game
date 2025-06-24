@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DesignPattern;
+using System;
 
 public class Inventory : Singleton<Inventory>
 {
@@ -23,10 +24,26 @@ public class Inventory : Singleton<Inventory>
     [Header("Debug")]
     [SerializeField] Button giveItemBtn;
 
+    // --- 새로 추가된 UI 관련 필드 ---
+    [Header("UI Management")]
+    [SerializeField] private GameObject inventoryUIRootPanel; // 인벤토리 UI의 최상위 GameObject (Panel 등)
+    private bool isInventoryUIOpen = false; // 인벤토리 UI 현재 열림/닫힘 상태
+    // ---
+
+
     void Awake()
     {
         SingletonInit();
-        giveItemBtn.onClick.AddListener( delegate { SpawnInventoryItem(); } );
+
+        // 인벤토리 UI 패널 초기 상태 설정 (시작 시 비활성화)
+        if (inventoryUIRootPanel != null)
+        {
+            inventoryUIRootPanel.SetActive(false);
+        }
+        else
+        {
+            Debug.LogWarning("Inventory: Inventory UI Root Panel이 할당되지 않았습니다. UI 토글이 작동하지 않을 수 있습니다.");
+        }
     }
 
     void Update()
@@ -35,6 +52,12 @@ public class Inventory : Singleton<Inventory>
 
         carriedItem.transform.position = Input.mousePosition;
     }
+
+    public void ToggleInventoryUI()
+    {
+        SampleUIManager.Instance.ToggleInventoryUI();
+    }
+
 
     public void SetCarriedItem(InventoryItem item)
     {
@@ -80,26 +103,26 @@ public class Inventory : Singleton<Inventory>
     public void SpawnInventoryItem(Item item = null)
     {
         Item _item = item;
-        if(_item == null)
-        //TODO: 아이템을 얻었을때 어떻게 생성이 될지
-        { _item = PickRandomItem(); }
+        //if (_item == null)
+        ////TODO: 아이템을 얻었을때 어떻게 생성이 될지
+        //{ _item = PickRandomItem(); }
 
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             // Check if the slot is empty
-            if(inventorySlots[i].myItem == null)
+            if (inventorySlots[i].myItem == null)
             {
                 Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i]);
                 break;
             }
         }
 
-        
+
     }
 
-    Item PickRandomItem()
-    {
-        int random = Random.Range(0, items.Length);
-        return items[random];
-    }
+        //Item PickRandomItem()
+        //{
+        //    int random = Random.Range(0, items.Length);
+        //    return items[random];
+        //}
 }

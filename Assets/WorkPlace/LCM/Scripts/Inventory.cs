@@ -26,7 +26,6 @@ public class Inventory : Singleton<Inventory>
     void Awake()
     {
         SingletonInit();
-        giveItemBtn.onClick.AddListener( delegate { SpawnInventoryItem(); } );
     }
 
     void Update()

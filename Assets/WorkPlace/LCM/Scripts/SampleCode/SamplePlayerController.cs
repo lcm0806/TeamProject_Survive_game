@@ -11,13 +11,16 @@ public class SamplePlayerController : MonoBehaviour
     [Header("Config")]
     [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
     [SerializeField] private float _speed;
+    [SerializeField] private float _baseSpeed = 5f;
 
     private Vector3 _verVelocity;
     private Vector3 _moveDir;
     private Vector2 _mouseInput;
     private float _totalMouseY = 0f;
-    private TestItem _interactableItem;
+    //private TestItem _interactableItem;
     private LayerMask _ignoreMask = ~(1 << 3);
+    private LayerMask _layerMask = 1 << 6;
+    private Collider[] _colls = new Collider[10];
 
     private void Awake()
     {
@@ -30,27 +33,44 @@ public class SamplePlayerController : MonoBehaviour
         HandlePlayer();
     }
 
-    // 현재 인터렉션 방식은 한곳에 하나의 오브젝트만 있다는 걸 전제로 제작됨
-    // 무조건 처음 접근한 오브젝트만 인터렉션이 가능하도록 제작
-    // 여러 오브젝트가 있을 경우, 지금 방식이 아닌 다른 방식으로 코드를 작성하여야 함
-    private void OnTriggerEnter(Collider other)
+    private void FindInteractableItem()
     {
-        if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
+        Collider closestColl = null;
+        int collsCount = Physics.OverlapSphereNonAlloc(transform.position, 2f, _colls, _layerMask);
+        if (collsCount > 0)
         {
-            _interactableItem = interact as TestItem;
-            TestPlayerManager.Instance.IsInIntercation = true;
-            // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
-            // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
-            // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
+            for (int i = 0; i < collsCount; i++)
+            {
+                // 플레이어와 오브젝트의 거리 측정
+                float distance = Vector3.Distance(transform.position, _colls[i].transform.position);
+                // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
+                if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
+                {
+                    closestColl = _colls[i];
+                }
+            }
+            // 끝나면 closestColl의 내용을 _interactableItem에 할당
+            if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                //if (SamplePlayerManager.Instance.InteractableItem != interactable as WorldItem) // 이전에 감지된 아이템과 다를 때만 로그 출력
+                //{
+                //    Debug.Log($"[감지됨] 플레이어 근처에 상호작용 가능한 아이템이 있습니다: {closestColl.name}");
+                //}
+                //_interactableItem = interactable as TestItem;
+                SamplePlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                SamplePlayerManager.Instance.IsInIntercation = true;
+            }
         }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.TryGetComponent<IInteractable>(out IInteractable interact))
+        else
         {
-            TestPlayerManager.Instance.IsInIntercation = false;
-            _interactableItem = null;
+            // 주변에 인터렉션 가능한 오브젝트가 없으면 _interactableItem을 null로 설정
+            if (SamplePlayerManager.Instance.InteractableItem != null)
+            {
+                //Debug.Log("[감지 해제됨] 플레이어가 아이템 범위에서 벗어났습니다.");
+                //_interactableItem = null;
+                SamplePlayerManager.Instance.InteractableItem = null;
+                SamplePlayerManager.Instance.IsInIntercation = false;
+            }
         }
     }
 
@@ -59,6 +79,7 @@ public class SamplePlayerController : MonoBehaviour
         // 테스트용 마우스 숨기기
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        _speed = _baseSpeed;
     }
 
     private void HandlePlayer()
@@ -68,6 +89,7 @@ public class SamplePlayerController : MonoBehaviour
         Jump();
         Run();
         CameraLimit();
+        FindInteractableItem();
     }
 
     private void Move()
@@ -93,9 +115,14 @@ public class SamplePlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if (Input.GetKeyDown(KeyCode.E) && _interactableItem != null)
+        if (Input.GetKeyDown(KeyCode.E) && SamplePlayerManager.Instance.InteractableItem != null)
         {
-            _interactableItem.Interact();
+            SamplePlayerManager.Instance.InteractableItem.Interact();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)) // 'I' 키를 눌렀을 때
+        {
+            SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
         }
     }
 
@@ -116,7 +143,7 @@ public class SamplePlayerController : MonoBehaviour
         }
         else
         {
-            _speed = 5f;
+            _speed = _baseSpeed;
         }
     }
 
@@ -157,7 +184,18 @@ public class SamplePlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Gizmos를 사용하여 레이 표시
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 2.5f);
+        //Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
+    }
+
+    public void PlayerSlow(int percentage)
+    {
+        _speed = _baseSpeed * (1 - percentage / 100f);
+    }
+
+    public void ResetSpeed()
+    {
+        _speed = _baseSpeed;
     }
 }

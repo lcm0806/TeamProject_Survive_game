@@ -11,38 +11,13 @@ public class WorldItem : MonoBehaviour, IInteractable
     [Tooltip("플레이어가 상호작용 가능한 범위")]
     public float interactionRange = 0.5f;
 
-
-    //플레이어 감지
-    //private GameObject player; // 플레이어 오브젝트에 대한 참조 , 거리측정시 사용
-    //private bool playerInRange = false;
-
-    // Start is called before the first frame update
     void Start()
     {
-        //플레이어 감지
-        //player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //플레이어 감지
-        //if (player != null)
-        //{
-        //    float distance = Vector3.Distance(transform.position, player.transform.position);
-        //    bool wasPlayerInRange = playerInRange;
-        //    playerInRange = distance <= interactionRange;
 
-        //    if (playerInRange && !wasPlayerInRange)
-        //    {
-        //        Debug.Log($"플레이어가 아이템 근처에 있습니다");
-        //    }
-
-        //    else if (!playerInRange && wasPlayerInRange)
-        //    {
-        //        Debug.Log($"아이템의 범위에서 벗어났습니다.");
-        //    }
-        //}
     }
 
     public void Interact()

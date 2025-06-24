@@ -139,7 +139,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E) && TestPlayerManager.Instance.InteractableItem != null)
         {
-            TestPlayerManager.Instance.InteractableItem.Interact();
+            SamplePlayerManager.Instance.InteractableItem.Interact();
         }
     }
 

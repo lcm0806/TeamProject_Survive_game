@@ -201,8 +201,9 @@ public class PlayerController : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Gizmos를 사용하여 레이 표시
-        Gizmos.color = Color.red;
-        Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 2.5f);
+        //Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
     }
 
     public void PlayerSlow(int percentage)

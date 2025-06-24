@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,6 +23,9 @@ public class PlayerController : MonoBehaviour
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
     private TestItem _selectItem;
+    private WorldItem _worldItem;
+    private Coroutine _itemUseCoroutine;
+    private bool _canUseItem => _itemUseCoroutine == null;
 
     private void Awake()
     {
@@ -34,19 +38,19 @@ public class PlayerController : MonoBehaviour
         HandlePlayer();
     }
 
-    // overlapsphereï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½Ï±â¿¡ ï¿½Ö¼ï¿½Ã³ï¿½ï¿½.
-    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ°ï¿½ï¿½ï¿½ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ö´Ù´ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ûµï¿½
-    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµå¸¦ ï¿½Û¼ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ ï¿½ï¿½
+    // overlapsphere·Î ±³Ã¼ÇÏ±â¿¡ ÁÖ¼®Ã³¸®.
+    // ÇöÀç ÀÎÅÍ·º¼Ç ¹æ½ÄÀº ÇÑ°÷¿¡ ÇÏ³ªÀÇ ¿ÀºêÁ§Æ®¸¸ ÀÖ´Ù´Â °É ÀüÁ¦·Î Á¦ÀÛµÊ
+    // ¹«Á¶°Ç Ã³À½ Á¢±ÙÇÑ ¿ÀºêÁ§Æ®¸¸ ÀÎÅÍ·º¼ÇÀÌ °¡´ÉÇÏµµ·Ï Á¦ÀÛ
+    // ¿©·¯ ¿ÀºêÁ§Æ®°¡ ÀÖÀ» °æ¿ì, Áö±Ý ¹æ½ÄÀÌ ¾Æ´Ñ ´Ù¸¥ ¹æ½ÄÀ¸·Î ÄÚµå¸¦ ÀÛ¼ºÇÏ¿©¾ß ÇÔ
     // private void OnTriggerEnter(Collider other)
     // {
     //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
     //     {
     //         _interactableItem = interact as TestItem;
     //         TestPlayerManager.Instance.IsInIntercation = true;
-    //         // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù°ï¿½ ï¿½Ï¸ï¿½
-    //         // _interactableItemï¿½ï¿½ asï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½È²ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
-    //         // Itemï¿½Ì¶ï¿½ï¿½ as Itemï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ as Structureï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //         // ³ªÁß¿¡ ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë ¹°Ã¼°¡ ³ª´¶´Ù°í ÇÏ¸é
+    //         // _interactableItem¿¡ as·Î ³ÖÀ»¶§ Á¶°Ç¹®À» ÀÌ¿ëÇÏ¿© »óÈ²¿¡ ¸Â°Ô ³Ö´Â ·ÎÁ÷ ÇÊ¿ä
+    //         // ItemÀÌ¶ó¸é as ItemÀ¸·Î, ±¸Á¶¹°ÀÌ¶ó¸é as Structure·Î ³Ö´Â ½ÄÀ¸·Î
     //     }
     // }
     // 
@@ -61,36 +65,36 @@ public class PlayerController : MonoBehaviour
 
     private void FindInteractableItem()
     {
-        // Æ®ï¿½ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ overlapsphereï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Öºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½
-        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ _interactableItemï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // Æ®¸®°Å¸¦ »ç¿ëÇÏÁö ¾Ê°í overlapsphere¸¦ »ç¿ëÇÏ¿© ÁÖº¯ÀÇ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ® °¨Áö
+        // °¡Àå °¡±îÀÌ ÀÖ´Â ¿ÀºêÁ§Æ®¸¦ _interactableItem·Î ¼³Á¤
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position, 2f, _colls, _layerMask);
         if (collsCount > 0)
         {
             for (int i = 0; i < collsCount; i++)
             {
-                // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+                // ÇÃ·¹ÀÌ¾î¿Í ¿ÀºêÁ§Æ®ÀÇ °Å¸® ÃøÁ¤
                 float distance = Vector3.Distance(transform.position, _colls[i].transform.position);
-                // closestCollï¿½ï¿½ nullï¿½Ì°Å³ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ closestCollï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¶ï¿½ï¿½Ì´ï¿½ï¿½ï¿½ closestCollï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                // closestCollÀÌ nullÀÌ°Å³ª ÇöÀç ¿ÀºêÁ§Æ®°¡ closestCollº¸´Ù °¡±î¿î °æ¿ì ÇöÀç ÀÎµ¦½ºÀÇ ÄÝ¶óÀÌ´õ¸¦ closestColl·Î ¼³Á¤
                 if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
                 {
-                    closestColl = _colls[i];
+                    closestColl = _colls[i]; 
                 }
             }
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ closestCollï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ _interactableItemï¿½ï¿½ ï¿½Ò´ï¿½
+            // ³¡³ª¸é closestCollÀÇ ³»¿ëÀ» _interactableItem¿¡ ÇÒ´ç
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 //_interactableItem = interactable as TestItem;
-                PlayerManager.Instance.InteractableItem = interactable as TestItem;
+                PlayerManager.Instance.InteractableItem = interactable as WorldItem;
                 PlayerManager.Instance.IsInIntercation = true;
-                // ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Û°ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ù°ï¿½ ï¿½Ï¸ï¿½
-                // _interactableItemï¿½ï¿½ asï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ç¹ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½È²ï¿½ï¿½ ï¿½Â°ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
-                // Itemï¿½Ì¶ï¿½ï¿½ as Itemï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ as Structureï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                // ³ªÁß¿¡ ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë ¹°Ã¼°¡ ³ª´¶´Ù°í ÇÏ¸é
+                // _interactableItem¿¡ as·Î ³ÖÀ»¶§ Á¶°Ç¹®À» ÀÌ¿ëÇÏ¿© »óÈ²¿¡ ¸Â°Ô ³Ö´Â ·ÎÁ÷ ÇÊ¿ä
+                // ItemÀÌ¶ó¸é as ItemÀ¸·Î, ±¸Á¶¹°ÀÌ¶ó¸é as Structure·Î ³Ö´Â ½ÄÀ¸·Î
             }
         }
         else
         {
-            // ï¿½Öºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ _interactableItemï¿½ï¿½ nullï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            // ÁÖº¯¿¡ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ®°¡ ¾øÀ¸¸é _interactableItemÀ» null·Î ¼³Á¤
             if (PlayerManager.Instance.InteractableItem != null)
             {
                 //_interactableItem = null;
@@ -102,7 +106,7 @@ public class PlayerController : MonoBehaviour
 
     private void Init()
     {
-        // ï¿½×½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ì½º ï¿½ï¿½ï¿½ï¿½ï¿½
+        // Å×½ºÆ®¿ë ¸¶¿ì½º ¼û±â±â
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _speed = _baseSpeed;
@@ -120,10 +124,10 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
+        // Ä«¸Þ¶ó¸¦ ±âÁØÀ¸·Î Á¤¸éÀ» Àâ°í ¿òÁ÷ÀÌµµ·Ï ¼öÁ¤ÇØ¾ßÇÔ
         Vector3 move = transform.TransformDirection(_moveDir) * _speed;
 
-        // È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì´ï¿½ ï¿½ß·ï¿½ï¿½ï¿½ 3.73
+        // È­¼ºÀÌ ¹è°æÀÌ´Ï Áß·ÂÀº 3.73
         _verVelocity.y -= 3.73f * Time.deltaTime;
 
         _controller.Move((move + _verVelocity) * Time.deltaTime);
@@ -146,10 +150,18 @@ public class PlayerController : MonoBehaviour
             PlayerManager.Instance.InteractableItem.Interact();
         }
 
-        if(Input.GetMouseButtonDown(0) && _selectItem != null)
+        // ¾ÆÀÌÅÛÀ» ¸¶¿ì½º ÁÂÅ¬¸¯ ÇÏ¸é »ç¿ë. ´©¸£°í ÀÖ´Âµ¿¾È ÁÖ±âÀûÀ¸·Î °è¼Ó »ç¿ë
+        if(Input.GetMouseButton(0) && _selectItem != null)
         {
-            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½È´Ù¸ï¿½, ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®ï¿½ï¿½ Interact ï¿½Þ¼ï¿½ï¿½ï¿½ È£ï¿½ï¿½
-            //_selectItem.Interact();
+            // ¾ÆÀÌÅÛ »ç¿ëÀº ¾ÆÀÌÅÛ ÆÄÆ®¿¡¼­ Á¦ÀÛ µÇ¸é ¼¼ºÎ ±¸Çö
+            // ÀÏ´ÜÀº ¾ÆÀÌÅÛÀ» ¿¬¼ÓÀ¸·Î »ç¿ëÇÏ´Â ÄÚ·çÆ¾À» ¸ÕÀú ±¸ÇöÇÏ±â
+            if (_canUseItem)
+            {
+                _itemUseCoroutine = StartCoroutine(ItemUsing());
+            }
+
+            // ¼Òºñ ¾ÆÀÌÅÛÀÇ °æ¿ì ²Ú ´­·¶À»¶§ »ç¿ëµÇµµ·Ï ¼³Á¤ÇØ´Þ¶ó°í ¿äÃ»¹ÞÀ½
+            // ÇØ´ç ºÎºÐ ±¸Çö ÇÊ¿ä
         }
     }
 
@@ -163,8 +175,8 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        // ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
-        // ï¿½Ö´Â´Ù¸ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò°ï¿½.
+        // ´Þ¸®±â ±â´ÉÀÌ ÇÊ¿äÇÏÁö ¾ÊÀ» ¼öµµ ÀÖÀ½.
+        // ³Ö´Â´Ù¸é ½½·Î¿ì¶û »óÈ£ÀÛ¿ë °í·ÁÇÒ°Í.
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             _speed *= 2;
@@ -193,8 +205,8 @@ public class PlayerController : MonoBehaviour
 
     private void CameraLimit()
     {
-        // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
-        // ï¿½à¿¡ï¿½ï¿½ Ä«ï¿½Þ¶ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ß»ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Ìµï¿½ï¿½ï¿½Å´
+        // Ä«¸Þ¶ó°¡ º®¿¡ ºÎµúÈ÷´Â °æ¿ì º® À§Ä¡¸¸Å­ ¾ÕÀ¸·Î ÀÌµ¿
+        // Ãà¿¡¼­ Ä«¸Þ¶ó·Î ·¹ÀÌ¸¦ ¹ß»çÇÏ¿© º®¿¡ ºÎµúÈ÷´Â °æ¿ì, ºÎµóÈ÷´Â À§Ä¡¸¦ °è»êÇÏ¿© Ä«¸Þ¶ó¸¦ ÀÌµ¿½ÃÅ´
         RaycastHit hit;
         if (Physics.Raycast(_virCamAxis.position, -_virCamAxis.forward, out hit, 4.3f, _ignoreMask))
         {
@@ -203,36 +215,45 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+            // º®¿¡ ºÎµúÈ÷Áö ¾Ê´Â °æ¿ì À§Ä¡ ¸®¼Â
             Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 4f;
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
         }
     }
 
+    IEnumerator ItemUsing()
+    {
+        // ¾ÆÀÌÅÛ ¿¬¼Ó »ç¿ë ÄÚ·çÆ¾
+        // ¾ÆÀÌÅÛ »ç¿ë°£ÀÇ µô·¹ÀÌ Àû¿ë
+        // ¾ÆÀÌÅÛ.Use();
+        yield return new WaitForSeconds(1f);
+        _itemUseCoroutine = null;
+    }
+
     private void OnDrawGizmos()
     {
-        // Gizmosï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
+        // Gizmos¸¦ »ç¿ëÇÏ¿© ·¹ÀÌ Ç¥½Ã
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, 2.5f);
-        //Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
     }
 
+    // ¹Ì»ç¿ë. ÇÏÁö¸¸ È¤½Ã ¸ô¶ó ³²°Ü³õÀ½
     /// <summary>
-    /// ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Þ¾ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
+    /// ½½·Î¿ì °­µµ¸¦ ÆÛ¼¾Å×ÀÌÁö·Î ÀÔ·Â ¹Þ¾Æ ÇÃ·¹ÀÌ¾î °¨¼Ó
     /// </summary>
-    /// <param name="percentage"></param>0~100 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½, 0ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, 100ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    public void PlayerSlow(float percentage)
-    {
-        _speed = _speed * (1f - percentage / 100f);
-    }
-
+    /// <param name="percentage"></param>0~100 »çÀÌÀÇ °ªÀ¸·Î ÀÔ·Â, 0Àº °¨¼Ó ¾øÀ½, 100Àº Á¤Áö
+    //public void PlayerSlow(float percentage)
+    //{
+    //    _speed = _speed * (1f - percentage / 100f);
+    //}
+    //
     /// <summary>
-    /// ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï±â¿¡ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ ï¿½Û¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ø¾ï¿½ï¿½ï¿½
+    /// ½½·Î¿ìÀÇ ¿ª¼øÀ¸·Î °è»êÇÏ±â¿¡ ½½·Î¿ì ÇÑ ÆÛ¼¾Å×ÀÌÁö¸¦ ±×´ë·Î ÀÔ·ÂÇØ¾ßÇÔ
     /// </summary>
     /// <param name="percentage"></param>
-    public void OutOfSlow(float percentage)
-    {
-        // ï¿½ï¿½ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-        _speed = _speed / (1f - percentage / 100f);
-    }
+    //public void OutOfSlow(float percentage)
+    //{
+    //    // ½½·Î¿ìÀÇ ¿ª¼ø
+    //    _speed = _speed / (1f - percentage / 100f);
+    //}
 }

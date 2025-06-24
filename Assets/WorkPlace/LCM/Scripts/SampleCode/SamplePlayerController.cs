@@ -2,7 +2,7 @@ using Cinemachine;
 using UnityEditor;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class SamplePlayerController : MonoBehaviour
 {
     [SerializeField] private CharacterController _controller;
     [SerializeField] private CinemachineVirtualCamera _virCam;
@@ -33,35 +33,8 @@ public class PlayerController : MonoBehaviour
         HandlePlayer();
     }
 
-    // overlapsphere로 교체하기에 주석처리.
-    // 현재 인터렉션 방식은 한곳에 하나의 오브젝트만 있다는 걸 전제로 제작됨
-    // 무조건 처음 접근한 오브젝트만 인터렉션이 가능하도록 제작
-    // 여러 오브젝트가 있을 경우, 지금 방식이 아닌 다른 방식으로 코드를 작성하여야 함
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
-    //     {
-    //         _interactableItem = interact as TestItem;
-    //         TestPlayerManager.Instance.IsInIntercation = true;
-    //         // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
-    //         // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
-    //         // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
-    //     }
-    // }
-    // 
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact))
-    //     {
-    //         TestPlayerManager.Instance.IsInIntercation = false;
-    //         _interactableItem = null;
-    //     }
-    // }
-
     private void FindInteractableItem()
     {
-        // 트리거를 사용하지 않고 overlapsphere를 사용하여 주변의 인터렉션 가능한 오브젝트 감지
-        // 가장 가까이 있는 오브젝트를 _interactableItem로 설정
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position, 2f, _colls, _layerMask);
         if (collsCount > 0)
@@ -79,19 +52,24 @@ public class PlayerController : MonoBehaviour
             // 끝나면 closestColl의 내용을 _interactableItem에 할당
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
+                //if (SamplePlayerManager.Instance.InteractableItem != interactable as WorldItem) // 이전에 감지된 아이템과 다를 때만 로그 출력
+                //{
+                //    Debug.Log($"[감지됨] 플레이어 근처에 상호작용 가능한 아이템이 있습니다: {closestColl.name}");
+                //}
                 //_interactableItem = interactable as TestItem;
-                TestPlayerManager.Instance.InteractableItem = interactable as TestItem;
-                TestPlayerManager.Instance.IsInIntercation = true;
+                SamplePlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                SamplePlayerManager.Instance.IsInIntercation = true;
             }
         }
         else
         {
             // 주변에 인터렉션 가능한 오브젝트가 없으면 _interactableItem을 null로 설정
-            if (TestPlayerManager.Instance.InteractableItem != null)
+            if (SamplePlayerManager.Instance.InteractableItem != null)
             {
+                //Debug.Log("[감지 해제됨] 플레이어가 아이템 범위에서 벗어났습니다.");
                 //_interactableItem = null;
-                TestPlayerManager.Instance.InteractableItem = null;
-                TestPlayerManager.Instance.IsInIntercation = false;
+                SamplePlayerManager.Instance.InteractableItem = null;
+                SamplePlayerManager.Instance.IsInIntercation = false;
             }
         }
     }
@@ -137,9 +115,14 @@ public class PlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if (Input.GetKeyDown(KeyCode.E) && TestPlayerManager.Instance.InteractableItem != null)
+        if (Input.GetKeyDown(KeyCode.E) && SamplePlayerManager.Instance.InteractableItem != null)
         {
             SamplePlayerManager.Instance.InteractableItem.Interact();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q)) // 'I' 키를 눌렀을 때
+        {
+            SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
         }
     }
 

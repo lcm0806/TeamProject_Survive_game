@@ -1,18 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TestSlow : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.gameObject.layer == 3)
+    //         other.GetComponent<PlayerController>().PlayerSlow(30f);
+    // }
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.gameObject.layer == 3)
+    //         other.GetComponent<PlayerController>().OutOfSlow(30f);
+    // }
 
-    // Update is called once per frame
-    void Update()
+
+    private void OnDrawGizmos()
     {
-        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 5f);
     }
 }

@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,6 +22,10 @@ public class PlayerController : MonoBehaviour
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
+    private TestItem _selectItem;
+    private WorldItem _worldItem;
+    private Coroutine _itemUseCoroutine;
+    private bool _canUseItem => _itemUseCoroutine == null;
 
     private void Awake()
     {
@@ -73,25 +78,28 @@ public class PlayerController : MonoBehaviour
                 // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
                 if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
                 {
-                    closestColl = _colls[i];
+                    closestColl = _colls[i]; 
                 }
             }
             // 끝나면 closestColl의 내용을 _interactableItem에 할당
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 //_interactableItem = interactable as TestItem;
-                TestPlayerManager.Instance.InteractableItem = interactable as TestItem;
-                TestPlayerManager.Instance.IsInIntercation = true;
+                PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                PlayerManager.Instance.IsInIntercation = true;
+                // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
+                // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
+                // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
             }
         }
         else
         {
             // 주변에 인터렉션 가능한 오브젝트가 없으면 _interactableItem을 null로 설정
-            if (TestPlayerManager.Instance.InteractableItem != null)
+            if (PlayerManager.Instance.InteractableItem != null)
             {
                 //_interactableItem = null;
-                TestPlayerManager.Instance.InteractableItem = null;
-                TestPlayerManager.Instance.IsInIntercation = false;
+                PlayerManager.Instance.InteractableItem = null;
+                PlayerManager.Instance.IsInIntercation = false;
             }
         }
     }
@@ -137,9 +145,23 @@ public class PlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if (Input.GetKeyDown(KeyCode.E) && TestPlayerManager.Instance.InteractableItem != null)
+        if(Input.GetKeyDown(KeyCode.E) && PlayerManager.Instance.InteractableItem != null)
         {
-            SamplePlayerManager.Instance.InteractableItem.Interact();
+            PlayerManager.Instance.InteractableItem.Interact();
+        }
+
+        // 아이템을 마우스 좌클릭 하면 사용. 누르고 있는동안 주기적으로 계속 사용
+        if(Input.GetMouseButton(0) && _selectItem != null)
+        {
+            // 아이템 사용은 아이템 파트에서 제작 되면 세부 구현
+            // 일단은 아이템을 연속으로 사용하는 코루틴을 먼저 구현하기
+            if (_canUseItem)
+            {
+                _itemUseCoroutine = StartCoroutine(ItemUsing());
+            }
+
+            // 소비 아이템의 경우 꾹 눌렀을때 사용되도록 설정해달라고 요청받음
+            // 해당 부분 구현 필요
         }
     }
 
@@ -154,13 +176,14 @@ public class PlayerController : MonoBehaviour
     private void Run()
     {
         // 달리기 기능이 필요하지 않을 수도 있음.
-        if (Input.GetKey(KeyCode.LeftShift))
+        // 넣는다면 슬로우랑 상호작용 고려할것.
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _speed = 10f;
+            _speed *= 2;
         }
-        else
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            _speed = _baseSpeed;
+            _speed /= 2;
         }
     }
 
@@ -198,21 +221,39 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    IEnumerator ItemUsing()
+    {
+        // 아이템 연속 사용 코루틴
+        // 아이템 사용간의 딜레이 적용
+        // 아이템.Use();
+        yield return new WaitForSeconds(1f);
+        _itemUseCoroutine = null;
+    }
+
     private void OnDrawGizmos()
     {
         // Gizmos를 사용하여 레이 표시
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, 2.5f);
-        //Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
     }
 
-    public void PlayerSlow(int percentage)
-    {
-        _speed = _baseSpeed * (1 - percentage / 100f);
-    }
-
-    public void ResetSpeed()
-    {
-        _speed = _baseSpeed;
-    }
+    // 미사용. 하지만 혹시 몰라 남겨놓음
+    /// <summary>
+    /// 슬로우 강도를 퍼센테이지로 입력 받아 플레이어 감속
+    /// </summary>
+    /// <param name="percentage"></param>0~100 사이의 값으로 입력, 0은 감속 없음, 100은 정지
+    //public void PlayerSlow(float percentage)
+    //{
+    //    _speed = _speed * (1f - percentage / 100f);
+    //}
+    //
+    /// <summary>
+    /// 슬로우의 역순으로 계산하기에 슬로우 한 퍼센테이지를 그대로 입력해야함
+    /// </summary>
+    /// <param name="percentage"></param>
+    //public void OutOfSlow(float percentage)
+    //{
+    //    // 슬로우의 역순
+    //    _speed = _speed / (1f - percentage / 100f);
+    //}
 }

@@ -1,9 +1,42 @@
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class MenuManager : MonoBehaviour
+public class MenuSystem : MonoBehaviour
 {
+    private static MenuSystem _instance;
+    public static MenuSystem Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = FindObjectOfType<MenuSystem>();
+                if (_instance == null)
+                {
+                    GameObject audioSystemObject = new GameObject("MenuSystem");
+                    _instance = audioSystemObject.AddComponent<MenuSystem>();
+                    DontDestroyOnLoad(audioSystemObject);
+                }
+            }
+            return _instance;
+        }
+    }
+    
+    void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        _instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+    
     public GameObject MainMenu;
     private Button _mainStartButton;
     private Button _mainSetButton;
@@ -23,12 +56,17 @@ public class MenuManager : MonoBehaviour
         SettingMenuButtons();
         ExitMenuButtons();
         
+        // TODO: 테스트
         AudioSystem.Instance.PlayBGMByName("MainBGM");
         AudioSystem.Instance.PlaySFXByName("MainSFX");
     }
-    
-    
-    
+
+    private void Update()
+    {
+        
+    }
+
+
     private void MainMenuButtons()
     {
         // MainMenu 버튼 설정
@@ -141,9 +179,19 @@ public class MenuManager : MonoBehaviour
     
     
     // 실제 버튼 클릭 시 실행될 메서드들
-    private void OnMainStartButtonClick()
+    public void OnMainStartButtonClick()
     {
-        Debug.Log("게임 시작! 씬으로 이동합니다.");
+        // Debug.Log("게임 시작! 씬으로 이동합니다.");
+        AudioSystem.Instance.StopBGM();
+        
+        SceneSystem.Instance.LoadShelterScene();
+        
+        
+        // TODO: 테스트
+        AudioSystem.Instance.PlaySFXByName("MainSFX");
+        
+        MainMenu.SetActive(false);
+        
     }
     
     private void OnMainSetButtonClick()

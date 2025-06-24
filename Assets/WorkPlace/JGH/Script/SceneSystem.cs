@@ -1,8 +1,5 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 
 public class SceneSystem : MonoBehaviour
 {
@@ -18,6 +15,7 @@ public class SceneSystem : MonoBehaviour
                 {
                     GameObject go = new GameObject("SceneSystem");
                     _instance = go.AddComponent<SceneSystem>();
+                    DontDestroyOnLoad(go);
                 }
             }
             return _instance;
@@ -25,19 +23,19 @@ public class SceneSystem : MonoBehaviour
     }
     
     [Header("Scene Settings")]
-    [SerializeField] private SceneAsset _titleScene;
-    [SerializeField] private SceneAsset _shelterScene;
-    [SerializeField] private SceneAsset _farmingScene;
-    [SerializeField] private SceneAsset _dayTransitionScene;
+    [SerializeField] private Object _titleScene;
+    [SerializeField] private Object _shelterScene;
+    [SerializeField] private Object _farmingScene;
+    [SerializeField] private Object _dayTransitionScene;
     
     // 메인 씬
-    public string TitleSceneName => GetSceneName(_titleScene);
+    public string TitleSceneName => _titleScene != null ? _titleScene.name : "";
     // 쉘터 씬
-    public string ShelterSceneName => GetSceneName(_shelterScene);
+    public string ShelterSceneName => _shelterScene != null ? _shelterScene.name : "";
     // 파밍 씬
-    public string FarmingSceneName => GetSceneName(_farmingScene);
+    public string FarmingSceneName => _farmingScene != null ? _farmingScene.name : "";
     // 다음날 씬
-    public string DayTransitionSceneName => GetSceneName(_dayTransitionScene);
+    public string DayTransitionSceneName => _dayTransitionScene != null ? _dayTransitionScene.name : "";
     
     private void Awake()
     {
@@ -49,16 +47,22 @@ public class SceneSystem : MonoBehaviour
         }
         
         _instance = this;
+        
+        // 부모가 있다면 루트로 이동
+        if (transform.parent != null)
+        {
+            transform.SetParent(null);
+        }
+        
         DontDestroyOnLoad(gameObject);
     }
-    
     
     /// <summary>
     /// 타이틀 씬으로 이동
     /// </summary>
     public void LoadTitleScene()
     {
-        LoadSceneIfValid(_titleScene);
+        LoadScene(_titleScene);
     }
     
     /// <summary>
@@ -66,7 +70,7 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadShelterScene()
     {
-        LoadSceneIfValid(_shelterScene);
+        LoadScene(_shelterScene);
     }
     
     /// <summary>
@@ -74,7 +78,7 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadFarmingScene()
     {
-        LoadSceneIfValid(_farmingScene);
+        LoadScene(_farmingScene);
     }
     
     /// <summary>
@@ -82,7 +86,7 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadDayTransitionScene()
     {
-        LoadSceneIfValid(_dayTransitionScene);
+        LoadScene(_dayTransitionScene);
     }
     
     /// <summary>
@@ -97,32 +101,22 @@ public class SceneSystem : MonoBehaviour
             return;
         }
         
+        Debug.Log($"Loading scene: {sceneName}");
         SceneManager.LoadScene(sceneName);
     }
     
     /// <summary>
-    /// SceneAsset에서 씬 이름을 안전하게 가져오기
+    /// Object로 씬 로드
     /// </summary>
-    /// <param name="sceneAsset">씬 에셋</param>
-    /// <returns>씬 이름 또는 빈 문자열</returns>
-    private string GetSceneName(SceneAsset sceneAsset)
+    /// <param name="sceneObject">로드할 씬 오브젝트</param>
+    public void LoadScene(Object sceneObject)
     {
-        return sceneAsset != null ? sceneAsset.name : string.Empty;
-    }
-    
-    /// <summary>
-    /// SceneAsset이 유효한 경우에만 씬을 로드
-    /// </summary>
-    /// <param name="sceneAsset">로드할 씬 에셋</param>
-    private void LoadSceneIfValid(SceneAsset sceneAsset)
-    {
-        if (sceneAsset == null)
+        if (sceneObject == null)
         {
-            Debug.LogError("Scene asset is not assigned!");
+            Debug.LogError("Scene object is null!");
             return;
         }
         
-        SceneManager.LoadScene(sceneAsset.name);
+        LoadScene(sceneObject.name);
     }
-   
 }

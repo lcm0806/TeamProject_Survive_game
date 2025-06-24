@@ -68,6 +68,13 @@ public class AudioSystem : MonoBehaviour
         if (_instance == null)
         {
             _instance = this;
+            
+            // 부모가 있다면 루트로 이동
+            if (transform.parent != null)
+            {
+                transform.SetParent(null);
+            }
+            
             DontDestroyOnLoad(gameObject);
             
             // AudioSource 컴포넌트 생성

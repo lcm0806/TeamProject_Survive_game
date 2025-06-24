@@ -6,31 +6,38 @@ public class TestUI : MonoBehaviour
 {
     [SerializeField] private GameObject _interactUI;
     [SerializeField] private TMP_Text _itemName;
+    [SerializeField] private TMP_Text _air;
+    [SerializeField] private TMP_Text _electric;
 
     private ObseravableProperty<bool> _isInInteract = new();
 
-    private void Awake()
+    private void Start()
     {
-        _isInInteract.Subscribe(SetUI);
+        _isInInteract.Subscribe(SetInteractUI);
+        PlayerManager.Instance.AirGauge.Subscribe(SetTextUI);
+        PlayerManager.Instance.ElecticGauge.Subscribe(SetTextUI);
+        SetTextUI(1);
     }
 
     private void Update()
     {
-        _isInInteract.Value = TestPlayerManager.Instance.IsInIntercation;
+        _isInInteract.Value = PlayerManager.Instance.IsInIntercation;
 
-        if (TestPlayerManager.Instance.InteractableItem != null)
-            if (!_itemName.text.Equals(TestPlayerManager.Instance.InteractableItem.name))
+        if (PlayerManager.Instance.InteractableItem != null)
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableItem.name))
             {
-                _itemName.text = TestPlayerManager.Instance.InteractableItem.name;
+                _itemName.text = PlayerManager.Instance.InteractableItem.name;
             }
     }
 
     private void OnDestroy()
     {
-        _isInInteract.Unsubscribe(SetUI);
+        _isInInteract.Unsubscribe(SetInteractUI);
+        PlayerManager.Instance.AirGauge.Unsubscribe(SetTextUI);
+        PlayerManager.Instance.ElecticGauge.Unsubscribe(SetTextUI);
     }
 
-    private void SetUI(bool value)
+    private void SetInteractUI(bool value)
     {
         if (_isInInteract.Value)
         {
@@ -41,5 +48,10 @@ public class TestUI : MonoBehaviour
         {
             _interactUI.SetActive(false);
         }
+    }
+    private void SetTextUI(float value)
+    {
+        _air.text = "Air : " + PlayerManager.Instance.AirGauge.Value.ToString("F1");
+        _electric.text = "Electric : " + PlayerManager.Instance.ElecticGauge.Value.ToString("F1");
     }
 }

@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
+    private TestItem _selectItem;
 
     private void Awake()
     {
@@ -80,18 +81,21 @@ public class PlayerController : MonoBehaviour
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 //_interactableItem = interactable as TestItem;
-                TestPlayerManager.Instance.InteractableItem = interactable as TestItem;
-                TestPlayerManager.Instance.IsInIntercation = true;
+                PlayerManager.Instance.InteractableItem = interactable as TestItem;
+                PlayerManager.Instance.IsInIntercation = true;
+                // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
+                // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
+                // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
             }
         }
         else
         {
             // 주변에 인터렉션 가능한 오브젝트가 없으면 _interactableItem을 null로 설정
-            if (TestPlayerManager.Instance.InteractableItem != null)
+            if (PlayerManager.Instance.InteractableItem != null)
             {
                 //_interactableItem = null;
-                TestPlayerManager.Instance.InteractableItem = null;
-                TestPlayerManager.Instance.IsInIntercation = false;
+                PlayerManager.Instance.InteractableItem = null;
+                PlayerManager.Instance.IsInIntercation = false;
             }
         }
     }
@@ -137,9 +141,15 @@ public class PlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if(Input.GetKeyDown(KeyCode.E) && TestPlayerManager.Instance.InteractableItem != null)
+        if(Input.GetKeyDown(KeyCode.E) && PlayerManager.Instance.InteractableItem != null)
         {
-            TestPlayerManager.Instance.InteractableItem.Interact();
+            PlayerManager.Instance.InteractableItem.Interact();
+        }
+
+        if(Input.GetMouseButtonDown(0) && _selectItem != null)
+        {
+            // 아이템 사용 로직이 구현된다면, 사용. 지금은 테스트로 Interact 메서드 호출
+            //_selectItem.Interact();
         }
     }
 
@@ -154,13 +164,14 @@ public class PlayerController : MonoBehaviour
     private void Run()
     {
         // 달리기 기능이 필요하지 않을 수도 있음.
-        if (Input.GetKey(KeyCode.LeftShift))
+        // 넣는다면 슬로우랑 상호작용 고려할것.
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            _speed = 10f;
+            _speed *= 2;
         }
-        else
+        if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            _speed = _baseSpeed;
+            _speed /= 2;
         }
     }
 
@@ -206,13 +217,22 @@ public class PlayerController : MonoBehaviour
         //Gizmos.DrawLine(_virCamAxis.position, _virCamAxis.position - _virCamAxis.forward * 4f);
     }
 
-    public void PlayerSlow(int percentage)
+    /// <summary>
+    /// 슬로우 강도를 퍼센테이지로 입력 받아 플레이어 감속
+    /// </summary>
+    /// <param name="percentage"></param>0~100 사이의 값으로 입력, 0은 감속 없음, 100은 정지
+    public void PlayerSlow(float percentage)
     {
-        _speed = _baseSpeed * (1 - percentage / 100f);
+        _speed = _speed * (1f - percentage / 100f);
     }
 
-    public void ResetSpeed()
+    /// <summary>
+    /// 슬로우의 역순으로 계산하기에 슬로우 한 퍼센테이지를 그대로 입력해야함
+    /// </summary>
+    /// <param name="percentage"></param>
+    public void OutOfSlow(float percentage)
     {
-        _speed = _baseSpeed;
+        // 슬로우의 역순
+        _speed = _speed / (1f - percentage / 100f);
     }
 }

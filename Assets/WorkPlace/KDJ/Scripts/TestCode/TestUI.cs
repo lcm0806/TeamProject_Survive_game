@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DesignPattern;
+using TMPro;
+using UnityEngine;
 
 public class TestUI : MonoBehaviour
 {
     [SerializeField] private GameObject _interactUI;
+    [SerializeField] private TMP_Text _itemName;
 
     private ObseravableProperty<bool> _isInInteract = new();
 
@@ -17,6 +17,12 @@ public class TestUI : MonoBehaviour
     private void Update()
     {
         _isInInteract.Value = TestPlayerManager.Instance.IsInIntercation;
+
+        if (TestPlayerManager.Instance.InteractableItem != null)
+            if (!_itemName.text.Equals(TestPlayerManager.Instance.InteractableItem.name))
+            {
+                _itemName.text = TestPlayerManager.Instance.InteractableItem.name;
+            }
     }
 
     private void OnDestroy()
@@ -29,6 +35,7 @@ public class TestUI : MonoBehaviour
         if (_isInInteract.Value)
         {
             _interactUI.SetActive(true);
+
         }
         else
         {

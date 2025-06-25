@@ -13,6 +13,7 @@ public class WorldItem : MonoBehaviour, IInteractable
 
     void Start()
     {
+
     }
 
     void Update()

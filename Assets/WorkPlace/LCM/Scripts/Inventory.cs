@@ -13,7 +13,7 @@ public class Inventory : Singleton<Inventory>
     [SerializeField] InventorySlot[] hotbarSlots;
 
     // 0=Head, 1=Chest, 2=Legs, 3=Feet
-    [SerializeField] InventorySlot[] equipmentSlots;
+    //[SerializeField] InventorySlot[] equipmentSlots;
 
     public Transform draggablesTransform;
     [SerializeField] InventoryItem itemPrefab;

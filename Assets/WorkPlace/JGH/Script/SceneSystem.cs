@@ -70,6 +70,8 @@ public class SceneSystem : MonoBehaviour
     public void LoadFarmingScene()
     {
         LoadScene(_farmingScene);
+        // 탐색 여부
+        StatusSystem.Instance.SetIsToDay(true);
     }
     
     /// <summary>
@@ -78,6 +80,10 @@ public class SceneSystem : MonoBehaviour
     public void LoadDayTransitionScene()
     {
         LoadScene(_dayTransitionScene);
+        // 날짜 + 1
+        StatusSystem.Instance.NextCurrentDay();
+        // 탐색 여부
+        StatusSystem.Instance.SetIsToDay(false);
     }
     
     /// <summary>

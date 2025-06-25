@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class AudioClipGroup
@@ -34,33 +35,33 @@ public class AudioSystem : MonoBehaviour
     }
 
     [Header("UI 요소들")]
-    [SerializeField] private Slider bgmSlider;
-    [SerializeField] private Slider sfxSlider;
-    [SerializeField] private TMP_Text bgmVolumeText;
-    [SerializeField] private TMP_Text sfxVolumeText;
-    [SerializeField] private Button okButton;
-    [SerializeField] private Button backButton;
+    [SerializeField] private Slider _bgmSlider;
+    [SerializeField] private Slider _sfxSlider;
+    [SerializeField] private TMP_Text _bgmVolumeText;
+    [SerializeField] private TMP_Text _sfxVolumeText;
+    [SerializeField] private Button _okButton;
+    [SerializeField] private Button _backButton;
     
     [Header("오디오 설정")]
-    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private AudioMixer _audioMixer;
     
     [Header("BGM 클립들")]
-    [SerializeField] private List<AudioClipGroup> bgmClips = new List<AudioClipGroup>();
+    [SerializeField] private List<AudioClipGroup> _bgmClips = new List<AudioClipGroup>();
     
     [Header("SFX 클립들")]
-    [SerializeField] private List<AudioClipGroup> sfxClips = new List<AudioClipGroup>();
+    [SerializeField] private List<AudioClipGroup> _sfxClips = new List<AudioClipGroup>();
     
     // AudioSource 컴포넌트들
-    private AudioSource bgmAudioSource;
-    private AudioSource sfxAudioSource;
+    private AudioSource _bgmAudioSource;
+    private AudioSource _sfxAudioSource;
     
     // 볼륨 값 저장용
-    private float bgmVolume = 0.5f;
-    private float sfxVolume = 0.5f;
+    private float _bgmVolume = 0.5f;
+    private float _sfxVolume = 0.5f;
     
     // PlayerPrefs 키
-    private const string BGM_VOLUME_KEY = "BGMVolume";
-    private const string SFX_VOLUME_KEY = "SFXVolume";
+    private const string _bgmVolumeKey = "BGMVolume";
+    private const string _sfxVolumeKey = "SFXVolume";
 
     void Awake()
     {
@@ -78,13 +79,13 @@ public class AudioSystem : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             
             // AudioSource 컴포넌트 생성
-            bgmAudioSource = gameObject.AddComponent<AudioSource>();
-            bgmAudioSource.loop = true;
-            bgmAudioSource.playOnAwake = false;
+            _bgmAudioSource = gameObject.AddComponent<AudioSource>();
+            _bgmAudioSource.loop = true;
+            _bgmAudioSource.playOnAwake = false;
             
-            sfxAudioSource = gameObject.AddComponent<AudioSource>();
-            sfxAudioSource.loop = false;
-            sfxAudioSource.playOnAwake = false;
+            _sfxAudioSource = gameObject.AddComponent<AudioSource>();
+            _sfxAudioSource.loop = false;
+            _sfxAudioSource.playOnAwake = false;
         }
         else if (_instance != this)
         {
@@ -104,34 +105,34 @@ public class AudioSystem : MonoBehaviour
     /// </summary>
     void SetupEventListeners()
     {
-        if (bgmSlider != null)
-            bgmSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
+        if (_bgmSlider != null)
+            _bgmSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
         
-        if (sfxSlider != null)
-            sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
+        if (_sfxSlider != null)
+            _sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
         
-        if (okButton != null)
-            okButton.onClick.AddListener(OnOKButtonClicked);
+        if (_okButton != null)
+            _okButton.onClick.AddListener(OnOKButtonClicked);
         
-        if (backButton != null)
-            backButton.onClick.AddListener(OnBackButtonClicked);
+        if (_backButton != null)
+            _backButton.onClick.AddListener(OnBackButtonClicked);
     }
 
     public void OnBGMVolumeChanged(float value)
     {
-        bgmVolume = value;
+        _bgmVolume = value;
         
         // AudioMixer 사용하는 경우
-        if (audioMixer != null)
+        if (_audioMixer != null)
         {
             float dbValue = value > 0 ? Mathf.Log10(value) * 20 : -80f;
-            audioMixer.SetFloat("BGMVolume", dbValue);
+            _audioMixer.SetFloat("BGMVolume", dbValue);
         }
         
         // BGM AudioSource에 볼륨 적용
-        if (bgmAudioSource != null)
+        if (_bgmAudioSource != null)
         {
-            bgmAudioSource.volume = value;
+            _bgmAudioSource.volume = value;
         }
         
         UpdateVolumeTexts();
@@ -139,19 +140,19 @@ public class AudioSystem : MonoBehaviour
 
     public void OnSFXVolumeChanged(float value)
     {
-        sfxVolume = value;
+        _sfxVolume = value;
         
         // AudioMixer 사용하는 경우
-        if (audioMixer != null)
+        if (_audioMixer != null)
         {
             float dbValue = value > 0 ? Mathf.Log10(value) * 20 : -80f;
-            audioMixer.SetFloat("SFXVolume", dbValue);
+            _audioMixer.SetFloat("SFXVolume", dbValue);
         }
         
         // SFX AudioSource에 볼륨 적용
-        if (sfxAudioSource != null)
+        if (_sfxAudioSource != null)
         {
-            sfxAudioSource.volume = value;
+            _sfxAudioSource.volume = value;
         }
         
         UpdateVolumeTexts();
@@ -159,11 +160,11 @@ public class AudioSystem : MonoBehaviour
 
     void UpdateVolumeTexts()
     {
-        if (bgmVolumeText != null)
-            bgmVolumeText.text = Mathf.RoundToInt(bgmVolume * 100).ToString();
+        if (_bgmVolumeText != null)
+            _bgmVolumeText.text = Mathf.RoundToInt(_bgmVolume * 100).ToString();
         
-        if (sfxVolumeText != null)
-            sfxVolumeText.text = Mathf.RoundToInt(sfxVolume * 100).ToString();
+        if (_sfxVolumeText != null)
+            _sfxVolumeText.text = Mathf.RoundToInt(_sfxVolume * 100).ToString();
     }
 
     /// <summary>
@@ -172,13 +173,13 @@ public class AudioSystem : MonoBehaviour
     /// <param name="clipIndex"></param>
     public void PlayBGM(int clipIndex)
     {
-        if (clipIndex >= 0 && clipIndex < bgmClips.Count)
+        if (clipIndex >= 0 && clipIndex < _bgmClips.Count)
         {
-            var clip = bgmClips[clipIndex].audioClip;
-            if (clip != null && bgmAudioSource != null)
+            var clip = _bgmClips[clipIndex].audioClip;
+            if (clip != null && _bgmAudioSource != null)
             {
-                bgmAudioSource.clip = clip;
-                bgmAudioSource.Play();
+                _bgmAudioSource.clip = clip;
+                _bgmAudioSource.Play();
             }
         }
     }
@@ -189,12 +190,12 @@ public class AudioSystem : MonoBehaviour
     /// <param name="clipIndex"></param>
     public void PlaySFX(int clipIndex)
     {
-        if (clipIndex >= 0 && clipIndex < sfxClips.Count)
+        if (clipIndex >= 0 && clipIndex < _sfxClips.Count)
         {
-            var clip = sfxClips[clipIndex].audioClip;
-            if (clip != null && sfxAudioSource != null)
+            var clip = _sfxClips[clipIndex].audioClip;
+            if (clip != null && _sfxAudioSource != null)
             {
-                sfxAudioSource.PlayOneShot(clip);
+                _sfxAudioSource.PlayOneShot(clip);
             }
         }
     }
@@ -204,9 +205,9 @@ public class AudioSystem : MonoBehaviour
     /// </summary>
     public void StopBGM()
     {
-        if (bgmAudioSource != null)
+        if (_bgmAudioSource != null)
         {
-            bgmAudioSource.Stop();
+            _bgmAudioSource.Stop();
         }
     }
 
@@ -216,11 +217,11 @@ public class AudioSystem : MonoBehaviour
     /// <param name="clipName"></param>
     public void PlayBGMByName(string clipName)
     {
-        var clipGroup = bgmClips.Find(g => g.name == clipName);
-        if (clipGroup != null && clipGroup.audioClip != null && bgmAudioSource != null)
+        var clipGroup = _bgmClips.Find(g => g.name == clipName);
+        if (clipGroup != null && clipGroup.audioClip != null && _bgmAudioSource != null)
         {
-            bgmAudioSource.clip = clipGroup.audioClip;
-            bgmAudioSource.Play();
+            _bgmAudioSource.clip = clipGroup.audioClip;
+            _bgmAudioSource.Play();
         }
         else
         {
@@ -234,10 +235,10 @@ public class AudioSystem : MonoBehaviour
     /// <param name="clipName"></param>
     public void PlaySFXByName(string clipName)
     {
-        var clipGroup = sfxClips.Find(g => g.name == clipName);
-        if (clipGroup != null && clipGroup.audioClip != null && sfxAudioSource != null)
+        var clipGroup = _sfxClips.Find(g => g.name == clipName);
+        if (clipGroup != null && clipGroup.audioClip != null && _sfxAudioSource != null)
         {
-            sfxAudioSource.PlayOneShot(clipGroup.audioClip);
+            _sfxAudioSource.PlayOneShot(clipGroup.audioClip);
         }
         else
         {
@@ -257,45 +258,45 @@ public class AudioSystem : MonoBehaviour
 
     void SaveVolumeSettings()
     {
-        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, bgmVolume);
-        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, sfxVolume);
+        PlayerPrefs.SetFloat(_bgmVolumeKey, _bgmVolume);
+        PlayerPrefs.SetFloat(_sfxVolumeKey, _sfxVolume);
         PlayerPrefs.Save();
         
-        Debug.Log($"볼륨 설정 저장됨 - BGM: {bgmVolume:F2}, SFX: {sfxVolume:F2}");
+        Debug.Log($"볼륨 설정 저장됨 - BGM: {_bgmVolume:F2}, SFX: {_sfxVolume:F2}");
     }
 
     void LoadVolumeSettings()
     {
-        bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, 0.5f);
-        sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 0.5f);
+        _bgmVolume = PlayerPrefs.GetFloat(_bgmVolumeKey, 0.5f);
+        _sfxVolume = PlayerPrefs.GetFloat(_sfxVolumeKey, 0.5f);
         
         // UI 업데이트
-        if (bgmSlider != null)
-            bgmSlider.value = bgmVolume;
+        if (_bgmSlider != null)
+            _bgmSlider.value = _bgmVolume;
         
-        if (sfxSlider != null)
-            sfxSlider.value = sfxVolume;
+        if (_sfxSlider != null)
+            _sfxSlider.value = _sfxVolume;
         
         // 실제 볼륨 적용
-        OnBGMVolumeChanged(bgmVolume);
-        OnSFXVolumeChanged(sfxVolume);
+        OnBGMVolumeChanged(_bgmVolume);
+        OnSFXVolumeChanged(_sfxVolume);
         
-        Debug.Log($"볼륨 설정 로드됨 - BGM: {bgmVolume:F2}, SFX: {sfxVolume:F2}");
+        Debug.Log($"볼륨 설정 로드됨 - BGM: {_bgmVolume:F2}, SFX: {_sfxVolume:F2}");
     }
 
     void OnDestroy()
     {
         // 이벤트 리스너 해제
-        if (bgmSlider != null)
-            bgmSlider.onValueChanged.RemoveListener(OnBGMVolumeChanged);
+        if (_bgmSlider != null)
+            _bgmSlider.onValueChanged.RemoveListener(OnBGMVolumeChanged);
         
-        if (sfxSlider != null)
-            sfxSlider.onValueChanged.RemoveListener(OnSFXVolumeChanged);
+        if (_sfxSlider != null)
+            _sfxSlider.onValueChanged.RemoveListener(OnSFXVolumeChanged);
         
-        if (okButton != null)
-            okButton.onClick.RemoveListener(OnOKButtonClicked);
+        if (_okButton != null)
+            _okButton.onClick.RemoveListener(OnOKButtonClicked);
         
-        if (backButton != null)
-            backButton.onClick.RemoveListener(OnBackButtonClicked);
+        if (_backButton != null)
+            _backButton.onClick.RemoveListener(OnBackButtonClicked);
     }
 }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7437fac4eab6504408f04ca1f5dc7f85, type: 3}
+  m_Name: RepairRoof
+  m_EditorClassIdentifier: 
+  questState: 0
+  questId: 0
+  killTargetsQuests: []
+  getItemsQuests: []
+  isOptionalQuestType: 0
+  expAmount: 0
+  questScene: 
+  sourcePos: {x: 0, y: 0, z: 0}
+  destinationPos: {x: 0, y: 0, z: 0}

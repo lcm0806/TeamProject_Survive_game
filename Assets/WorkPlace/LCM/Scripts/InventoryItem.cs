@@ -41,7 +41,7 @@ public class InventoryItem : MonoBehaviour, IPointerClickHandler
         activeSlot = parent;
         activeSlot.myItem = this;
         myItem = item;
-        itemIcon.sprite = item.sprite;
+        itemIcon.sprite = item.icon;
 
         if (canvasGroup != null)
         {

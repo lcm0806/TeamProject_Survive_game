@@ -7,7 +7,7 @@ using System;
 
 public class Inventory : Singleton<Inventory>
 {
-    public static InventoryItem carriedItem;
+    public static InventoryItem CarriedItem;
 
     [SerializeField] InventorySlot[] inventorySlots;
     [SerializeField] InventorySlot[] hotbarSlots;
@@ -21,14 +21,12 @@ public class Inventory : Singleton<Inventory>
     [Header("Item List")]
     [SerializeField] Item[] items;
 
-    [Header("Debug")]
-    [SerializeField] Button giveItemBtn;
+    //[Header("Debug")]
+    //[SerializeField] Button giveItemBtn;
 
     // --- 새로 추가된 UI 관련 필드 ---
     [Header("UI Management")]
-    [SerializeField] private GameObject inventoryUIRootPanel; // 인벤토리 UI의 최상위 GameObject (Panel 등)
-    private bool isInventoryUIOpen = false; // 인벤토리 UI 현재 열림/닫힘 상태
-    // ---
+    [SerializeField] private GameObject _inventoryUIRootPanel; // 인벤토리 UI의 최상위 GameObject (Panel 등)
 
 
     void Awake()
@@ -36,9 +34,9 @@ public class Inventory : Singleton<Inventory>
         SingletonInit();
 
         // 인벤토리 UI 패널 초기 상태 설정 (시작 시 비활성화)
-        if (inventoryUIRootPanel != null)
+        if (_inventoryUIRootPanel != null)
         {
-            inventoryUIRootPanel.SetActive(false);
+            _inventoryUIRootPanel.SetActive(false);
         }
         else
         {
@@ -48,9 +46,9 @@ public class Inventory : Singleton<Inventory>
 
     void Update()
     {
-        if(carriedItem == null) return;
+        if(CarriedItem == null) return;
 
-        carriedItem.transform.position = Input.mousePosition;
+        CarriedItem.transform.position = Input.mousePosition;
     }
 
     public void ToggleInventoryUI()
@@ -61,17 +59,17 @@ public class Inventory : Singleton<Inventory>
 
     public void SetCarriedItem(InventoryItem item)
     {
-        if(carriedItem != null)
+        if(CarriedItem != null)
         {
-            if(item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != carriedItem.myItem.itemTag) return;
-            item.activeSlot.SetItem(carriedItem);
+            if(item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != CarriedItem.myItem.itemTag) return;
+            item.activeSlot.SetItem(CarriedItem);
         }
 
         if(item.activeSlot.myTag != SlotTag.None)
         { EquipEquipment(item.activeSlot.myTag, null); }
 
-        carriedItem = item;
-        carriedItem.canvasGroup.blocksRaycasts = false;
+        CarriedItem = item;
+        CarriedItem.canvasGroup.blocksRaycasts = false;
         item.transform.SetParent(draggablesTransform);
     }
 

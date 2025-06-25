@@ -14,6 +14,9 @@ public class Item : ScriptableObject
     public Sprite icon;
     public SlotTag itemTag = SlotTag.None;
 
+    [Header("World Representation")]
+    public GameObject WorldPrefab;
+
 
     [Header("If the item can be equipped")]
     public GameObject equipmentPrefab;

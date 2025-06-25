@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DesignPattern;
 using System;
+using TMPro;
 
 public class SampleUIManager : Singleton<SampleUIManager>
 {
     [SerializeField] private GameObject inventoryPanel;
+    [SerializeField] private TextMeshProUGUI _itemDescriptionText;
 
     public event Action<bool> OnInventoryUIToggled;
 
@@ -14,6 +16,8 @@ public class SampleUIManager : Singleton<SampleUIManager>
     {
         SingletonInit();
         inventoryPanel.SetActive(false);
+
+        SetItemDescription("");
     }
     public void ToggleInventoryUI()
     {
@@ -34,6 +38,14 @@ public class SampleUIManager : Singleton<SampleUIManager>
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             // PlayerController.Instance.SetCanMove(true);
+        }
+    }
+
+    public void SetItemDescription(string description)
+    {
+        if (_itemDescriptionText != null)
+        {
+            _itemDescriptionText.text = description;
         }
     }
 }

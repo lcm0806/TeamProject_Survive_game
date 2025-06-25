@@ -17,7 +17,7 @@ public class SamplePlayerController : MonoBehaviour
     private Vector3 _moveDir;
     private Vector2 _mouseInput;
     private float _totalMouseY = 0f;
-    //private TestItem _interactableItem;
+    //private WorldItem _interactableItem;
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
@@ -56,7 +56,7 @@ public class SamplePlayerController : MonoBehaviour
                 //{
                 //    Debug.Log($"[감지됨] 플레이어 근처에 상호작용 가능한 아이템이 있습니다: {closestColl.name}");
                 //}
-                //_interactableItem = interactable as TestItem;
+                //_interactableItem = interactable as WorldItem;
                 SamplePlayerManager.Instance.InteractableItem = interactable as WorldItem;
                 SamplePlayerManager.Instance.IsInIntercation = true;
             }
@@ -120,7 +120,7 @@ public class SamplePlayerController : MonoBehaviour
             SamplePlayerManager.Instance.InteractableItem.Interact();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) // 'I' 키를 눌렀을 때
+        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' 키를 눌렀을 때
         {
             SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
         }

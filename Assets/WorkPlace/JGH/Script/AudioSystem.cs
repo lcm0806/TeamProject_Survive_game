@@ -99,26 +99,9 @@ public class AudioSystem : MonoBehaviour
         SetupEventListeners();
     }
 
-    // 설정 UI가 활성화될 때 호출
-    public void InitializeUI()
-    {
-        if (bgmSlider != null)
-        {
-            bgmSlider.minValue = 0f;
-            bgmSlider.maxValue = 1f;
-            bgmSlider.value = bgmVolume;
-        }
-        
-        if (sfxSlider != null)
-        {
-            sfxSlider.minValue = 0f;
-            sfxSlider.maxValue = 1f;
-            sfxSlider.value = sfxVolume;
-        }
-        
-        UpdateVolumeTexts();
-    }
-
+    /// <summary>
+    /// 소리 세팅 분기 함수
+    /// </summary>
     void SetupEventListeners()
     {
         if (bgmSlider != null)
@@ -183,7 +166,10 @@ public class AudioSystem : MonoBehaviour
             sfxVolumeText.text = Mathf.RoundToInt(sfxVolume * 100).ToString();
     }
 
-    // BGM 재생 (클립 인덱스)
+    /// <summary>
+    /// BGM 재생 (클립 인덱스)
+    /// </summary>
+    /// <param name="clipIndex"></param>
     public void PlayBGM(int clipIndex)
     {
         if (clipIndex >= 0 && clipIndex < bgmClips.Count)
@@ -197,16 +183,10 @@ public class AudioSystem : MonoBehaviour
         }
     }
 
-    // BGM 정지
-    public void StopBGM()
-    {
-        if (bgmAudioSource != null)
-        {
-            bgmAudioSource.Stop();
-        }
-    }
-
-    // SFX 재생 (클립 인덱스)
+    /// <summary>
+    /// SFX 재생 (클립 인덱스)
+    /// </summary>
+    /// <param name="clipIndex"></param>
     public void PlaySFX(int clipIndex)
     {
         if (clipIndex >= 0 && clipIndex < sfxClips.Count)
@@ -218,8 +198,22 @@ public class AudioSystem : MonoBehaviour
             }
         }
     }
+    
+    /// <summary>
+    /// BGM 정지
+    /// </summary>
+    public void StopBGM()
+    {
+        if (bgmAudioSource != null)
+        {
+            bgmAudioSource.Stop();
+        }
+    }
 
-    // 이름으로 BGM 재생
+    /// <summary>
+    /// 이름으로 BGM 재생
+    /// </summary>
+    /// <param name="clipName"></param>
     public void PlayBGMByName(string clipName)
     {
         var clipGroup = bgmClips.Find(g => g.name == clipName);
@@ -234,7 +228,10 @@ public class AudioSystem : MonoBehaviour
         }
     }
 
-    // 이름으로 SFX 재생
+    /// <summary>
+    /// 이름으로 SFX 재생
+    /// </summary>
+    /// <param name="clipName"></param>
     public void PlaySFXByName(string clipName)
     {
         var clipGroup = sfxClips.Find(g => g.name == clipName);
@@ -245,24 +242,6 @@ public class AudioSystem : MonoBehaviour
         else
         {
             Debug.LogWarning($"SFX 클립 '{clipName}'을 찾을 수 없습니다.");
-        }
-    }
-
-    // AudioClip을 직접 재생하는 메서드들
-    public void PlayBGMClip(AudioClip clip)
-    {
-        if (clip != null && bgmAudioSource != null)
-        {
-            bgmAudioSource.clip = clip;
-            bgmAudioSource.Play();
-        }
-    }
-
-    public void PlaySFXClip(AudioClip clip)
-    {
-        if (clip != null && sfxAudioSource != null)
-        {
-            sfxAudioSource.PlayOneShot(clip);
         }
     }
 
@@ -302,38 +281,6 @@ public class AudioSystem : MonoBehaviour
         OnSFXVolumeChanged(sfxVolume);
         
         Debug.Log($"볼륨 설정 로드됨 - BGM: {bgmVolume:F2}, SFX: {sfxVolume:F2}");
-    }
-
-    // 외부에서 볼륨 설정할 때 사용
-    public void SetBGMVolume(float volume)
-    {
-        bgmVolume = Mathf.Clamp01(volume);
-        if (bgmSlider != null)
-            bgmSlider.value = bgmVolume;
-        OnBGMVolumeChanged(bgmVolume);
-    }
-
-    public void SetSFXVolume(float volume)
-    {
-        sfxVolume = Mathf.Clamp01(volume);
-        if (sfxSlider != null)
-            sfxSlider.value = sfxVolume;
-        OnSFXVolumeChanged(sfxVolume);
-    }
-
-    // 현재 볼륨 값 가져오기
-    public float GetBGMVolume() => bgmVolume;
-    public float GetSFXVolume() => sfxVolume;
-
-    // 현재 재생 중인 BGM 정보
-    public bool IsBGMPlaying()
-    {
-        return bgmAudioSource != null && bgmAudioSource.isPlaying;
-    }
-
-    public AudioClip GetCurrentBGMClip()
-    {
-        return bgmAudioSource != null ? bgmAudioSource.clip : null;
     }
 
     void OnDestroy()

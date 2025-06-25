@@ -1,6 +1,5 @@
 using Cinemachine;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -18,14 +17,18 @@ public class PlayerController : MonoBehaviour
     private Vector3 _moveDir;
     private Vector2 _mouseInput;
     private float _totalMouseY = 0f;
-    //private TestItem _interactableItem;
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
-    private TestItem _selectItem;
+    private Item _selectItem;
     private WorldItem _worldItem;
     private Coroutine _itemUseCoroutine;
     private bool _canUseItem => _itemUseCoroutine == null;
+    private Animator _animator;
+    private bool _isMoving => _moveDir != Vector3.zero;
+    // private bool _isGrabbing => _selectItem != null;
+    // 아래는 테스트 코드
+    private bool _isGrabbing = false;
 
     private void Awake()
     {
@@ -36,6 +39,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerInput();
         HandlePlayer();
+        Animation();
     }
 
     // overlapsphere로 교체하기에 주석처리.
@@ -63,12 +67,21 @@ public class PlayerController : MonoBehaviour
     //     }
     // }
 
+    private void Init()
+    {
+        // 테스트용 마우스 숨기기
+        _animator = GetComponentInChildren<Animator>();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        _speed = _baseSpeed;
+    }
+
     private void FindInteractableItem()
     {
         // 트리거를 사용하지 않고 overlapsphere를 사용하여 주변의 인터렉션 가능한 오브젝트 감지
         // 가장 가까이 있는 오브젝트를 _interactableItem로 설정
         Collider closestColl = null;
-        int collsCount = Physics.OverlapSphereNonAlloc(transform.position, 2f, _colls, _layerMask);
+        int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
         if (collsCount > 0)
         {
             for (int i = 0; i < collsCount; i++)
@@ -78,7 +91,7 @@ public class PlayerController : MonoBehaviour
                 // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
                 if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
                 {
-                    closestColl = _colls[i]; 
+                    closestColl = _colls[i];
                 }
             }
             // 끝나면 closestColl의 내용을 _interactableItem에 할당
@@ -102,14 +115,6 @@ public class PlayerController : MonoBehaviour
                 PlayerManager.Instance.IsInIntercation = false;
             }
         }
-    }
-
-    private void Init()
-    {
-        // 테스트용 마우스 숨기기
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        _speed = _baseSpeed;
     }
 
     private void HandlePlayer()
@@ -145,13 +150,13 @@ public class PlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if(Input.GetKeyDown(KeyCode.E) && PlayerManager.Instance.InteractableItem != null)
+        if (Input.GetKeyDown(KeyCode.E) && PlayerManager.Instance.InteractableItem != null)
         {
             PlayerManager.Instance.InteractableItem.Interact();
         }
 
         // 아이템을 마우스 좌클릭 하면 사용. 누르고 있는동안 주기적으로 계속 사용
-        if(Input.GetMouseButton(0) && _selectItem != null)
+        if (Input.GetMouseButton(0) && _selectItem != null)
         {
             // 아이템 사용은 아이템 파트에서 제작 되면 세부 구현
             // 일단은 아이템을 연속으로 사용하는 코루틴을 먼저 구현하기
@@ -162,6 +167,12 @@ public class PlayerController : MonoBehaviour
 
             // 소비 아이템의 경우 꾹 눌렀을때 사용되도록 설정해달라고 요청받음
             // 해당 부분 구현 필요
+        }
+
+        // 테스트 코드
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _isGrabbing = !_isGrabbing; // Grab 상태 토글
         }
     }
 
@@ -208,9 +219,9 @@ public class PlayerController : MonoBehaviour
         // 카메라가 벽에 부딪히는 경우 벽 위치만큼 앞으로 이동
         // 축에서 카메라로 레이를 발사하여 벽에 부딪히는 경우, 부딛히는 위치를 계산하여 카메라를 이동시킴
         RaycastHit hit;
-        if (Physics.Raycast(_virCamAxis.position, -_virCamAxis.forward, out hit, 4.3f, _ignoreMask))
+        if (Physics.Raycast(_virCamAxis.position, -_virCamAxis.forward, out hit, 4.5f, _ignoreMask))
         {
-            Vector3 targetPos = hit.point + _virCam.transform.forward * 0.3f;
+            Vector3 targetPos = hit.point + _virCam.transform.forward * 0.5f;
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, targetPos, 0.5f);
         }
         else
@@ -225,7 +236,8 @@ public class PlayerController : MonoBehaviour
     {
         // 아이템 연속 사용 코루틴
         // 아이템 사용간의 딜레이 적용
-        // 아이템.Use();
+        // 아래는 임시
+        _selectItem.Use(this.gameObject);
         yield return new WaitForSeconds(1f);
         _itemUseCoroutine = null;
     }
@@ -234,7 +246,7 @@ public class PlayerController : MonoBehaviour
     {
         // Gizmos를 사용하여 레이 표시
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, 2.5f);
+        Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
     }
 
     // 미사용. 하지만 혹시 몰라 남겨놓음
@@ -256,4 +268,30 @@ public class PlayerController : MonoBehaviour
     //    // 슬로우의 역순
     //    _speed = _speed / (1f - percentage / 100f);
     //}
+
+    private void Animation()
+    {
+        MoveAnim();
+        GrabAnim();
+        SwingAnim();
+    }
+
+    private void MoveAnim()
+    {
+        _animator.SetBool("IsWalking", _isMoving);
+    }
+
+    private void GrabAnim()
+    {
+        _animator.SetBool("IsGrabbing", _isGrabbing);
+    }
+
+    private void SwingAnim()
+    {
+        // 나중엔 _isGrabbing도 조건에 추가되도록 변경
+        if (Input.GetMouseButtonDown(0) && _isGrabbing)
+        {
+            _animator.SetTrigger("Swing");
+        }
+    }
 }

@@ -491,7 +491,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 948c7f0463a0b9146a37f5cf053f1f15, type: 2}
   - {fileID: 11400000, guid: 9531362353670304494a59c1ccff8990, type: 2}
   - {fileID: 11400000, guid: d0f7a0fcd9fa26a4ba161a461a2cc713, type: 2}
-  giveItemBtn: {fileID: 0}
+  _inventoryUIRootPanel: {fileID: 0}
 --- !u!222 &1777081185214404444
 CanvasRenderer:
   m_ObjectHideFlags: 0

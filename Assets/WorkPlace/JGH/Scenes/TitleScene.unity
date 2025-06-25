@@ -447,10 +447,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrentDay: 1
   OxygenRemaining: 100
-  Thirsty: 100
-  Hunger: 100
-  ElectricalEnergy: 100
-  IsToDay: 0
+  HasExploredToday: 0
+  Inventory: []
 --- !u!114 &700329540 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7637636267380271803, guid: 25e2e082d9b1f4a4da53ea14d820b401,

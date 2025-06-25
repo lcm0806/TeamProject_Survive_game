@@ -125,8 +125,6 @@ public class GameSystem : MonoBehaviour
         }
 
         GameObject mainMenu = MenuSystem.Instance.MainMenu;
-        GameObject settingMenu = MenuSystem.Instance.SettingMenu;
-        GameObject exitMenu = MenuSystem.Instance.ExitMenu;
 
         // 스택에 메뉴가 있는 경우
         if (activeMenuStack.Count > 0)

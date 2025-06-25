@@ -85,6 +85,9 @@ public class MenuSystem : MonoBehaviour
     void Start()
     {
         InitializeUI();
+        
+        // TODO: TEST
+        AudioSystem.Instance.PlayBGMByName("MainBGM");
     }
 
     void OnEnable()
@@ -470,9 +473,16 @@ public class MenuSystem : MonoBehaviour
     // 메뉴 버튼 이벤트
     public void OnMainStartButtonClick()
     {
+        // TODO: TEST
         if (AudioSystem.Instance != null) AudioSystem.Instance.StopBGM();
+        
+        
         if (SceneSystem.Instance != null) SceneSystem.Instance.LoadShelterScene();
+        
+        // TODO: TEST
         if (AudioSystem.Instance != null) AudioSystem.Instance.PlaySFXByName("MainSFX");
+        
+        
         MainMenu.SetActive(false);
     }
     

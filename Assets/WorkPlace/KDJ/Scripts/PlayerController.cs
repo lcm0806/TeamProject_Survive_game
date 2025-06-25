@@ -289,7 +289,7 @@ public class PlayerController : MonoBehaviour
     private void SwingAnim()
     {
         // 나중엔 _isGrabbing도 조건에 추가되도록 변경
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && _isGrabbing)
         {
             _animator.SetTrigger("Swing");
         }

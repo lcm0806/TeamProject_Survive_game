@@ -6,6 +6,8 @@ public class TestItem : MonoBehaviour, IInteractable
 {
     public void Interact()
     {
-        Debug.Log("TestItem Interacted!");
+        Debug.Log($"Interact with {gameObject.name}");
     }
+
+    // public void UseItem();
 }

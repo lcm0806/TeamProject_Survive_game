@@ -2,29 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 public class ShelterUI : MonoBehaviour
 {
     public GameObject[] ShelterMenu, Tabs;
     public Image[] TabButtons;
-    public Sprite InactiveTabBG, ActiveTabBG; // ÅÇ È°¼ºÈ­ ¹é±×¶ó¿îµå ÀÌ¹ÌÁö¿Í ºñÈ°¼ºÈ­ ¹é±×¶ó¿îµå ÀÌ¹ÌÁö
+    public Sprite InactiveTabBG, ActiveTabBG; // ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½×¶ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½×¶ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½
     
     
     public void ActiveUI(int ShelterMenuID)
     {
         ShelterMenu[ShelterMenuID].SetActive(true);
-        Debug.Log($"{ShelterMenuID.ToString()} UI È°¼ºÈ­");
+        Debug.Log($"{ShelterMenuID.ToString()} UI È°ï¿½ï¿½È­");
     }
     public void DeactiveUI(int ShelterMenuID)
     {
         ShelterMenu[ShelterMenuID].SetActive(false);
-        Debug.Log($"{ShelterMenuID.ToString()} UI ºñÈ°¼ºÈ­");
+        Debug.Log($"{ShelterMenuID.ToString()} UI ï¿½ï¿½È°ï¿½ï¿½È­");
     }
 
     public void ExitUI(GameObject go)
     {
         go.SetActive(false);
-        Debug.Log($"{go.name} ´ÝÀ½");
+        Debug.Log($"{go.name} ï¿½ï¿½ï¿½ï¿½");
     }
     
 

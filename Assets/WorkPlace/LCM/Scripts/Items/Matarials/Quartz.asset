@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f01cccb2c080ea45b4d365239347695, type: 3}
-  m_Name: Boots
+  m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
+  m_Name: Quartz
   m_EditorClassIdentifier: 
-  sprite: {fileID: 769413093, guid: 383aef37898fa624db3efdbee6c0df52, type: 3}
-  itemTag: 4
+  itemName: New Item
+  description: A basic item.
+  icon: {fileID: 0}
+  itemTag: 0
+  equipmentPrefab: {fileID: 0}

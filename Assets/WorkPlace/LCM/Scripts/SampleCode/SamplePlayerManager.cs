@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using DesignPattern;
 
-public class TestPlayerManager : Singleton<TestPlayerManager>
+public class SamplePlayerManager : Singleton<SamplePlayerManager>
 {
     public bool IsInIntercation = false;
+    public WorldItem InteractableItem { get; set; }
 
     private void Awake()
     {

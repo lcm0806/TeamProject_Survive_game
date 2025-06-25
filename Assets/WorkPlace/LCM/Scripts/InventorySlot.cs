@@ -15,15 +15,15 @@ public class InventorySlot : MonoBehaviour, IPointerClickHandler
     {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            if(Inventory.carriedItem == null) return;
-            if(myTag != SlotTag.None && Inventory.carriedItem.myItem.itemTag != myTag) return;
-            SetItem(Inventory.carriedItem);
+            if(Inventory.CarriedItem == null) return;
+            if(myTag != SlotTag.None && Inventory.CarriedItem.myItem.itemTag != myTag) return;
+            SetItem(Inventory.CarriedItem);
         }
     }
 
     public void SetItem(InventoryItem item)
     {
-        Inventory.carriedItem = null;
+        Inventory.CarriedItem = null;
 
         // Reset old slot
         item.activeSlot.myItem = null;

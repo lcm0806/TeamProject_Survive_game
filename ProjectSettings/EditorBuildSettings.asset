@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/WorkPlace/JGH/Scenes/SampleScene.unity
-    guid: 6bd5c169f68434beab002fce71d16f6a
+    path: Assets/WorkPlace/JGH/Scenes/TitleScene.unity
+    guid: b736266b6dce93545b24b226f24ad08c
+  - enabled: 1
+    path: Assets/WorkPlace/LHG/Scenes/DevShelterScene.unity
+    guid: 02d3e279795ed134e9a38b465ccda70f
+  - enabled: 1
+    path: Assets/WorkPlace/KDJ/Scenes/Test.unity
+    guid: 12807580f66a3a34dab78f7c8ca4e1fc
   m_configObjects: {}

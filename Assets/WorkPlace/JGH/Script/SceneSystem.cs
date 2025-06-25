@@ -62,6 +62,39 @@ public class SceneSystem : MonoBehaviour
     public void LoadShelterScene()
     {
         LoadScene(_shelterScene);
+        
+        
+        
+// 현재일 얻기(쉘터에서 day에 지정)
+Debug.Log(StatusSystem.Instance.GetCurrentDay());
+// 다음날로 이동(침대에서 자는 함수에 적용)
+SceneSystem.Instance.LoadDayTransitionScene();
+// 오늘 탐색했는지 여부(true: 탐색, false: 미 탐색)
+Debug.Log(StatusSystem.Instance.GetIsToDay());
+
+// 산소 +
+StatusSystem.Instance.SetPlusOxygen(1.0);
+// 산소 -
+StatusSystem.Instance.SetMinusOxygen(1.0);
+// 현재 산소 얻기
+Debug.Log(StatusSystem.Instance.GetOxygen());
+
+// 전력 +
+StatusSystem.Instance.SetPlusEnergy(1.0);
+// 전력 -
+StatusSystem.Instance.SetMinusEnergy(1.0);
+// 현재 전력 얻기
+Debug.Log(StatusSystem.Instance.GetEnergy());
+
+
+// 내구도 +
+StatusSystem.Instance.SetPlusDurability(1.0);
+// 내구도 -
+StatusSystem.Instance.SetMinusDurability(1.0);
+// 현재 내구도 얻기
+Debug.Log(StatusSystem.Instance.GetDurability());
+        
+        
     }
     
     /// <summary>

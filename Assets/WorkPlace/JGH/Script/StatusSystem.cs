@@ -26,11 +26,11 @@ public class StatusSystem : MonoBehaviour
         }
     }
     
-    private int CurrentDay = 1; // 현재 날짜 (1일부터 시작)
-    private double OxygenRemaining = 100f; // 남은 산소량 (100에서 시작)
-    private double ElectricalEnergy = 100f; // 전력 (100에서 시작)
-    private double ShelterDurability = 100f; // 쉘터 내구도 (100에서 시작)
-    private bool IsToDay= false; // 오늘 탐색했는지 여부
+    private int _currentDay = 1; // 현재 날짜 (1일부터 시작)
+    private double _oxygenRemaining = 100f; // 남은 산소량 (100에서 시작)
+    private double _electricalEnergy = 100f; // 전력 (100에서 시작)
+    private double _shelterDurability = 100f; // 쉘터 내구도 (100에서 시작)
+    private bool _isToDay= false; // 오늘 탐색했는지 여부
     
     void Awake()
     {
@@ -41,6 +41,13 @@ public class StatusSystem : MonoBehaviour
         }
         
         _instance = this;
+        
+        // 부모가 있다면 루트로 이동 (DontDestroyOnLoad를 위해)
+        if (transform.parent != null)
+        {
+            transform.SetParent(null);
+        }
+        
         DontDestroyOnLoad(gameObject);
     }
 
@@ -51,7 +58,7 @@ public class StatusSystem : MonoBehaviour
     /// <returns></returns>
     public double GetOxygen()
     {
-        return OxygenRemaining;
+        return _oxygenRemaining;
     }
 
     /// <summary>
@@ -60,7 +67,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public void SetPlusOxygen(double value)
     {
-        OxygenRemaining += value;
+        _oxygenRemaining += value;
     }
     
     /// <summary>
@@ -69,7 +76,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public void SetMinusOxygen(double value)
     {
-        OxygenRemaining -= value;
+        _oxygenRemaining -= value;
     }
     
     
@@ -79,7 +86,7 @@ public class StatusSystem : MonoBehaviour
     /// <returns></returns>
     public double GetEnergy()
     {
-        return ElectricalEnergy;
+        return _electricalEnergy;
     }
 
     /// <summary>
@@ -88,7 +95,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public void SetPlusEnergy(double value)
     {
-        ElectricalEnergy += value;
+        _electricalEnergy += value;
     }
     
     /// <summary>
@@ -97,7 +104,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public void SetMinusEnergy(double value)
     {
-        ElectricalEnergy -= value;
+        _electricalEnergy -= value;
     }
     
     
@@ -110,7 +117,7 @@ public class StatusSystem : MonoBehaviour
     /// <returns></returns>
     public double GetDurability()
     {
-        return ShelterDurability;
+        return _shelterDurability;
     }
 
     /// <summary>
@@ -119,7 +126,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public void SetPlusDurability(double value)
     {
-        ShelterDurability += value;
+        _shelterDurability += value;
     }
     
     /// <summary>
@@ -128,7 +135,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public void SetMinusDurability(double value)
     {
-        ShelterDurability -= value;
+        _shelterDurability -= value;
     }
     
     
@@ -140,7 +147,7 @@ public class StatusSystem : MonoBehaviour
     /// <returns></returns>
     public int GetCurrentDay()
     {
-        return CurrentDay;
+        return _currentDay;
     }
     
     /// <summary>
@@ -148,8 +155,8 @@ public class StatusSystem : MonoBehaviour
     /// </summary>
     public void NextCurrentDay()
     {
-        CurrentDay += 1;
-        IsToDay = false;
+        _currentDay += 1;
+        _isToDay = false;
     }
     
     
@@ -162,7 +169,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public bool GetIsToDay()
     {
-        return IsToDay;
+        return _isToDay;
     }
 
     /// <summary>
@@ -171,7 +178,7 @@ public class StatusSystem : MonoBehaviour
     /// <param name="value"></param>
     public void SetIsToDay(bool value)
     {
-        IsToDay = value;
+        _isToDay = value;
     }
     
     

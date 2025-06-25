@@ -9,12 +9,7 @@ public class ShelterUI : MonoBehaviour
     public Image[] TabButtons;
     public Sprite InactiveTabBG, ActiveTabBG; // 탭 활성화 백그라운드 이미지와 비활성화 백그라운드 이미지
     
-
     
-
-    
-
-
     public void ActiveUI(int ShelterMenuID)
     {
         ShelterMenu[ShelterMenuID].SetActive(true);
@@ -38,7 +33,6 @@ public class ShelterUI : MonoBehaviour
         foreach (GameObject go in Tabs)
         {
             go.SetActive(false);
-            
         }
         Tabs[TabID].SetActive(true);
         

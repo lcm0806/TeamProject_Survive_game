@@ -28,15 +28,6 @@ public class SceneSystem : MonoBehaviour
     [SerializeField] private Object _farmingScene;
     [SerializeField] private Object _dayTransitionScene;
     
-    // 메인 씬
-    public string TitleSceneName => _titleScene != null ? _titleScene.name : "";
-    // 쉘터 씬
-    public string ShelterSceneName => _shelterScene != null ? _shelterScene.name : "";
-    // 파밍 씬
-    public string FarmingSceneName => _farmingScene != null ? _farmingScene.name : "";
-    // 다음날 씬
-    public string DayTransitionSceneName => _dayTransitionScene != null ? _dayTransitionScene.name : "";
-    
     private void Awake()
     {
         // 싱글톤 중복 방지

@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     private WorldItem _worldItem;
     private Coroutine _itemUseCoroutine;
     private bool _canUseItem => _itemUseCoroutine == null;
+    private Animator _animator;
+    private bool _isMoving => _moveDir != Vector3.zero;
 
     private void Awake()
     {
@@ -34,6 +36,7 @@ public class PlayerController : MonoBehaviour
     {
         PlayerInput();
         HandlePlayer();
+        Animation();
     }
 
     // overlapsphere로 교체하기에 주석처리.
@@ -60,6 +63,15 @@ public class PlayerController : MonoBehaviour
     //         _interactableItem = null;
     //     }
     // }
+
+    private void Init()
+    {
+        // 테스트용 마우스 숨기기
+        _animator = GetComponentInChildren<Animator>();
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        _speed = _baseSpeed;
+    }
 
     private void FindInteractableItem()
     {
@@ -100,14 +112,6 @@ public class PlayerController : MonoBehaviour
                 PlayerManager.Instance.IsInIntercation = false;
             }
         }
-    }
-
-    private void Init()
-    {
-        // 테스트용 마우스 숨기기
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-        _speed = _baseSpeed;
     }
 
     private void HandlePlayer()
@@ -255,4 +259,14 @@ public class PlayerController : MonoBehaviour
     //    // 슬로우의 역순
     //    _speed = _speed / (1f - percentage / 100f);
     //}
+
+    private void Animation()
+    {
+        MoveAnim();
+    }
+
+    private void MoveAnim()
+    {
+        _animator.SetBool("IsWalking", _isMoving);
+    }
 }

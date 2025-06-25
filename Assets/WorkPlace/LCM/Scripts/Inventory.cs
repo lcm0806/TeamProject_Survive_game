@@ -15,7 +15,7 @@ public class Inventory : Singleton<Inventory>
     // 0=Head, 1=Chest, 2=Legs, 3=Feet
     [SerializeField] InventorySlot[] equipmentSlots;
 
-    [SerializeField] Transform draggablesTransform;
+    public Transform draggablesTransform;
     [SerializeField] InventoryItem itemPrefab;
 
     [Header("Item List")]
@@ -24,9 +24,18 @@ public class Inventory : Singleton<Inventory>
     //[Header("Debug")]
     //[SerializeField] Button giveItemBtn;
 
-    // --- 새로 추가된 UI 관련 필드 ---
     [Header("UI Management")]
     [SerializeField] private GameObject _inventoryUIRootPanel; // 인벤토리 UI의 최상위 GameObject (Panel 등)
+
+    [Header("Hotbar Management")]
+    [SerializeField] private int _currentHotbarSlotIndex = 0; // 현재 선택된 핫바 슬롯 인덱스 (기본값 0)
+
+    [Header("Item Dropping")]
+    [SerializeField] private float _dropDistance = 1.5f; // 플레이어로부터 아이템이 떨어질 거리
+    [SerializeField] private LayerMask _groundLayer; // 바닥 레이어
+
+    // 핫바 슬롯 변경을 외부에 알리는 이벤트 (UI 업데이트 등에 사용)
+    public event Action<int> OnHotbarSlotChanged;
 
 
     void Awake()
@@ -42,6 +51,9 @@ public class Inventory : Singleton<Inventory>
         {
             Debug.LogWarning("Inventory: Inventory UI Root Panel이 할당되지 않았습니다. UI 토글이 작동하지 않을 수 있습니다.");
         }
+
+        // 초기 핫바 슬롯 선택을 알림
+        OnHotbarSlotChanged?.Invoke(_currentHotbarSlotIndex);
     }
 
     void Update()
@@ -49,6 +61,30 @@ public class Inventory : Singleton<Inventory>
         if(CarriedItem == null) return;
 
         CarriedItem.transform.position = Input.mousePosition;
+    }
+
+    public void SelectHotbarSlot(int index)
+    {
+        if (index >= 0 && index < hotbarSlots.Length)
+        {
+            _currentHotbarSlotIndex = index;
+            // 핫바 선택이 변경되었음을 외부에 알립니다.
+            OnHotbarSlotChanged?.Invoke(_currentHotbarSlotIndex);
+            Debug.Log($"핫바 슬롯 {index + 1}번이 선택되었습니다.");
+        }
+        else
+        {
+            Debug.LogWarning($"유효하지 않은 핫바 슬롯 인덱스: {index}. 핫바 슬롯 범위는 0에서 {hotbarSlots.Length - 1}입니다.");
+        }
+    }
+
+    public Item GetCurrentHotbarItem()
+    {
+        if (_currentHotbarSlotIndex >= 0 && _currentHotbarSlotIndex < hotbarSlots.Length)
+        {
+            return hotbarSlots[_currentHotbarSlotIndex].myItemData;
+        }
+        return null;
     }
 
     public void ToggleInventoryUI()
@@ -65,38 +101,11 @@ public class Inventory : Singleton<Inventory>
             item.activeSlot.SetItem(CarriedItem);
         }
 
-        if(item.activeSlot.myTag != SlotTag.None)
-        { EquipEquipment(item.activeSlot.myTag, null); }
-
         CarriedItem = item;
         CarriedItem.canvasGroup.blocksRaycasts = false;
         item.transform.SetParent(draggablesTransform);
     }
 
-    public void EquipEquipment(SlotTag tag, InventoryItem item = null)
-    {
-        switch (tag)
-        {
-            case SlotTag.Head:
-                if(item == null)
-                {
-                    // Destroy item.equipmentPrefab on the Player Object;
-                    Debug.Log("Unequipped helmet on " + tag);
-                }
-                else
-                {
-                    // Instantiate item.equipmentPrefab on the Player Object;
-                    Debug.Log("Equipped " + item.myItem.name + " on " + tag);
-                }
-                break;
-            case SlotTag.Chest:
-                break;
-            case SlotTag.Legs:
-                break;
-            case SlotTag.Feet:
-                break;
-        }
-    }
 
     public void SpawnInventoryItem(Item item = null)
     {
@@ -108,7 +117,7 @@ public class Inventory : Singleton<Inventory>
         for (int i = 0; i < inventorySlots.Length; i++)
         {
             // Check if the slot is empty
-            if (inventorySlots[i].myItem == null)
+            if (inventorySlots[i].myItemUI == null)
             {
                 Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i]);
                 break;
@@ -117,10 +126,57 @@ public class Inventory : Singleton<Inventory>
 
 
     }
+    public void DropItemFromSlot(InventoryItem itemToDropUI)
+    {
+        if (itemToDropUI == null || itemToDropUI.myItem == null)
+        {
+            Debug.LogWarning("유효하지 않은 아이템을 버리려고 시도했습니다.");
+            CarriedItem = null; // 혹시 모를 상황 대비
+            return;
+        }
 
-        //Item PickRandomItem()
-        //{
-        //    int random = Random.Range(0, items.Length);
-        //    return items[random];
-        //}
+        GameObject itemWorldPrefab = itemToDropUI.myItem.WorldPrefab;
+        if (itemWorldPrefab == null)
+        {
+            Debug.LogWarning($"아이템 '{itemToDropUI.myItem.itemName}'에 연결된 3D 월드 프리팹이 없습니다. 버릴 수 없습니다.", itemToDropUI.myItem);
+            // 아이템 프리팹이 없어도 인벤토리에서는 지워야 하므로 아래 ClearSlot() 로직은 진행합니다.
+        }
+        else
+        {
+            // 1. 아이템이 떨어질 위치를 계산 (플레이어 전방)
+            Transform playerTransform = SamplePlayerManager.Instance.Player.transform; // PlayerController의 transform
+            Vector3 dropPosition = playerTransform.position + playerTransform.forward * _dropDistance;
+            dropPosition.y += 0.5f;
+
+            RaycastHit hit;
+            if (Physics.Raycast(dropPosition + Vector3.up * 10f, Vector3.down, out hit, 20f, _groundLayer))
+            {
+                dropPosition.y = hit.point.y + 0.1f;
+            }
+
+            // 2. 3D 게임 오브젝트를 월드에 인스턴스화
+            Instantiate(itemWorldPrefab, dropPosition, Quaternion.identity);
+        }
+
+        // 3. 인벤토리 슬롯에서 아이템을 제거하고 UI 인스턴스 파괴
+        if (itemToDropUI.activeSlot != null)
+        {
+            itemToDropUI.activeSlot.ClearSlot(); // 해당 슬롯을 비움 (데이터 및 UI 참조 제거)
+            Debug.Log($"아이템 '{itemToDropUI.myItem.itemName}'이(가) 슬롯에서 버려졌습니다.");
+        }
+        else
+        {
+            // 슬롯에 할당되지 않은 아이템(예: 드래그 도중 생성된 아이템이 버려진 경우)
+            Destroy(itemToDropUI.gameObject);
+        }
+
+        // CarriedItem을 비웁니다.
+        CarriedItem = null;
+    }
+
+    //Item PickRandomItem()
+    //{
+    //    int random = Random.Range(0, items.Length);
+    //    return items[random];
+    //}
 }

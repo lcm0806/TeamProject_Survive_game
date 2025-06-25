@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,11 +23,11 @@ public class SceneSystem : MonoBehaviour
         }
     }
     
-    [Header("Scene Settings")]
-    [SerializeField] private Object _titleScene;
-    [SerializeField] private Object _shelterScene;
-    [SerializeField] private Object _farmingScene;
-    [SerializeField] private Object _dayTransitionScene;
+    [Header("Scene Names - 빌드 설정에서 추가된 씬 이름들")]
+    [SerializeField] private string _titleSceneName = "TitleScene";
+    [SerializeField] private string _shelterSceneName = "DevShelterScene";
+    [SerializeField] private string _farmingSceneName = "Test";
+    [SerializeField] private string _dayTransitionSceneName = "DevShelterScene";
     
     private void Awake()
     {
@@ -53,7 +54,8 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadTitleScene()
     {
-        LoadScene(_titleScene);
+        // LoadScene(_titleScene);
+        LoadSceneWithDelay(_titleSceneName);
     }
     
     /// <summary>
@@ -61,7 +63,8 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadShelterScene()
     {
-        LoadScene(_shelterScene);
+        // LoadScene(_shelterScene);
+        LoadSceneWithDelay(_shelterSceneName);
     }
     
     /// <summary>
@@ -69,7 +72,10 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadFarmingScene()
     {
-        LoadScene(_farmingScene);
+        // LoadScene(_farmingScene);
+        LoadSceneWithDelay(_farmingSceneName);
+        // 탐색 여부
+        StatusSystem.Instance.SetIsToDay(true);
     }
     
     /// <summary>
@@ -77,7 +83,21 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadDayTransitionScene()
     {
-        LoadScene(_dayTransitionScene);
+        // LoadScene(_dayTransitionScene);
+        LoadSceneWithDelay(_dayTransitionSceneName);
+        // 날짜 + 1
+        StatusSystem.Instance.NextCurrentDay();
+        // 탐색 여부
+        StatusSystem.Instance.SetIsToDay(false);
+    }
+    
+    /// <summary>
+    /// 씬 이름으로 직접 로드 (딜레이 포함)
+    /// </summary>
+    /// <param name="sceneName">로드할 씬 이름</param>
+    public void LoadSceneWithDelay(string sceneName)
+    {
+        StartCoroutine(LoadSceneCoroutine(sceneName));
     }
     
     /// <summary>
@@ -92,8 +112,25 @@ public class SceneSystem : MonoBehaviour
             return;
         }
         
-        Debug.Log($"Loading scene: {sceneName}");
-        SceneManager.LoadScene(sceneName);
+        // 씬이 빌드 설정에 포함되어 있는지 확인
+        if (Application.CanStreamedLevelBeLoaded(sceneName))
+        {
+            Debug.Log($"Loading scene: {sceneName}");
+            SceneManager.LoadScene(sceneName);
+        }
+        else
+        {
+            Debug.LogError($"Scene '{sceneName}' is not in build settings or doesn't exist!");
+            
+            // 빌드 설정의 모든 씬 출력
+            Debug.Log("Build Settings에 포함된 씬들:");
+            for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+            {
+                string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+                string sceneNameInBuild = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+                Debug.Log($"  [{i}] {sceneNameInBuild}");
+            }
+        }
     }
     
     /// <summary>
@@ -109,5 +146,29 @@ public class SceneSystem : MonoBehaviour
         }
         
         LoadScene(sceneObject.name);
+    }
+    
+    /// <summary>
+    /// 씬 로드 코루틴 (약간의 딜레이 추가)
+    /// </summary>
+    /// <param name="sceneName"></param>
+    /// <returns></returns>
+    private IEnumerator LoadSceneCoroutine(string sceneName)
+    {
+        Debug.Log($"씬 로드 준비: {sceneName}");
+        
+        // 짧은 딜레이 (UI 업데이트 등을 위해)
+        yield return new WaitForSeconds(0.1f);
+        
+        LoadScene(sceneName);
+    }
+    
+    /// <summary>
+    /// 현재 씬 이름 가져오기
+    /// </summary>
+    /// <returns></returns>
+    public string GetCurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
     }
 }

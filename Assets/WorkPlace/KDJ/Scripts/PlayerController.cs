@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
     private bool _canUseItem => _itemUseCoroutine == null;
     private Animator _animator;
     private bool _isMoving => _moveDir != Vector3.zero;
+    // private bool _isGrabbing => _selectItem != null;
+    // 아래는 테스트 코드
+    private bool _isGrabbing = false;
 
     private void Awake()
     {
@@ -165,6 +168,12 @@ public class PlayerController : MonoBehaviour
             // 소비 아이템의 경우 꾹 눌렀을때 사용되도록 설정해달라고 요청받음
             // 해당 부분 구현 필요
         }
+
+        // 테스트 코드
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            _isGrabbing = !_isGrabbing; // Grab 상태 토글
+        }
     }
 
     private void Jump()
@@ -263,10 +272,26 @@ public class PlayerController : MonoBehaviour
     private void Animation()
     {
         MoveAnim();
+        GrabAnim();
+        SwingAnim();
     }
 
     private void MoveAnim()
     {
         _animator.SetBool("IsWalking", _isMoving);
+    }
+
+    private void GrabAnim()
+    {
+        _animator.SetBool("IsGrabbing", _isGrabbing);
+    }
+
+    private void SwingAnim()
+    {
+        // 나중엔 _isGrabbing도 조건에 추가되도록 변경
+        if (Input.GetMouseButtonDown(0))
+        {
+            _animator.SetTrigger("Swing");
+        }
     }
 }

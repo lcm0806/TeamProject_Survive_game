@@ -34,6 +34,7 @@ public class Inventory : Singleton<Inventory>
     [Header("Item Dropping")]
     [SerializeField] private float _dropDistance = 1.5f; // 플레이어로부터 아이템이 떨어질 거리
     [SerializeField] private LayerMask _groundLayer; // 바닥 레이어
+    [SerializeField] private float _scatterForce = 2f;
 
     // 핫바 슬롯 변경을 외부에 알리는 이벤트 (UI 업데이트 등에 사용)
     public event Action<int> OnHotbarSlotChanged;
@@ -132,51 +133,6 @@ public class Inventory : Singleton<Inventory>
                     return; // 아이템 추가 완료
                 }
             }
-            // 핫바 슬롯 먼저 확인
-            //foreach (var slot in hotbarSlots)
-            //{
-            //    if (slot.myItemData != null) // 슬롯에 아이템이 있을 때만 비교
-            //    {
-            //        Debug.Log($"  [Hotbar Check] Slot: {slot.name}, Existing Item: {slot.myItemData.name} (ID: {slot.myItemData.GetInstanceID()})");
-            //        Debug.Log($"  [Hotbar Check] Incoming Item: {item.name} (ID: {item.GetInstanceID()})");
-            //        Debug.Log($"  [Hotbar Check] Are they same instance? {slot.myItemData == item}"); // <-- 이 결과가 True인지 False인지 확인!
-            //        Debug.Log($"  [Hotbar Check] Current Qty: {slot.myItemUI.CurrentQuantity}, Max Stack: {item.maxStackSize}");
-            //    }
-            //    else
-            //    {
-            //        Debug.Log($"  [Hotbar Check] Slot: {slot.name} is empty.");
-            //    }
-
-            //    if (slot.myItemData == item && slot.myItemUI.CurrentQuantity < item.maxStackSize)
-            //    {
-            //        slot.myItemUI.CurrentQuantity++; // 수량 증가
-            //        Debug.Log($"핫바에 '{item.itemName}' 수량 증가: {slot.myItemUI.CurrentQuantity}");
-            //        return; // 아이템 추가 완료
-            //    }
-            //}
-
-            //// 인벤토리 슬롯 확인
-            //foreach (var slot in inventorySlots)
-            //{
-            //    if (slot.myItemData != null) // 슬롯에 아이템이 있을 때만 비교
-            //    {
-            //        Debug.Log($"  [Inventory Check] Slot: {slot.name}, Existing Item: {slot.myItemData.name} (ID: {slot.myItemData.GetInstanceID()})");
-            //        Debug.Log($"  [Inventory Check] Incoming Item: {item.name} (ID: {item.GetInstanceID()})");
-            //        Debug.Log($"  [Inventory Check] Are they same instance? {slot.myItemData == item}"); // <-- 이 결과가 True인지 False인지 확인!
-            //        Debug.Log($"  [Inventory Check] Current Qty: {slot.myItemUI.CurrentQuantity}, Max Stack: {item.maxStackSize}");
-            //    }
-            //    else
-            //    {
-            //        Debug.Log($"  [Inventory Check] Slot: {slot.name} is empty.");
-            //    }
-
-            //    if (slot.myItemData == item && slot.myItemUI.CurrentQuantity < item.maxStackSize)
-            //    {
-            //        slot.myItemUI.CurrentQuantity++; // 수량 증가
-            //        Debug.Log($"인벤토리에 '{item.itemName}' 수량 증가: {slot.myItemUI.CurrentQuantity}");
-            //        return; // 아이템 추가 완료
-            //    }
-            //}
         }
 
         // 스택할 수 없거나, 스택 가능한 아이템이지만 모든 기존 슬롯이 꽉 찼을 경우
@@ -213,8 +169,13 @@ public class Inventory : Singleton<Inventory>
         }
         else
         {
+            //드롭할 아이템의 수량
+            int quantityToDrop = itemToDropUI.CurrentQuantity;
+            Item droppedItemData = itemToDropUI.myItem;
+
             //아이템이 떨어질 위치를 계산 (플레이어 전방)
             Transform playerTransform = SamplePlayerManager.Instance.Player.transform; // PlayerController의 transform
+            Vector3 playerForward = playerTransform.forward;
             Vector3 dropPosition = playerTransform.position + playerTransform.forward * _dropDistance;
             dropPosition.y += 0.5f;
 
@@ -224,8 +185,49 @@ public class Inventory : Singleton<Inventory>
                 dropPosition.y = hit.point.y + 0.1f;
             }
 
-            //3D 게임 오브젝트를 월드에 인스턴스화
-            Instantiate(itemWorldPrefab, dropPosition, Quaternion.identity);
+            // 수량만큼 월드 아이템 개별 생성
+            for (int i = 0; i < quantityToDrop; i++)
+            {
+                // 아이템이 떨어질 위치를 조금씩 다르게 하여 겹치지 않게 함
+                Vector3 scatteredPosition = dropPosition;
+                // 랜덤한 수평 방향으로 살짝 퍼지게 함
+                scatteredPosition.x += UnityEngine.Random.Range(-0.5f, 0.5f);
+                scatteredPosition.z += UnityEngine.Random.Range(-0.5f, 0.5f);
+                scatteredPosition.y += UnityEngine.Random.Range(0f, 0.2f); // 높이도 살짝 다르게
+
+                GameObject worldItemGO = Instantiate(itemWorldPrefab, scatteredPosition, Quaternion.identity);
+                WorldItem worldItemScript = worldItemGO.GetComponent<WorldItem>();
+
+                if (worldItemScript != null)
+                {
+                    // WorldItem의 Initialize 메서드를 호출하여 아이템 데이터만 전달 (수량은 1개로 가정)
+                    worldItemScript.Initialize(droppedItemData);
+
+                    // Rigidbody가 있다면 힘을 가해서 좀 더 자연스럽게 퍼지게 할 수 있음
+                    Rigidbody rb = worldItemGO.GetComponent<Rigidbody>();
+                    if (rb != null)
+                    {
+                        Vector3 randomDirection = new Vector3(UnityEngine.Random.Range(-1f, 1f), UnityEngine.Random.Range(0.5f, 1f), UnityEngine.Random.Range(-1f, 1f)).normalized;
+                        rb.AddForce(randomDirection * _scatterForce, ForceMode.Impulse);
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"드롭된 월드 프리팹 '{itemWorldPrefab.name}'에 WorldItem 스크립트가 없습니다!");
+                }
+            }
+            // 인벤토리 슬롯에서 아이템을 제거하고 UI 인스턴스 파괴
+            if (itemToDropUI.activeSlot != null)
+            {
+                itemToDropUI.activeSlot.ClearSlot(); // 해당 슬롯을 비움 (데이터 및 UI 참조 제거)
+                Debug.Log($"아이템 '{itemToDropUI.myItem.itemName}' {quantityToDrop}개 모두 슬롯에서 버려졌습니다.");
+            }
+            else
+            {
+                Destroy(itemToDropUI.gameObject);
+            }
+
+            CarriedItem = null;
         }
 
         //인벤토리 슬롯에서 아이템을 제거하고 UI 인스턴스 파괴

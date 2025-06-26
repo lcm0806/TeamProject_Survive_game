@@ -155,6 +155,11 @@ public class PlayerController : MonoBehaviour
             PlayerManager.Instance.InteractableItem.Interact();
         }
 
+        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' 키를 눌렀을 때
+        {
+            SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
+        }
+
         // 아이템을 마우스 좌클릭 하면 사용. 누르고 있는동안 주기적으로 계속 사용
         if (Input.GetMouseButton(0) && _selectItem != null)
         {

@@ -55,13 +55,24 @@ public class MineableResource : MonoBehaviour
     {
         if (lootPrefab == null) return;
 
-        Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
+        Vector3 spawnPos = transform.position + Vector3.up * 1.5f;
         GameObject loot = Instantiate(lootPrefab, spawnPos, Quaternion.identity);
 
-        if (loot.TryGetComponent<Rigidbody>(out var rb))
+        if (loot != null)
         {
-            Vector3 dir = (Random.insideUnitSphere + Vector3.up).normalized;
-            rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
+            // 보급상자와 충돌 무시
+            Collider myCol = GetComponent<Collider>();
+            Collider lootCol = loot.GetComponent<Collider>();
+            if (myCol != null && lootCol != null)
+            {
+                Physics.IgnoreCollision(myCol, lootCol);
+            }
+
+            if (loot.TryGetComponent<Rigidbody>(out var rb))
+            {
+                Vector3 dir = (Vector3.up + Random.insideUnitSphere * 0.3f).normalized;
+                rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
+            }
         }
     }
 

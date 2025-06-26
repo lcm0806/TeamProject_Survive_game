@@ -17,7 +17,7 @@ public class Recipe : ScriptableObject
     public class CraftingMaterial
     {
         public Item materialItem;
-        public int requiredAmount;
+        public int quantity;
     }
 }
 

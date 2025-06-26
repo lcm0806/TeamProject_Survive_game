@@ -72,8 +72,6 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         transform.SetParent(parent.transform); // 초기 부모 설정
         transform.localPosition = Vector3.zero; //위치 초기화
 
-        Debug.Log($"[InventoryItem.Initialize SUCCESS] Slot: {parent.name}, Data: {parent.myItemData?.name ?? "NULL"}, UI: {parent.myItemUI?.name ?? "NULL"}");
-        Debug.Log($"[InventoryItem.Initialize SUCCESS] Current Quantity: {CurrentQuantity}");
     }
 
     //public void OnPointerClick(PointerEventData eventData)

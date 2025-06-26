@@ -1372,6 +1372,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Title
       objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_text
+      value: Dangerous Mars
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.w
+      value: -11.9778385
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.x
+      value: -192.80275
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.y
+      value: -11.854528
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.z
+      value: -193.76624
+      objectReference: {fileID: 0}
     - target: {fileID: 2134712474467009955, guid: f26923c3529f9401181b8409823a3f41,
         type: 3}
       propertyPath: m_AnchoredPosition.y

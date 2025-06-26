@@ -37,14 +37,18 @@ public class MenuSystem : MonoBehaviour
     private Button _exitOkButton;
     private Button _exitBackButton;
 
-    private bool isSaveMode = false;
-    private int selectedSlotIndex = -1;
+    private bool _isSaveMode = false;
+    private int _selectedSlotIndex = -1;
 
     private TextMeshProUGUI _menuTitleText;
 
     // ESC 입력 씬별 활성화
-    private bool escActive = true;
-    private bool isInitialized = false;
+    private bool _escActive = true;
+    private bool _isInitialized = false;
+
+    private string _gameName = "Dangerous Mars";
+    
+    
 
     private enum ConfirmType
     {
@@ -102,8 +106,8 @@ public class MenuSystem : MonoBehaviour
 
     void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
     {
-        escActive = false;
-        isInitialized = false;
+        _escActive = false;
+        _isInitialized = false;
         StartCoroutine(ReinitializeUIAfterSceneLoad());
     }
     
@@ -115,8 +119,8 @@ public class MenuSystem : MonoBehaviour
         InitializeUI();
         ConfigureMenuForCurrentScene();
         
-        escActive = true; // ESC 활성화
-        isInitialized = true;
+        _escActive = true; // ESC 활성화
+        _isInitialized = true;
         
         Debug.Log($"MenuSystem 초기화 완료 - 씬: {GetCurrentSceneName()}");
     }
@@ -124,7 +128,7 @@ public class MenuSystem : MonoBehaviour
     void Update()
     {
         // ESC 키 처리를 더 안전하게
-        if (escActive && isInitialized && Input.GetKeyDown(KeyCode.Escape))
+        if (_escActive && _isInitialized && Input.GetKeyDown(KeyCode.Escape))
         {
             string currentScene = GetCurrentSceneName();
             if (!IsTitleScene(currentScene))
@@ -248,7 +252,7 @@ public class MenuSystem : MonoBehaviour
         {
             _menuTitleText = t.GetComponent<TextMeshProUGUI>();
             if (_menuTitleText != null)
-                _menuTitleText.text = isTitle ? "LOGO" : "일시정지";
+                _menuTitleText.text = isTitle ? _gameName : "일시정지";
         }
         
         // 버튼 활성화/비활성화
@@ -408,13 +412,13 @@ public class MenuSystem : MonoBehaviour
             {
                 SettingMenu.SetActive(false);
                 MainMenu.SetActive(true);
-                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? "LOGO" : "일시정지");
+                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? _gameName : "일시정지");
             });
             _settingOkButton?.onClick.AddListener(() =>
             {
                 SettingMenu.SetActive(false);
                 MainMenu.SetActive(true);
-                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? "LOGO" : "일시정지");
+                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? _gameName : "일시정지");
             });
         }
     }
@@ -429,7 +433,7 @@ public class MenuSystem : MonoBehaviour
             {
                 ExitMenu.SetActive(false);
                 MainMenu.SetActive(true);
-                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? "LOGO" : "일시정지");
+                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? _gameName : "일시정지");
             });
             _exitOkButton?.onClick.AddListener(Application.Quit);
         }
@@ -494,7 +498,7 @@ public class MenuSystem : MonoBehaviour
             ShowAlert("게임을 시작한 후에 저장이 가능합니다.");
             return;
         }
-        isSaveMode = true;
+        _isSaveMode = true;
         MainMenu.SetActive(false);
         SlotPanel.SetActive(true);
         SetMenuTitle("게임 저장하기"); // 수정: 타이틀 변경
@@ -504,7 +508,7 @@ public class MenuSystem : MonoBehaviour
     
     private void OnMainLoadButtonClick()
     {
-        isSaveMode = false;
+        _isSaveMode = false;
         MainMenu.SetActive(false);
         SlotPanel.SetActive(true);
         SetMenuTitle("게임 불러오기"); // 수정: 타이틀 변경
@@ -527,8 +531,8 @@ public class MenuSystem : MonoBehaviour
     // 슬롯 클릭
     private void OnSlotClicked(int slotIndex)
     {
-        selectedSlotIndex = slotIndex;
-        if (isSaveMode) HandleSaveSlot(slotIndex);
+        _selectedSlotIndex = slotIndex;
+        if (_isSaveMode) HandleSaveSlot(slotIndex);
         else HandleLoadSlot(slotIndex);
     }
     
@@ -571,7 +575,7 @@ public class MenuSystem : MonoBehaviour
         if (!infos[idx].isEmpty)
         {
             slotIndexToDelete = idx;
-            selectedSlotIndex = idx;
+            _selectedSlotIndex = idx;
             currentConfirmType = ConfirmType.DeleteSlot;
             ShowConfirm($"슬롯 {idx + 1}의 저장 데이터를 삭제하시겠습니까?\n\n{infos[idx].saveName}");
         }
@@ -645,7 +649,7 @@ public class MenuSystem : MonoBehaviour
             if (info.isEmpty)
             {
                 _slotTexts[i].text = $"슬롯 {i + 1}\n비어있음";
-                _slotButtons[i].interactable = isSaveMode;
+                _slotButtons[i].interactable = _isSaveMode;
             }
             else
             {
@@ -686,8 +690,8 @@ public class MenuSystem : MonoBehaviour
         MainMenu.SetActive(true);
         // 현재 씬이 타이틀이 아니면 일시정지, 타이틀이면 LOGO로 설정
         string currentScene = GetCurrentSceneName();
-        SetMenuTitle(IsTitleScene(currentScene) ? "LOGO" : "일시정지");
-        Debug.Log($"메인메뉴로 돌아감 - 씬: {currentScene}, 타이틀: {(IsTitleScene(currentScene) ? "LOGO" : "일시정지")}");
+        SetMenuTitle(IsTitleScene(currentScene) ? _gameName : "일시정지");
+        Debug.Log($"메인메뉴로 돌아감 - 씬: {currentScene}, 타이틀: {(IsTitleScene(currentScene) ? _gameName : "일시정지")}");
     }
     
     // 컨펌/알림
@@ -720,7 +724,7 @@ public class MenuSystem : MonoBehaviour
     private void OnConfirmYes()
     {
         ConfirmType typeToProcess = currentConfirmType;
-        int slotToProcess = selectedSlotIndex;
+        int slotToProcess = _selectedSlotIndex;
         int slotToDelete = slotIndexToDelete;
         
         HideConfirmDialog();
@@ -750,14 +754,14 @@ public class MenuSystem : MonoBehaviour
                 // 아무것도 하지 않음
                 break;
         }
-        selectedSlotIndex = -1;
+        _selectedSlotIndex = -1;
     }
     
     private void OnConfirmNo()
     {
         HideConfirmDialog();
         slotIndexToDelete = -1;
-        selectedSlotIndex = -1;
+        _selectedSlotIndex = -1;
     }
     
     private string GetCurrentSceneName()

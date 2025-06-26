@@ -8,11 +8,11 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public bool IsInIntercation = false;
     public WorldItem InteractableItem { get; set; }
+    public Structure InteractableStructure { get; set; }
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
     public PlayerController Player { get; private set; }
-    //테스트용 인벤토리
-
+    public float InteractDelay { get; set; }
     public bool IsInAirChamber { get; set; } = false;
 
     private void Awake()

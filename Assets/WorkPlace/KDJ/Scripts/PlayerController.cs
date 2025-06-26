@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region 직렬화 변수
     [SerializeField] private CharacterController _controller;
     [SerializeField] private CinemachineVirtualCamera _virCam;
     [SerializeField] private Transform _virCamAxis;
@@ -12,7 +13,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
     [SerializeField] private float _speed;
     [SerializeField] private float _baseSpeed = 5f;
+    #endregion
 
+    #region 변수
     private Vector3 _verVelocity;
     private Vector3 _moveDir;
     private Vector2 _mouseInput;
@@ -23,12 +26,15 @@ public class PlayerController : MonoBehaviour
     private Item _selectItem;
     private WorldItem _worldItem;
     private Coroutine _itemUseCoroutine;
+    private Coroutine _interactCoroutine;
+    private float _interactionDelay;
     private bool _canUseItem => _itemUseCoroutine == null;
     private Animator _animator;
     private bool _isMoving => _moveDir != Vector3.zero;
     // private bool _isGrabbing => _selectItem != null;
     // 아래는 테스트 코드
     private bool _isGrabbing = false;
+    #endregion
 
     private void Awake()
     {
@@ -42,31 +48,6 @@ public class PlayerController : MonoBehaviour
         Animation();
     }
 
-    // overlapsphere로 교체하기에 주석처리.
-    // 현재 인터렉션 방식은 한곳에 하나의 오브젝트만 있다는 걸 전제로 제작됨
-    // 무조건 처음 접근한 오브젝트만 인터렉션이 가능하도록 제작
-    // 여러 오브젝트가 있을 경우, 지금 방식이 아닌 다른 방식으로 코드를 작성하여야 함
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
-    //     {
-    //         _interactableItem = interact as TestItem;
-    //         TestPlayerManager.Instance.IsInIntercation = true;
-    //         // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
-    //         // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
-    //         // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
-    //     }
-    // }
-    // 
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact))
-    //     {
-    //         TestPlayerManager.Instance.IsInIntercation = false;
-    //         _interactableItem = null;
-    //     }
-    // }
-
     private void Init()
     {
         // 테스트용 마우스 숨기기
@@ -76,10 +57,11 @@ public class PlayerController : MonoBehaviour
         _speed = _baseSpeed;
     }
 
-    private void FindInteractableItem()
+    #region 상호작용 : 플레이어에 가장 가까운 물체
+    private void FindCloseInteractableItemFromPlayer()
     {
         // 트리거를 사용하지 않고 overlapsphere를 사용하여 주변의 인터렉션 가능한 오브젝트 감지
-        // 가장 가까이 있는 오브젝트를 _interactableItem로 설정
+        // 플레이어로부터 가장 가까이 있는 오브젝트를 _interactableItem로 설정
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
         if (collsCount > 0)
@@ -98,24 +80,84 @@ public class PlayerController : MonoBehaviour
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 //_interactableItem = interactable as TestItem;
-                PlayerManager.Instance.InteractableItem = interactable as WorldItem;
-                PlayerManager.Instance.IsInIntercation = true;
                 // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
                 // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
                 // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
+                if (interactable as WorldItem)
+                {
+                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+                else if (interactable as Structure)
+                {
+                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
             }
         }
         else
         {
-            // 주변에 인터렉션 가능한 오브젝트가 없으면 _interactableItem을 null로 설정
-            if (PlayerManager.Instance.InteractableItem != null)
-            {
-                //_interactableItem = null;
-                PlayerManager.Instance.InteractableItem = null;
-                PlayerManager.Instance.IsInIntercation = false;
-            }
+            // 주변에 인터렉션 가능한 오브젝트가 없으면 상호작용을 null로 설정
+            PlayerManager.Instance.InteractableStructure = null;
+            PlayerManager.Instance.InteractableItem = null;
+            PlayerManager.Instance.IsInIntercation = false;
         }
     }
+    #endregion
+
+    #region 상호작용 : 화면 중앙에 가장 가까운 물체
+    private void FindCloseInteractableItemFromRay()
+    {
+        // 트리거를 사용하지 않고 overlapsphere를 사용하여 주변의 인터렉션 가능한 오브젝트 감지
+        // 스크린 중앙 기준 가장 가까이 있는 오브젝트를 _interactableItem로 설정
+        // 레이캐스트로 중앙을 감지하고 감지된 hit 기준 거리 계산
+        Collider closestColl = null;
+        int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
+        // 레이캐스트로 중앙을 감지하고 감지된 hit 기준 거리 계산
+        
+        if (collsCount > 0)
+        {
+            for (int i = 0; i < collsCount; i++)
+            {
+                // 화면 중앙에서 오브젝트의 거리 측정
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+                RaycastHit hit;
+                bool isHit = Physics.Raycast(ray, out hit, 10f);
+                float distance = Vector3.Distance(hit.point, _colls[i].transform.position);
+                // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
+                if (closestColl == null || distance < Vector3.Distance(hit.point, closestColl.transform.position))
+                {
+                    closestColl = _colls[i];
+                }
+            }
+            // 끝나면 closestColl의 내용을 _interactableItem에 할당
+            if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                //_interactableItem = interactable as TestItem;
+                // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
+                // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
+                // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
+                if (interactable as WorldItem)
+                {
+                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+                else if (interactable as Structure)
+                {
+                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+            }
+        }
+        else
+        {
+            // 주변에 인터렉션 가능한 오브젝트가 없으면 상호작용을 null로 설정
+            PlayerManager.Instance.InteractableStructure = null;
+            PlayerManager.Instance.InteractableItem = null;
+            PlayerManager.Instance.IsInIntercation = false;
+        }
+    }
+    #endregion
 
     private void HandlePlayer()
     {
@@ -124,18 +166,8 @@ public class PlayerController : MonoBehaviour
         Jump();
         Run();
         CameraLimit();
-        FindInteractableItem();
-    }
-
-    private void Move()
-    {
-        // 카메라를 기준으로 정면을 잡고 움직이도록 수정해야함
-        Vector3 move = transform.TransformDirection(_moveDir) * _speed;
-
-        // 화성이 배경이니 중력은 3.73
-        _verVelocity.y -= 3.73f * Time.deltaTime;
-
-        _controller.Move((move + _verVelocity) * Time.deltaTime);
+        //FindCloseInteractableItemFromPlayer();
+        FindCloseInteractableItemFromRay();
     }
 
     private void PlayerInput()
@@ -150,17 +182,41 @@ public class PlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if (Input.GetKeyDown(KeyCode.E) && PlayerManager.Instance.InteractableItem != null)
+
+        #region E 키 상호작용
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            PlayerManager.Instance.InteractableItem.Interact();
+            // 땅에 떨어진 아이템은 E누르면 즉시 상호작용
+            if (PlayerManager.Instance.InteractableItem != null)
+                PlayerManager.Instance.InteractableItem.Interact();
         }
+
+        if (Input.GetKey(KeyCode.E))
+        {
+            if (PlayerManager.Instance.InteractableStructure != null)
+            {
+                // 구조물의 경우 1초간 눌러야만 상호작용
+                PlayerManager.Instance.InteractDelay += Time.deltaTime;
+                if (PlayerManager.Instance.InteractDelay >= 1f)
+                {
+                    PlayerManager.Instance.InteractableStructure.Interact();
+                    PlayerManager.Instance.InteractDelay = 0f; // 상호작용 후 딜레이 초기화
+                }
+            }
+        }
+        else
+        {
+            PlayerManager.Instance.InteractDelay = 0f; // E 키를 떼면 딜레이 초기화
+        }
+        #endregion
 
         if (Input.GetKeyDown(KeyCode.Q)) // 'Q' 키를 눌렀을 때
         {
             SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
         }
 
-        // 아이템을 마우스 좌클릭 하면 사용. 누르고 있는동안 주기적으로 계속 사용
+
+        #region 아이템 사용
         if (Input.GetMouseButton(0) && _selectItem != null)
         {
             // 아이템 사용은 아이템 파트에서 제작 되면 세부 구현
@@ -173,12 +229,25 @@ public class PlayerController : MonoBehaviour
             // 소비 아이템의 경우 꾹 눌렀을때 사용되도록 설정해달라고 요청받음
             // 해당 부분 구현 필요
         }
+        #endregion
 
         // 테스트 코드
         if (Input.GetKeyDown(KeyCode.T))
         {
             _isGrabbing = !_isGrabbing; // Grab 상태 토글
         }
+    }
+
+    #region 플레이어 이동
+    private void Move()
+    {
+        // 카메라를 기준으로 정면을 잡고 움직이도록 수정해야함
+        Vector3 move = transform.TransformDirection(_moveDir) * _speed;
+
+        // 화성이 배경이니 중력은 3.73
+        _verVelocity.y -= 3.73f * Time.deltaTime;
+
+        _controller.Move((move + _verVelocity) * Time.deltaTime);
     }
 
     private void Jump()
@@ -202,7 +271,9 @@ public class PlayerController : MonoBehaviour
             _speed /= 2;
         }
     }
+    #endregion
 
+    #region 플레이어 시점 관련
     private void AimControl()
     {
         Vector2 mouseInput = _mouseInput * _mouseSensitivity;
@@ -236,6 +307,7 @@ public class PlayerController : MonoBehaviour
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
         }
     }
+    #endregion
 
     IEnumerator ItemUsing()
     {
@@ -254,7 +326,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
     }
 
-    // 미사용. 하지만 혹시 몰라 남겨놓음
+    #region 미사용 코드
     /// <summary>
     /// 슬로우 강도를 퍼센테이지로 입력 받아 플레이어 감속
     /// </summary>
@@ -274,6 +346,33 @@ public class PlayerController : MonoBehaviour
     //    _speed = _speed / (1f - percentage / 100f);
     //}
 
+    // overlapsphere로 교체하기에 주석처리.
+    // 현재 인터렉션 방식은 한곳에 하나의 오브젝트만 있다는 걸 전제로 제작됨
+    // 무조건 처음 접근한 오브젝트만 인터렉션이 가능하도록 제작
+    // 여러 오브젝트가 있을 경우, 지금 방식이 아닌 다른 방식으로 코드를 작성하여야 함
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
+    //     {
+    //         _interactableItem = interact as TestItem;
+    //         TestPlayerManager.Instance.IsInIntercation = true;
+    //         // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
+    //         // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
+    //         // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
+    //     }
+    // }
+    // 
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact))
+    //     {
+    //         TestPlayerManager.Instance.IsInIntercation = false;
+    //         _interactableItem = null;
+    //     }
+    // }
+    #endregion
+
+    #region 애니메이션
     private void Animation()
     {
         MoveAnim();
@@ -299,4 +398,5 @@ public class PlayerController : MonoBehaviour
             _animator.SetTrigger("Swing");
         }
     }
+    #endregion
 }

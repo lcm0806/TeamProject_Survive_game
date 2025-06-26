@@ -11,14 +11,11 @@ public class WorldItem : MonoBehaviour, IInteractable
     [Tooltip("플레이어가 상호작용 가능한 범위")]
     public float interactionRange = 0.5f;
 
-    void Start()
+    public void Initialize(Item item)
     {
-
-    }
-
-    void Update()
-    {
-
+        itemData = item;
+        // 필요하다면 아이템 종류에 따라 시각적 요소 (SpriteRenderer 등)를 설정할 수 있습니다.
+        // 예: GetComponent<SpriteRenderer>().sprite = item.WorldSprite;
     }
 
     public void Interact()

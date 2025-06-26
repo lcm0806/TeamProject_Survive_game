@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -17,10 +18,18 @@ public class SamplePlayerController : MonoBehaviour
     private Vector3 _moveDir;
     private Vector2 _mouseInput;
     private float _totalMouseY = 0f;
-    //private TestItem _interactableItem;
+    //private WorldItem _interactableItem;
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
+    private Item _selectItem;
+    private Coroutine _itemUseCoroutine;
+    private bool _canUseItem => _itemUseCoroutine == null;
+    private Animator _animator;
+    private bool _isMoving => _moveDir != Vector3.zero;
+    // private bool _isGrabbing => _selectItem != null;
+    // 아래는 테스트 코드
+    private bool _isGrabbing = false;
 
     private void Awake()
     {
@@ -31,6 +40,7 @@ public class SamplePlayerController : MonoBehaviour
     {
         PlayerInput();
         HandlePlayer();
+        Animation();
     }
 
     private void FindInteractableItem()
@@ -56,7 +66,7 @@ public class SamplePlayerController : MonoBehaviour
                 //{
                 //    Debug.Log($"[감지됨] 플레이어 근처에 상호작용 가능한 아이템이 있습니다: {closestColl.name}");
                 //}
-                //_interactableItem = interactable as TestItem;
+                //_interactableItem = interactable as WorldItem;
                 SamplePlayerManager.Instance.InteractableItem = interactable as WorldItem;
                 SamplePlayerManager.Instance.IsInIntercation = true;
             }
@@ -120,7 +130,7 @@ public class SamplePlayerController : MonoBehaviour
             SamplePlayerManager.Instance.InteractableItem.Interact();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) // 'I' 키를 눌렀을 때
+        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' 키를 눌렀을 때
         {
             SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
         }
@@ -178,6 +188,40 @@ public class SamplePlayerController : MonoBehaviour
             // 벽에 부딪히지 않는 경우 위치 리셋
             Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 4f;
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
+        }
+    }
+    IEnumerator ItemUsing()
+    {
+        // 아이템 연속 사용 코루틴
+        // 아이템 사용간의 딜레이 적용
+        // 아래는 임시
+        _selectItem.Use(this.gameObject);
+        yield return new WaitForSeconds(1f);
+        _itemUseCoroutine = null;
+    }
+    private void Animation()
+    {
+        MoveAnim();
+        GrabAnim();
+        SwingAnim();
+    }
+
+    private void MoveAnim()
+    {
+        _animator.SetBool("IsWalking", _isMoving);
+    }
+
+    private void GrabAnim()
+    {
+        _animator.SetBool("IsGrabbing", _isGrabbing);
+    }
+
+    private void SwingAnim()
+    {
+        // 나중엔 _isGrabbing도 조건에 추가되도록 변경
+        if (Input.GetMouseButtonDown(0) && _isGrabbing)
+        {
+            _animator.SetTrigger("Swing");
         }
     }
 

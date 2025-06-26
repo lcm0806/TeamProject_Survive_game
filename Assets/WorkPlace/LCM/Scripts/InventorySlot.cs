@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+#if UNITY_EDITOR
 using static UnityEditor.Progress;
+#endif
 
 public enum SlotTag { None, Head, Chest, Legs, Feet }
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public Item myItemData { get; private set; }
+    public Item myItemData { get; set; }
     public InventoryItem myItemUI { get; set; }
 
     public SlotTag myTag;
@@ -18,7 +20,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         InventoryItem droppedItemUI = eventData.pointerDrag.GetComponent<InventoryItem>();
         if (droppedItemUI != null)
         {
-            SetItem(droppedItemUI); // ÇöÀç ½½·Ô¿¡ ¾ÆÀÌÅÛ ¼³Á¤ (ÀÚµ¿À¸·Î CarriedItem ÇØÁ¦)
+            SetItem(droppedItemUI); // í˜„ì¬ ìŠ¬ë¡¯ì— ì•„ì´í…œ ì„¤ì • (ìë™ìœ¼ë¡œ CarriedItem í•´ì œ)
         }
     }
 
@@ -34,16 +36,16 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
     public void SetItem(InventoryItem itemUI)
     {
-        // ±âÁ¸¿¡ ½½·Ô¿¡ ÀÖ´ø ¾ÆÀÌÅÛÀÌ ÀÖ´Ù¸é Ã³¸® (µå·¡±× ÁßÀÎ ¾ÆÀÌÅÛÀÌ ¾Æ´Ï¶ó, ½½·Ô ÀÚÃ¼ÀÇ ÀÌÀü ¾ÆÀÌÅÛ)
+        // ê¸°ì¡´ì— ìŠ¬ë¡¯ì— ìˆë˜ ì•„ì´í…œì´ ìˆë‹¤ë©´ ì²˜ë¦¬ (ë“œë˜ê·¸ ì¤‘ì¸ ì•„ì´í…œì´ ì•„ë‹ˆë¼, ìŠ¬ë¡¯ ìì²´ì˜ ì´ì „ ì•„ì´í…œ)
         if (myItemUI != null)
         {
-            // TODO: ±âÁ¸ ¾ÆÀÌÅÛ UI¸¦ ºñÈ°¼ºÈ­ÇÏ°Å³ª ÆÄ±«ÇÏ´Â ·ÎÁ÷ Ãß°¡
-            // Destroy(myItemUI.gameObject); // ÇÊ¿äÇÏ´Ù¸é ÀÌÀü ¾ÆÀÌÅÛ UI¸¦ ÆÄ±«
+            // TODO: ê¸°ì¡´ ì•„ì´í…œ UIë¥¼ ë¹„í™œì„±í™”í•˜ê±°ë‚˜ íŒŒê´´í•˜ëŠ” ë¡œì§ ì¶”ê°€
+            // Destroy(myItemUI.gameObject); // í•„ìš”í•˜ë‹¤ë©´ ì´ì „ ì•„ì´í…œ UIë¥¼ íŒŒê´´
         }
         if (itemUI.activeSlot != null)
         {
-            itemUI.activeSlot.myItemData = null; // ÀÌÀü ½½·ÔÀÇ µ¥ÀÌÅÍ ºñ¿ò
-            itemUI.activeSlot.myItemUI = null; // ÀÌÀü ½½·ÔÀÇ UI ÂüÁ¶ ºñ¿ò
+            itemUI.activeSlot.myItemData = null; // ì´ì „ ìŠ¬ë¡¯ì˜ ë°ì´í„° ë¹„ì›€
+            itemUI.activeSlot.myItemUI = null; // ì´ì „ ìŠ¬ë¡¯ì˜ UI ì°¸ì¡° ë¹„ì›€
         }
 
         Inventory.CarriedItem = null;
@@ -51,10 +53,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         myItemData = itemUI.myItem;
 
         myItemUI = itemUI;
-        myItemUI.activeSlot = this; // ¾ÆÀÌÅÛ UI°¡ ÇöÀç ½½·ÔÀ» ÂüÁ¶ÇÏµµ·Ï ¼³Á¤
+        myItemUI.activeSlot = this; // ì•„ì´í…œ UIê°€ í˜„ì¬ ìŠ¬ë¡¯ì„ ì°¸ì¡°í•˜ë„ë¡ ì„¤ì •
 
         myItemUI.transform.SetParent(transform);
-        myItemUI.transform.localPosition = Vector3.zero; // À§Ä¡ ÃÊ±âÈ­
+        myItemUI.transform.localPosition = Vector3.zero; // ìœ„ì¹˜ ì´ˆê¸°í™”
         myItemUI.canvasGroup.blocksRaycasts = true;
 
 
@@ -64,10 +66,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         if (myItemUI != null)
         {
-            Destroy(myItemUI.gameObject); // UI ÀÎ½ºÅÏ½º¸¦ ÆÄ±«
+            Destroy(myItemUI.gameObject); // UI ì¸ìŠ¤í„´ìŠ¤ë¥¼ íŒŒê´´
             myItemUI = null;
         }
-        myItemData = null; // µ¥ÀÌÅÍµµ ºñ¿ò
-        // UI¸¦ ½Ã°¢ÀûÀ¸·Î ÃÊ±âÈ­ÇÏ´Â ·ÎÁ÷ (¿¹: ÀÌ¹ÌÁö ¼û±â±â)
+        myItemData = null; // ë°ì´í„°ë„ ë¹„ì›€
+        // UIë¥¼ ì‹œê°ì ìœ¼ë¡œ ì´ˆê¸°í™”í•˜ëŠ” ë¡œì§ (ì˜ˆ: ì´ë¯¸ì§€ ìˆ¨ê¸°ê¸°)
     }
 }

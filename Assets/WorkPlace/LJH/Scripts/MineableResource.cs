@@ -5,83 +5,106 @@ using UnityEngine;
 public class MineableResource : MonoBehaviour
 {
     [Header("광물 설정")]
-    [SerializeField] public int maxHealth = 5;
-    private float currentHealth;
+    [SerializeField]public int maxHealth = 5;
+    private float currentHealth;        //float 로! (연속 데미지용)
 
-    [Header("드롭 아이템 설정")]
-    [Tooltip("파괴 시 튀어나올 아이템 프리팹")]
+    [Header("드롭 설정")]
     public GameObject lootPrefab;
-    [Tooltip("아이템 튀어나가는 힘(Impulse)")]
     public float lootLaunchForce = 5f;
-    [Tooltip("여러 개를 떨어뜨리고 싶다면 개수 지정")]
-    public int lootCount = 1;
 
-    [Header("서서히 사라짐")]
+    [Header("파괴 연출")]
     public float shrinkDuration = 2f;
 
     private bool isBeingMined = false;
-    private bool lootSpawned = false;   // 중복 드롭 방지
+    private int lastWholeHp;            //체력의 '정수 부분'을 저장
 
+    /* -------------------- Unity -------------------- */
     private void Start()
     {
         currentHealth = maxHealth;
+        lastWholeHp = maxHealth;      // 처음엔 둘이 같음
     }
 
     private void Update()
     {
-        if (isBeingMined && currentHealth > 0)
+        if (!isBeingMined || currentHealth <= 0f) return;
+
+        //초당 1씩 데미지
+        currentHealth -= 1f * Time.deltaTime;
+        currentHealth = Mathf.Max(currentHealth, 0f);   // 음수 방지
+
+        //체력이 1 깎였는지 확인
+        int currentWholeHp = Mathf.FloorToInt(currentHealth);
+        if (currentWholeHp < lastWholeHp)        // 한 칸 내려갔으면
         {
-            const float miningDamagePerSecond = 1f;
-            currentHealth -= miningDamagePerSecond * Time.deltaTime;
-            if (currentHealth <= 0)
-            {
-                // ① 드롭 아이템 만들기
-                SpawnLoot();
-                // ② 사라지기 연출
-                StartCoroutine(FadeOutAndDestroy());
-            }
+            SpawnLoot();                         // 드롭 1개
+            lastWholeHp = currentWholeHp;        // 기준 갱신
         }
+
+        //0이 되었으면 파괴 연출
+        if (currentHealth <= 0f)
+            StartCoroutine(FadeOutAndDestroy());
     }
 
+    /* -------------------- Mining Control -------------------- */
     public void StartMining() => isBeingMined = true;
     public void StopMining() => isBeingMined = false;
 
-    /* -------------------------- NEW: 아이템 드롭 -------------------------- */
+    /* -------------------- Loot Spawn -------------------- */
     private void SpawnLoot()
     {
-        if (lootSpawned || lootPrefab == null) return;
-        lootSpawned = true;
+        if (lootPrefab == null) return;
 
-        for (int i = 0; i < lootCount; i++)
+        Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
+        GameObject loot = Instantiate(lootPrefab, spawnPos, Quaternion.identity);
+
+        if (loot.TryGetComponent<Rigidbody>(out var rb))
         {
-            // 살짝 위쪽에 생성
-            Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
-            GameObject loot = Instantiate(lootPrefab, spawnPos, Quaternion.identity);
-
-            // Rigidbody가 있으면 랜덤 방향 + 위쪽으로 힘을 가함
-            if (loot.TryGetComponent<Rigidbody>(out var rb))
-            {
-                Vector3 dir = (Random.insideUnitSphere + Vector3.up).normalized;
-                rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
-            }
+            Vector3 dir = (Random.insideUnitSphere + Vector3.up).normalized;
+            rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
         }
     }
-    /* -------------------------------------------------------------------- */
 
+    /* -------------------- Fade & Destroy -------------------- */
     private IEnumerator FadeOutAndDestroy()
     {
         isBeingMined = false;
 
-        Vector3 originalScale = transform.localScale;
+        MeshRenderer renderer = GetComponent<MeshRenderer>();
+        if (renderer == null)
+        {
+            Debug.LogWarning("MeshRenderer가 없습니다.");
+            Destroy(gameObject);
+            yield break;
+        }
+
+        Material[] materials = renderer.materials; // 메테리얼 인스턴스 배열
+
+        // 각 메테리얼의 초기 색상 저장
+        Color[] startColors = new Color[materials.Length];
+        for (int i = 0; i < materials.Length; i++)
+        {
+            startColors[i] = materials[i].color;
+        }
+
         float timer = 0f;
 
         while (timer < shrinkDuration)
         {
             float t = timer / shrinkDuration;
-            transform.localScale = Vector3.Lerp(originalScale, Vector3.zero, t);
+            float fade = Mathf.SmoothStep(1f, 0f, t);
+
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Color newColor = startColors[i];
+                newColor.a = fade;
+                materials[i].color = newColor;
+            }
+
             timer += Time.deltaTime;
             yield return null;
         }
+
         Destroy(gameObject);
     }
 }

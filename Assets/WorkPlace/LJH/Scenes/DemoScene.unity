@@ -190,6 +190,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -626,7 +636,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &29579959 stripped
 GameObject:
@@ -721,7 +730,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &37037908
 GameObject:
@@ -842,6 +850,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -1343,6 +1361,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -1495,6 +1523,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -1582,6 +1620,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -1794,7 +1842,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &270444793 stripped
 GameObject:
@@ -1852,6 +1899,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -1981,6 +2038,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -2237,6 +2304,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 6176897932512032075, guid: 5ac332a553fc3454b8cb3204019799cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2270,6 +2342,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6071706365411137538, guid: fba669f00be4ad7459408d467cdecd15,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2361,7 +2443,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &349106160
 GameObject:
@@ -2592,6 +2673,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -2625,6 +2716,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -2816,6 +2917,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 6176897932512032075, guid: 5ac332a553fc3454b8cb3204019799cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6176897932512032075, guid: 5ac332a553fc3454b8cb3204019799cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2905,6 +3016,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 6035193205131318009, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6035193205131318009, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6360247099284626659, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
         type: 3}
       propertyPath: m_Convex
@@ -3261,6 +3382,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3344,6 +3475,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5933494644565802728, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
         type: 3}
       propertyPath: m_Convex
@@ -3377,6 +3518,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -3843,7 +3994,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &488846991 stripped
 Transform:
@@ -3867,7 +4017,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &491524836 stripped
 GameObject:
@@ -3933,6 +4082,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -4024,7 +4183,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &513461814 stripped
 GameObject:
@@ -4048,7 +4206,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &521601167 stripped
 GameObject:
@@ -4064,6 +4221,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -4161,6 +4328,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -4244,6 +4421,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -4602,6 +4789,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4629,6 +4826,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -4722,6 +4929,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6071706365411137538, guid: fba669f00be4ad7459408d467cdecd15,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4813,7 +5030,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &595984399
 GameObject:
@@ -4942,7 +5158,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &603775273 stripped
 GameObject:
@@ -5123,6 +5338,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5933494644565802728, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
         type: 3}
       propertyPath: m_Convex
@@ -5170,7 +5395,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &619112360 stripped
 Transform:
@@ -5246,6 +5470,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -5283,6 +5517,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -5378,6 +5622,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -5479,7 +5733,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &647601049
 GameObject:
@@ -5645,7 +5898,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &671684081 stripped
 GameObject:
@@ -5743,6 +5995,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -5908,6 +6170,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5939,7 +6211,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &701268205
 GameObject:
@@ -5994,6 +6265,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6071706365411137538, guid: fba669f00be4ad7459408d467cdecd15,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6171,6 +6452,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -6276,6 +6567,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -6557,6 +6858,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9606aedfa2656164abf9ae0599a7613d,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
     - target: {fileID: 919132149155446097, guid: 9606aedfa2656164abf9ae0599a7613d,
         type: 3}
       propertyPath: m_Name
@@ -6593,7 +6899,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &774829481 stripped
 Transform:
@@ -6617,7 +6922,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &776029142 stripped
 GameObject:
@@ -6641,7 +6945,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 7742218706657170875, guid: 6bc016edc53d190488c78cd4f0f51786,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &777266250
 PrefabInstance:
@@ -6814,7 +7117,7 @@ Transform:
   m_GameObject: {fileID: 803574698}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 191.22, y: 6.23, z: -102.17}
+  m_LocalPosition: {x: 189.77, y: 6.23, z: -102.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6857,7 +7160,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 94
   m_CollisionDetection: 0
 --- !u!4 &808426977 stripped
 Transform:
@@ -6881,7 +7184,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &813652536 stripped
 GameObject:
@@ -6913,6 +7215,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -6996,6 +7308,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -7250,6 +7572,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -7351,7 +7683,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &854074129
 GameObject:
@@ -7515,6 +7846,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -7662,6 +8003,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -7703,7 +8054,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &870842224
 PrefabInstance:
@@ -7773,6 +8123,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5933494644565802728, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
         type: 3}
       propertyPath: m_Convex
@@ -7814,7 +8174,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 7742218706657170875, guid: 6bc016edc53d190488c78cd4f0f51786,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &873046702
 GameObject:
@@ -8083,6 +8442,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -8713,6 +9082,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -8788,7 +9167,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1006533346
 PrefabInstance:
@@ -9043,7 +9421,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1025321107
 PrefabInstance:
@@ -9333,6 +9710,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -9374,7 +9761,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1062626783 stripped
 GameObject:
@@ -9425,6 +9811,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -9526,7 +9922,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 7742218706657170875, guid: 6bc016edc53d190488c78cd4f0f51786,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1098794051
 PrefabInstance:
@@ -9536,6 +9931,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -9676,7 +10081,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1122031495
 GameObject:
@@ -9733,7 +10137,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1156293145
 PrefabInstance:
@@ -9753,6 +10156,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6071706365411137538, guid: fba669f00be4ad7459408d467cdecd15,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -9844,7 +10257,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1158215463 stripped
 Transform:
@@ -10116,7 +10528,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1189980709 stripped
 GameObject:
@@ -10140,7 +10551,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1202333453 stripped
 Transform:
@@ -10304,6 +10714,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -10542,7 +10962,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1254787008 stripped
 Transform:
@@ -10566,7 +10985,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1262995081 stripped
 GameObject:
@@ -10742,6 +11160,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -10843,7 +11271,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1278041770 stripped
 GameObject:
@@ -10867,7 +11294,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1317803758
 PrefabInstance:
@@ -10887,6 +11313,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4902207886581621613, guid: fba669f00be4ad7459408d467cdecd15,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6071706365411137538, guid: fba669f00be4ad7459408d467cdecd15,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -10976,6 +11412,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -11215,6 +11661,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -11306,7 +11762,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1381328033 stripped
 GameObject:
@@ -11330,7 +11785,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1386089011
 PrefabInstance:
@@ -11755,7 +12209,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1423372940
 PrefabInstance:
@@ -11954,6 +12407,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5873253225835580196, guid: bd7cacb331dc9114989a6d24617dc540,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12045,7 +12508,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1459764672
 PrefabInstance:
@@ -12151,7 +12613,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1461878291
 PrefabInstance:
@@ -12267,7 +12728,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1470418686 stripped
 GameObject:
@@ -12291,7 +12751,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1473761859
 GameObject:
@@ -12512,7 +12971,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1481359120
 PrefabInstance:
@@ -12522,6 +12980,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: beeec1b51723c2b4b86935f3e676ebe7, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -12724,6 +13202,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5873253225835580196, guid: bd7cacb331dc9114989a6d24617dc540,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12907,7 +13395,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1501927543
 PrefabInstance:
@@ -12927,6 +13414,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5873253225835580196, guid: bd7cacb331dc9114989a6d24617dc540,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -13018,7 +13515,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1509985583
 GameObject:
@@ -13078,7 +13574,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1524302928
 PrefabInstance:
@@ -13148,6 +13643,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -13450,6 +13955,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -13491,7 +14006,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1538661705 stripped
 Transform:
@@ -13521,7 +14035,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1563319355
 PrefabInstance:
@@ -13531,6 +14044,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -13632,7 +14155,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1575901190 stripped
 GameObject:
@@ -13656,7 +14178,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1582961460 stripped
 GameObject:
@@ -13686,7 +14207,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1605506223
 PrefabInstance:
@@ -13858,6 +14378,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 8564413960212100812, guid: 67171c5a8fb98664ea38559b627ffc44,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 8564413960212100812, guid: 67171c5a8fb98664ea38559b627ffc44,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13889,7 +14419,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 7742218706657170875, guid: 6bc016edc53d190488c78cd4f0f51786,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1618506195 stripped
 Transform:
@@ -13913,7 +14442,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1622637698 stripped
 GameObject:
@@ -13979,6 +14507,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -14086,7 +14624,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1630284013 stripped
 GameObject:
@@ -14110,7 +14647,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1633845294
 PrefabInstance:
@@ -14130,6 +14666,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -14360,7 +14906,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1652436759
 GameObject:
@@ -14527,7 +15072,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1663260832
 GameObject:
@@ -14652,6 +15196,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -14729,6 +15283,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -14830,7 +15394,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1683890766
 PrefabInstance:
@@ -14900,6 +15463,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 6035193205131318009, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6035193205131318009, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6360247099284626659, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
         type: 3}
       propertyPath: m_Convex
@@ -14927,6 +15500,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -15024,6 +15607,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -15135,6 +15728,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -15242,7 +15845,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1755940398 stripped
 Transform:
@@ -15306,7 +15908,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1772564370 stripped
 Transform:
@@ -15336,7 +15937,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1790446033
 PrefabInstance:
@@ -15439,6 +16039,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -15662,6 +16272,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 955308322781152011, guid: 96b90d03eda807f4fbe7ca6773b77255,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
         type: 3}
       propertyPath: m_Name
@@ -15809,6 +16429,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -15840,7 +16470,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1834773319
 PrefabInstance:
@@ -15850,6 +16479,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -15951,7 +16590,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1840860513 stripped
 GameObject:
@@ -15975,7 +16613,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1845630117
 PrefabInstance:
@@ -16055,6 +16692,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 6176897932512032075, guid: 5ac332a553fc3454b8cb3204019799cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6176897932512032075, guid: 5ac332a553fc3454b8cb3204019799cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16086,7 +16733,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1859267587
 PrefabInstance:
@@ -16178,7 +16824,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &1874688775 stripped
 Transform:
@@ -16202,7 +16847,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1887236766 stripped
 GameObject:
@@ -16226,7 +16870,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1887369051 stripped
 GameObject:
@@ -16330,6 +16973,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6791103472392811959, guid: 0a510e24a58b1fd43b09612ad559e962,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 7592650473936234257, guid: 0a510e24a58b1fd43b09612ad559e962,
         type: 3}
       propertyPath: m_Convex
@@ -16615,7 +17268,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1922481496 stripped
 GameObject:
@@ -16639,7 +17291,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1930140820 stripped
 GameObject:
@@ -16663,7 +17314,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &1933053497
 PrefabInstance:
@@ -17272,7 +17922,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &1995962157 stripped
 GameObject:
@@ -17392,6 +18041,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 8564413960212100812, guid: 67171c5a8fb98664ea38559b627ffc44,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 8564413960212100812, guid: 67171c5a8fb98664ea38559b627ffc44,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17423,7 +18082,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 7742218706657170875, guid: 6bc016edc53d190488c78cd4f0f51786,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &2010365333 stripped
 GameObject:
@@ -17447,7 +18105,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &2014135711
 GameObject:
@@ -17576,7 +18233,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &2022624536
 PrefabInstance:
@@ -17656,6 +18312,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 6176897932512032075, guid: 5ac332a553fc3454b8cb3204019799cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6176897932512032075, guid: 5ac332a553fc3454b8cb3204019799cd,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17687,7 +18353,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &2030992305
 PrefabInstance:
@@ -17757,6 +18422,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 2087606317222384819, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5933494644565802728, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
         type: 3}
       propertyPath: m_Convex
@@ -17798,7 +18473,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 7742218706657170875, guid: 6bc016edc53d190488c78cd4f0f51786,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &2047047654 stripped
 GameObject:
@@ -17822,7 +18496,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6711037944161782873, guid: 9fb9302f0690ce043948a8fe15cfa0b6,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &2063134848
 PrefabInstance:
@@ -17842,6 +18515,16 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 4740830721206595659, guid: bd7cacb331dc9114989a6d24617dc540,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 5873253225835580196, guid: bd7cacb331dc9114989a6d24617dc540,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -17919,6 +18602,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -18088,7 +18781,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 6442047401570966686, guid: a635bf03119e16743ad73cc7e81538c5,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &2104256499
 PrefabInstance:
@@ -18098,6 +18790,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1531737989}
     m_Modifications:
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 755050201548647663, guid: 77d31de06455b4942a41f0637ae49e84,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1117357850199567459, guid: 77d31de06455b4942a41f0637ae49e84,
         type: 3}
       propertyPath: m_Convex
@@ -18199,7 +18901,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1 &2108619926 stripped
 GameObject:
@@ -18223,7 +18924,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 8900039334035467620, guid: cc5cee4bcc9230440beb02ca7c06ad6e,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &2114973605
 PrefabInstance:
@@ -18303,6 +19003,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 8942232378204821761, guid: b33c68177b8ce1a458b4972bfc33417f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -18334,7 +19044,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!4 &2119998174 stripped
 Transform:
@@ -18446,6 +19155,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 23479905}
     m_Modifications:
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 909085349568884109, guid: 5c75ceeb4e67c96478a0336f1f608438,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 1301179251896300908, guid: 5c75ceeb4e67c96478a0336f1f608438,
         type: 3}
       propertyPath: m_Convex
@@ -18575,7 +19294,6 @@ MonoBehaviour:
   lootPrefab: {fileID: 984403380273513741, guid: 551ab52d4ece0ad49a8dd43d89346ce1,
     type: 3}
   lootLaunchForce: 5
-  lootCount: 1
   shrinkDuration: 2
 --- !u!1001 &2144232278
 PrefabInstance:
@@ -18585,6 +19303,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 28346507}
     m_Modifications:
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 764045898525856794, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 989803474233565887, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
         type: 3}
       propertyPath: m_Convex
@@ -19286,6 +20014,16 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Resource
       objectReference: {fileID: 0}
+    - target: {fileID: 6035193205131318009, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 73d5866c0eb147a47b2f64e938478265, type: 2}
+    - target: {fileID: 6035193205131318009, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: b4c047f881356284893cc84fce763223, type: 2}
     - target: {fileID: 6360247099284626659, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
         type: 3}
       propertyPath: m_Convex

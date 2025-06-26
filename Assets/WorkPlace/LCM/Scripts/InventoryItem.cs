@@ -13,10 +13,27 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Item myItem { get; set; }
     public InventorySlot activeSlot { get; set; }
 
+    [SerializeField] private TextMeshProUGUI quantityText;
+    private int _currentQuantity;
+    public int CurrentQuantity
+    {
+        get { return _currentQuantity; }
+        set
+        {
+            _currentQuantity = value;
+            if (quantityText != null)
+            {
+                // 수량이 1개 이하면 숨기고, 아니면 표시
+                quantityText.gameObject.SetActive(_currentQuantity > 1);
+                quantityText.text = _currentQuantity.ToString();
+            }
+        }
+    }
     void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
         itemIcon = GetComponent<Image>();
+        // quantityText = GetComponentInChildren<TMP_Text>();
 
         if (canvasGroup == null) Debug.LogWarning("InventoryItem: CanvasGroup이 없습니다! " + gameObject.name);
         if (itemIcon == null) Debug.LogWarning("InventoryItem: Image 컴포넌트가 없습니다! " + gameObject.name);
@@ -41,8 +58,10 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         activeSlot = parent;
         activeSlot.myItemUI = this;
+        activeSlot.myItemData = item;
         myItem = item;
         itemIcon.sprite = item.icon;
+        CurrentQuantity = 1;
 
         if (canvasGroup != null)
         {
@@ -52,6 +71,9 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         transform.SetParent(parent.transform); // 초기 부모 설정
         transform.localPosition = Vector3.zero; //위치 초기화
+
+        Debug.Log($"[InventoryItem.Initialize SUCCESS] Slot: {parent.name}, Data: {parent.myItemData?.name ?? "NULL"}, UI: {parent.myItemUI?.name ?? "NULL"}");
+        Debug.Log($"[InventoryItem.Initialize SUCCESS] Current Quantity: {CurrentQuantity}");
     }
 
     //public void OnPointerClick(PointerEventData eventData)

@@ -435,7 +435,14 @@ public class MenuSystem : MonoBehaviour
                 MainMenu.SetActive(true);
                 SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? _gameName : "일시정지");
             });
-            _exitOkButton?.onClick.AddListener(Application.Quit);
+            _exitOkButton?.onClick.AddListener(() =>
+            {
+                #if UNITY_EDITOR
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #else
+                    Application.Quit();
+                #endif
+            });
         }
     }
 

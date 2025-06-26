@@ -1399,6 +1399,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 123
       objectReference: {fileID: 0}
+    - target: {fileID: 7523177431190977377, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_text
+      value: "\uC0C8 \uAC8C\uC784"
+      objectReference: {fileID: 0}
     - target: {fileID: 7542626361146878074, guid: f26923c3529f9401181b8409823a3f41,
         type: 3}
       propertyPath: m_Pivot.x

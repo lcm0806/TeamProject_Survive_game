@@ -49,12 +49,6 @@ public class GameSystem : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
     
-    void Update()
-    {
-        // ESC 키 처리는 MenuSystem에서 담당하므로 제거
-        // GameSystem에서는 ESC 키를 직접 처리하지 않음
-    }
-    
     /// <summary>
     /// 게임 일시정지
     /// </summary>
@@ -84,63 +78,63 @@ public class GameSystem : MonoBehaviour
         return isPaused;
     }
     
-    private void Start()
-    {
-        // 코루틴 시작
-        if (statusDecreaseCoroutine == null)
-        {
-            statusDecreaseCoroutine = StartCoroutine(StatusDecreaseCoroutine());
-        }
-    }
+    // private void Start()
+    // {
+    //     // 코루틴 시작
+    //     if (statusDecreaseCoroutine == null)
+    //     {
+    //         statusDecreaseCoroutine = StartCoroutine(StatusDecreaseCoroutine());
+    //     }
+    // }
 
     /// <summary>
     /// 1초에 1씩 스탯 떨어지게
     /// </summary>
     /// <returns></returns>
-    private IEnumerator StatusDecreaseCoroutine()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(1f); // 1초마다 실행
-       
-            // 게임이 일시정지 상태면 감소하지 않음
-            if (isPaused) continue;
-       
-            // 타이틀 씬에서는 감소하지 않음
-            string currentScene = SceneSystem.Instance?.GetCurrentSceneName() ?? "";
-            if (currentScene == "TitleScene") continue;
-       
-            // 게임 씬(쉘터, 탐험 등)에서만 스테이터스 감소
-            if (currentScene == "DevShelterScene" || currentScene == "Test" || 
-                currentScene == "ShelterScene" || currentScene == "FarmingScene")
-            {
-                if (StatusSystem.Instance != null)
-                {
-                    StatusSystem.Instance.SetMinusDurability(1f);
-                    StatusSystem.Instance.SetMinusOxygen(1f);
-                    StatusSystem.Instance.SetMinusEnergy(1f);
-               
-                    // 디버그 로그 (필요시 주석 처리)
-                    Debug.Log($"내구도: {(int)StatusSystem.Instance.GetDurability()}");
-                    Debug.Log($"산소: {(int)StatusSystem.Instance.GetOxygen()}");
-                    Debug.Log($"에너지: {(int)StatusSystem.Instance.GetEnergy()}");
-               
-                    // 게임 오버 체크
-                    CheckGameOver();
-                }
-            }
-        }
-    }
+    // private IEnumerator StatusDecreaseCoroutine()
+    // {
+    //     while (true)
+    //     {
+    //         yield return new WaitForSeconds(1f); // 1초마다 실행
+    //    
+    //         // 게임이 일시정지 상태면 감소하지 않음
+    //         if (isPaused) continue;
+    //    
+    //         // 타이틀 씬에서는 감소하지 않음
+    //         string currentScene = SceneSystem.Instance?.GetCurrentSceneName() ?? "";
+    //         if (currentScene == "TitleScene") continue;
+    //    
+    //         // 게임 씬(쉘터, 탐험 등)에서만 스테이터스 감소
+    //         if (currentScene == "DevShelterScene" || currentScene == "Test" || 
+    //             currentScene == "ShelterScene" || currentScene == "FarmingScene")
+    //         {
+    //             if (StatusSystem.Instance != null)
+    //             {
+    //                 StatusSystem.Instance.SetMinusDurability(1f);
+    //                 StatusSystem.Instance.SetMinusOxygen(1f);
+    //                 StatusSystem.Instance.SetMinusEnergy(1f);
+    //            
+    //                 // 디버그 로그 (필요시 주석 처리)
+    //                 Debug.Log($"내구도: {(int)StatusSystem.Instance.GetDurability()}");
+    //                 Debug.Log($"산소: {(int)StatusSystem.Instance.GetOxygen()}");
+    //                 Debug.Log($"에너지: {(int)StatusSystem.Instance.GetEnergy()}");
+    //            
+    //                 // 게임 오버 체크
+    //                 CheckGameOver();
+    //             }
+    //         }
+    //     }
+    // }
 
-    private void OnDestroy()
-    {
-        // 오브젝트가 파괴될 때 코루틴 정리
-        if (statusDecreaseCoroutine != null)
-        {
-            StopCoroutine(statusDecreaseCoroutine);
-            statusDecreaseCoroutine = null;
-        }
-    }
+    // private void OnDestroy()
+    // {
+    //     // 오브젝트가 파괴될 때 코루틴 정리
+    //     if (statusDecreaseCoroutine != null)
+    //     {
+    //         StopCoroutine(statusDecreaseCoroutine);
+    //         statusDecreaseCoroutine = null;
+    //     }
+    // }
 
     private void CheckGameOver()
     {

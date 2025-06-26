@@ -23,17 +23,16 @@ public class PlayerController : MonoBehaviour
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
-    private Item _selectItem;
     private WorldItem _worldItem;
-    private Coroutine _itemUseCoroutine;
-    private Coroutine _interactCoroutine;
-    private float _interactionDelay;
-    private bool _canUseItem => _itemUseCoroutine == null;
     private Animator _animator;
+    private Vector3 _rayEndPos;
+    private bool _isRayHit;
+    private RaycastHit _rayHit;
     private bool _isMoving => _moveDir != Vector3.zero;
     // private bool _isGrabbing => _selectItem != null;
     // 아래는 테스트 코드
     private bool _isGrabbing = false;
+    private bool _testBool;
     #endregion
 
     private void Awake()
@@ -79,10 +78,6 @@ public class PlayerController : MonoBehaviour
             // 끝나면 closestColl의 내용을 _interactableItem에 할당
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
-                //_interactableItem = interactable as TestItem;
-                // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
-                // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
-                // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
                 if (interactable as WorldItem)
                 {
                     PlayerManager.Instance.InteractableItem = interactable as WorldItem;
@@ -108,7 +103,6 @@ public class PlayerController : MonoBehaviour
     #region 상호작용 : 화면 중앙에 가장 가까운 물체
     private void FindCloseInteractableItemFromRay()
     {
-        // 트리거를 사용하지 않고 overlapsphere를 사용하여 주변의 인터렉션 가능한 오브젝트 감지
         // 스크린 중앙 기준 가장 가까이 있는 오브젝트를 _interactableItem로 설정
         // 레이캐스트로 중앙을 감지하고 감지된 hit 기준 거리 계산
         Collider closestColl = null;
@@ -133,10 +127,6 @@ public class PlayerController : MonoBehaviour
             // 끝나면 closestColl의 내용을 _interactableItem에 할당
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
-                //_interactableItem = interactable as TestItem;
-                // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
-                // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
-                // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
                 if (interactable as WorldItem)
                 {
                     PlayerManager.Instance.InteractableItem = interactable as WorldItem;
@@ -159,6 +149,80 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region 상호작용 : 레이캐스트의 위치에서 감지
+    private void FindCloseInteractableItemAtRay()
+    {
+        // overlapsphere를 플레이어 위치가 아닌 레이의 끝지점에서 생성
+        // 스크린 중앙 기준 가장 가까이 있는 오브젝트를 _interactableItem로 설정
+        // 레이캐스트로 중앙을 감지하고 감지된 hit 기준 거리 계산
+        Collider closestColl = null;
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        _isRayHit = Physics.Raycast(ray, out _rayHit, 6f);
+        int collsCount = 0;
+        Gizmos.color = Color.green;
+
+        if (_isRayHit)
+        {
+            // 레이캐스트가 성공하면 hit.point를 기준으로 overlapsphere를 생성
+            collsCount = Physics.OverlapSphereNonAlloc(_rayHit.point, 2.5f, _colls, _layerMask);
+        }
+        else
+        {
+            // 실패시 카메라의 위치에서 레이 방향으로 6f 떨어진 지점에서 overlapsphere를 생성
+            _rayEndPos = _virCamAxis.position + Camera.main.transform.forward * 2f;
+            collsCount = Physics.OverlapSphereNonAlloc(_rayEndPos, 2.5f, _colls, _layerMask);
+        }
+
+        if (collsCount > 0)
+        {
+            for (int i = 0; i < collsCount; i++)
+            {
+                if (_isRayHit)
+                {
+                    // 레이캐스트가 성공한 경우 hit.point에서 오브젝트의 거리 측정
+                    float distance = Vector3.Distance(_rayHit.point, _colls[i].transform.position);
+                    // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
+                    if (closestColl == null || distance < Vector3.Distance(_rayHit.point, closestColl.transform.position))
+                    {
+                        closestColl = _colls[i];
+                    }
+                }
+                else
+                {
+                    // 레이캐스트가 실패한 경우 rayEndPos에서 오브젝트의 거리 측정
+                    float distance = Vector3.Distance(_rayEndPos, _colls[i].transform.position);
+                    // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
+                    if (closestColl == null || distance < Vector3.Distance(_rayEndPos, closestColl.transform.position))
+                    {
+                        closestColl = _colls[i];
+                    }
+                }
+            }
+            // 끝나면 closestColl의 내용을 _interactableItem에 할당
+            if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                if (interactable as WorldItem)
+                {
+                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+                else if (interactable as Structure)
+                {
+                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+            }
+        }
+        else
+        {
+            // 주변에 인터렉션 가능한 오브젝트가 없으면 상호작용을 null로 설정
+            PlayerManager.Instance.InteractableStructure = null;
+            PlayerManager.Instance.InteractableItem = null;
+            PlayerManager.Instance.IsInIntercation = false;
+        }
+    }
+#endregion
+
     private void HandlePlayer()
     {
         AimControl();
@@ -167,7 +231,8 @@ public class PlayerController : MonoBehaviour
         Run();
         CameraLimit();
         //FindCloseInteractableItemFromPlayer();
-        FindCloseInteractableItemFromRay();
+        //FindCloseInteractableItemFromRay();
+        FindCloseInteractableItemAtRay();
     }
 
     private void PlayerInput()
@@ -196,12 +261,17 @@ public class PlayerController : MonoBehaviour
             if (PlayerManager.Instance.InteractableStructure != null)
             {
                 // 구조물의 경우 1초간 눌러야만 상호작용
-                PlayerManager.Instance.InteractDelay += Time.deltaTime;
+                PlayerManager.Instance.InteractDelay += 1 * Time.deltaTime;
+
                 if (PlayerManager.Instance.InteractDelay >= 1f)
                 {
                     PlayerManager.Instance.InteractableStructure.Interact();
                     PlayerManager.Instance.InteractDelay = 0f; // 상호작용 후 딜레이 초기화
                 }
+            }
+            else
+            {
+                PlayerManager.Instance.InteractDelay = 0f; // 중간에 다른곳을 바라보아도 초기화
             }
         }
         else
@@ -217,17 +287,28 @@ public class PlayerController : MonoBehaviour
 
 
         #region 아이템 사용
-        if (Input.GetMouseButton(0) && _selectItem != null)
+        if(Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem != null)
         {
-            // 아이템 사용은 아이템 파트에서 제작 되면 세부 구현
-            // 일단은 아이템을 연속으로 사용하는 코루틴을 먼저 구현하기
-            if (_canUseItem)
-            {
-                _itemUseCoroutine = StartCoroutine(ItemUsing());
-            }
+            // 손에 사용, 소비 아이템이 아닌 자원 아이템이 들려 있는 경우
+            _animator.SetTrigger("Swing");
+        }
 
-            // 소비 아이템의 경우 꾹 눌렀을때 사용되도록 설정해달라고 요청받음
-            // 해당 부분 구현 필요
+        if (Input.GetMouseButton(0))
+        {
+            // 테스트용으로 마이닝 모션 실행
+            _testBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
+            // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
+            PlayerManager.Instance.ItemDelay += Time.deltaTime;
+            if(PlayerManager.Instance.ItemDelay >= 1)
+            {
+                Debug.Log("아이템 사용!");
+                // PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
+            }
+        }
+        else
+        {
+            _testBool = false;
         }
         #endregion
 
@@ -309,21 +390,22 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    IEnumerator ItemUsing()
-    {
-        // 아이템 연속 사용 코루틴
-        // 아이템 사용간의 딜레이 적용
-        // 아래는 임시
-        _selectItem.Use(this.gameObject);
-        yield return new WaitForSeconds(1f);
-        _itemUseCoroutine = null;
-    }
-
     private void OnDrawGizmos()
     {
         // Gizmos를 사용하여 레이 표시
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
+        //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
+
+        if(_isRayHit)
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
+            Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
+        }
+        else
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayEndPos);
+            Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
+        }
     }
 
     #region 미사용 코드
@@ -377,7 +459,8 @@ public class PlayerController : MonoBehaviour
     {
         MoveAnim();
         GrabAnim();
-        SwingAnim();
+        // SwingAnim();
+        MiningAnim();
     }
 
     private void MoveAnim()
@@ -397,6 +480,11 @@ public class PlayerController : MonoBehaviour
         {
             _animator.SetTrigger("Swing");
         }
+    }
+
+    private void MiningAnim()
+    {
+        _animator.SetBool("IsMining", _testBool);
     }
     #endregion
 }

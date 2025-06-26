@@ -475,11 +475,6 @@ MonoBehaviour:
   - {fileID: 4715943600586361924}
   - {fileID: 7032554214885444611}
   - {fileID: 1379299634883361937}
-  equipmentSlots:
-  - {fileID: 2669900502513032817}
-  - {fileID: 5113956992297813142}
-  - {fileID: 8519658654698371656}
-  - {fileID: 1043669969703466637}
   draggablesTransform: {fileID: 0}
   itemPrefab: {fileID: 8527893814601168996, guid: 1028cb616073445408e5c9f2550546dc,
     type: 3}
@@ -492,6 +487,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9531362353670304494a59c1ccff8990, type: 2}
   - {fileID: 11400000, guid: d0f7a0fcd9fa26a4ba161a461a2cc713, type: 2}
   _inventoryUIRootPanel: {fileID: 0}
+  _currentHotbarSlotIndex: 0
+  _dropDistance: 1.5
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!222 &1777081185214404444
 CanvasRenderer:
   m_ObjectHideFlags: 0

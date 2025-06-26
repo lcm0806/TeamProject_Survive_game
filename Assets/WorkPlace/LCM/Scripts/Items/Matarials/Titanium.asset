@@ -16,4 +16,6 @@ MonoBehaviour:
   description: A basic item.
   icon: {fileID: 0}
   itemTag: 0
+  WorldPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
   equipmentPrefab: {fileID: 0}

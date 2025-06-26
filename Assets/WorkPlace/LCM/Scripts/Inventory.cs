@@ -13,7 +13,7 @@ public class Inventory : Singleton<Inventory>
     [SerializeField] InventorySlot[] hotbarSlots;
 
     // 0=Head, 1=Chest, 2=Legs, 3=Feet
-    [SerializeField] InventorySlot[] equipmentSlots;
+    //[SerializeField] InventorySlot[] equipmentSlots;
 
     public Transform draggablesTransform;
     [SerializeField] InventoryItem itemPrefab;
@@ -172,6 +172,53 @@ public class Inventory : Singleton<Inventory>
 
         // CarriedItem을 비웁니다.
         CarriedItem = null;
+    }
+
+    public int GetItemCount(Item item)
+    {
+        int count = 0;
+        foreach(var slot in inventorySlots)
+        {
+            if(slot.myItemData == item) 
+            { 
+                count++; 
+            }
+        }
+        foreach(var slot in hotbarSlots)
+        {
+            if(slot.myItemData == item)
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public void RemoveItem(Item itemToRemove, int amount = 1)
+    {
+        int removedCount = 0;
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].myItemData == itemToRemove)
+            {
+                inventorySlots[i].ClearSlot();
+                removedCount++;
+                if (removedCount == amount) break;
+            }
+        }
+
+        for(int i = 0; i < hotbarSlots.Length; i++)
+        {
+            if (hotbarSlots[i].myItemData == itemToRemove)
+            {
+                hotbarSlots[i].ClearSlot();
+                removedCount++;
+                if (removedCount >= amount) break;
+            }
+        }
+
+        Debug.Log($"{itemToRemove.name}{removedCount}개를 인벤토리에서 제거 했습니다.");
     }
 
     //Item PickRandomItem()

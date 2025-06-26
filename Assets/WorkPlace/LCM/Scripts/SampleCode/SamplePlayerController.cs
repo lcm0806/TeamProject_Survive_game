@@ -1,4 +1,5 @@
 using Cinemachine;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -21,6 +22,14 @@ public class SamplePlayerController : MonoBehaviour
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
+    private Item _selectItem;
+    private Coroutine _itemUseCoroutine;
+    private bool _canUseItem => _itemUseCoroutine == null;
+    private Animator _animator;
+    private bool _isMoving => _moveDir != Vector3.zero;
+    // private bool _isGrabbing => _selectItem != null;
+    // 아래는 테스트 코드
+    private bool _isGrabbing = false;
 
     private void Awake()
     {
@@ -31,6 +40,7 @@ public class SamplePlayerController : MonoBehaviour
     {
         PlayerInput();
         HandlePlayer();
+        Animation();
     }
 
     private void FindInteractableItem()
@@ -178,6 +188,40 @@ public class SamplePlayerController : MonoBehaviour
             // 벽에 부딪히지 않는 경우 위치 리셋
             Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 4f;
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
+        }
+    }
+    IEnumerator ItemUsing()
+    {
+        // 아이템 연속 사용 코루틴
+        // 아이템 사용간의 딜레이 적용
+        // 아래는 임시
+        _selectItem.Use(this.gameObject);
+        yield return new WaitForSeconds(1f);
+        _itemUseCoroutine = null;
+    }
+    private void Animation()
+    {
+        MoveAnim();
+        GrabAnim();
+        SwingAnim();
+    }
+
+    private void MoveAnim()
+    {
+        _animator.SetBool("IsWalking", _isMoving);
+    }
+
+    private void GrabAnim()
+    {
+        _animator.SetBool("IsGrabbing", _isGrabbing);
+    }
+
+    private void SwingAnim()
+    {
+        // 나중엔 _isGrabbing도 조건에 추가되도록 변경
+        if (Input.GetMouseButtonDown(0) && _isGrabbing)
+        {
+            _animator.SetTrigger("Swing");
         }
     }
 

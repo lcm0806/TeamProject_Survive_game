@@ -414,8 +414,8 @@ public class GraphicsSystem : MonoBehaviour
     }
 
     // ========== 설정 저장/로드 메서드들 ==========
-    
-    void SaveGraphicsSettings()
+
+    public void SaveGraphicsSettings()
     {
         PlayerPrefs.SetInt(_fullscreenKey, _isFullscreen ? 1 : 0);
         PlayerPrefs.SetInt(_resolutionIndexKey, _currentResolutionIndex);
@@ -428,7 +428,7 @@ public class GraphicsSystem : MonoBehaviour
                   $"품질: {QualitySettings.names[_currentQualityIndex]}");
     }
 
-    void LoadGraphicsSettings()
+    public void LoadGraphicsSettings()
     {
         _isFullscreen = PlayerPrefs.GetInt(_fullscreenKey, 1) == 1;
         _currentResolutionIndex = PlayerPrefs.GetInt(_resolutionIndexKey, 0);

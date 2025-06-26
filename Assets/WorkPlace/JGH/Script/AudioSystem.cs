@@ -56,12 +56,12 @@ public class AudioSystem : MonoBehaviour
     private AudioSource _sfxAudioSource;
     
     // 볼륨 값 저장용
-    private float _bgmVolume = 0.5f;
-    private float _sfxVolume = 0.5f;
+    public float BGMVolume = 0.5f;
+    public float SFXVolume = 0.5f;
     
     // PlayerPrefs 키
-    private const string _bgmVolumeKey = "BGMVolume";
-    private const string _sfxVolumeKey = "SFXVolume";
+    public string BGMVolumeKey = "BGMVolume";
+    public string SFXVolumeKey = "SFXVolume";
 
     void Awake()
     {
@@ -120,7 +120,7 @@ public class AudioSystem : MonoBehaviour
 
     public void OnBGMVolumeChanged(float value)
     {
-        _bgmVolume = value;
+        BGMVolume = value;
         
         // AudioMixer 사용하는 경우
         if (_audioMixer != null)
@@ -140,7 +140,7 @@ public class AudioSystem : MonoBehaviour
 
     public void OnSFXVolumeChanged(float value)
     {
-        _sfxVolume = value;
+        SFXVolume = value;
         
         // AudioMixer 사용하는 경우
         if (_audioMixer != null)
@@ -161,10 +161,10 @@ public class AudioSystem : MonoBehaviour
     void UpdateVolumeTexts()
     {
         if (_bgmVolumeText != null)
-            _bgmVolumeText.text = Mathf.RoundToInt(_bgmVolume * 100).ToString();
+            _bgmVolumeText.text = Mathf.RoundToInt(BGMVolume * 100).ToString();
         
         if (_sfxVolumeText != null)
-            _sfxVolumeText.text = Mathf.RoundToInt(_sfxVolume * 100).ToString();
+            _sfxVolumeText.text = Mathf.RoundToInt(SFXVolume * 100).ToString();
     }
 
     /// <summary>
@@ -258,30 +258,30 @@ public class AudioSystem : MonoBehaviour
 
     void SaveVolumeSettings()
     {
-        PlayerPrefs.SetFloat(_bgmVolumeKey, _bgmVolume);
-        PlayerPrefs.SetFloat(_sfxVolumeKey, _sfxVolume);
+        PlayerPrefs.SetFloat(BGMVolumeKey, BGMVolume);
+        PlayerPrefs.SetFloat(SFXVolumeKey, SFXVolume);
         PlayerPrefs.Save();
         
-        Debug.Log($"볼륨 설정 저장됨 - BGM: {_bgmVolume:F2}, SFX: {_sfxVolume:F2}");
+        Debug.Log($"볼륨 설정 저장됨 - BGM: {BGMVolume:F2}, SFX: {SFXVolume:F2}");
     }
 
-    void LoadVolumeSettings()
+    public void LoadVolumeSettings()
     {
-        _bgmVolume = PlayerPrefs.GetFloat(_bgmVolumeKey, 0.5f);
-        _sfxVolume = PlayerPrefs.GetFloat(_sfxVolumeKey, 0.5f);
+        BGMVolume = PlayerPrefs.GetFloat(BGMVolumeKey, 0.5f);
+        SFXVolume = PlayerPrefs.GetFloat(SFXVolumeKey, 0.5f);
         
         // UI 업데이트
         if (_bgmSlider != null)
-            _bgmSlider.value = _bgmVolume;
+            _bgmSlider.value = BGMVolume;
         
         if (_sfxSlider != null)
-            _sfxSlider.value = _sfxVolume;
+            _sfxSlider.value = SFXVolume;
         
         // 실제 볼륨 적용
-        OnBGMVolumeChanged(_bgmVolume);
-        OnSFXVolumeChanged(_sfxVolume);
+        OnBGMVolumeChanged(BGMVolume);
+        OnSFXVolumeChanged(SFXVolume);
         
-        Debug.Log($"볼륨 설정 로드됨 - BGM: {_bgmVolume:F2}, SFX: {_sfxVolume:F2}");
+        Debug.Log($"볼륨 설정 로드됨 - BGM: {BGMVolume:F2}, SFX: {SFXVolume:F2}");
     }
 
     void OnDestroy()

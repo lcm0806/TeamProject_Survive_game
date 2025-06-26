@@ -1,6 +1,7 @@
+using UnityEngine;
 using System;
 using System.IO;
-using UnityEngine;
+using System.Collections.Generic;
 
 // ========== 데이터 클래스들 ==========
 
@@ -65,17 +66,12 @@ public class GameSettingsData
 [System.Serializable]
 public class SaveSlotInfo
 {
-    public bool isEmpty = true;
-    public string saveName = "";
+    public bool isEmpty;
+    public string saveName;
     public string saveDate;
-    public int currentDay = 1;
-    public string currentSceneName = "";
-    public float totalPlayTime = 0f;
-    public DateTime GetSaveDateTime()
-    {
-        if (DateTime.TryParse(saveDate, out DateTime result)) return result;
-        return DateTime.Now;
-    }
+    public int currentDay;
+    public float totalPlayTime;
+    public string currentSceneName;
 }
 
 // ========== 파일 시스템 ==========
@@ -122,9 +118,15 @@ public class FileSystem : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        
         _instance = this;
+        
+        if (transform.parent != null)
+        {
+            transform.SetParent(null);
+        }
+        
         DontDestroyOnLoad(gameObject);
-        InitializeFileSystem();
     }
 
     void Start()
@@ -152,31 +154,80 @@ public class FileSystem : MonoBehaviour
 
     public bool SaveGame(int slotIndex, string saveName = "")
     {
-        string currentScene = GetCurrentSceneName();
-        if (IsStartScene(currentScene)) return false;
-        if (slotIndex < 0 || slotIndex >= maxSaveSlots) return false;
-
-        GameSaveData saveData = CreateSaveData(saveName);
-        string fileName = $"save_slot_{slotIndex}.json";
-        if (SaveToFile(saveData, fileName))
+        try
         {
-            SaveSlotInfo(slotIndex, saveData);
+            string path = GetSaveFilePath(slotIndex);
+            SaveData saveData = new SaveData
+            {
+                saveName = saveName,
+                saveDate = DateTime.Now.ToString(),
+                currentDay = StatusSystem.Instance.GetCurrentDay(),
+                totalPlayTime = Time.realtimeSinceStartup,
+                
+                oxygen = StatusSystem.Instance.GetOxygen(),
+                energy = StatusSystem.Instance.GetEnergy(),
+                durability = StatusSystem.Instance.GetDurability(),
+                isToDay = StatusSystem.Instance.GetIsToDay(),
+                currentSceneName = SceneSystem.Instance.GetCurrentSceneName()
+            };
+
+            string jsonData = JsonUtility.ToJson(saveData, true);
+            File.WriteAllText(path, jsonData);
+            
+            Debug.Log($"게임 저장 완료 - 슬롯: {slotIndex}, 경로: {path}");
             return true;
         }
-        return false;
+        catch (Exception e)
+        {
+            Debug.LogError($"저장 실패: {e.Message}");
+            return false;
+        }
+    }
+    
+    [Serializable]
+    public class SaveData
+    {
+        public string saveName;
+        public string saveDate;
+        public int currentDay;
+        public float totalPlayTime;
+    
+        public double oxygen;
+        public double energy;
+        public double durability;
+        public bool isToDay;
+        public string currentSceneName;
     }
 
     public bool LoadGame(int slotIndex)
     {
-        if (slotIndex < 0 || slotIndex >= maxSaveSlots) return false;
-        string fileName = $"save_slot_{slotIndex}.json";
-        GameSaveData loadedData = LoadFromFile<GameSaveData>(fileName);
-        if (loadedData != null)
+        try
         {
-            ApplyLoadedData(loadedData);
+            string path = GetSaveFilePath(slotIndex);
+            if (!File.Exists(path))
+            {
+                Debug.LogWarning($"저장 파일이 없음: {path}");
+                return false;
+            }
+
+            string jsonData = File.ReadAllText(path);
+            SaveData saveData = JsonUtility.FromJson<SaveData>(jsonData);
+
+            StatusSystem.Instance.SetMinusOxygen(100 - saveData.oxygen);
+            StatusSystem.Instance.SetMinusEnergy(100 - saveData.energy);
+            StatusSystem.Instance.SetMinusDurability(100 - saveData.durability);
+            StatusSystem.Instance.SetIsToDay(saveData.isToDay);
+            
+            SceneSystem.Instance.LoadScene(saveData.currentSceneName);
+            
+            Debug.Log($"게임 로드 완료 - 슬롯: {slotIndex}");
             return true;
         }
-        return false;
+        catch (Exception e)
+        {
+            Debug.LogError($"로드 실패: {e.Message}");
+            return false;
+        }
     }
 
     public void AutoSave()
@@ -321,20 +372,43 @@ public class FileSystem : MonoBehaviour
 
     public SaveSlotInfo[] GetAllSlotInfo()
     {
-        SaveSlotInfo[] slotInfos = new SaveSlotInfo[maxSaveSlots];
-        for (int i = 0; i < maxSaveSlots; i++)
+        SaveSlotInfo[] infos = new SaveSlotInfo[5];
+        
+        for (int i = 0; i < 5; i++)
         {
-            try
+            string path = GetSaveFilePath(i);
+            infos[i] = new SaveSlotInfo();
+            
+            if (File.Exists(path))
             {
-                SaveSlotInfo loadedInfo = LoadFromFile<SaveSlotInfo>($"slot_info_{i}.json");
-                slotInfos[i] = loadedInfo ?? new SaveSlotInfo();
+                try
+                {
+                    string jsonData = File.ReadAllText(path);
+                    SaveData saveData = JsonUtility.FromJson<SaveData>(jsonData);
+                    
+                    infos[i].isEmpty = false;
+                    infos[i].saveName = saveData.saveName;
+                    infos[i].saveDate = saveData.saveDate;
+                    infos[i].currentDay = saveData.currentDay;
+                    infos[i].totalPlayTime = saveData.totalPlayTime;
+                }
+                catch
+                {
+                    infos[i].isEmpty = true;
+                }
             }
-            catch
+            else
             {
-                slotInfos[i] = new SaveSlotInfo();
+                infos[i].isEmpty = true;
             }
         }
-        return slotInfos;
+        
+        return infos;
+    }
+    
+    private string GetSaveFilePath(int slotIndex)
+    {
+        return Path.Combine(Application.persistentDataPath, $"savedata_{slotIndex}.json");
     }
 
     public bool DeleteSaveSlot(int slotIndex)
@@ -342,11 +416,20 @@ public class FileSystem : MonoBehaviour
         if (slotIndex < 0 || slotIndex >= maxSaveSlots) return false;
         try
         {
-            DeleteFileIfExists($"save_slot_{slotIndex}.json");
-            DeleteFileIfExists($"slot_info_{slotIndex}.json");
-            return true;
+            string path = GetSaveFilePath(slotIndex);
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+                Debug.Log($"저장 파일 삭제 완료: {path}");
+                return true;
+            }
+            return false;
         }
-        catch { return false; }
+        catch (Exception e)
+        {
+            Debug.LogError($"삭제 실패: {e.Message}");
+            return false;
+        }
     }
 
     public void SaveGameSettings()

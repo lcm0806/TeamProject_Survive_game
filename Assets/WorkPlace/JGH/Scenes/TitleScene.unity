@@ -295,50 +295,6 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
---- !u!1 &371305398
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 371305399}
-  - component: {fileID: 371305400}
-  m_Layer: 0
-  m_Name: GameSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &371305399
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371305398}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2007877367}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &371305400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371305398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b0e1d9522b4412f8dce23ae86b41a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,6 +627,10 @@ MonoBehaviour:
   _sfxClips:
   - name: MainSFX
     audioClip: {fileID: 8300000, guid: c98fd4048e222944d8a2a1c5f5d65dde, type: 3}
+  BGMVolume: 0.5
+  SFXVolume: 0.5
+  BGMVolumeKey: BGMVolume
+  SFXVolumeKey: SFXVolume
 --- !u!4 &1050666140
 Transform:
   m_ObjectHideFlags: 0
@@ -746,9 +706,10 @@ GameObject:
   - component: {fileID: 1323672470}
   - component: {fileID: 1323672469}
   - component: {fileID: 1323672468}
-  - component: {fileID: 1323672473}
   - component: {fileID: 1323672472}
+  - component: {fileID: 1323672475}
   - component: {fileID: 1323672474}
+  - component: {fileID: 1323672473}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -852,22 +813,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 1323672467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac1596db838844830a7afd42aad309e1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxSaveSlots: 5
-  enableAutoSave: 1
-  autoSaveInterval: 300
-  enableEncryption: 0
---- !u!114 &1323672473
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323672467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c58727e50fda04839814b375fad60b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
@@ -876,7 +821,7 @@ MonoBehaviour:
   SlotPanel: {fileID: 7409955364979077384}
   ConfirmDialog: {fileID: 1255181353}
   ExitMenu: {fileID: 1315157738}
---- !u!114 &1323672474
+--- !u!114 &1323672473
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -893,6 +838,34 @@ MonoBehaviour:
   _qualityDropdown: {fileID: 1179043068}
   _okButton: {fileID: 738682987}
   _backButton: {fileID: 1598475025}
+--- !u!114 &1323672474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323672467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac1596db838844830a7afd42aad309e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxSaveSlots: 5
+  enableAutoSave: 1
+  autoSaveInterval: 300
+  enableEncryption: 0
+--- !u!114 &1323672475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1323672467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22b0e1d9522b4412f8dce23ae86b41a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1396651529 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3613410250804435272, guid: f26923c3529f9401181b8409823a3f41,
@@ -1065,7 +1038,6 @@ Transform:
   - {fileID: 1050666140}
   - {fileID: 1414138806}
   - {fileID: 541403451}
-  - {fileID: 371305399}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4152432544405500250
@@ -1372,6 +1344,31 @@ PrefabInstance:
       propertyPath: m_Name
       value: Title
       objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_text
+      value: Dangerous Mars
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.w
+      value: -11.9778385
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.x
+      value: -192.80275
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.y
+      value: -11.854528
+      objectReference: {fileID: 0}
+    - target: {fileID: 1671901693390454629, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_margin.z
+      value: -193.76624
+      objectReference: {fileID: 0}
     - target: {fileID: 2134712474467009955, guid: f26923c3529f9401181b8409823a3f41,
         type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1401,6 +1398,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 123
+      objectReference: {fileID: 0}
+    - target: {fileID: 7523177431190977377, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_text
+      value: "\uC0C8 \uAC8C\uC784"
       objectReference: {fileID: 0}
     - target: {fileID: 7542626361146878074, guid: f26923c3529f9401181b8409823a3f41,
         type: 3}

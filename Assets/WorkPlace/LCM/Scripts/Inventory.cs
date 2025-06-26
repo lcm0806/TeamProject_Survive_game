@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DesignPattern;
 using System;
+using TMPro;
 
 public class Inventory : Singleton<Inventory>
 {
@@ -36,7 +37,7 @@ public class Inventory : Singleton<Inventory>
 
     // 핫바 슬롯 변경을 외부에 알리는 이벤트 (UI 업데이트 등에 사용)
     public event Action<int> OnHotbarSlotChanged;
-
+    
 
     void Awake()
     {
@@ -107,22 +108,91 @@ public class Inventory : Singleton<Inventory>
     }
 
 
-    public void SpawnInventoryItem(Item item = null)
+    public void SpawnInventoryItem(Item item)
     {
-        Item _item = item;
-        //if (_item == null)
-        ////TODO: 아이템을 얻었을때 어떻게 생성이 될지
-        //{ _item = PickRandomItem(); }
+        // 스택 가능한 아이템인 경우, 먼저 기존 슬롯을 확인
+        if (item.isStackable)
+        {
+            foreach (var slot in hotbarSlots) // 또는 inventorySlots
+            {
+                if (slot.myItemData == item && slot.myItemUI != null && slot.myItemUI.CurrentQuantity < item.maxStackSize)
+                {
+                    slot.myItemUI.CurrentQuantity++;
+                    Debug.Log($"SUCCESS: '{item.itemName}' stacked in {slot.name}. New Qty: {slot.myItemUI.CurrentQuantity}");
+                    return; // 스택 성공
+                }
+            }
+            // === 인벤토리 슬롯 확인 (스택 로직) ===
+            foreach (var slot in inventorySlots)
+            {
+                if (slot.myItemData == item && slot.myItemUI != null && slot.myItemUI.CurrentQuantity < item.maxStackSize)
+                {
+                    slot.myItemUI.CurrentQuantity++; // 수량 증가
+                    Debug.Log($"SUCCESS: '{item.itemName}' stacked in inventory slot {slot.name}. New Qty: {slot.myItemUI.CurrentQuantity}");
+                    return; // 아이템 추가 완료
+                }
+            }
+            // 핫바 슬롯 먼저 확인
+            //foreach (var slot in hotbarSlots)
+            //{
+            //    if (slot.myItemData != null) // 슬롯에 아이템이 있을 때만 비교
+            //    {
+            //        Debug.Log($"  [Hotbar Check] Slot: {slot.name}, Existing Item: {slot.myItemData.name} (ID: {slot.myItemData.GetInstanceID()})");
+            //        Debug.Log($"  [Hotbar Check] Incoming Item: {item.name} (ID: {item.GetInstanceID()})");
+            //        Debug.Log($"  [Hotbar Check] Are they same instance? {slot.myItemData == item}"); // <-- 이 결과가 True인지 False인지 확인!
+            //        Debug.Log($"  [Hotbar Check] Current Qty: {slot.myItemUI.CurrentQuantity}, Max Stack: {item.maxStackSize}");
+            //    }
+            //    else
+            //    {
+            //        Debug.Log($"  [Hotbar Check] Slot: {slot.name} is empty.");
+            //    }
 
+            //    if (slot.myItemData == item && slot.myItemUI.CurrentQuantity < item.maxStackSize)
+            //    {
+            //        slot.myItemUI.CurrentQuantity++; // 수량 증가
+            //        Debug.Log($"핫바에 '{item.itemName}' 수량 증가: {slot.myItemUI.CurrentQuantity}");
+            //        return; // 아이템 추가 완료
+            //    }
+            //}
+
+            //// 인벤토리 슬롯 확인
+            //foreach (var slot in inventorySlots)
+            //{
+            //    if (slot.myItemData != null) // 슬롯에 아이템이 있을 때만 비교
+            //    {
+            //        Debug.Log($"  [Inventory Check] Slot: {slot.name}, Existing Item: {slot.myItemData.name} (ID: {slot.myItemData.GetInstanceID()})");
+            //        Debug.Log($"  [Inventory Check] Incoming Item: {item.name} (ID: {item.GetInstanceID()})");
+            //        Debug.Log($"  [Inventory Check] Are they same instance? {slot.myItemData == item}"); // <-- 이 결과가 True인지 False인지 확인!
+            //        Debug.Log($"  [Inventory Check] Current Qty: {slot.myItemUI.CurrentQuantity}, Max Stack: {item.maxStackSize}");
+            //    }
+            //    else
+            //    {
+            //        Debug.Log($"  [Inventory Check] Slot: {slot.name} is empty.");
+            //    }
+
+            //    if (slot.myItemData == item && slot.myItemUI.CurrentQuantity < item.maxStackSize)
+            //    {
+            //        slot.myItemUI.CurrentQuantity++; // 수량 증가
+            //        Debug.Log($"인벤토리에 '{item.itemName}' 수량 증가: {slot.myItemUI.CurrentQuantity}");
+            //        return; // 아이템 추가 완료
+            //    }
+            //}
+        }
+
+        // 스택할 수 없거나, 스택 가능한 아이템이지만 모든 기존 슬롯이 꽉 찼을 경우
+        // 비어있는 새 슬롯에 아이템을 생성
         for (int i = 0; i < inventorySlots.Length; i++)
         {
-            // Check if the slot is empty
-            if (inventorySlots[i].myItemUI == null)
+            if (inventorySlots[i].myItemUI == null) // 비어있는 슬롯을 찾음
             {
-                Instantiate(itemPrefab, inventorySlots[i].transform).Initialize(_item, inventorySlots[i]);
-                break;
+                var newItemUI = Instantiate(itemPrefab, inventorySlots[i].transform);
+                newItemUI.Initialize(item, inventorySlots[i]); // Initialize 호출
+                Debug.Log($"새 슬롯에 '{item.itemName}' 추가.");
+                return; // 아이템 추가 완료
             }
         }
+
+        Debug.LogWarning($"인벤토리가 가득 찼습니다. '{item.itemName}'을(를) 추가할 수 없습니다.");
 
 
     }
@@ -143,7 +213,7 @@ public class Inventory : Singleton<Inventory>
         }
         else
         {
-            // 1. 아이템이 떨어질 위치를 계산 (플레이어 전방)
+            //아이템이 떨어질 위치를 계산 (플레이어 전방)
             Transform playerTransform = SamplePlayerManager.Instance.Player.transform; // PlayerController의 transform
             Vector3 dropPosition = playerTransform.position + playerTransform.forward * _dropDistance;
             dropPosition.y += 0.5f;
@@ -154,11 +224,11 @@ public class Inventory : Singleton<Inventory>
                 dropPosition.y = hit.point.y + 0.1f;
             }
 
-            // 2. 3D 게임 오브젝트를 월드에 인스턴스화
+            //3D 게임 오브젝트를 월드에 인스턴스화
             Instantiate(itemWorldPrefab, dropPosition, Quaternion.identity);
         }
 
-        // 3. 인벤토리 슬롯에서 아이템을 제거하고 UI 인스턴스 파괴
+        //인벤토리 슬롯에서 아이템을 제거하고 UI 인스턴스 파괴
         if (itemToDropUI.activeSlot != null)
         {
             itemToDropUI.activeSlot.ClearSlot(); // 해당 슬롯을 비움 (데이터 및 UI 참조 제거)
@@ -198,27 +268,59 @@ public class Inventory : Singleton<Inventory>
     public void RemoveItem(Item itemToRemove, int amount = 1)
     {
         int removedCount = 0;
-        for (int i = 0; i < inventorySlots.Length; i++)
-        {
-            if (inventorySlots[i].myItemData == itemToRemove)
-            {
-                inventorySlots[i].ClearSlot();
-                removedCount++;
-                if (removedCount == amount) break;
-            }
-        }
 
-        for(int i = 0; i < hotbarSlots.Length; i++)
+        // 핫바 슬롯에서 제거
+        for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i].myItemData == itemToRemove)
             {
-                hotbarSlots[i].ClearSlot();
-                removedCount++;
-                if (removedCount >= amount) break;
+                // 스택 가능한 아이템이고, 남은 수량이 제거할 수량보다 많으면 수량만 감소
+                if (itemToRemove.isStackable && hotbarSlots[i].myItemUI.CurrentQuantity > amount - removedCount)
+                {
+                    hotbarSlots[i].myItemUI.CurrentQuantity -= (amount - removedCount);
+                    removedCount = amount; // 모두 제거된 것으로 간주
+                    break;
+                }
+                else // 스택 불가능하거나, 남은 수량이 제거할 수량 이하이면 슬롯 비움
+                {
+                    int currentStack = hotbarSlots[i].myItemUI.CurrentQuantity;
+                    hotbarSlots[i].ClearSlot();
+                    removedCount += currentStack;
+                    if (removedCount >= amount) break;
+                }
             }
         }
 
-        Debug.Log($"{itemToRemove.name}{removedCount}개를 인벤토리에서 제거 했습니다.");
+        // 인벤토리 슬롯에서 제거 (핫바에서 전부 제거되지 않은 경우)
+        if (removedCount < amount)
+        {
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                if (inventorySlots[i].myItemData == itemToRemove)
+                {
+                    // 스택 가능한 아이템이고, 남은 수량이 제거할 수량보다 많으면 수량만 감소
+                    if (itemToRemove.isStackable && inventorySlots[i].myItemUI.CurrentQuantity > amount - removedCount)
+                    {
+                        inventorySlots[i].myItemUI.CurrentQuantity -= (amount - removedCount);
+                        removedCount = amount;
+                        break;
+                    }
+                    else // 스택 불가능하거나, 남은 수량이 제거할 수량 이하이면 슬롯 비움
+                    {
+                        int currentStack = inventorySlots[i].myItemUI.CurrentQuantity;
+                        inventorySlots[i].ClearSlot();
+                        removedCount += currentStack;
+                        if (removedCount >= amount) break;
+                    }
+                }
+            }
+        }
+
+        Debug.Log($"{itemToRemove.name} {removedCount}개를 인벤토리에서 제거했습니다.");
+        if (removedCount < amount)
+        {
+            Debug.LogWarning($"요청한 {amount}개 중 {amount - removedCount}개를 제거하지 못했습니다. 아이템 부족.");
+        }
     }
 
     //Item PickRandomItem()

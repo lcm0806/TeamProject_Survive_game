@@ -10,7 +10,7 @@ public enum SlotTag { None, Head, Chest, Legs, Feet }
 
 public class InventorySlot : MonoBehaviour, IDropHandler
 {
-    public Item myItemData { get; private set; }
+    public Item myItemData { get; set; }
     public InventoryItem myItemUI { get; set; }
 
     public SlotTag myTag;

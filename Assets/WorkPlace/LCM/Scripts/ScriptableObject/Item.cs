@@ -21,6 +21,10 @@ public class Item : ScriptableObject
     [Header("If the item can be equipped")]
     public GameObject equipmentPrefab;
 
+    [Header("Stacking")]
+    public bool isStackable = false; // 이 아이템이 스택 가능한지 여부
+    public int maxStackSize = 99;
+
     public virtual void Use(GameObject user)
     {
         Debug.Log($"{user.name} Used {itemName}");

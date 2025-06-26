@@ -55,24 +55,26 @@ public class MineableResource : MonoBehaviour
     {
         if (lootPrefab == null) return;
 
-        Vector3 spawnPos = transform.position + Vector3.up * 1.5f;
+        // 1) 생성 위치: 위로 1.2m + 수평 ±0.5m 랜덤
+        Vector3 spread = Random.insideUnitSphere * 1.0f;
+        spread.y = Mathf.Abs(spread.y);          // 아래로 떨어지지 않게
+        Vector3 spawnPos = transform.position + Vector3.up * 1.2f + spread;
+
         GameObject loot = Instantiate(lootPrefab, spawnPos, Quaternion.identity);
 
-        if (loot != null)
+        // 2) 광물 본체와 충돌 무시
+        if (TryGetComponent<Collider>(out var parentCol) &&
+            loot.TryGetComponent<Collider>(out var lootCol))
         {
-            // 보급상자와 충돌 무시
-            Collider myCol = GetComponent<Collider>();
-            Collider lootCol = loot.GetComponent<Collider>();
-            if (myCol != null && lootCol != null)
-            {
-                Physics.IgnoreCollision(myCol, lootCol);
-            }
+            Physics.IgnoreCollision(parentCol, lootCol);
+        }
 
-            if (loot.TryGetComponent<Rigidbody>(out var rb))
-            {
-                Vector3 dir = (Vector3.up + Random.insideUnitSphere * 0.3f).normalized;
-                rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
-            }
+        // 3) 위쪽 가중치 힘 적용
+        if (loot.TryGetComponent<Rigidbody>(out var rb))
+        {
+            Vector3 dir = (Vector3.up * 0.8f + Random.insideUnitSphere * 0.2f).normalized;
+            dir.y = Mathf.Max(dir.y, 0.5f);            // 최소 위로 0.5 이상
+            rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
         }
     }
 

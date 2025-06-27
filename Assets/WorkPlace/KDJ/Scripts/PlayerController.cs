@@ -215,6 +215,12 @@ public class PlayerController : MonoBehaviour
                     PlayerManager.Instance.InteractableStructure = interactable as Structure;
                     PlayerManager.Instance.IsInIntercation = true;
                 }
+                // 아래는 테스트 코드
+                else if (interactable as TestWorldItem)
+                {
+                    PlayerManager.Instance.InteractableTestItem = interactable as TestWorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
             }
         }
         else
@@ -256,8 +262,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             // 땅에 떨어진 아이템은 E누르면 즉시 상호작용
-            if (PlayerManager.Instance.InteractableItem != null)
-                PlayerManager.Instance.InteractableItem.Interact();
+            if (PlayerManager.Instance.InteractableTestItem != null)
+                // PlayerManager.Instance.InteractableItem.Interact();
+                PlayerManager.Instance.InteractableTestItem.Interact(); // 테스트 코드
         }
 
         if (Input.GetKey(KeyCode.E))
@@ -303,7 +310,7 @@ public class PlayerController : MonoBehaviour
             _testBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
-            if(PlayerManager.Instance.ItemDelay >= 1)
+            if(PlayerManager.Instance.ItemDelay >= 0.1f)
             {
                 Debug.Log("아이템 사용!");
                 PlayerManager.Instance.SelectItem.Use(this.gameObject);
@@ -415,11 +422,11 @@ public class PlayerController : MonoBehaviour
     #region 테스트 코드
     private void MineGunSetPos()
     {
-        if (PlayerManager.Instance.SelectItem != null && _testHandItem == null)
-        {
-            _testHandItem = Instantiate(_mineGunPrefab, _playerHand.position, _playerHand.rotation);
-        }
-
+        //if (PlayerManager.Instance.SelectItem != null && _testHandItem == null)
+        //{
+        //    _testHandItem = Instantiate(_mineGunPrefab, _playerHand.position, _playerHand.rotation);
+        //}
+    
         if (_testHandItem != null)
         {
             // 플레이어의 손 위치에 마인건을 위치시킴

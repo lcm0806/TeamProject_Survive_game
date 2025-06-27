@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c3c9f699e267bb4895cea617cfcdabb, type: 3}
+  m_Name: TestMineGun
+  m_EditorClassIdentifier: 
+  itemName: MineGun
+  description: Can mining ore.
+  icon: {fileID: 21300000, guid: d6170f0043123264fbe2bd0827417f99, type: 3}
+  WorldPrefab: {fileID: 9158704856759509913, guid: 2cb979bca3f5e2c43beccc6130f03e3f,
+    type: 3}
+  equipmentPrefab: {fileID: 0}
+  isStackable: 0
+  maxStackSize: 99
+  miningPower: 1
+  toolType: 0
+  toolPrefab: {fileID: 1860538818409808581, guid: 2630337cc8455dc4cbd669c8f968ba28,
+    type: 3}
+  toolAction: {fileID: 0}

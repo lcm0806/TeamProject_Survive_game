@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class TestOre : MonoBehaviour
 {
-    private int hp;
+    private float hp;
 
     private void Awake()
     {
-        hp = 10;
+        hp = 100;
     }
 
     public void TakeDamage(int damage)

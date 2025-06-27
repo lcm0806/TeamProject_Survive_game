@@ -5,7 +5,7 @@ using UnityEngine;
 public class MineableResource : MonoBehaviour
 {
     [Header("광물 설정")]
-    [SerializeField]public int maxHealth = 5;
+    [SerializeField]public int maxHealth;
     private float currentHealth;        //float 로! (연속 데미지용)
 
     [Header("드롭 설정")]

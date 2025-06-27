@@ -10,7 +10,7 @@ public class PlayerMiner : MonoBehaviour
     public LayerMask interactLayer;               // 상호작용 가능한 레이어 지정
 
     public float miningRange = 3f;
-    public float miningDamagePerSecond = 1f;
+    public float miningDamagePerSecond = 10f;
     
 
     private void Update()
@@ -56,7 +56,7 @@ public class PlayerMiner : MonoBehaviour
         Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
         Vector3 rayDir = transform.forward;
 
-        // ① 레이캐스트 시각화 (씬 뷰에서만 보임)
+        //레이캐스트 시각화 (씬 뷰에서만 보임)
         Debug.DrawRay(rayOrigin, rayDir * miningRange, Color.red, 0.1f);
 
         Ray ray = new Ray(rayOrigin, rayDir);

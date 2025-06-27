@@ -9,16 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fdafe40d65041a40a48aae8c5ad7410, type: 3}
-  m_Name: MiningRig
+  m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
+  m_Name: Test
   m_EditorClassIdentifier: 
   itemName: New Item
   description: A basic item.
   icon: {fileID: 0}
-  WorldPrefab: {fileID: 4549532238603850017, guid: 9416285ab96378d4796b11557553c5fe,
-    type: 3}
+  WorldPrefab: {fileID: 0}
   equipmentPrefab: {fileID: 0}
   isStackable: 0
   maxStackSize: 99
-  miningPower: 1
-  toolType: 0

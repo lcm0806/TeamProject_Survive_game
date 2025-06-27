@@ -301,7 +301,7 @@ public class PlayerController : MonoBehaviour
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
             if(PlayerManager.Instance.ItemDelay >= 1)
             {
-                Debug.Log("아이템 사용!");
+                //Debug.Log("아이템 사용!");
                 // PlayerManager.Instance.SelectItem.Use(this.gameObject);
                 PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
             }

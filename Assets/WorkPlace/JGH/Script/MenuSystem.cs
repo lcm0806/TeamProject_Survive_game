@@ -19,8 +19,8 @@ public class MenuSystem : MonoBehaviour
 
     [Header("일시정지 메뉴")] 
     public GameObject PauseMenu;
-    private Button _PuaseSetButton;
-    private Button _PuaseExitButton;
+    private Button _pauseSetButton;
+    private Button _pauseExitButton;
 
     [Header("종료 메뉴")] 
     public GameObject ExitMenu;
@@ -77,7 +77,126 @@ public class MenuSystem : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    
+    void Update()
+    {
+        // ESC 키 입력 처리
+        HandleEscapeInput();
+    } 
+    
+    /// <summary>
+    /// ESC 키 입력 처리
+    /// </summary>
+    private void HandleEscapeInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            string currentSceneName = GetCurrentSceneName();
+            
+            // TitleScene에서는 ESC 무시
+            if (currentSceneName == "TitleScene" || currentSceneName == "MainMenuScene")
+            {
+                return;
+            }
+            
+            // 이미 메뉴가 열려있는 경우
+            if (_isMenuOpen)
+            {
+                // 일시정지 메뉴가 열려있다면 닫기 (게임 재개)
+                if (_currentOpenMenu == PauseMenu)
+                {
+                    ResumeGame();
+                }
+                // 다른 메뉴가 열려있다면 닫기
+                else
+                {
+                    CloseCurrentMenu();
+                }
+            }
+            // 메뉴가 열려있지 않다면 일시정지 메뉴 열기
+            else
+            {
+                PauseGame();
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 게임 일시정지 및 일시정지 메뉴 열기
+    /// </summary>
+    public void PauseGame()
+    {
+        Debug.Log("게임 일시정지");
+        
+        // GameSystem 싱글톤 참조로 게임 일시정지
+        if (GameSystem.Instance != null)
+        {
+            GameSystem.Instance.Pause();
+        }
+        
+        // 일시정지 메뉴 열기
+        OpenMenu(PauseMenu);
+    }
 
+    /// <summary>
+    /// 게임 재개 및 일시정지 메뉴 닫기 
+    /// </summary>
+    public void ResumeGame()
+    {
+        Debug.Log("게임 재개");
+        
+        // 메뉴 닫기
+        CloseCurrentMenu();
+        
+        if (GameSystem.Instance != null)
+        {
+            GameSystem.Instance.Resume();
+        }
+    }
+    
+    private void OnPauseSetButtonClick()
+    {
+        if (IsAnyMenuOpen() && _currentOpenMenu != PauseMenu) return;
+        Debug.Log("일시정지 메뉴 - 설정 버튼 클릭");
+        
+        // 일시정지 메뉴를 닫고 설정 메뉴 열기
+        CloseCurrentMenu();
+        OpenMenu(SettingMenu);
+    }
+    
+    private void OnPauseExitButtonClick()
+    {
+        if (IsAnyMenuOpen() && _currentOpenMenu != PauseMenu) return;
+        Debug.Log("일시정지 메뉴 - 메인 메뉴로 나가기");
+    
+    
+        // 메뉴 닫기
+        CloseCurrentMenu();
+        OpenMenu(ExitMenu);
+    }
+    
+
+    private void PauseMenuButtons()
+    {
+        if (PauseMenu != null)
+        {
+            _pauseSetButton?.onClick.AddListener(OnPauseSetButtonClick);
+            _pauseExitButton?.onClick.AddListener(OnPauseExitButtonClick);
+        }
+    }
+    
+    /// <summary>
+    /// 현재 씬 이름 가져오기 
+    /// </summary>
+    private string GetCurrentSceneName()
+    {
+        if (SceneSystem.Instance != null)
+        {
+            return SceneSystem.Instance.GetCurrentSceneName();
+        }
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+    }
+    
     void Start()
     {
         if (MainMenu != null)
@@ -151,6 +270,13 @@ public class MenuSystem : MonoBehaviour
             _settingBackButton = SettingMenu.transform.Find("BackButton")?.GetComponent<Button>();
             _settingOkButton = SettingMenu.transform.Find("OkButton")?.GetComponent<Button>();
             SettingMenuButtons();
+        }
+
+        if (PauseMenu != null)
+        {
+            _pauseSetButton = PauseMenu.transform.Find("SettingButton")?.GetComponent<Button>();
+            _pauseExitButton = PauseMenu.transform.Find("ExitButton")?.GetComponent<Button>();    
+            PauseMenuButtons();
         }
         
         // TODO: TEST
@@ -238,12 +364,18 @@ public class MenuSystem : MonoBehaviour
     {
         Debug.Log("설정 메뉴 - 뒤로가기 버튼 클릭");
         
-        // 다른 시스템들의 설정 복원
         AudioSystem.Instance?.LoadVolumeSettings();
         GraphicsSystem.Instance?.LoadGraphicsSettings();
     
         // 메뉴 닫기
         CloseCurrentMenu();
+        
+        // 게임 씬에서 설정을 열었다면 일시정지 메뉴로 돌아가기
+        string currentSceneName = GetCurrentSceneName();
+        if (currentSceneName != "TitleScene" && currentSceneName != "MainMenuScene")
+        {
+            OpenMenu(PauseMenu);
+        }
     }
 
     private void OnSettingOkButtonClick()
@@ -256,6 +388,13 @@ public class MenuSystem : MonoBehaviour
     
         // 메뉴 닫기
         CloseCurrentMenu();
+        
+        // 게임 씬에서 설정을 열었다면 일시정지 메뉴로 돌아가기
+        string currentSceneName = GetCurrentSceneName();
+        if (currentSceneName != "TitleScene" && currentSceneName != "MainMenuScene")
+        {
+            OpenMenu(PauseMenu);
+        }
     }
     
     public void CloseSettingMenu()

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MiningRig
   m_EditorClassIdentifier: 
   itemName: New Item
-  description: A basic item.
+  description: MiningRig
   icon: {fileID: 0}
   WorldPrefab: {fileID: 4549532238603850017, guid: 9416285ab96378d4796b11557553c5fe,
     type: 3}

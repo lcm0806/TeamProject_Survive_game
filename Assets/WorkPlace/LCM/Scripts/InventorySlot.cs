@@ -20,7 +20,8 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         InventoryItem droppedItemUI = eventData.pointerDrag.GetComponent<InventoryItem>();
         if (droppedItemUI != null)
         {
-            SetItem(droppedItemUI); // 현재 슬롯에 아이템 설정 (자동으로 CarriedItem 해제)
+            //SetItem(droppedItemUI); // 현재 슬롯에 아이템 설정 (자동으로 CarriedItem 해제)
+            Inventory.Instance.HandleItemDropOrClick(this, droppedItemUI);
         }
     }
 
@@ -28,8 +29,21 @@ public class InventorySlot : MonoBehaviour, IDropHandler
     {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            if(Inventory.CarriedItem == null) return;
-            SetItem(Inventory.CarriedItem);
+            Inventory.Instance.HandleItemDropOrClick(this, Inventory.CarriedItem);
+        }
+        else if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            // 우클릭 시 아이템 사용 또는 드롭 로직
+            if (myItemUI != null && Inventory.CarriedItem == null)
+            {
+                // 아이템 사용 로직 (예시)
+                if (myItemData != null)
+                {
+                    Debug.Log($"'{myItemData.itemName}'을(를) 사용합니다.");
+                    // TODO: 아이템 사용 효과 구현
+                    // Inventory.Instance.RemoveItem(myItemData); // 사용 후 아이템 제거 (수량 1 감소)
+                }
+            }
         }
     }
 
@@ -40,6 +54,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         {
             // TODO: 기존 아이템 UI를 비활성화하거나 파괴하는 로직 추가
             // Destroy(myItemUI.gameObject); // 필요하다면 이전 아이템 UI를 파괴
+            Destroy(myItemUI.gameObject);
         }
         if (itemUI.activeSlot != null)
         {
@@ -57,6 +72,9 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         myItemUI.transform.SetParent(transform);
         myItemUI.transform.localPosition = Vector3.zero; // 위치 초기화
         myItemUI.canvasGroup.blocksRaycasts = true;
+
+        // InventoryItem의 현재 수량을 슬롯에 반영 (수량 텍스트 업데이트)
+        myItemUI.CurrentQuantity = itemUI.CurrentQuantity; // 이 코드가 InventoryItem의 set property를 호출합니다.
 
 
     }

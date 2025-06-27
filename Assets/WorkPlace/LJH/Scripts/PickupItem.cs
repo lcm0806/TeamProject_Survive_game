@@ -98,8 +98,15 @@ public class PickupItem : MonoBehaviour, IInteractable
     }
 
     /* ------------------- UI 메시지 ------------------- */
-    private void ShowMessage(string msg)
+    private void ShowMessage(string message)
     {
-        Debug.Log(msg); // UIManager.Instance.ShowPopup(msg);
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.ShowPopup(message);
+        }
+        else
+        {
+            Debug.LogWarning("UIManager가 씬에 없습니다.");
+        }
     }
 }

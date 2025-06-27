@@ -101,13 +101,8 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (canvasGroup == null) return;
 
-        // 마우스로 들고 다니는 아이템으로 설정
-        Inventory.Instance.SetCarriedItem(this); 
-
-        // 드래그 중에는 이 아이템 UI가 다른 UI 요소들의 레이캐스트를 막지 않도록 합니다.
-        canvasGroup.blocksRaycasts = false;
-        // 드래그 중에는 잠시 부모를 Canvas의 최상위 (DraggablesTransform)로 변경하여 UI 계층에 따라 가려지지 않도록 합니다.
-        transform.SetParent(Inventory.Instance.draggablesTransform);
+        // Inventory에서 CarriedItem 설정
+        Inventory.Instance.SetCarriedItem(this);
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -120,8 +115,38 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // 원래 슬롯으로 돌아가도록 처리합니다.
         if (Inventory.CarriedItem != null)
         {
-            // InventorySlot의 SetItem 메서드를 다시 호출하여 원래 슬롯으로 돌려놓습니다.
-            activeSlot.SetItem(Inventory.CarriedItem);
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            bool droppedOnUI = false;
+            foreach (var result in results)
+            {
+                // 드롭 대상이 InventorySlot이거나 InventoryItem(자기 자신 포함)이 아닌 다른 UI 요소일 경우
+                // (이 부분은 프로젝트의 UI 구조에 따라 더 정교하게 조정될 수 있습니다.)
+                if (result.gameObject.GetComponent<InventorySlot>() != null || result.gameObject.GetComponent<InventoryItem>() != null)
+                {
+                    droppedOnUI = true;
+                    break;
+                }
+            }
+            if (!droppedOnUI) // UI 위에 드롭되지 않았다면 월드에 버림
+            {
+                Inventory.Instance.DropItemFromSlot(Inventory.CarriedItem);
+            }
+            else // UI 위에 드롭되었지만 InventorySlot이 아니었거나 드롭 처리되지 않았다면 원래 위치로 되돌림
+            {
+                // 이전에 들고 있던 아이템의 슬롯으로 다시 되돌림
+                if (Inventory.CarriedItem.activeSlot != null)
+                {
+                    Inventory.CarriedItem.activeSlot.SetItem(Inventory.CarriedItem);
+                }
+                // 만약 원래 슬롯이 없었다면 (예: 새로 생성된 아이템) 그냥 파괴
+                else
+                {
+                    Destroy(Inventory.CarriedItem.gameObject);
+                }
+                Inventory.CarriedItem = null; // 들고 있는 아이템 해제
+            }
         }
     }
 }

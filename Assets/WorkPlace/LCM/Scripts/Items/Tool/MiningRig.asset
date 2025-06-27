@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: New Item
   description: MiningRig
   icon: {fileID: 0}
-  WorldPrefab: {fileID: 4549532238603850017, guid: 9416285ab96378d4796b11557553c5fe,
+  WorldPrefab: {fileID: 3752825578907025319, guid: b92a26f3684bc8242a96c99c8778b6bc,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 0

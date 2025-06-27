@@ -1,18 +1,23 @@
 using Cinemachine;
-using System.Collections;
+using Test;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    #region ì§ë ¬í™” ë³€ìˆ˜
     [SerializeField] private CharacterController _controller;
     [SerializeField] private CinemachineVirtualCamera _virCam;
     [SerializeField] private Transform _virCamAxis;
+    [SerializeField] private Transform _playerHand;
+    [SerializeField] private GameObject _mineGunPrefab; // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ í”„ë¦¬íŒ¹
 
     [Header("Config")]
     [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
     [SerializeField] private float _speed;
     [SerializeField] private float _baseSpeed = 5f;
+    #endregion
 
+    #region ë³€ìˆ˜
     private Vector3 _verVelocity;
     private Vector3 _moveDir;
     private Vector2 _mouseInput;
@@ -20,15 +25,18 @@ public class PlayerController : MonoBehaviour
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
     private Collider[] _colls = new Collider[10];
-    private Item _selectItem;
     private WorldItem _worldItem;
-    private Coroutine _itemUseCoroutine;
-    private bool _canUseItem => _itemUseCoroutine == null;
     private Animator _animator;
+    private Vector3 _rayEndPos;
+    private bool _isRayHit;
+    private RaycastHit _rayHit;
     private bool _isMoving => _moveDir != Vector3.zero;
-    // private bool _isGrabbing => _selectItem != null;
-    // ¾Æ·¡´Â Å×½ºÆ® ÄÚµå
-    private bool _isGrabbing = false;
+    private bool _isGrabbing => PlayerManager.Instance.SelectItem != null;
+    // ì•„ë˜ëŠ” í…ŒìŠ¤íŠ¸ ì½”ë“œ
+    // private bool _isGrabbing = false;
+    private bool _testBool;
+    public GameObject _testHandItem;
+    #endregion
 
     private void Awake()
     {
@@ -40,82 +48,190 @@ public class PlayerController : MonoBehaviour
         PlayerInput();
         HandlePlayer();
         Animation();
+        MineGunSetPos(); // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ ìœ„ì¹˜ ì„¤ì •
     }
-
-    // overlapsphere·Î ±³Ã¼ÇÏ±â¿¡ ÁÖ¼®Ã³¸®.
-    // ÇöÀç ÀÎÅÍ·º¼Ç ¹æ½ÄÀº ÇÑ°÷¿¡ ÇÏ³ªÀÇ ¿ÀºêÁ§Æ®¸¸ ÀÖ´Ù´Â °É ÀüÁ¦·Î Á¦ÀÛµÊ
-    // ¹«Á¶°Ç Ã³À½ Á¢±ÙÇÑ ¿ÀºêÁ§Æ®¸¸ ÀÎÅÍ·º¼ÇÀÌ °¡´ÉÇÏµµ·Ï Á¦ÀÛ
-    // ¿©·¯ ¿ÀºêÁ§Æ®°¡ ÀÖÀ» °æ¿ì, Áö±İ ¹æ½ÄÀÌ ¾Æ´Ñ ´Ù¸¥ ¹æ½ÄÀ¸·Î ÄÚµå¸¦ ÀÛ¼ºÇÏ¿©¾ß ÇÔ
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
-    //     {
-    //         _interactableItem = interact as TestItem;
-    //         TestPlayerManager.Instance.IsInIntercation = true;
-    //         // ³ªÁß¿¡ ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë ¹°Ã¼°¡ ³ª´¶´Ù°í ÇÏ¸é
-    //         // _interactableItem¿¡ as·Î ³ÖÀ»¶§ Á¶°Ç¹®À» ÀÌ¿ëÇÏ¿© »óÈ²¿¡ ¸Â°Ô ³Ö´Â ·ÎÁ÷ ÇÊ¿ä
-    //         // ItemÀÌ¶ó¸é as ItemÀ¸·Î, ±¸Á¶¹°ÀÌ¶ó¸é as Structure·Î ³Ö´Â ½ÄÀ¸·Î
-    //     }
-    // }
-    // 
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact))
-    //     {
-    //         TestPlayerManager.Instance.IsInIntercation = false;
-    //         _interactableItem = null;
-    //     }
-    // }
 
     private void Init()
     {
-        // Å×½ºÆ®¿ë ¸¶¿ì½º ¼û±â±â
+        // í…ŒìŠ¤íŠ¸ìš© ë§ˆìš°ìŠ¤ ìˆ¨ê¸°ê¸°
         _animator = GetComponentInChildren<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _speed = _baseSpeed;
     }
 
-    private void FindInteractableItem()
+    #region ìƒí˜¸ì‘ìš© : í”Œë ˆì´ì–´ì— ê°€ì¥ ê°€ê¹Œìš´ ë¬¼ì²´
+    private void FindCloseInteractableItemFromPlayer()
     {
-        // Æ®¸®°Å¸¦ »ç¿ëÇÏÁö ¾Ê°í overlapsphere¸¦ »ç¿ëÇÏ¿© ÁÖº¯ÀÇ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ® °¨Áö
-        // °¡Àå °¡±îÀÌ ÀÖ´Â ¿ÀºêÁ§Æ®¸¦ _interactableItem·Î ¼³Á¤
+        // íŠ¸ë¦¬ê±°ë¥¼ ì‚¬ìš©í•˜ì§€ ì•Šê³  overlapsphereë¥¼ ì‚¬ìš©í•˜ì—¬ ì£¼ë³€ì˜ ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ ê°ì§€
+        // í”Œë ˆì´ì–´ë¡œë¶€í„° ê°€ì¥ ê°€ê¹Œì´ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ _interactableItemë¡œ ì„¤ì •
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
         if (collsCount > 0)
         {
             for (int i = 0; i < collsCount; i++)
             {
-                // ÇÃ·¹ÀÌ¾î¿Í ¿ÀºêÁ§Æ®ÀÇ °Å¸® ÃøÁ¤
+                // í”Œë ˆì´ì–´ì™€ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
                 float distance = Vector3.Distance(transform.position, _colls[i].transform.position);
-                // closestCollÀÌ nullÀÌ°Å³ª ÇöÀç ¿ÀºêÁ§Æ®°¡ closestCollº¸´Ù °¡±î¿î °æ¿ì ÇöÀç ÀÎµ¦½ºÀÇ Äİ¶óÀÌ´õ¸¦ closestColl·Î ¼³Á¤
+                // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
                 if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
                 {
                     closestColl = _colls[i];
                 }
             }
-            // ³¡³ª¸é closestCollÀÇ ³»¿ëÀ» _interactableItem¿¡ ÇÒ´ç
+            // ëë‚˜ë©´ closestCollì˜ ë‚´ìš©ì„ _interactableItemì— í• ë‹¹
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
-                //_interactableItem = interactable as TestItem;
-                PlayerManager.Instance.InteractableItem = interactable as WorldItem;
-                PlayerManager.Instance.IsInIntercation = true;
-                // ³ªÁß¿¡ ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë ¹°Ã¼°¡ ³ª´¶´Ù°í ÇÏ¸é
-                // _interactableItem¿¡ as·Î ³ÖÀ»¶§ Á¶°Ç¹®À» ÀÌ¿ëÇÏ¿© »óÈ²¿¡ ¸Â°Ô ³Ö´Â ·ÎÁ÷ ÇÊ¿ä
-                // ItemÀÌ¶ó¸é as ItemÀ¸·Î, ±¸Á¶¹°ÀÌ¶ó¸é as Structure·Î ³Ö´Â ½ÄÀ¸·Î
+                if (interactable as WorldItem)
+                {
+                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+                else if (interactable as Structure)
+                {
+                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
             }
         }
         else
         {
-            // ÁÖº¯¿¡ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ®°¡ ¾øÀ¸¸é _interactableItemÀ» null·Î ¼³Á¤
-            if (PlayerManager.Instance.InteractableItem != null)
-            {
-                //_interactableItem = null;
-                PlayerManager.Instance.InteractableItem = null;
-                PlayerManager.Instance.IsInIntercation = false;
-            }
+            // ì£¼ë³€ì— ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ìœ¼ë©´ ìƒí˜¸ì‘ìš©ì„ nullë¡œ ì„¤ì •
+            PlayerManager.Instance.InteractableStructure = null;
+            PlayerManager.Instance.InteractableItem = null;
+            PlayerManager.Instance.IsInIntercation = false;
         }
     }
+    #endregion
+
+    #region ìƒí˜¸ì‘ìš© : í™”ë©´ ì¤‘ì•™ì— ê°€ì¥ ê°€ê¹Œìš´ ë¬¼ì²´
+    private void FindCloseInteractableItemFromRay()
+    {
+        // ìŠ¤í¬ë¦° ì¤‘ì•™ ê¸°ì¤€ ê°€ì¥ ê°€ê¹Œì´ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ _interactableItemë¡œ ì„¤ì •
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¤‘ì•™ì„ ê°ì§€í•˜ê³  ê°ì§€ëœ hit ê¸°ì¤€ ê±°ë¦¬ ê³„ì‚°
+        Collider closestColl = null;
+        int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¤‘ì•™ì„ ê°ì§€í•˜ê³  ê°ì§€ëœ hit ê¸°ì¤€ ê±°ë¦¬ ê³„ì‚°
+
+        if (collsCount > 0)
+        {
+            for (int i = 0; i < collsCount; i++)
+            {
+                // í™”ë©´ ì¤‘ì•™ì—ì„œ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
+                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+                RaycastHit hit;
+                bool isHit = Physics.Raycast(ray, out hit, 10f);
+                float distance = Vector3.Distance(hit.point, _colls[i].transform.position);
+                // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
+                if (closestColl == null || distance < Vector3.Distance(hit.point, closestColl.transform.position))
+                {
+                    closestColl = _colls[i];
+                }
+            }
+            // ëë‚˜ë©´ closestCollì˜ ë‚´ìš©ì„ _interactableItemì— í• ë‹¹
+            if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                if (interactable as WorldItem)
+                {
+                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+                else if (interactable as Structure)
+                {
+                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+            }
+        }
+        else
+        {
+            // ì£¼ë³€ì— ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ìœ¼ë©´ ìƒí˜¸ì‘ìš©ì„ nullë¡œ ì„¤ì •
+            PlayerManager.Instance.InteractableStructure = null;
+            PlayerManager.Instance.InteractableItem = null;
+            PlayerManager.Instance.IsInIntercation = false;
+        }
+    }
+    #endregion
+
+    #region ìƒí˜¸ì‘ìš© : ë ˆì´ìºìŠ¤íŠ¸ì˜ ìœ„ì¹˜ì—ì„œ ê°ì§€
+    private void FindCloseInteractableItemAtRay()
+    {
+        // overlapsphereë¥¼ í”Œë ˆì´ì–´ ìœ„ì¹˜ê°€ ì•„ë‹Œ ë ˆì´ì˜ ëì§€ì ì—ì„œ ìƒì„±
+        // ìŠ¤í¬ë¦° ì¤‘ì•™ ê¸°ì¤€ ê°€ì¥ ê°€ê¹Œì´ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ _interactableItemë¡œ ì„¤ì •
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¤‘ì•™ì„ ê°ì§€í•˜ê³  ê°ì§€ëœ hit ê¸°ì¤€ ê±°ë¦¬ ê³„ì‚°
+        Collider closestColl = null;
+        Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+        _isRayHit = Physics.Raycast(ray, out _rayHit, 6f);
+        int collsCount = 0;
+        Gizmos.color = Color.green;
+
+        if (_isRayHit)
+        {
+            // ë ˆì´ìºìŠ¤íŠ¸ê°€ ì„±ê³µí•˜ë©´ hit.pointë¥¼ ê¸°ì¤€ìœ¼ë¡œ overlapsphereë¥¼ ìƒì„±
+            collsCount = Physics.OverlapSphereNonAlloc(_rayHit.point, 2.5f, _colls, _layerMask);
+        }
+        else
+        {
+            // ì‹¤íŒ¨ì‹œ ì¹´ë©”ë¼ì˜ ìœ„ì¹˜ì—ì„œ ë ˆì´ ë°©í–¥ìœ¼ë¡œ 6f ë–¨ì–´ì§„ ì§€ì ì—ì„œ overlapsphereë¥¼ ìƒì„±
+            _rayEndPos = _virCamAxis.position + Camera.main.transform.forward * 2f;
+            collsCount = Physics.OverlapSphereNonAlloc(_rayEndPos, 2.5f, _colls, _layerMask);
+        }
+
+        if (collsCount > 0)
+        {
+            for (int i = 0; i < collsCount; i++)
+            {
+                if (_isRayHit)
+                {
+                    // ë ˆì´ìºìŠ¤íŠ¸ê°€ ì„±ê³µí•œ ê²½ìš° hit.pointì—ì„œ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
+                    float distance = Vector3.Distance(_rayHit.point, _colls[i].transform.position);
+                    // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
+                    if (closestColl == null || distance < Vector3.Distance(_rayHit.point, closestColl.transform.position))
+                    {
+                        closestColl = _colls[i];
+                    }
+                }
+                else
+                {
+                    // ë ˆì´ìºìŠ¤íŠ¸ê°€ ì‹¤íŒ¨í•œ ê²½ìš° rayEndPosì—ì„œ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
+                    float distance = Vector3.Distance(_rayEndPos, _colls[i].transform.position);
+                    // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
+                    if (closestColl == null || distance < Vector3.Distance(_rayEndPos, closestColl.transform.position))
+                    {
+                        closestColl = _colls[i];
+                    }
+                }
+            }
+            // ëë‚˜ë©´ closestCollì˜ ë‚´ìš©ì„ _interactableItemì— í• ë‹¹
+            if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                if (interactable as WorldItem)
+                {
+                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+                else if (interactable as Structure)
+                {
+                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+                // ì•„ë˜ëŠ” í…ŒìŠ¤íŠ¸ ì½”ë“œ
+                else if (interactable as TestWorldItem)
+                {
+                    PlayerManager.Instance.InteractableTestItem = interactable as TestWorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
+            }
+        }
+        else
+        {
+            // ì£¼ë³€ì— ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ìœ¼ë©´ ìƒí˜¸ì‘ìš©ì„ nullë¡œ ì„¤ì •
+            PlayerManager.Instance.InteractableStructure = null;
+            PlayerManager.Instance.InteractableItem = null;
+            PlayerManager.Instance.IsInIntercation = false;
+        }
+    }
+    #endregion
 
     private void HandlePlayer()
     {
@@ -124,18 +240,9 @@ public class PlayerController : MonoBehaviour
         Jump();
         Run();
         CameraLimit();
-        FindInteractableItem();
-    }
-
-    private void Move()
-    {
-        // Ä«¸Ş¶ó¸¦ ±âÁØÀ¸·Î Á¤¸éÀ» Àâ°í ¿òÁ÷ÀÌµµ·Ï ¼öÁ¤ÇØ¾ßÇÔ
-        Vector3 move = transform.TransformDirection(_moveDir) * _speed;
-
-        // È­¼ºÀÌ ¹è°æÀÌ´Ï Áß·ÂÀº 3.73
-        _verVelocity.y -= 3.73f * Time.deltaTime;
-
-        _controller.Move((move + _verVelocity) * Time.deltaTime);
+        //FindCloseInteractableItemFromPlayer();
+        //FindCloseInteractableItemFromRay();
+        FindCloseInteractableItemAtRay();
     }
 
     private void PlayerInput()
@@ -150,35 +257,152 @@ public class PlayerController : MonoBehaviour
 
         _mouseInput = new Vector2(mouseX, mouseY);
 
-        if (Input.GetKeyDown(KeyCode.E) && PlayerManager.Instance.InteractableItem != null)
+
+        #region E í‚¤ ìƒí˜¸ì‘ìš©
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            PlayerManager.Instance.InteractableItem.Interact();
+            // ë•…ì— ë–¨ì–´ì§„ ì•„ì´í…œì€ Eëˆ„ë¥´ë©´ ì¦‰ì‹œ ìƒí˜¸ì‘ìš©
+            if (PlayerManager.Instance.InteractableTestItem != null)
+                // PlayerManager.Instance.InteractableItem.Interact();
+                PlayerManager.Instance.InteractableTestItem.Interact(); // í…ŒìŠ¤íŠ¸ ì½”ë“œ
         }
 
-        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' Å°¸¦ ´­·¶À» ¶§
+        if (Input.GetKey(KeyCode.E))
         {
-            SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManagerÀÇ ÀÎº¥Åä¸® Åä±Û ¸Ş¼­µå È£Ãâ
-        }
-
-        // ¾ÆÀÌÅÛÀ» ¸¶¿ì½º ÁÂÅ¬¸¯ ÇÏ¸é »ç¿ë. ´©¸£°í ÀÖ´Âµ¿¾È ÁÖ±âÀûÀ¸·Î °è¼Ó »ç¿ë
-        if (Input.GetMouseButton(0) && _selectItem != null)
-        {
-            // ¾ÆÀÌÅÛ »ç¿ëÀº ¾ÆÀÌÅÛ ÆÄÆ®¿¡¼­ Á¦ÀÛ µÇ¸é ¼¼ºÎ ±¸Çö
-            // ÀÏ´ÜÀº ¾ÆÀÌÅÛÀ» ¿¬¼ÓÀ¸·Î »ç¿ëÇÏ´Â ÄÚ·çÆ¾À» ¸ÕÀú ±¸ÇöÇÏ±â
-            if (_canUseItem)
+            if (PlayerManager.Instance.InteractableStructure != null)
             {
-                _itemUseCoroutine = StartCoroutine(ItemUsing());
+                // êµ¬ì¡°ë¬¼ì˜ ê²½ìš° 1ì´ˆê°„ ëˆŒëŸ¬ì•¼ë§Œ ìƒí˜¸ì‘ìš©
+                PlayerManager.Instance.InteractDelay += 1 * Time.deltaTime;
+
+                if (PlayerManager.Instance.InteractDelay >= 1f)
+                {
+                    PlayerManager.Instance.InteractableStructure.Interact();
+                    PlayerManager.Instance.InteractDelay = 0f; // ìƒí˜¸ì‘ìš© í›„ ë”œë ˆì´ ì´ˆê¸°í™”
+                }
             }
-
-            // ¼Òºñ ¾ÆÀÌÅÛÀÇ °æ¿ì ²Ú ´­·¶À»¶§ »ç¿ëµÇµµ·Ï ¼³Á¤ÇØ´Ş¶ó°í ¿äÃ»¹ŞÀ½
-            // ÇØ´ç ºÎºĞ ±¸Çö ÇÊ¿ä
+            else
+            {
+                PlayerManager.Instance.InteractDelay = 0f; // ì¤‘ê°„ì— ë‹¤ë¥¸ê³³ì„ ë°”ë¼ë³´ì•„ë„ ì´ˆê¸°í™”
+            }
         }
-
-        // Å×½ºÆ® ÄÚµå
-        if (Input.GetKeyDown(KeyCode.T))
+        else
         {
-            _isGrabbing = !_isGrabbing; // Grab »óÅÂ Åä±Û
+            PlayerManager.Instance.InteractDelay = 0f; // E í‚¤ë¥¼ ë–¼ë©´ ë”œë ˆì´ ì´ˆê¸°í™”
         }
+        #endregion
+
+        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' í‚¤ë¥¼ ëˆŒë €ì„ ë•Œ
+        {
+            SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManagerì˜ ì¸ë²¤í† ë¦¬ í† ê¸€ ë©”ì„œë“œ í˜¸ì¶œ
+        }
+
+        #region í•«ë°” ì„ íƒ
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // ì¸ë²¤í† ë¦¬ í•«ë°” 1ë²ˆ ì„ íƒ
+            Inventory.Instance.SelectHotbarSlot(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // ì¸ë²¤í† ë¦¬ í•«ë°” 2ë²ˆ ì„ íƒ
+            Inventory.Instance.SelectHotbarSlot(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // ì¸ë²¤í† ë¦¬ í•«ë°” 3ë²ˆ ì„ íƒ
+            Inventory.Instance.SelectHotbarSlot(2);
+        }
+
+        Item curItem = Inventory.Instance.GetCurrentHotbarItem();
+
+        if (curItem == null)
+        {
+            PlayerManager.Instance.SelectItem = null; // í˜„ì¬ í•«ë°”ì— ì•„ì´í…œì´ ì—†ìœ¼ë©´ ì„ íƒ ì•„ì´í…œì„ nullë¡œ ì„¤ì •
+            if (_testHandItem != null)
+            {
+                // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ì´ ìˆë‹¤ë©´ ë¹„í™œì„±í™”
+                // _testHandItem.SetActive(false);
+                Destroy(_testHandItem); // ì˜¤ë¸Œì íŠ¸ ì œê±°
+            }
+            // _testHandItem = null; // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ë„ nullë¡œ ì„¤ì •
+        }
+        else
+        {
+            PlayerManager.Instance.SelectItem = curItem; // í˜„ì¬ í•«ë°”ì— ì•„ì´í…œì´ ìˆìœ¼ë©´ ì„ íƒ ì•„ì´í…œìœ¼ë¡œ ì„¤ì •
+
+            if (curItem as TestToolItem && _testHandItem == null)
+            {
+                // _testHandItem = (curItem as TestToolItem).toolObject; // í˜„ì¬ í•«ë°” ì•„ì´í…œì˜ toolObjectë¥¼ ì„¤ì •
+                // _testHandItem.SetActive(true); // ì•„ì´í…œì´ í™œì„±í™”ë˜ì–´ ìˆì§€ ì•Šë‹¤ë©´ í™œì„±í™”
+                _testHandItem = Instantiate((curItem as TestToolItem).toolPrefab, _playerHand.position, _playerHand.rotation);
+            }
+            else if (_testHandItem == null)
+            {
+                // ì†Œë¹„ì•„ì´í…œì˜ í”„ë¦¬íŒ¹ì„ ìƒì„±í•˜ëŠ” ë¡œì§ ìƒì„±
+                _testHandItem = Instantiate(curItem.WorldPrefab, _playerHand.position, _playerHand.rotation);
+            }
+        }
+        #endregion
+
+        #region ì•„ì´í…œ ì‚¬ìš©
+        if (Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem as MaterialItem)
+        {
+            // ì†ì— ìì› ì•„ì´í…œì´ ë“¤ë ¤ ìˆëŠ” ê²½ìš°
+            _animator.SetTrigger("Swing");
+        }
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as TestToolItem)
+        {
+            _testBool = true; // ë§ˆì´ë‹ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰ì„ ìœ„í•œ bool ê°’ ì„¤ì •
+            // ì•„ì´í…œ ì‚¬ìš©ì€ ì¤‘ê°„ì— ë§ˆìš°ìŠ¤ë¥¼ ë•Œë©´ ë©ˆì¶°ì•¼ í•˜ê¸°ì— ì½”ë£¨í‹´ì´ ì•„ë‹Œ ê·¸ëƒ¥ êµ¬í˜„
+            PlayerManager.Instance.ItemDelay += Time.deltaTime;
+            if (PlayerManager.Instance.ItemDelay >= 0.1f)
+            {
+                Debug.Log("ì•„ì´í…œ ì‚¬ìš©!");
+                PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.ItemDelay = 0f; // ì•„ì´í…œ ì‚¬ìš© í›„ ë”œë ˆì´ ì´ˆê¸°í™”
+            }
+        }
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem != null)
+        {
+            PlayerManager.Instance.ItemDelay += Time.deltaTime;
+            if (PlayerManager.Instance.ItemDelay >= 1f)
+            {
+                Debug.Log("ì•„ì´í…œ ì‚¬ìš©!");
+                PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.ItemDelay = 0f; // ì•„ì´í…œ ì‚¬ìš© í›„ ë”œë ˆì´ ì´ˆê¸°í™”
+            }
+        }
+        else
+        {
+            _testBool = false;
+            PlayerManager.Instance.ItemDelay = 0f; // ë§ˆìš°ìŠ¤ë¥¼ ë–¼ë©´ ì•„ì´í…œ ì‚¬ìš© ë”œë ˆì´ ì´ˆê¸°í™”
+        }
+        #endregion
+
+        // í…ŒìŠ¤íŠ¸ ì½”ë“œ
+        // if (Input.GetKeyDown(KeyCode.T))
+        // {
+        //     _isGrabbing = !_isGrabbing; // Grab ìƒíƒœ í† ê¸€
+        // }
+    }
+
+    #region í”Œë ˆì´ì–´ ì´ë™
+    private void Move()
+    {
+        // ì¹´ë©”ë¼ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì •ë©´ì„ ì¡ê³  ì›€ì§ì´ë„ë¡ ìˆ˜ì •í•´ì•¼í•¨
+        Vector3 move = transform.TransformDirection(_moveDir) * _speed;
+
+        // í™”ì„±ì´ ë°°ê²½ì´ë‹ˆ ì¤‘ë ¥ì€ 3.73
+        _verVelocity.y -= 3.73f * Time.deltaTime;
+
+        _controller.Move((move + _verVelocity) * Time.deltaTime);
     }
 
     private void Jump()
@@ -191,8 +415,8 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        // ´Ş¸®±â ±â´ÉÀÌ ÇÊ¿äÇÏÁö ¾ÊÀ» ¼öµµ ÀÖÀ½.
-        // ³Ö´Â´Ù¸é ½½·Î¿ì¶û »óÈ£ÀÛ¿ë °í·ÁÇÒ°Í.
+        // ë‹¬ë¦¬ê¸° ê¸°ëŠ¥ì´ í•„ìš”í•˜ì§€ ì•Šì„ ìˆ˜ë„ ìˆìŒ.
+        // ë„£ëŠ”ë‹¤ë©´ ìŠ¬ë¡œìš°ë‘ ìƒí˜¸ì‘ìš© ê³ ë ¤í• ê²ƒ.
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             _speed *= 2;
@@ -202,7 +426,9 @@ public class PlayerController : MonoBehaviour
             _speed /= 2;
         }
     }
+    #endregion
 
+    #region í”Œë ˆì´ì–´ ì‹œì  ê´€ë ¨
     private void AimControl()
     {
         Vector2 mouseInput = _mouseInput * _mouseSensitivity;
@@ -221,8 +447,8 @@ public class PlayerController : MonoBehaviour
 
     private void CameraLimit()
     {
-        // Ä«¸Ş¶ó°¡ º®¿¡ ºÎµúÈ÷´Â °æ¿ì º® À§Ä¡¸¸Å­ ¾ÕÀ¸·Î ÀÌµ¿
-        // Ãà¿¡¼­ Ä«¸Ş¶ó·Î ·¹ÀÌ¸¦ ¹ß»çÇÏ¿© º®¿¡ ºÎµúÈ÷´Â °æ¿ì, ºÎµóÈ÷´Â À§Ä¡¸¦ °è»êÇÏ¿© Ä«¸Ş¶ó¸¦ ÀÌµ¿½ÃÅ´
+        // ì¹´ë©”ë¼ê°€ ë²½ì— ë¶€ë”ªíˆëŠ” ê²½ìš° ë²½ ìœ„ì¹˜ë§Œí¼ ì•ìœ¼ë¡œ ì´ë™
+        // ì¶•ì—ì„œ ì¹´ë©”ë¼ë¡œ ë ˆì´ë¥¼ ë°œì‚¬í•˜ì—¬ ë²½ì— ë¶€ë”ªíˆëŠ” ê²½ìš°, ë¶€ë”›íˆëŠ” ìœ„ì¹˜ë¥¼ ê³„ì‚°í•˜ì—¬ ì¹´ë©”ë¼ë¥¼ ì´ë™ì‹œí‚´
         RaycastHit hit;
         if (Physics.Raycast(_virCamAxis.position, -_virCamAxis.forward, out hit, 4.5f, _ignoreMask))
         {
@@ -231,54 +457,102 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // º®¿¡ ºÎµúÈ÷Áö ¾Ê´Â °æ¿ì À§Ä¡ ¸®¼Â
+            // ë²½ì— ë¶€ë”ªíˆì§€ ì•ŠëŠ” ê²½ìš° ìœ„ì¹˜ ë¦¬ì…‹
             Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 4f;
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
         }
     }
-
-    IEnumerator ItemUsing()
-    {
-        // ¾ÆÀÌÅÛ ¿¬¼Ó »ç¿ë ÄÚ·çÆ¾
-        // ¾ÆÀÌÅÛ »ç¿ë°£ÀÇ µô·¹ÀÌ Àû¿ë
-        // ¾Æ·¡´Â ÀÓ½Ã
-        _selectItem.Use(this.gameObject);
-        yield return new WaitForSeconds(1f);
-        _itemUseCoroutine = null;
-    }
+    #endregion
 
     private void OnDrawGizmos()
     {
-        // Gizmos¸¦ »ç¿ëÇÏ¿© ·¹ÀÌ Ç¥½Ã
+        // Gizmosë¥¼ ì‚¬ìš©í•˜ì—¬ ë ˆì´ í‘œì‹œ
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
+        //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
+
+        if (_isRayHit)
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
+            Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
+        }
+        else
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayEndPos);
+            Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
+        }
     }
 
-    // ¹Ì»ç¿ë. ÇÏÁö¸¸ È¤½Ã ¸ô¶ó ³²°Ü³õÀ½
+    #region í…ŒìŠ¤íŠ¸ ì½”ë“œ
+    private void MineGunSetPos()
+    {
+        //if (PlayerManager.Instance.SelectItem != null && _testHandItem == null)
+        //{
+        //    _testHandItem = Instantiate(_mineGunPrefab, _playerHand.position, _playerHand.rotation);
+        //}
+
+        if (_testHandItem != null)
+        {
+            // í”Œë ˆì´ì–´ì˜ ì† ìœ„ì¹˜ì— ë§ˆì¸ê±´ì„ ìœ„ì¹˜ì‹œí‚´
+            _testHandItem.transform.position = _playerHand.position;
+            _testHandItem.transform.rotation = _playerHand.rotation;
+        }
+    }
+    #endregion
+
+
+    #region ë¯¸ì‚¬ìš© ì½”ë“œ
     /// <summary>
-    /// ½½·Î¿ì °­µµ¸¦ ÆÛ¼¾Å×ÀÌÁö·Î ÀÔ·Â ¹Ş¾Æ ÇÃ·¹ÀÌ¾î °¨¼Ó
+    /// ìŠ¬ë¡œìš° ê°•ë„ë¥¼ í¼ì„¼í…Œì´ì§€ë¡œ ì…ë ¥ ë°›ì•„ í”Œë ˆì´ì–´ ê°ì†
     /// </summary>
-    /// <param name="percentage"></param>0~100 »çÀÌÀÇ °ªÀ¸·Î ÀÔ·Â, 0Àº °¨¼Ó ¾øÀ½, 100Àº Á¤Áö
+    /// <param name="percentage"></param>0~100 ì‚¬ì´ì˜ ê°’ìœ¼ë¡œ ì…ë ¥, 0ì€ ê°ì† ì—†ìŒ, 100ì€ ì •ì§€
     //public void PlayerSlow(float percentage)
     //{
     //    _speed = _speed * (1f - percentage / 100f);
     //}
     //
     /// <summary>
-    /// ½½·Î¿ìÀÇ ¿ª¼øÀ¸·Î °è»êÇÏ±â¿¡ ½½·Î¿ì ÇÑ ÆÛ¼¾Å×ÀÌÁö¸¦ ±×´ë·Î ÀÔ·ÂÇØ¾ßÇÔ
+    /// ìŠ¬ë¡œìš°ì˜ ì—­ìˆœìœ¼ë¡œ ê³„ì‚°í•˜ê¸°ì— ìŠ¬ë¡œìš° í•œ í¼ì„¼í…Œì´ì§€ë¥¼ ê·¸ëŒ€ë¡œ ì…ë ¥í•´ì•¼í•¨
     /// </summary>
     /// <param name="percentage"></param>
     //public void OutOfSlow(float percentage)
     //{
-    //    // ½½·Î¿ìÀÇ ¿ª¼ø
+    //    // ìŠ¬ë¡œìš°ì˜ ì—­ìˆœ
     //    _speed = _speed / (1f - percentage / 100f);
     //}
 
+    // overlapsphereë¡œ êµì²´í•˜ê¸°ì— ì£¼ì„ì²˜ë¦¬.
+    // í˜„ì¬ ì¸í„°ë ‰ì…˜ ë°©ì‹ì€ í•œê³³ì— í•˜ë‚˜ì˜ ì˜¤ë¸Œì íŠ¸ë§Œ ìˆë‹¤ëŠ” ê±¸ ì „ì œë¡œ ì œì‘ë¨
+    // ë¬´ì¡°ê±´ ì²˜ìŒ ì ‘ê·¼í•œ ì˜¤ë¸Œì íŠ¸ë§Œ ì¸í„°ë ‰ì…˜ì´ ê°€ëŠ¥í•˜ë„ë¡ ì œì‘
+    // ì—¬ëŸ¬ ì˜¤ë¸Œì íŠ¸ê°€ ìˆì„ ê²½ìš°, ì§€ê¸ˆ ë°©ì‹ì´ ì•„ë‹Œ ë‹¤ë¥¸ ë°©ì‹ìœ¼ë¡œ ì½”ë“œë¥¼ ì‘ì„±í•˜ì—¬ì•¼ í•¨
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
+    //     {
+    //         _interactableItem = interact as TestItem;
+    //         TestPlayerManager.Instance.IsInIntercation = true;
+    //         // ë‚˜ì¤‘ì— ì•„ì´í…œê³¼ ìƒí˜¸ì‘ìš© ë¬¼ì²´ê°€ ë‚˜ë‰œë‹¤ê³  í•˜ë©´
+    //         // _interactableItemì— asë¡œ ë„£ì„ë•Œ ì¡°ê±´ë¬¸ì„ ì´ìš©í•˜ì—¬ ìƒí™©ì— ë§ê²Œ ë„£ëŠ” ë¡œì§ í•„ìš”
+    //         // Itemì´ë¼ë©´ as Itemìœ¼ë¡œ, êµ¬ì¡°ë¬¼ì´ë¼ë©´ as Structureë¡œ ë„£ëŠ” ì‹ìœ¼ë¡œ
+    //     }
+    // }
+    // 
+    // private void OnTriggerExit(Collider other)
+    // {
+    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact))
+    //     {
+    //         TestPlayerManager.Instance.IsInIntercation = false;
+    //         _interactableItem = null;
+    //     }
+    // }
+    #endregion
+
+    #region ì• ë‹ˆë©”ì´ì…˜
     private void Animation()
     {
         MoveAnim();
         GrabAnim();
-        SwingAnim();
+        // SwingAnim();
+        MiningAnim();
     }
 
     private void MoveAnim()
@@ -293,10 +567,16 @@ public class PlayerController : MonoBehaviour
 
     private void SwingAnim()
     {
-        // ³ªÁß¿£ _isGrabbingµµ Á¶°Ç¿¡ Ãß°¡µÇµµ·Ï º¯°æ
+        // ë‚˜ì¤‘ì—” _isGrabbingë„ ì¡°ê±´ì— ì¶”ê°€ë˜ë„ë¡ ë³€ê²½
         if (Input.GetMouseButtonDown(0) && _isGrabbing)
         {
             _animator.SetTrigger("Swing");
         }
     }
+
+    private void MiningAnim()
+    {
+        _animator.SetBool("IsMining", _testBool);
+    }
+    #endregion
 }

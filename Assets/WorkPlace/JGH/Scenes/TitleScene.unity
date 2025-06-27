@@ -796,7 +796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _titleSceneName: TitleScene
   _shelterSceneName: DevShelterScene
-  _farmingSceneName: Test
+  _farmingSceneName: DemoScene
   _dayTransitionSceneName: DevShelterScene
 --- !u!1 &1452507993 stripped
 GameObject:

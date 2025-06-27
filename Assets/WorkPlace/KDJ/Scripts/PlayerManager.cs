@@ -8,12 +8,14 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public bool IsInIntercation = false;
     public WorldItem InteractableItem { get; set; }
+    public TestWorldItem InteractableTestItem { get; set; }
+    public Structure InteractableStructure { get; set; }
+    public Item SelectItem { get; set; }
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
     public PlayerController Player { get; private set; }
-    //테스트용 인벤토리
-
-    public bool IsInAirChamber { get; set; } = false;
+    public float InteractDelay { get; set; }
+    public float ItemDelay { get; set; }
 
     private void Awake()
     {
@@ -28,7 +30,6 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void Update()
     {
-        TestCode();
     }
 
     private void Init()
@@ -36,19 +37,11 @@ public class PlayerManager : Singleton<PlayerManager>
         AirGauge.Value = 100f;
         ElecticGauge.Value = 100f;
     }
-
-    /// <summary>
-    /// 테스트용 코드
-    /// </summary>
-    private void TestCode()
-    {
-        if (!IsInAirChamber)
-            AirGauge.Value -= Time.deltaTime * 1f;
-    }
     
     private void PlayerInit()
     {
         // 플레이어 임시 생성 코드
         GameObject player = Instantiate(_playerPrefab, _playerSpawnPoint.position, _playerSpawnPoint.rotation);
+        Player = player.GetComponent<PlayerController>();
     }
 }

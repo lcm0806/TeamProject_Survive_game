@@ -26,7 +26,7 @@ public class SceneSystem : MonoBehaviour
     [Header("Scene Names - 빌드 설정에서 추가된 씬 이름들")]
     [SerializeField] private string _titleSceneName = "TitleScene";
     [SerializeField] private string _shelterSceneName = "DevShelterScene";
-    [SerializeField] private string _farmingSceneName = "Test";
+    [SerializeField] private string _farmingSceneName = "DemoScene";
     [SerializeField] private string _dayTransitionSceneName = "DevShelterScene";
     
     private void Awake()

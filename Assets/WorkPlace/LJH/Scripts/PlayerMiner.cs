@@ -5,30 +5,76 @@ using UnityEngine;
 public class PlayerMiner : MonoBehaviour
 {
     private MineableResource currentTarget;
+    public float interactRange = 3f;             // 상호작용 거리
+    public KeyCode interactKey = KeyCode.E;      // 상호작용 키
+    public LayerMask interactLayer;               // 상호작용 가능한 레이어 지정
 
-    private void OnTriggerEnter(Collider other)
+    public float miningRange = 3f;
+    public float miningDamagePerSecond = 10f;
+    
+
+    private void Update()
     {
-        if (other.CompareTag("Resource"))
+        if (Input.GetKeyDown(interactKey))
         {
-            currentTarget = other.GetComponent<MineableResource>();
-            if (currentTarget != null)
-            {
-                currentTarget.StartMining();
-                Debug.Log("채굴 시작!");
-            }
+            TryInteract();
+        }
+        if (Input.GetMouseButton(0))  //좌클릭 누르고 있는 동안
+        {
+            TryMine();
+        }
+        else
+        {
+            currentTarget = null;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void TryInteract()
     {
-        if (other.CompareTag("Resource"))
+        Ray ray = new Ray(transform.position + Vector3.up, transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit, interactRange, interactLayer))
         {
-            if (currentTarget != null)
+            // 인터페이스로 가져오기
+            IInteractable interactable = hit.collider.GetComponent<IInteractable>();
+            if (interactable != null)
             {
-                currentTarget.StopMining();
-                Debug.Log("채굴 중단!");
+                interactable.Interact();
             }
-            currentTarget = null;
+            else
+            {
+                Debug.Log("상호작용 가능한 오브젝트가 아닙니다.");
+            }
+        }
+        else
+        {
+            Debug.Log("상호작용 가능한 보급상자가 없습니다.");
+        }
+    }
+   
+    void TryMine()
+    {
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
+        Vector3 rayDir = transform.forward;
+
+        //레이캐스트 시각화 (씬 뷰에서만 보임)
+        Debug.DrawRay(rayOrigin, rayDir * miningRange, Color.red, 0.1f);
+
+        Ray ray = new Ray(rayOrigin, rayDir);
+        if (Physics.Raycast(ray, out RaycastHit hit, miningRange))
+        {
+            if (hit.collider.CompareTag("Resource"))
+            {
+                MineableResource resource = hit.collider.GetComponent<MineableResource>();
+                if (resource != null)
+                {
+                    currentTarget = resource;
+                    resource.TakeMiningDamage(miningDamagePerSecond * Time.deltaTime);
+                }
+            }
+        }
+        else
+        {
+            Debug.Log("상호작용 가능한 광물이 없습니다.");
         }
     }
 }

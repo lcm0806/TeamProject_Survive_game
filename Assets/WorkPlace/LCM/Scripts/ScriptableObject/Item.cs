@@ -12,7 +12,6 @@ public class Item : ScriptableObject
     public string description = "A basic item."; // 아이템 설명
 
     public Sprite icon;
-    public SlotTag itemTag = SlotTag.None;
 
     [Header("World Representation")]
     public GameObject WorldPrefab;
@@ -20,6 +19,10 @@ public class Item : ScriptableObject
 
     [Header("If the item can be equipped")]
     public GameObject equipmentPrefab;
+
+    [Header("Stacking")]
+    public bool isStackable = false; // 이 아이템이 스택 가능한지 여부
+    public int maxStackSize = 99;
 
     public virtual void Use(GameObject user)
     {

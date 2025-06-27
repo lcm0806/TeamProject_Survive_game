@@ -16,4 +16,7 @@ MonoBehaviour:
   description: A basic item.
   icon: {fileID: 0}
   itemTag: 0
+  WorldPrefab: {fileID: 0}
   equipmentPrefab: {fileID: 0}
+  isStackable: 1
+  maxStackSize: 99

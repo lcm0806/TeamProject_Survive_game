@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private CinemachineVirtualCamera _virCam;
     [SerializeField] private Transform _virCamAxis;
+    [SerializeField] private Transform _playerHand;
+    [SerializeField] private GameObject _mineGunPrefab; // 테스트용 마인건 프리팹
 
     [Header("Config")]
     [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
@@ -29,10 +31,11 @@ public class PlayerController : MonoBehaviour
     private bool _isRayHit;
     private RaycastHit _rayHit;
     private bool _isMoving => _moveDir != Vector3.zero;
-    // private bool _isGrabbing => _selectItem != null;
+    private bool _isGrabbing => PlayerManager.Instance.SelectItem != null;
     // 아래는 테스트 코드
-    private bool _isGrabbing = false;
+    // private bool _isGrabbing = false;
     private bool _testBool;
+    public GameObject _testHandItem;
     #endregion
 
     private void Awake()
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
         PlayerInput();
         HandlePlayer();
         Animation();
+        MineGunSetPos(); // 테스트용 마인건 위치 설정
     }
 
     private void Init()
@@ -287,13 +291,13 @@ public class PlayerController : MonoBehaviour
 
 
         #region 아이템 사용
-        if(Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem != null)
-        {
-            // 손에 사용, 소비 아이템이 아닌 자원 아이템이 들려 있는 경우
-            _animator.SetTrigger("Swing");
-        }
+        // if(Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem != null)
+        // {
+        //     // 손에 사용, 소비 아이템이 아닌 자원 아이템이 들려 있는 경우
+        //     _animator.SetTrigger("Swing");
+        // }
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem != null)
         {
             // 테스트용으로 마이닝 모션 실행
             _testBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
@@ -302,7 +306,7 @@ public class PlayerController : MonoBehaviour
             if(PlayerManager.Instance.ItemDelay >= 1)
             {
                 Debug.Log("아이템 사용!");
-                // PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.SelectItem.Use(this.gameObject);
                 PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
             }
         }
@@ -313,10 +317,10 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         // 테스트 코드
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            _isGrabbing = !_isGrabbing; // Grab 상태 토글
-        }
+        // if (Input.GetKeyDown(KeyCode.T))
+        // {
+        //     _isGrabbing = !_isGrabbing; // Grab 상태 토글
+        // }
     }
 
     #region 플레이어 이동
@@ -407,6 +411,24 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
         }
     }
+
+    #region 테스트 코드
+    private void MineGunSetPos()
+    {
+        if (PlayerManager.Instance.SelectItem != null && _testHandItem == null)
+        {
+            _testHandItem = Instantiate(_mineGunPrefab, _playerHand.position, _playerHand.rotation);
+        }
+
+        if (_testHandItem != null)
+        {
+            // 플레이어의 손 위치에 마인건을 위치시킴
+            _testHandItem.transform.position = _playerHand.position;
+            _testHandItem.transform.rotation = _playerHand.rotation;
+        }
+    }
+    #endregion
+
 
     #region 미사용 코드
     /// <summary>

@@ -19,3 +19,5 @@ MonoBehaviour:
   WorldPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
     type: 3}
   equipmentPrefab: {fileID: 0}
+  isStackable: 1
+  maxStackSize: 99

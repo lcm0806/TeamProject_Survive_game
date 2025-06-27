@@ -1,13 +1,15 @@
 using Cinemachine;
-using System.Collections;
+using Test;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    #region Á÷·ÄÈ­ º¯¼ö
+    #region ì§ë ¬í™” ë³€ìˆ˜
     [SerializeField] private CharacterController _controller;
     [SerializeField] private CinemachineVirtualCamera _virCam;
     [SerializeField] private Transform _virCamAxis;
+    [SerializeField] private Transform _playerHand;
+    [SerializeField] private GameObject _mineGunPrefab; // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ í”„ë¦¬íŒ¹
 
     [Header("Config")]
     [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
@@ -15,7 +17,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _baseSpeed = 5f;
     #endregion
 
-    #region º¯¼ö
+    #region ë³€ìˆ˜
     private Vector3 _verVelocity;
     private Vector3 _moveDir;
     private Vector2 _mouseInput;
@@ -29,10 +31,11 @@ public class PlayerController : MonoBehaviour
     private bool _isRayHit;
     private RaycastHit _rayHit;
     private bool _isMoving => _moveDir != Vector3.zero;
-    // private bool _isGrabbing => _selectItem != null;
-    // ¾Æ·¡´Â Å×½ºÆ® ÄÚµå
-    private bool _isGrabbing = false;
+    private bool _isGrabbing => PlayerManager.Instance.SelectItem != null;
+    // ì•„ë˜ëŠ” í…ŒìŠ¤íŠ¸ ì½”ë“œ
+    // private bool _isGrabbing = false;
     private bool _testBool;
+    public GameObject _testHandItem;
     #endregion
 
     private void Awake()
@@ -45,37 +48,38 @@ public class PlayerController : MonoBehaviour
         PlayerInput();
         HandlePlayer();
         Animation();
+        MineGunSetPos(); // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ ìœ„ì¹˜ ì„¤ì •
     }
 
     private void Init()
     {
-        // Å×½ºÆ®¿ë ¸¶¿ì½º ¼û±â±â
+        // í…ŒìŠ¤íŠ¸ìš© ë§ˆìš°ìŠ¤ ìˆ¨ê¸°ê¸°
         _animator = GetComponentInChildren<Animator>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _speed = _baseSpeed;
     }
 
-    #region »óÈ£ÀÛ¿ë : ÇÃ·¹ÀÌ¾î¿¡ °¡Àå °¡±î¿î ¹°Ã¼
+    #region ìƒí˜¸ì‘ìš© : í”Œë ˆì´ì–´ì— ê°€ì¥ ê°€ê¹Œìš´ ë¬¼ì²´
     private void FindCloseInteractableItemFromPlayer()
     {
-        // Æ®¸®°Å¸¦ »ç¿ëÇÏÁö ¾Ê°í overlapsphere¸¦ »ç¿ëÇÏ¿© ÁÖº¯ÀÇ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ® °¨Áö
-        // ÇÃ·¹ÀÌ¾î·ÎºÎÅÍ °¡Àå °¡±îÀÌ ÀÖ´Â ¿ÀºêÁ§Æ®¸¦ _interactableItem·Î ¼³Á¤
+        // íŠ¸ë¦¬ê±°ë¥¼ ì‚¬ìš©í•˜ì§€ ì•Šê³  overlapsphereë¥¼ ì‚¬ìš©í•˜ì—¬ ì£¼ë³€ì˜ ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ ê°ì§€
+        // í”Œë ˆì´ì–´ë¡œë¶€í„° ê°€ì¥ ê°€ê¹Œì´ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ _interactableItemë¡œ ì„¤ì •
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
         if (collsCount > 0)
         {
             for (int i = 0; i < collsCount; i++)
             {
-                // ÇÃ·¹ÀÌ¾î¿Í ¿ÀºêÁ§Æ®ÀÇ °Å¸® ÃøÁ¤
+                // í”Œë ˆì´ì–´ì™€ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
                 float distance = Vector3.Distance(transform.position, _colls[i].transform.position);
-                // closestCollÀÌ nullÀÌ°Å³ª ÇöÀç ¿ÀºêÁ§Æ®°¡ closestCollº¸´Ù °¡±î¿î °æ¿ì ÇöÀç ÀÎµ¦½ºÀÇ Äİ¶óÀÌ´õ¸¦ closestColl·Î ¼³Á¤
+                // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
                 if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
                 {
                     closestColl = _colls[i];
                 }
             }
-            // ³¡³ª¸é closestCollÀÇ ³»¿ëÀ» _interactableItem¿¡ ÇÒ´ç
+            // ëë‚˜ë©´ closestCollì˜ ë‚´ìš©ì„ _interactableItemì— í• ë‹¹
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 if (interactable as WorldItem)
@@ -92,7 +96,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // ÁÖº¯¿¡ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ®°¡ ¾øÀ¸¸é »óÈ£ÀÛ¿ëÀ» null·Î ¼³Á¤
+            // ì£¼ë³€ì— ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ìœ¼ë©´ ìƒí˜¸ì‘ìš©ì„ nullë¡œ ì„¤ì •
             PlayerManager.Instance.InteractableStructure = null;
             PlayerManager.Instance.InteractableItem = null;
             PlayerManager.Instance.IsInIntercation = false;
@@ -100,31 +104,31 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region »óÈ£ÀÛ¿ë : È­¸é Áß¾Ó¿¡ °¡Àå °¡±î¿î ¹°Ã¼
+    #region ìƒí˜¸ì‘ìš© : í™”ë©´ ì¤‘ì•™ì— ê°€ì¥ ê°€ê¹Œìš´ ë¬¼ì²´
     private void FindCloseInteractableItemFromRay()
     {
-        // ½ºÅ©¸° Áß¾Ó ±âÁØ °¡Àå °¡±îÀÌ ÀÖ´Â ¿ÀºêÁ§Æ®¸¦ _interactableItem·Î ¼³Á¤
-        // ·¹ÀÌÄ³½ºÆ®·Î Áß¾ÓÀ» °¨ÁöÇÏ°í °¨ÁöµÈ hit ±âÁØ °Å¸® °è»ê
+        // ìŠ¤í¬ë¦° ì¤‘ì•™ ê¸°ì¤€ ê°€ì¥ ê°€ê¹Œì´ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ _interactableItemë¡œ ì„¤ì •
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¤‘ì•™ì„ ê°ì§€í•˜ê³  ê°ì§€ëœ hit ê¸°ì¤€ ê±°ë¦¬ ê³„ì‚°
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
-        // ·¹ÀÌÄ³½ºÆ®·Î Áß¾ÓÀ» °¨ÁöÇÏ°í °¨ÁöµÈ hit ±âÁØ °Å¸® °è»ê
-        
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¤‘ì•™ì„ ê°ì§€í•˜ê³  ê°ì§€ëœ hit ê¸°ì¤€ ê±°ë¦¬ ê³„ì‚°
+
         if (collsCount > 0)
         {
             for (int i = 0; i < collsCount; i++)
             {
-                // È­¸é Áß¾Ó¿¡¼­ ¿ÀºêÁ§Æ®ÀÇ °Å¸® ÃøÁ¤
+                // í™”ë©´ ì¤‘ì•™ì—ì„œ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
                 Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
                 RaycastHit hit;
                 bool isHit = Physics.Raycast(ray, out hit, 10f);
                 float distance = Vector3.Distance(hit.point, _colls[i].transform.position);
-                // closestCollÀÌ nullÀÌ°Å³ª ÇöÀç ¿ÀºêÁ§Æ®°¡ closestCollº¸´Ù °¡±î¿î °æ¿ì ÇöÀç ÀÎµ¦½ºÀÇ Äİ¶óÀÌ´õ¸¦ closestColl·Î ¼³Á¤
+                // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
                 if (closestColl == null || distance < Vector3.Distance(hit.point, closestColl.transform.position))
                 {
                     closestColl = _colls[i];
                 }
             }
-            // ³¡³ª¸é closestCollÀÇ ³»¿ëÀ» _interactableItem¿¡ ÇÒ´ç
+            // ëë‚˜ë©´ closestCollì˜ ë‚´ìš©ì„ _interactableItemì— í• ë‹¹
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 if (interactable as WorldItem)
@@ -141,7 +145,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // ÁÖº¯¿¡ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ®°¡ ¾øÀ¸¸é »óÈ£ÀÛ¿ëÀ» null·Î ¼³Á¤
+            // ì£¼ë³€ì— ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ìœ¼ë©´ ìƒí˜¸ì‘ìš©ì„ nullë¡œ ì„¤ì •
             PlayerManager.Instance.InteractableStructure = null;
             PlayerManager.Instance.InteractableItem = null;
             PlayerManager.Instance.IsInIntercation = false;
@@ -149,12 +153,12 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region »óÈ£ÀÛ¿ë : ·¹ÀÌÄ³½ºÆ®ÀÇ À§Ä¡¿¡¼­ °¨Áö
+    #region ìƒí˜¸ì‘ìš© : ë ˆì´ìºìŠ¤íŠ¸ì˜ ìœ„ì¹˜ì—ì„œ ê°ì§€
     private void FindCloseInteractableItemAtRay()
     {
-        // overlapsphere¸¦ ÇÃ·¹ÀÌ¾î À§Ä¡°¡ ¾Æ´Ñ ·¹ÀÌÀÇ ³¡ÁöÁ¡¿¡¼­ »ı¼º
-        // ½ºÅ©¸° Áß¾Ó ±âÁØ °¡Àå °¡±îÀÌ ÀÖ´Â ¿ÀºêÁ§Æ®¸¦ _interactableItem·Î ¼³Á¤
-        // ·¹ÀÌÄ³½ºÆ®·Î Áß¾ÓÀ» °¨ÁöÇÏ°í °¨ÁöµÈ hit ±âÁØ °Å¸® °è»ê
+        // overlapsphereë¥¼ í”Œë ˆì´ì–´ ìœ„ì¹˜ê°€ ì•„ë‹Œ ë ˆì´ì˜ ëì§€ì ì—ì„œ ìƒì„±
+        // ìŠ¤í¬ë¦° ì¤‘ì•™ ê¸°ì¤€ ê°€ì¥ ê°€ê¹Œì´ ìˆëŠ” ì˜¤ë¸Œì íŠ¸ë¥¼ _interactableItemë¡œ ì„¤ì •
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ì¤‘ì•™ì„ ê°ì§€í•˜ê³  ê°ì§€ëœ hit ê¸°ì¤€ ê±°ë¦¬ ê³„ì‚°
         Collider closestColl = null;
         Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         _isRayHit = Physics.Raycast(ray, out _rayHit, 6f);
@@ -163,12 +167,12 @@ public class PlayerController : MonoBehaviour
 
         if (_isRayHit)
         {
-            // ·¹ÀÌÄ³½ºÆ®°¡ ¼º°øÇÏ¸é hit.point¸¦ ±âÁØÀ¸·Î overlapsphere¸¦ »ı¼º
+            // ë ˆì´ìºìŠ¤íŠ¸ê°€ ì„±ê³µí•˜ë©´ hit.pointë¥¼ ê¸°ì¤€ìœ¼ë¡œ overlapsphereë¥¼ ìƒì„±
             collsCount = Physics.OverlapSphereNonAlloc(_rayHit.point, 2.5f, _colls, _layerMask);
         }
         else
         {
-            // ½ÇÆĞ½Ã Ä«¸Ş¶óÀÇ À§Ä¡¿¡¼­ ·¹ÀÌ ¹æÇâÀ¸·Î 6f ¶³¾îÁø ÁöÁ¡¿¡¼­ overlapsphere¸¦ »ı¼º
+            // ì‹¤íŒ¨ì‹œ ì¹´ë©”ë¼ì˜ ìœ„ì¹˜ì—ì„œ ë ˆì´ ë°©í–¥ìœ¼ë¡œ 6f ë–¨ì–´ì§„ ì§€ì ì—ì„œ overlapsphereë¥¼ ìƒì„±
             _rayEndPos = _virCamAxis.position + Camera.main.transform.forward * 2f;
             collsCount = Physics.OverlapSphereNonAlloc(_rayEndPos, 2.5f, _colls, _layerMask);
         }
@@ -179,9 +183,9 @@ public class PlayerController : MonoBehaviour
             {
                 if (_isRayHit)
                 {
-                    // ·¹ÀÌÄ³½ºÆ®°¡ ¼º°øÇÑ °æ¿ì hit.point¿¡¼­ ¿ÀºêÁ§Æ®ÀÇ °Å¸® ÃøÁ¤
+                    // ë ˆì´ìºìŠ¤íŠ¸ê°€ ì„±ê³µí•œ ê²½ìš° hit.pointì—ì„œ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
                     float distance = Vector3.Distance(_rayHit.point, _colls[i].transform.position);
-                    // closestCollÀÌ nullÀÌ°Å³ª ÇöÀç ¿ÀºêÁ§Æ®°¡ closestCollº¸´Ù °¡±î¿î °æ¿ì ÇöÀç ÀÎµ¦½ºÀÇ Äİ¶óÀÌ´õ¸¦ closestColl·Î ¼³Á¤
+                    // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
                     if (closestColl == null || distance < Vector3.Distance(_rayHit.point, closestColl.transform.position))
                     {
                         closestColl = _colls[i];
@@ -189,16 +193,16 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    // ·¹ÀÌÄ³½ºÆ®°¡ ½ÇÆĞÇÑ °æ¿ì rayEndPos¿¡¼­ ¿ÀºêÁ§Æ®ÀÇ °Å¸® ÃøÁ¤
+                    // ë ˆì´ìºìŠ¤íŠ¸ê°€ ì‹¤íŒ¨í•œ ê²½ìš° rayEndPosì—ì„œ ì˜¤ë¸Œì íŠ¸ì˜ ê±°ë¦¬ ì¸¡ì •
                     float distance = Vector3.Distance(_rayEndPos, _colls[i].transform.position);
-                    // closestCollÀÌ nullÀÌ°Å³ª ÇöÀç ¿ÀºêÁ§Æ®°¡ closestCollº¸´Ù °¡±î¿î °æ¿ì ÇöÀç ÀÎµ¦½ºÀÇ Äİ¶óÀÌ´õ¸¦ closestColl·Î ¼³Á¤
+                    // closestCollì´ nullì´ê±°ë‚˜ í˜„ì¬ ì˜¤ë¸Œì íŠ¸ê°€ closestCollë³´ë‹¤ ê°€ê¹Œìš´ ê²½ìš° í˜„ì¬ ì¸ë±ìŠ¤ì˜ ì½œë¼ì´ë”ë¥¼ closestCollë¡œ ì„¤ì •
                     if (closestColl == null || distance < Vector3.Distance(_rayEndPos, closestColl.transform.position))
                     {
                         closestColl = _colls[i];
                     }
                 }
             }
-            // ³¡³ª¸é closestCollÀÇ ³»¿ëÀ» _interactableItem¿¡ ÇÒ´ç
+            // ëë‚˜ë©´ closestCollì˜ ë‚´ìš©ì„ _interactableItemì— í• ë‹¹
             if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
             {
                 if (interactable as WorldItem)
@@ -211,17 +215,23 @@ public class PlayerController : MonoBehaviour
                     PlayerManager.Instance.InteractableStructure = interactable as Structure;
                     PlayerManager.Instance.IsInIntercation = true;
                 }
+                // ì•„ë˜ëŠ” í…ŒìŠ¤íŠ¸ ì½”ë“œ
+                else if (interactable as TestWorldItem)
+                {
+                    PlayerManager.Instance.InteractableTestItem = interactable as TestWorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
             }
         }
         else
         {
-            // ÁÖº¯¿¡ ÀÎÅÍ·º¼Ç °¡´ÉÇÑ ¿ÀºêÁ§Æ®°¡ ¾øÀ¸¸é »óÈ£ÀÛ¿ëÀ» null·Î ¼³Á¤
+            // ì£¼ë³€ì— ì¸í„°ë ‰ì…˜ ê°€ëŠ¥í•œ ì˜¤ë¸Œì íŠ¸ê°€ ì—†ìœ¼ë©´ ìƒí˜¸ì‘ìš©ì„ nullë¡œ ì„¤ì •
             PlayerManager.Instance.InteractableStructure = null;
             PlayerManager.Instance.InteractableItem = null;
             PlayerManager.Instance.IsInIntercation = false;
         }
     }
-#endregion
+    #endregion
 
     private void HandlePlayer()
     {
@@ -248,84 +258,148 @@ public class PlayerController : MonoBehaviour
         _mouseInput = new Vector2(mouseX, mouseY);
 
 
-        #region E Å° »óÈ£ÀÛ¿ë
+        #region E í‚¤ ìƒí˜¸ì‘ìš©
         if (Input.GetKeyDown(KeyCode.E))
         {
-            // ¶¥¿¡ ¶³¾îÁø ¾ÆÀÌÅÛÀº E´©¸£¸é Áï½Ã »óÈ£ÀÛ¿ë
-            if (PlayerManager.Instance.InteractableItem != null)
-                PlayerManager.Instance.InteractableItem.Interact();
+            // ë•…ì— ë–¨ì–´ì§„ ì•„ì´í…œì€ Eëˆ„ë¥´ë©´ ì¦‰ì‹œ ìƒí˜¸ì‘ìš©
+            if (PlayerManager.Instance.InteractableTestItem != null)
+                // PlayerManager.Instance.InteractableItem.Interact();
+                PlayerManager.Instance.InteractableTestItem.Interact(); // í…ŒìŠ¤íŠ¸ ì½”ë“œ
         }
 
         if (Input.GetKey(KeyCode.E))
         {
             if (PlayerManager.Instance.InteractableStructure != null)
             {
-                // ±¸Á¶¹°ÀÇ °æ¿ì 1ÃÊ°£ ´­·¯¾ß¸¸ »óÈ£ÀÛ¿ë
+                // êµ¬ì¡°ë¬¼ì˜ ê²½ìš° 1ì´ˆê°„ ëˆŒëŸ¬ì•¼ë§Œ ìƒí˜¸ì‘ìš©
                 PlayerManager.Instance.InteractDelay += 1 * Time.deltaTime;
 
                 if (PlayerManager.Instance.InteractDelay >= 1f)
                 {
                     PlayerManager.Instance.InteractableStructure.Interact();
-                    PlayerManager.Instance.InteractDelay = 0f; // »óÈ£ÀÛ¿ë ÈÄ µô·¹ÀÌ ÃÊ±âÈ­
+                    PlayerManager.Instance.InteractDelay = 0f; // ìƒí˜¸ì‘ìš© í›„ ë”œë ˆì´ ì´ˆê¸°í™”
                 }
             }
             else
             {
-                PlayerManager.Instance.InteractDelay = 0f; // Áß°£¿¡ ´Ù¸¥°÷À» ¹Ù¶óº¸¾Æµµ ÃÊ±âÈ­
+                PlayerManager.Instance.InteractDelay = 0f; // ì¤‘ê°„ì— ë‹¤ë¥¸ê³³ì„ ë°”ë¼ë³´ì•„ë„ ì´ˆê¸°í™”
             }
         }
         else
         {
-            PlayerManager.Instance.InteractDelay = 0f; // E Å°¸¦ ¶¼¸é µô·¹ÀÌ ÃÊ±âÈ­
+            PlayerManager.Instance.InteractDelay = 0f; // E í‚¤ë¥¼ ë–¼ë©´ ë”œë ˆì´ ì´ˆê¸°í™”
         }
         #endregion
 
-        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' Å°¸¦ ´­·¶À» ¶§
+        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' í‚¤ë¥¼ ëˆŒë €ì„ ë•Œ
         {
-            SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManagerÀÇ ÀÎº¥Åä¸® Åä±Û ¸Ş¼­µå È£Ãâ
+            SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManagerì˜ ì¸ë²¤í† ë¦¬ í† ê¸€ ë©”ì„œë“œ í˜¸ì¶œ
         }
 
+        #region í•«ë°” ì„ íƒ
 
-        #region ¾ÆÀÌÅÛ »ç¿ë
-        if(Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem != null)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // ¼Õ¿¡ »ç¿ë, ¼Òºñ ¾ÆÀÌÅÛÀÌ ¾Æ´Ñ ÀÚ¿ø ¾ÆÀÌÅÛÀÌ µé·Á ÀÖ´Â °æ¿ì
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // ì¸ë²¤í† ë¦¬ í•«ë°” 1ë²ˆ ì„ íƒ
+            Inventory.Instance.SelectHotbarSlot(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // ì¸ë²¤í† ë¦¬ í•«ë°” 2ë²ˆ ì„ íƒ
+            Inventory.Instance.SelectHotbarSlot(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // ì¸ë²¤í† ë¦¬ í•«ë°” 3ë²ˆ ì„ íƒ
+            Inventory.Instance.SelectHotbarSlot(2);
+        }
+
+        Item curItem = Inventory.Instance.GetCurrentHotbarItem();
+
+        if (curItem == null)
+        {
+            PlayerManager.Instance.SelectItem = null; // í˜„ì¬ í•«ë°”ì— ì•„ì´í…œì´ ì—†ìœ¼ë©´ ì„ íƒ ì•„ì´í…œì„ nullë¡œ ì„¤ì •
+            if (_testHandItem != null)
+            {
+                // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ì´ ìˆë‹¤ë©´ ë¹„í™œì„±í™”
+                // _testHandItem.SetActive(false);
+                Destroy(_testHandItem); // ì˜¤ë¸Œì íŠ¸ ì œê±°
+            }
+            // _testHandItem = null; // í…ŒìŠ¤íŠ¸ìš© ë§ˆì¸ê±´ë„ nullë¡œ ì„¤ì •
+        }
+        else
+        {
+            PlayerManager.Instance.SelectItem = curItem; // í˜„ì¬ í•«ë°”ì— ì•„ì´í…œì´ ìˆìœ¼ë©´ ì„ íƒ ì•„ì´í…œìœ¼ë¡œ ì„¤ì •
+
+            if (curItem as TestToolItem && _testHandItem == null)
+            {
+                // _testHandItem = (curItem as TestToolItem).toolObject; // í˜„ì¬ í•«ë°” ì•„ì´í…œì˜ toolObjectë¥¼ ì„¤ì •
+                // _testHandItem.SetActive(true); // ì•„ì´í…œì´ í™œì„±í™”ë˜ì–´ ìˆì§€ ì•Šë‹¤ë©´ í™œì„±í™”
+                _testHandItem = Instantiate((curItem as TestToolItem).toolPrefab, _playerHand.position, _playerHand.rotation);
+            }
+            else if (_testHandItem == null)
+            {
+                // ì†Œë¹„ì•„ì´í…œì˜ í”„ë¦¬íŒ¹ì„ ìƒì„±í•˜ëŠ” ë¡œì§ ìƒì„±
+                _testHandItem = Instantiate(curItem.WorldPrefab, _playerHand.position, _playerHand.rotation);
+            }
+        }
+        #endregion
+
+        #region ì•„ì´í…œ ì‚¬ìš©
+        if (Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem as MaterialItem)
+        {
+            // ì†ì— ìì› ì•„ì´í…œì´ ë“¤ë ¤ ìˆëŠ” ê²½ìš°
             _animator.SetTrigger("Swing");
         }
-
-        if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as TestToolItem)
         {
-            // Å×½ºÆ®¿ëÀ¸·Î ¸¶ÀÌ´× ¸ğ¼Ç ½ÇÇà
-            _testBool = true; // ¸¶ÀÌ´× ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇàÀ» À§ÇÑ bool °ª ¼³Á¤
-            // ¾ÆÀÌÅÛ »ç¿ëÀº Áß°£¿¡ ¸¶¿ì½º¸¦ ¶§¸é ¸ØÃç¾ß ÇÏ±â¿¡ ÄÚ·çÆ¾ÀÌ ¾Æ´Ñ ±×³É ±¸Çö
+            _testBool = true; // ë§ˆì´ë‹ ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰ì„ ìœ„í•œ bool ê°’ ì„¤ì •
+            // ì•„ì´í…œ ì‚¬ìš©ì€ ì¤‘ê°„ì— ë§ˆìš°ìŠ¤ë¥¼ ë•Œë©´ ë©ˆì¶°ì•¼ í•˜ê¸°ì— ì½”ë£¨í‹´ì´ ì•„ë‹Œ ê·¸ëƒ¥ êµ¬í˜„
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
-            if(PlayerManager.Instance.ItemDelay >= 1)
+            if (PlayerManager.Instance.ItemDelay >= 0.1f)
             {
-                Debug.Log("¾ÆÀÌÅÛ »ç¿ë!");
-                // PlayerManager.Instance.SelectItem.Use(this.gameObject);
-                PlayerManager.Instance.ItemDelay = 0f; // ¾ÆÀÌÅÛ »ç¿ë ÈÄ µô·¹ÀÌ ÃÊ±âÈ­
+                Debug.Log("ì•„ì´í…œ ì‚¬ìš©!");
+                PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.ItemDelay = 0f; // ì•„ì´í…œ ì‚¬ìš© í›„ ë”œë ˆì´ ì´ˆê¸°í™”
+            }
+        }
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem != null)
+        {
+            PlayerManager.Instance.ItemDelay += Time.deltaTime;
+            if (PlayerManager.Instance.ItemDelay >= 1f)
+            {
+                Debug.Log("ì•„ì´í…œ ì‚¬ìš©!");
+                PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.ItemDelay = 0f; // ì•„ì´í…œ ì‚¬ìš© í›„ ë”œë ˆì´ ì´ˆê¸°í™”
             }
         }
         else
         {
             _testBool = false;
+            PlayerManager.Instance.ItemDelay = 0f; // ë§ˆìš°ìŠ¤ë¥¼ ë–¼ë©´ ì•„ì´í…œ ì‚¬ìš© ë”œë ˆì´ ì´ˆê¸°í™”
         }
         #endregion
 
-        // Å×½ºÆ® ÄÚµå
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            _isGrabbing = !_isGrabbing; // Grab »óÅÂ Åä±Û
-        }
+        // í…ŒìŠ¤íŠ¸ ì½”ë“œ
+        // if (Input.GetKeyDown(KeyCode.T))
+        // {
+        //     _isGrabbing = !_isGrabbing; // Grab ìƒíƒœ í† ê¸€
+        // }
     }
 
-    #region ÇÃ·¹ÀÌ¾î ÀÌµ¿
+    #region í”Œë ˆì´ì–´ ì´ë™
     private void Move()
     {
-        // Ä«¸Ş¶ó¸¦ ±âÁØÀ¸·Î Á¤¸éÀ» Àâ°í ¿òÁ÷ÀÌµµ·Ï ¼öÁ¤ÇØ¾ßÇÔ
+        // ì¹´ë©”ë¼ë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì •ë©´ì„ ì¡ê³  ì›€ì§ì´ë„ë¡ ìˆ˜ì •í•´ì•¼í•¨
         Vector3 move = transform.TransformDirection(_moveDir) * _speed;
 
-        // È­¼ºÀÌ ¹è°æÀÌ´Ï Áß·ÂÀº 3.73
+        // í™”ì„±ì´ ë°°ê²½ì´ë‹ˆ ì¤‘ë ¥ì€ 3.73
         _verVelocity.y -= 3.73f * Time.deltaTime;
 
         _controller.Move((move + _verVelocity) * Time.deltaTime);
@@ -341,8 +415,8 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        // ´Ş¸®±â ±â´ÉÀÌ ÇÊ¿äÇÏÁö ¾ÊÀ» ¼öµµ ÀÖÀ½.
-        // ³Ö´Â´Ù¸é ½½·Î¿ì¶û »óÈ£ÀÛ¿ë °í·ÁÇÒ°Í.
+        // ë‹¬ë¦¬ê¸° ê¸°ëŠ¥ì´ í•„ìš”í•˜ì§€ ì•Šì„ ìˆ˜ë„ ìˆìŒ.
+        // ë„£ëŠ”ë‹¤ë©´ ìŠ¬ë¡œìš°ë‘ ìƒí˜¸ì‘ìš© ê³ ë ¤í• ê²ƒ.
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             _speed *= 2;
@@ -354,7 +428,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    #region ÇÃ·¹ÀÌ¾î ½ÃÁ¡ °ü·Ã
+    #region í”Œë ˆì´ì–´ ì‹œì  ê´€ë ¨
     private void AimControl()
     {
         Vector2 mouseInput = _mouseInput * _mouseSensitivity;
@@ -373,8 +447,8 @@ public class PlayerController : MonoBehaviour
 
     private void CameraLimit()
     {
-        // Ä«¸Ş¶ó°¡ º®¿¡ ºÎµúÈ÷´Â °æ¿ì º® À§Ä¡¸¸Å­ ¾ÕÀ¸·Î ÀÌµ¿
-        // Ãà¿¡¼­ Ä«¸Ş¶ó·Î ·¹ÀÌ¸¦ ¹ß»çÇÏ¿© º®¿¡ ºÎµúÈ÷´Â °æ¿ì, ºÎµóÈ÷´Â À§Ä¡¸¦ °è»êÇÏ¿© Ä«¸Ş¶ó¸¦ ÀÌµ¿½ÃÅ´
+        // ì¹´ë©”ë¼ê°€ ë²½ì— ë¶€ë”ªíˆëŠ” ê²½ìš° ë²½ ìœ„ì¹˜ë§Œí¼ ì•ìœ¼ë¡œ ì´ë™
+        // ì¶•ì—ì„œ ì¹´ë©”ë¼ë¡œ ë ˆì´ë¥¼ ë°œì‚¬í•˜ì—¬ ë²½ì— ë¶€ë”ªíˆëŠ” ê²½ìš°, ë¶€ë”›íˆëŠ” ìœ„ì¹˜ë¥¼ ê³„ì‚°í•˜ì—¬ ì¹´ë©”ë¼ë¥¼ ì´ë™ì‹œí‚´
         RaycastHit hit;
         if (Physics.Raycast(_virCamAxis.position, -_virCamAxis.forward, out hit, 4.5f, _ignoreMask))
         {
@@ -383,7 +457,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // º®¿¡ ºÎµúÈ÷Áö ¾Ê´Â °æ¿ì À§Ä¡ ¸®¼Â
+            // ë²½ì— ë¶€ë”ªíˆì§€ ì•ŠëŠ” ê²½ìš° ìœ„ì¹˜ ë¦¬ì…‹
             Vector3 resetPos = _virCamAxis.position - _virCamAxis.forward * 4f;
             _virCam.transform.position = Vector3.Lerp(_virCam.transform.position, resetPos, 0.5f);
         }
@@ -392,11 +466,11 @@ public class PlayerController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Gizmos¸¦ »ç¿ëÇÏ¿© ·¹ÀÌ Ç¥½Ã
+        // Gizmosë¥¼ ì‚¬ìš©í•˜ì—¬ ë ˆì´ í‘œì‹œ
         Gizmos.color = Color.green;
         //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
 
-        if(_isRayHit)
+        if (_isRayHit)
         {
             Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
             Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
@@ -408,39 +482,57 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    #region ¹Ì»ç¿ë ÄÚµå
+    #region í…ŒìŠ¤íŠ¸ ì½”ë“œ
+    private void MineGunSetPos()
+    {
+        //if (PlayerManager.Instance.SelectItem != null && _testHandItem == null)
+        //{
+        //    _testHandItem = Instantiate(_mineGunPrefab, _playerHand.position, _playerHand.rotation);
+        //}
+
+        if (_testHandItem != null)
+        {
+            // í”Œë ˆì´ì–´ì˜ ì† ìœ„ì¹˜ì— ë§ˆì¸ê±´ì„ ìœ„ì¹˜ì‹œí‚´
+            _testHandItem.transform.position = _playerHand.position;
+            _testHandItem.transform.rotation = _playerHand.rotation;
+        }
+    }
+    #endregion
+
+
+    #region ë¯¸ì‚¬ìš© ì½”ë“œ
     /// <summary>
-    /// ½½·Î¿ì °­µµ¸¦ ÆÛ¼¾Å×ÀÌÁö·Î ÀÔ·Â ¹Ş¾Æ ÇÃ·¹ÀÌ¾î °¨¼Ó
+    /// ìŠ¬ë¡œìš° ê°•ë„ë¥¼ í¼ì„¼í…Œì´ì§€ë¡œ ì…ë ¥ ë°›ì•„ í”Œë ˆì´ì–´ ê°ì†
     /// </summary>
-    /// <param name="percentage"></param>0~100 »çÀÌÀÇ °ªÀ¸·Î ÀÔ·Â, 0Àº °¨¼Ó ¾øÀ½, 100Àº Á¤Áö
+    /// <param name="percentage"></param>0~100 ì‚¬ì´ì˜ ê°’ìœ¼ë¡œ ì…ë ¥, 0ì€ ê°ì† ì—†ìŒ, 100ì€ ì •ì§€
     //public void PlayerSlow(float percentage)
     //{
     //    _speed = _speed * (1f - percentage / 100f);
     //}
     //
     /// <summary>
-    /// ½½·Î¿ìÀÇ ¿ª¼øÀ¸·Î °è»êÇÏ±â¿¡ ½½·Î¿ì ÇÑ ÆÛ¼¾Å×ÀÌÁö¸¦ ±×´ë·Î ÀÔ·ÂÇØ¾ßÇÔ
+    /// ìŠ¬ë¡œìš°ì˜ ì—­ìˆœìœ¼ë¡œ ê³„ì‚°í•˜ê¸°ì— ìŠ¬ë¡œìš° í•œ í¼ì„¼í…Œì´ì§€ë¥¼ ê·¸ëŒ€ë¡œ ì…ë ¥í•´ì•¼í•¨
     /// </summary>
     /// <param name="percentage"></param>
     //public void OutOfSlow(float percentage)
     //{
-    //    // ½½·Î¿ìÀÇ ¿ª¼ø
+    //    // ìŠ¬ë¡œìš°ì˜ ì—­ìˆœ
     //    _speed = _speed / (1f - percentage / 100f);
     //}
 
-    // overlapsphere·Î ±³Ã¼ÇÏ±â¿¡ ÁÖ¼®Ã³¸®.
-    // ÇöÀç ÀÎÅÍ·º¼Ç ¹æ½ÄÀº ÇÑ°÷¿¡ ÇÏ³ªÀÇ ¿ÀºêÁ§Æ®¸¸ ÀÖ´Ù´Â °É ÀüÁ¦·Î Á¦ÀÛµÊ
-    // ¹«Á¶°Ç Ã³À½ Á¢±ÙÇÑ ¿ÀºêÁ§Æ®¸¸ ÀÎÅÍ·º¼ÇÀÌ °¡´ÉÇÏµµ·Ï Á¦ÀÛ
-    // ¿©·¯ ¿ÀºêÁ§Æ®°¡ ÀÖÀ» °æ¿ì, Áö±İ ¹æ½ÄÀÌ ¾Æ´Ñ ´Ù¸¥ ¹æ½ÄÀ¸·Î ÄÚµå¸¦ ÀÛ¼ºÇÏ¿©¾ß ÇÔ
+    // overlapsphereë¡œ êµì²´í•˜ê¸°ì— ì£¼ì„ì²˜ë¦¬.
+    // í˜„ì¬ ì¸í„°ë ‰ì…˜ ë°©ì‹ì€ í•œê³³ì— í•˜ë‚˜ì˜ ì˜¤ë¸Œì íŠ¸ë§Œ ìˆë‹¤ëŠ” ê±¸ ì „ì œë¡œ ì œì‘ë¨
+    // ë¬´ì¡°ê±´ ì²˜ìŒ ì ‘ê·¼í•œ ì˜¤ë¸Œì íŠ¸ë§Œ ì¸í„°ë ‰ì…˜ì´ ê°€ëŠ¥í•˜ë„ë¡ ì œì‘
+    // ì—¬ëŸ¬ ì˜¤ë¸Œì íŠ¸ê°€ ìˆì„ ê²½ìš°, ì§€ê¸ˆ ë°©ì‹ì´ ì•„ë‹Œ ë‹¤ë¥¸ ë°©ì‹ìœ¼ë¡œ ì½”ë“œë¥¼ ì‘ì„±í•˜ì—¬ì•¼ í•¨
     // private void OnTriggerEnter(Collider other)
     // {
     //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
     //     {
     //         _interactableItem = interact as TestItem;
     //         TestPlayerManager.Instance.IsInIntercation = true;
-    //         // ³ªÁß¿¡ ¾ÆÀÌÅÛ°ú »óÈ£ÀÛ¿ë ¹°Ã¼°¡ ³ª´¶´Ù°í ÇÏ¸é
-    //         // _interactableItem¿¡ as·Î ³ÖÀ»¶§ Á¶°Ç¹®À» ÀÌ¿ëÇÏ¿© »óÈ²¿¡ ¸Â°Ô ³Ö´Â ·ÎÁ÷ ÇÊ¿ä
-    //         // ItemÀÌ¶ó¸é as ItemÀ¸·Î, ±¸Á¶¹°ÀÌ¶ó¸é as Structure·Î ³Ö´Â ½ÄÀ¸·Î
+    //         // ë‚˜ì¤‘ì— ì•„ì´í…œê³¼ ìƒí˜¸ì‘ìš© ë¬¼ì²´ê°€ ë‚˜ë‰œë‹¤ê³  í•˜ë©´
+    //         // _interactableItemì— asë¡œ ë„£ì„ë•Œ ì¡°ê±´ë¬¸ì„ ì´ìš©í•˜ì—¬ ìƒí™©ì— ë§ê²Œ ë„£ëŠ” ë¡œì§ í•„ìš”
+    //         // Itemì´ë¼ë©´ as Itemìœ¼ë¡œ, êµ¬ì¡°ë¬¼ì´ë¼ë©´ as Structureë¡œ ë„£ëŠ” ì‹ìœ¼ë¡œ
     //     }
     // }
     // 
@@ -454,7 +546,7 @@ public class PlayerController : MonoBehaviour
     // }
     #endregion
 
-    #region ¾Ö´Ï¸ŞÀÌ¼Ç
+    #region ì• ë‹ˆë©”ì´ì…˜
     private void Animation()
     {
         MoveAnim();
@@ -475,7 +567,7 @@ public class PlayerController : MonoBehaviour
 
     private void SwingAnim()
     {
-        // ³ªÁß¿£ _isGrabbingµµ Á¶°Ç¿¡ Ãß°¡µÇµµ·Ï º¯°æ
+        // ë‚˜ì¤‘ì—” _isGrabbingë„ ì¡°ê±´ì— ì¶”ê°€ë˜ë„ë¡ ë³€ê²½
         if (Input.GetMouseButtonDown(0) && _isGrabbing)
         {
             _animator.SetTrigger("Swing");

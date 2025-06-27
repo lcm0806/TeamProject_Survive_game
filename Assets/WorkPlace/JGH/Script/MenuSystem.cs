@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuSystem : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class MenuSystem : MonoBehaviour
     [Header("확인 메뉴")]
     public GameObject NewGameDialog;
     private Button _newGameOkButton;
-    private Button _newGamebackButton;
+    private Button _newGameBackButton;
     
     public GameObject ContinueDialog;
     private Button _continueDialogOkButton;
@@ -37,6 +38,10 @@ public class MenuSystem : MonoBehaviour
     
     public GameObject CreatorsDialog;
     private Button _creatorsYesButton;
+    
+    [Header("경고 메뉴")]
+    public GameObject WarningDialog;
+    private Button _warningYesButton;
     
     // 메뉴 상태 관리
     private GameObject _currentOpenMenu = null;
@@ -105,6 +110,20 @@ public class MenuSystem : MonoBehaviour
             MainMenuButtons();
         }
 
+        if (NewGameDialog != null)
+        {
+            _newGameOkButton = NewGameDialog.transform.Find("OkButton")?.GetComponent<Button>();
+            _newGameBackButton = NewGameDialog.transform.Find("BackButton")?.GetComponent<Button>();
+            NewGameDialogButtons();
+        }
+
+        if (ContinueDialog != null)
+        {
+            _continueDialogOkButton = ContinueDialog.transform.Find("OkButton")?.GetComponent<Button>();
+            _continueDialogBackButton = ContinueDialog.transform.Find("BackButton")?.GetComponent<Button>();
+            ContinueDialogButtons();
+        }
+
         if (CreatorsDialog != null)
         {
             _creatorsYesButton = CreatorsDialog.transform.Find("YesButton")?.GetComponent<Button>();
@@ -112,6 +131,12 @@ public class MenuSystem : MonoBehaviour
             Debug.Log($"만든이들 다이얼로그 Yes 버튼 찾기 결과: {(_creatorsYesButton != null ? "성공" : "실패")}");
             
             CreatorsMenuButtons();
+        }
+
+        if (WarningDialog != null)
+        {
+            _warningYesButton = WarningDialog.transform.Find("YesButton")?.GetComponent<Button>();
+            WarningDialogButtons();
         }
 
         if (ExitMenu != null)
@@ -238,14 +263,61 @@ public class MenuSystem : MonoBehaviour
         CloseCurrentMenu(); // 현재 메뉴만 닫기
     }
     
-    private void CreatorsMenuButtons()
+    private void NewGameDialogButtons()
     {
-        if (CreatorsDialog)
+        if (NewGameDialog != null)
         {
-            _creatorsYesButton?.onClick.AddListener(() =>
+            _newGameOkButton?.onClick.AddListener(() =>
             {
-                Debug.Log("만든이들 다이얼로그 닫기");
-                CloseCurrentMenu(); // 현재 메뉴만 닫기
+                Debug.Log("새 게임 시작 - OK 버튼");
+                CloseCurrentMenu();
+                StartNewGame();
+            });
+            
+            _newGameBackButton?.onClick.AddListener(() =>
+            {
+                Debug.Log("새 게임 취소 - Back 버튼");
+                CloseCurrentMenu();
+            });
+        }
+    }
+
+    private void ContinueDialogButtons()
+    {
+        if (ContinueDialog != null)
+        {
+            _continueDialogOkButton?.onClick.AddListener(() =>
+            {
+                Debug.Log("게임 불러오기 시도");
+                CloseCurrentMenu();
+                
+                // FileSystem에 불러오기 요청
+                if (FileSystem.Instance != null)
+                {
+                    FileSystem.Instance.TryLoadGameFromMenu();
+                }
+                else
+                {
+                    ShowWarningDialog("파일 시스템을 찾을 수 없습니다!");
+                }
+            });
+            
+            _continueDialogBackButton?.onClick.AddListener(() =>
+            {
+                Debug.Log("불러오기 취소");
+                CloseCurrentMenu();
+            });
+        }
+    }
+
+    private void WarningDialogButtons()
+    {
+        if (WarningDialog != null)
+        {
+            _warningYesButton?.onClick.AddListener(() =>
+            {
+                Debug.Log("경고창 닫기");
+                CloseCurrentMenu();
             });
         }
     }
@@ -272,26 +344,98 @@ public class MenuSystem : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 게임 시작 버튼 누를시
-    /// </summary>
-    public void OnMainStartButtonClick()
+    private void CreatorsMenuButtons()
     {
-        if (IsAnyMenuOpen()) return; // 메뉴가 열려있으면 무시
-        
-        Debug.Log("게임 시작 버튼 클릭");
+        if (CreatorsDialog)
+        {
+            _creatorsYesButton?.onClick.AddListener(() =>
+            {
+                Debug.Log("만든이들 다이얼로그 닫기");
+                CloseCurrentMenu(); // 현재 메뉴만 닫기
+            });
+        }
+    }
+
+    /// <summary>
+    /// 새 게임 시작
+    /// </summary>
+    private void StartNewGame()
+    {
+        Debug.Log("새 게임 시작 - 게임 씬으로 이동");
         
         // TODO: TEST
         if (AudioSystem.Instance != null) AudioSystem.Instance.StopBGM();
 
         // 쉘터 씬 로드
-        if (SceneSystem.Instance != null) SceneSystem.Instance.LoadShelterScene();
+        if (SceneSystem.Instance != null)
+        {
+            SceneSystem.Instance.LoadShelterScene();
+        }
+        else
+        {
+            Debug.LogError("SceneSystem.Instance가 null입니다. 씬 로드 실패!");
+        }
 
         // TODO: TEST
         if (AudioSystem.Instance != null) AudioSystem.Instance.PlaySFXByName("MainSFX");
 
         // 씬 전환시에만 MainMenu 비활성화
         MainMenu.SetActive(false);
+    }
+
+    /// <summary>
+    /// 경고창 표시 (외부에서 호출 가능)
+    /// </summary>
+    public void ShowWarningDialog(string message)
+    {
+        Debug.Log($"경고창 표시: {message}");
+        
+        if (WarningDialog != null)
+        {
+            // 경고 메시지 텍스트 설정 (Text 컴포넌트가 있다면)
+            var messageText = WarningDialog.GetComponentInChildren<UnityEngine.UI.Text>();
+            if (messageText != null)
+            {
+                messageText.text = message;
+            }
+            
+            // TMPro Text 컴포넌트 확인
+            var tmpText = WarningDialog.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            if (tmpText != null)
+            {
+                tmpText.text = message;
+            }
+            
+            OpenMenu(WarningDialog);
+        }
+        else
+        {
+            Debug.LogError("WarningDialog가 설정되지 않았습니다!");
+        }
+    }
+
+    /// <summary>
+    /// 게임 불러오기 성공 시 호출 (FileSystem에서 호출)
+    /// </summary>
+    public void OnLoadGameSuccess()
+    {
+        Debug.Log("게임 불러오기 성공 - 메인 메뉴 비활성화");
+        
+        // TODO: TEST
+        if (AudioSystem.Instance != null) AudioSystem.Instance.StopBGM();
+        
+        MainMenu.SetActive(false);
+    }
+
+    /// <summary>
+    /// 메인 메뉴에서 새 게임 버튼 클릭 시 (Start 버튼)
+    /// </summary>
+    public void OnMainStartButtonClick()
+    {
+        if (IsAnyMenuOpen()) return; // 메뉴가 열려있으면 무시
+        
+        Debug.Log("새 게임 버튼 클릭");
+        OpenMenu(NewGameDialog);
     }
 
     /// <summary>
@@ -321,7 +465,7 @@ public class MenuSystem : MonoBehaviour
     {
         if (IsAnyMenuOpen()) return; // 메뉴가 열려있으면 무시
         Debug.Log("계속하기 버튼 클릭");
-        OpenMenu(NewGameDialog);
+        OpenMenu(ContinueDialog);
     }
     
     /// <summary>

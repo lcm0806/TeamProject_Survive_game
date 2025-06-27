@@ -29,7 +29,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         if(eventData.button == PointerEventData.InputButton.Left)
         {
             if(Inventory.CarriedItem == null) return;
-            if(myTag != SlotTag.None && Inventory.CarriedItem.myItem.itemTag != myTag) return;
             SetItem(Inventory.CarriedItem);
         }
     }

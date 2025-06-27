@@ -99,7 +99,6 @@ public class Inventory : Singleton<Inventory>
     {
         if(CarriedItem != null)
         {
-            if(item.activeSlot.myTag != SlotTag.None && item.activeSlot.myTag != CarriedItem.myItem.itemTag) return;
             item.activeSlot.SetItem(CarriedItem);
         }
 

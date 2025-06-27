@@ -115,6 +115,11 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         // 원래 슬롯으로 돌아가도록 처리합니다.
         if (Inventory.CarriedItem != null)
         {
+            if (Inventory.CarriedItem == null)
+            {
+                return;
+            }
+
             List<RaycastResult> results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(eventData, results);
 
@@ -135,17 +140,20 @@ public class InventoryItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             }
             else // UI 위에 드롭되었지만 InventorySlot이 아니었거나 드롭 처리되지 않았다면 원래 위치로 되돌림
             {
-                // 이전에 들고 있던 아이템의 슬롯으로 다시 되돌림
-                if (Inventory.CarriedItem.activeSlot != null)
+                if (Inventory.CarriedItem != null)
                 {
-                    Inventory.CarriedItem.activeSlot.SetItem(Inventory.CarriedItem);
+                    if (Inventory.CarriedItem.activeSlot != null) // 원래 슬롯이 있다면 그곳으로 되돌림
+                    {
+                        Inventory.CarriedItem.activeSlot.SetItem(Inventory.CarriedItem);
+                        // 핫바 동기화도 필요하다면 여기서 추가
+                        Inventory.Instance.CheckAndSyncSlotIfHotbar(Inventory.CarriedItem.activeSlot);
+                    }
+                    else // 원래 슬롯이 없던 아이템이라면 (예: 새로 생성되어 마우스에 붙어있던 아이템)
+                    {
+                        Destroy(Inventory.CarriedItem.gameObject); // 단순히 파괴
+                    }
+                    Inventory.CarriedItem = null; // 최종적으로 들고 있던 아이템 해제
                 }
-                // 만약 원래 슬롯이 없었다면 (예: 새로 생성된 아이템) 그냥 파괴
-                else
-                {
-                    Destroy(Inventory.CarriedItem.gameObject);
-                }
-                Inventory.CarriedItem = null; // 들고 있는 아이템 해제
             }
         }
     }

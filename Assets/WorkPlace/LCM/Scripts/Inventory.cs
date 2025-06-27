@@ -108,7 +108,7 @@ public class Inventory : Singleton<Inventory>
     {
         if(CarriedItem != null)
         {
-            //item.activeSlot.SetItem(CarriedItem);
+            item.activeSlot.SetItem(CarriedItem);
         }
 
         CarriedItem = item;
@@ -417,34 +417,39 @@ public class Inventory : Singleton<Inventory>
 
     public void HandleItemDropOrClick(InventorySlot targetSlot, InventoryItem droppedItemUI)
     {
-        // 아무것도 들고 있지 않고, 빈 슬롯을 클릭했거나 아이템 없는 곳에 드롭
-        if (CarriedItem == null && droppedItemUI == null)
+        if (CarriedItem == null)
         {
             return;
         }
-        // 아무것도 들고 있지 않고, 아이템이 있는 슬롯을 클릭 (=> 해당 아이템을 들기)
-        else if (CarriedItem == null && droppedItemUI != null)
+
+        // Case 2: 아이템을 들고 있고, 빈 슬롯에 드롭하는 경우 (클릭은 아님)
+        // (CarriedItem != null && targetSlot.myItemUI == null)
+        else if (targetSlot.myItemUI == null)
         {
-            SetCarriedItem(droppedItemUI);
-        }
-        // 아이템을 들고 있고, 빈 슬롯에 드롭/클릭 (=> 아이템 내려놓기)
-        else if (CarriedItem != null && targetSlot.myItemUI == null)
-        {
-            // 이전 슬롯 비우기
-            if (CarriedItem.activeSlot != null)
+            Debug.Log("HangleItem: 빈 슬롯에 내려놓기 (드롭)");
+            InventorySlot originalSlot = CarriedItem.activeSlot;
+
+            targetSlot.SetItem(CarriedItem);
+
+
+            //이전 슬롯 지우기
+            if (originalSlot != null)
             {
-                CarriedItem.activeSlot.ClearSlot(); // 이전 슬롯 UI 파괴 포함
-                                                    // 이전 슬롯이 핫바 슬롯이었다면 persistentHotbarSlots도 동기화
-                CheckAndSyncSlotIfHotbar(CarriedItem.activeSlot);
+                //originalSlot.ClearSlot(); // <-- 이 라인을 주석 처리하거나 제거해야 합니다!
+                originalSlot.myItemData = null; // 원본 슬롯의 데이터만 비웁니다.
+                originalSlot.myItemUI = null;   // 원본 슬롯의 UI 참조만 비웁니다.
+
+
+                CheckAndSyncSlotIfHotbar(originalSlot); // 핫바라면 동기화
             }
 
-            targetSlot.SetItem(CarriedItem); // 대상 슬롯에 아이템 설정
-            CheckAndSyncSlotIfHotbar(targetSlot); // 대상 슬롯이 핫바라면 동기화
-
+            // 핫바라면 동기화
+            CheckAndSyncSlotIfHotbar(targetSlot);
             CarriedItem = null; // 들고 있는 아이템 해제
         }
-        // 아이템을 들고 있고, 아이템이 있는 슬롯에 드롭/클릭 (=> 아이템 교환 또는 스택)
-        else if (CarriedItem != null && targetSlot.myItemUI != null)
+        // Case 3: 아이템을 들고 있고, 아이템이 있는 슬롯에 드롭하는 경우 (클릭은 아님)
+        // (CarriedItem != null && targetSlot.myItemUI != null)
+        else // (CarriedItem != null && targetSlot.myItemUI != null)
         {
             // 같은 아이템이고 스택 가능하다면 스택 시도
             if (CarriedItem.myItem == targetSlot.myItemData && CarriedItem.myItem.isStackable)
@@ -461,48 +466,59 @@ public class Inventory : Singleton<Inventory>
 
                     // 동기화
                     CheckAndSyncSlotIfHotbar(targetSlot);
-                    CheckAndSyncSlotIfHotbar(CarriedItem.activeSlot);
-
-                    if (CarriedItem.CurrentQuantity <= 0)
+                    if (CarriedItem.CurrentQuantity <= 0) // 들고 있던 아이템이 모두 스택되었으면
                     {
-                        // 들고 있던 아이템이 모두 스택되었으면 파괴
-                        CarriedItem.activeSlot.ClearSlot();
-                        CarriedItem = null;
+                        if (CarriedItem.activeSlot != null) // 원래 슬롯이 있었다면
+                        {
+                            //CarriedItem.activeSlot.ClearSlot(); // 원래 슬롯 비움
+                            CheckAndSyncSlotIfHotbar(CarriedItem.activeSlot); // 핫바라면 동기화
+                        }
+                        Destroy(CarriedItem.gameObject); // 들고 있던 아이템 UI 파괴
+                        CarriedItem = null; // 들고 있던 아이템 해제
                     }
-                    return; // 스택 완료
+                    // else: 들고 있던 아이템이 남아있으면, CarriedItem은 계속 마우스에 붙어있으므로 별도 처리 불필요.
+                    return; // 스택 완료 후 함수 종료
                 }
             }
 
             // 스택 불가능하거나 스택 공간이 없으면 아이템 교환
+            Debug.Log("HangleItem: 아이템 교환");
             InventoryItem tempCarriedItem = CarriedItem;
             InventoryItem tempTargetItem = targetSlot.myItemUI;
 
-            // 대상 슬롯에 들고 있던 아이템 설정
+            // 원본 슬롯에 대상 아이템을 놓기
             if (tempCarriedItem.activeSlot != null)
             {
-                tempCarriedItem.activeSlot.SetItem(tempTargetItem); // 들고 있던 아이템이 원래 있던 곳에 대상 슬롯 아이템을 놓음
-                CheckAndSyncSlotIfHotbar(tempCarriedItem.activeSlot); // 동기화
+                //tempCarriedItem.activeSlot.ClearSlot(); // 이전 슬롯 비움
+                CheckAndSyncSlotIfHotbar(tempCarriedItem.activeSlot);
+
+                tempCarriedItem.activeSlot.SetItem(tempTargetItem); // 이전 슬롯에 대상 아이템 놓기
+                CheckAndSyncSlotIfHotbar(tempCarriedItem.activeSlot);
             }
-            else // 드래그 중이던 아이템이 원본 슬롯이 없었을 경우 (새로 생성된 아이템 등)
+            else // 드래그 중이던 아이템이 원본 슬롯이 없었을 경우 (예: 새로 생성된 아이템이 바로 드래그된 경우)
             {
                 // 원래 있던 아이템 UI를 파괴
-                tempTargetItem.activeSlot.ClearSlot(); // 이전 슬롯 비움
+                targetSlot.ClearSlot(); // 대상 슬롯을 비움 (tempTargetItem UI는 파괴됨)
+                                        // tempTargetItem.activeSlot은 이미 targetSlot이므로 중복 Clear 불필요
             }
 
-            targetSlot.SetItem(tempCarriedItem); // 대상 슬롯에 들고 있던 아이템을 놓음
-            CheckAndSyncSlotIfHotbar(targetSlot); // 동기화
+            // 대상 슬롯에 들고 있던 아이템을 놓음
+            targetSlot.SetItem(tempCarriedItem);
+            CheckAndSyncSlotIfHotbar(targetSlot);
 
             CarriedItem = null; // 들고 있는 아이템 해제
         }
     }
 
     // 주어진 슬롯이 핫바 슬롯 중 하나인지 확인하고, 그렇다면 SyncHotbarSlotUI를 호출
-    private void CheckAndSyncSlotIfHotbar(InventorySlot slot)
+    public void CheckAndSyncSlotIfHotbar(InventorySlot slot)
     {
+        Debug.Log("핫바슬롯인지 체크");
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i] == slot)
             {
+                Debug.Log("핫바슬롯이 맞데유");
                 SyncHotbarSlotUI(i);
                 return;
             }

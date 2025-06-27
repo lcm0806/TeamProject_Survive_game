@@ -1,5 +1,5 @@
 using Cinemachine;
-using System.Collections;
+using Test;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private CinemachineVirtualCamera _virCam;
     [SerializeField] private Transform _virCamAxis;
+    [SerializeField] private Transform _playerHand;
+    [SerializeField] private GameObject _mineGunPrefab; // 테스트용 마인건 프리팹
 
     [Header("Config")]
     [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
@@ -29,10 +31,11 @@ public class PlayerController : MonoBehaviour
     private bool _isRayHit;
     private RaycastHit _rayHit;
     private bool _isMoving => _moveDir != Vector3.zero;
-    // private bool _isGrabbing => _selectItem != null;
+    private bool _isGrabbing => PlayerManager.Instance.SelectItem != null;
     // 아래는 테스트 코드
-    private bool _isGrabbing = false;
+    // private bool _isGrabbing = false;
     private bool _testBool;
+    public GameObject _testHandItem;
     #endregion
 
     private void Awake()
@@ -45,6 +48,7 @@ public class PlayerController : MonoBehaviour
         PlayerInput();
         HandlePlayer();
         Animation();
+        MineGunSetPos(); // 테스트용 마인건 위치 설정
     }
 
     private void Init()
@@ -108,7 +112,7 @@ public class PlayerController : MonoBehaviour
         Collider closestColl = null;
         int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
         // 레이캐스트로 중앙을 감지하고 감지된 hit 기준 거리 계산
-        
+
         if (collsCount > 0)
         {
             for (int i = 0; i < collsCount; i++)
@@ -211,6 +215,12 @@ public class PlayerController : MonoBehaviour
                     PlayerManager.Instance.InteractableStructure = interactable as Structure;
                     PlayerManager.Instance.IsInIntercation = true;
                 }
+                // 아래는 테스트 코드
+                else if (interactable as TestWorldItem)
+                {
+                    PlayerManager.Instance.InteractableTestItem = interactable as TestWorldItem;
+                    PlayerManager.Instance.IsInIntercation = true;
+                }
             }
         }
         else
@@ -221,7 +231,7 @@ public class PlayerController : MonoBehaviour
             PlayerManager.Instance.IsInIntercation = false;
         }
     }
-#endregion
+    #endregion
 
     private void HandlePlayer()
     {
@@ -252,8 +262,9 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             // 땅에 떨어진 아이템은 E누르면 즉시 상호작용
-            if (PlayerManager.Instance.InteractableItem != null)
-                PlayerManager.Instance.InteractableItem.Interact();
+            if (PlayerManager.Instance.InteractableTestItem != null)
+                // PlayerManager.Instance.InteractableItem.Interact();
+                PlayerManager.Instance.InteractableTestItem.Interact(); // 테스트 코드
         }
 
         if (Input.GetKey(KeyCode.E))
@@ -285,38 +296,101 @@ public class PlayerController : MonoBehaviour
             SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
         }
 
+        #region 핫바 선택
 
-        #region 아이템 사용
-        if(Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem != null)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            // 손에 사용, 소비 아이템이 아닌 자원 아이템이 들려 있는 경우
-            _animator.SetTrigger("Swing");
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // 인벤토리 핫바 1번 선택
+            Inventory.Instance.SelectHotbarSlot(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // 인벤토리 핫바 2번 선택
+            Inventory.Instance.SelectHotbarSlot(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            PlayerManager.Instance.SelectItem = null;
+            Destroy(_testHandItem);
+            // 인벤토리 핫바 3번 선택
+            Inventory.Instance.SelectHotbarSlot(2);
         }
 
-        if (Input.GetMouseButton(0))
+        Item curItem = Inventory.Instance.GetCurrentHotbarItem();
+
+        if (curItem == null)
         {
-            // 테스트용으로 마이닝 모션 실행
+            PlayerManager.Instance.SelectItem = null; // 현재 핫바에 아이템이 없으면 선택 아이템을 null로 설정
+            if (_testHandItem != null)
+            {
+                // 테스트용 마인건이 있다면 비활성화
+                // _testHandItem.SetActive(false);
+                Destroy(_testHandItem); // 오브젝트 제거
+            }
+            // _testHandItem = null; // 테스트용 마인건도 null로 설정
+        }
+        else
+        {
+            PlayerManager.Instance.SelectItem = curItem; // 현재 핫바에 아이템이 있으면 선택 아이템으로 설정
+
+            if (curItem as TestToolItem && _testHandItem == null)
+            {
+                // _testHandItem = (curItem as TestToolItem).toolObject; // 현재 핫바 아이템의 toolObject를 설정
+                // _testHandItem.SetActive(true); // 아이템이 활성화되어 있지 않다면 활성화
+                _testHandItem = Instantiate((curItem as TestToolItem).toolPrefab, _playerHand.position, _playerHand.rotation);
+            }
+            else if (_testHandItem == null)
+            {
+                // 소비아이템의 프리팹을 생성하는 로직 생성
+                _testHandItem = Instantiate(curItem.WorldPrefab, _playerHand.position, _playerHand.rotation);
+            }
+        }
+        #endregion
+
+        #region 아이템 사용
+        if (Input.GetMouseButtonDown(0) && PlayerManager.Instance.SelectItem as MaterialItem)
+        {
+            // 손에 자원 아이템이 들려 있는 경우
+            _animator.SetTrigger("Swing");
+        }
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as TestToolItem)
+        {
             _testBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
-            if(PlayerManager.Instance.ItemDelay >= 1)
+            if (PlayerManager.Instance.ItemDelay >= 0.1f)
             {
                 Debug.Log("아이템 사용!");
-                // PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
+            }
+        }
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem != null)
+        {
+            PlayerManager.Instance.ItemDelay += Time.deltaTime;
+            if (PlayerManager.Instance.ItemDelay >= 1f)
+            {
+                Debug.Log("아이템 사용!");
+                PlayerManager.Instance.SelectItem.Use(this.gameObject);
                 PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
             }
         }
         else
         {
             _testBool = false;
+            PlayerManager.Instance.ItemDelay = 0f; // 마우스를 떼면 아이템 사용 딜레이 초기화
         }
         #endregion
 
         // 테스트 코드
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            _isGrabbing = !_isGrabbing; // Grab 상태 토글
-        }
+        // if (Input.GetKeyDown(KeyCode.T))
+        // {
+        //     _isGrabbing = !_isGrabbing; // Grab 상태 토글
+        // }
     }
 
     #region 플레이어 이동
@@ -396,7 +470,7 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.green;
         //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
 
-        if(_isRayHit)
+        if (_isRayHit)
         {
             Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
             Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
@@ -407,6 +481,24 @@ public class PlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
         }
     }
+
+    #region 테스트 코드
+    private void MineGunSetPos()
+    {
+        //if (PlayerManager.Instance.SelectItem != null && _testHandItem == null)
+        //{
+        //    _testHandItem = Instantiate(_mineGunPrefab, _playerHand.position, _playerHand.rotation);
+        //}
+
+        if (_testHandItem != null)
+        {
+            // 플레이어의 손 위치에 마인건을 위치시킴
+            _testHandItem.transform.position = _playerHand.position;
+            _testHandItem.transform.rotation = _playerHand.rotation;
+        }
+    }
+    #endregion
+
 
     #region 미사용 코드
     /// <summary>

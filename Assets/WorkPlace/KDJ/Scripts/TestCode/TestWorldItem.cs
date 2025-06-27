@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Test;
 using Unity.VisualScripting;
 using UnityEngine;
+using Test;
 
 public class TestWorldItem : MonoBehaviour, IInteractable
 {
@@ -35,9 +35,12 @@ public class TestWorldItem : MonoBehaviour, IInteractable
         TestToolItem toolItem = this.itemData as TestToolItem;
         if(toolItem != null)
         {
-            GameObject toolObject = Instantiate(toolItem.toolPrefab);
-            PlayerManager.Instance.Player._testHandItem = toolObject;
-            toolItem.toolAction = toolObject.GetComponent<TestToolAction>();
+            // GameObject toolObject = Instantiate(toolItem.toolPrefab);
+            // toolItem.toolObject = toolObject;
+            // toolItem.toolAction = toolObject.GetComponent<TestToolAction>();
+            // toolObject.SetActive(false);
+            // 혹은 해당 핫바를 선택할때 마다 생성 및 파괴
+            toolItem.toolAction = toolItem.toolPrefab.GetComponent<TestToolAction>();
         }
 
         Destroy(gameObject);

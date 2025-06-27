@@ -24,4 +24,6 @@ MonoBehaviour:
   toolType: 0
   toolPrefab: {fileID: 1860538818409808581, guid: 2630337cc8455dc4cbd669c8f968ba28,
     type: 3}
-  toolAction: {fileID: 0}
+  toolObject: {fileID: 0}
+  toolAction: {fileID: 7394798185349257272, guid: 2630337cc8455dc4cbd669c8f968ba28,
+    type: 3}

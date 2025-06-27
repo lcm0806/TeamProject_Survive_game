@@ -47,6 +47,12 @@ public class MenuSystem : MonoBehaviour
     private GameObject _currentOpenMenu = null;
     private bool _isMenuOpen = false;
     
+    // 설정 백업용 변수들
+    private float _backupBGMVolume;
+    private float _backupSFXVolume;
+    private bool _backupFullscreen;
+    private int _backupQualityIndex;
+    
     private static MenuSystem _instance;
     public static MenuSystem Instance
     {
@@ -107,6 +113,11 @@ public class MenuSystem : MonoBehaviour
                 {
                     ResumeGame();
                 }
+                // 설정 메뉴가 열려있다면 설정 취소 (이전 상태로 복구)
+                else if (_currentOpenMenu == SettingMenu)
+                {
+                    OnSettingBackButtonClick();
+                }
                 // 다른 메뉴가 열려있다면 닫기
                 else
                 {
@@ -159,10 +170,68 @@ public class MenuSystem : MonoBehaviour
         if (IsAnyMenuOpen() && _currentOpenMenu != PauseMenu) return;
         Debug.Log("일시정지 메뉴 - 설정 버튼 클릭");
         
+        // 설정 메뉴를 열기 전에 현재 설정값들을 백업
+        BackupCurrentSettings();
+        
         // 일시정지 메뉴를 닫고 설정 메뉴 열기
         CloseCurrentMenu();
         OpenMenu(SettingMenu);
     }
+    
+    /// <summary>
+    /// 설정 메뉴를 열기 전에 현재 설정값들을 백업
+    /// </summary>
+    private void BackupCurrentSettings()
+    {
+        Debug.Log("설정값 백업 시작");
+        
+        // AudioSystem 설정 백업
+        if (AudioSystem.Instance != null)
+        {
+            _backupBGMVolume = AudioSystem.Instance.BGMVolume;
+            _backupSFXVolume = AudioSystem.Instance.SFXVolume;
+            Debug.Log($"오디오 설정 백업 - BGM: {_backupBGMVolume:F2}, SFX: {_backupSFXVolume:F2}");
+        }
+        
+        // GraphicsSystem 설정 백업
+        if (GraphicsSystem.Instance != null)
+        {
+            _backupFullscreen = GraphicsSystem.Instance.IsFullscreen();
+            _backupQualityIndex = GraphicsSystem.Instance.GetCurrentQuality();
+            
+            Debug.Log($"그래픽 설정 백업 - 전체화면: {_backupFullscreen}, 품질: {_backupQualityIndex}");
+        }
+        
+        Debug.Log("설정값 백업 완료");
+    }
+
+    /// <summary>
+    /// 백업된 설정값들로 복구
+    /// </summary>
+    private void RestoreBackupSettings()
+    {
+        Debug.Log("설정값 복구 시작");
+        
+        // AudioSystem 설정 복구
+        if (AudioSystem.Instance != null)
+        {
+            AudioSystem.Instance.OnBGMVolumeChanged(_backupBGMVolume);
+            AudioSystem.Instance.OnSFXVolumeChanged(_backupSFXVolume);
+            Debug.Log($"오디오 설정 복구 - BGM: {_backupBGMVolume:F2}, SFX: {_backupSFXVolume:F2}");
+        }
+        
+        // GraphicsSystem 설정 복구
+        if (GraphicsSystem.Instance != null)
+        {
+            GraphicsSystem.Instance.SetFullscreen(_backupFullscreen);
+            GraphicsSystem.Instance.SetQuality(_backupQualityIndex);
+            Debug.Log($"그래픽 설정 복구 - 전체화면: {_backupFullscreen}, 품질: {_backupQualityIndex}");
+        }
+        
+        Debug.Log("설정값 복구 완료");
+    }
+    
+    
     
     private void OnPauseExitButtonClick()
     {
@@ -366,7 +435,8 @@ public class MenuSystem : MonoBehaviour
         
         AudioSystem.Instance?.LoadVolumeSettings();
         GraphicsSystem.Instance?.LoadGraphicsSettings();
-    
+        // 백업된 설정값들로 복구
+        RestoreBackupSettings(); 
         // 메뉴 닫기
         CloseCurrentMenu();
         
@@ -584,6 +654,10 @@ public class MenuSystem : MonoBehaviour
     {
         if (IsAnyMenuOpen()) return; // 메뉴가 열려있으면 무시
         Debug.Log("설정 버튼 클릭");
+        
+        // 메인 메뉴에서 설정을 열 때도 현재 설정값들을 백업
+        BackupCurrentSettings();
+        
         OpenMenu(SettingMenu);
     }
 

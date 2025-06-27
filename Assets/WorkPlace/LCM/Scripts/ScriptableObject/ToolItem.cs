@@ -1,28 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.VisualScripting.Dependencies.Sqlite.SQLite3;
+// using static Unity.VisualScripting.Dependencies.Sqlite.SQLite3;
 
 [CreateAssetMenu(menuName = "Item/Tool Item")]
 public class ToolItem : Item
 {
     [Header("Tool Specific Info")]
-    public float miningPower = 1f; // Ã¤±¼ µµ±¸ÀÇ Ã¤±¼·Â (¿¹: ±¤¹°ÀÇ Ã¼·ÂÀ» ±ð´Â ¾ç)
-    public ToolType toolType;       // ÀÌ µµ±¸ÀÇ Á¾·ù (¿¹: °î±ªÀÌ, µµ³¢, »ð µî)
+    public float miningPower = 1f; // Ã¤ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¤ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½)
+    public ToolType toolType;       // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½: ï¿½î±ªï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ ï¿½ï¿½)
 
     public override void Use(GameObject user)
     {
-        // ºÎ¸ð Item Å¬·¡½ºÀÇ Use ¸Þ¼Òµå¸¦ È£ÃâÇÕ´Ï´Ù.
-        base.Use(user); // µð¹ö±ë ¿ë
+        // ï¿½Î¸ï¿½ Item Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Use ï¿½Þ¼Òµå¸¦ È£ï¿½ï¿½ï¿½Õ´Ï´ï¿½.
+        base.Use(user); // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
 
-        Debug.Log($"{itemName}À» »ç¿ëÇß½À´Ï´Ù. (³»±¸µµ ¾øÀ½)");
+        Debug.Log($"{itemName}ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½Ï´ï¿½. (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)");
 
     }
 }
 
 public enum ToolType
 {
-    //µµ±¸ÀÇ Á¾·ù ±¸ºÐ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     None,
     Pickaxe,
     Axe,

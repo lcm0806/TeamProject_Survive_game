@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af3b48003925ed4fa4ee0553cd55a7f, type: 3}
+  m_Name: TestAirTank
+  m_EditorClassIdentifier: 
+  itemName: New Item
+  description: A basic item.
+  icon: {fileID: 21300000, guid: 20cfd1bc5bd3efb4b8f28bf111d43f25, type: 3}
+  WorldPrefab: {fileID: 5379228761148869735, guid: c562aba2085f7a846bb2ab1094039eee,
+    type: 3}
+  equipmentPrefab: {fileID: 0}
+  isStackable: 0
+  maxStackSize: 99
+  OxygenRestoreAmount: 50

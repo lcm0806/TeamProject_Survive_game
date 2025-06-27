@@ -12,6 +12,7 @@ public class Inventory : Singleton<Inventory>
 
     [SerializeField] InventorySlot[] inventorySlots;
     [SerializeField] InventorySlot[] hotbarSlots;
+    [SerializeField] InventorySlot[] persistentHotbarSlots;
 
     // 0=Head, 1=Chest, 2=Legs, 3=Feet
     //[SerializeField] InventorySlot[] equipmentSlots;
@@ -29,7 +30,7 @@ public class Inventory : Singleton<Inventory>
     [SerializeField] private GameObject _inventoryUIRootPanel; // 인벤토리 UI의 최상위 GameObject (Panel 등)
 
     [Header("Hotbar Management")]
-    [SerializeField] private int _currentHotbarSlotIndex = 0; // 현재 선택된 핫바 슬롯 인덱스 (기본값 0)
+    [SerializeField] public int _currentHotbarSlotIndex = 0; // 현재 선택된 핫바 슬롯 인덱스 (기본값 0)
 
     [Header("Item Dropping")]
     [SerializeField] private float _dropDistance = 1.5f; // 플레이어로부터 아이템이 떨어질 거리
@@ -38,7 +39,11 @@ public class Inventory : Singleton<Inventory>
 
     // 핫바 슬롯 변경을 외부에 알리는 이벤트 (UI 업데이트 등에 사용)
     public event Action<int> OnHotbarSlotChanged;
-    
+
+    //// 추가: 핫바 슬롯들의 아이템 데이터를 동기화하기 위한 이벤트 (필요하다면)
+    public event Action<int, Item, int> OnHotbarSlotItemUpdated;
+
+
 
     void Awake()
     {
@@ -56,6 +61,9 @@ public class Inventory : Singleton<Inventory>
 
         // 초기 핫바 슬롯 선택을 알림
         OnHotbarSlotChanged?.Invoke(_currentHotbarSlotIndex);
+
+        // 상시 핫바 슬롯 배열 초기화 및 동기화 (Awake 또는 Start에서 한 번만 호출)
+        InitializePersistentHotbarSlots();
     }
 
     void Update()
@@ -92,6 +100,7 @@ public class Inventory : Singleton<Inventory>
     public void ToggleInventoryUI()
     {
         SampleUIManager.Instance.ToggleInventoryUI();
+        bool inventoryActive = _inventoryUIRootPanel.activeSelf;
     }
 
 
@@ -99,7 +108,7 @@ public class Inventory : Singleton<Inventory>
     {
         if(CarriedItem != null)
         {
-            item.activeSlot.SetItem(CarriedItem);
+            //item.activeSlot.SetItem(CarriedItem);
         }
 
         CarriedItem = item;
@@ -107,19 +116,19 @@ public class Inventory : Singleton<Inventory>
         item.transform.SetParent(draggablesTransform);
     }
 
-
     public void SpawnInventoryItem(Item item)
     {
         // 스택 가능한 아이템인 경우, 먼저 기존 슬롯을 확인
         if (item.isStackable)
         {
-            foreach (var slot in hotbarSlots) // 또는 inventorySlots
+            for (int i = 0; i < hotbarSlots.Length; i++)
             {
-                if (slot.myItemData == item && slot.myItemUI != null && slot.myItemUI.CurrentQuantity < item.maxStackSize)
+                if (hotbarSlots[i].myItemData == item && hotbarSlots[i].myItemUI != null && hotbarSlots[i].myItemUI.CurrentQuantity < item.maxStackSize)
                 {
-                    slot.myItemUI.CurrentQuantity++;
-                    Debug.Log($"SUCCESS: '{item.itemName}' stacked in {slot.name}. New Qty: {slot.myItemUI.CurrentQuantity}");
-                    return; // 스택 성공
+                    hotbarSlots[i].myItemUI.CurrentQuantity++; // 수량 증가
+                    SyncHotbarSlotUI(i); // 핫바 동기화 (이 내부에서 SetItemInternal을 통해 UI 업데이트)
+                    Debug.Log($"SUCCESS: '{item.itemName}' stacked in hotbar slot {i}. New Qty: {hotbarSlots[i].myItemUI.CurrentQuantity}");
+                    return;
                 }
             }
             // === 인벤토리 슬롯 확인 (스택 로직) ===
@@ -131,6 +140,22 @@ public class Inventory : Singleton<Inventory>
                     Debug.Log($"SUCCESS: '{item.itemName}' stacked in inventory slot {slot.name}. New Qty: {slot.myItemUI.CurrentQuantity}");
                     return; // 아이템 추가 완료
                 }
+            }
+        }
+
+        // 스택 불가능하거나 꽉 찼을 경우, 빈 슬롯에 생성
+        // 먼저 핫바의 빈 슬롯 확인 (두 배열 모두)
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            if (hotbarSlots[i].myItemUI == null) // 빈 핫바 슬롯을 찾음
+            {
+                var newItemUI = Instantiate(itemPrefab, hotbarSlots[i].transform);
+                newItemUI.Initialize(item, hotbarSlots[i]); // 인벤토리 핫바에 UI 생성
+                // 초기 수량이 1이 아니라면 여기서 설정
+                newItemUI.CurrentQuantity = 1; // 기본적으로 1이므로 생략 가능
+                SyncHotbarSlotUI(i); // 핫바 동기화
+                Debug.Log($"새 핫바 슬롯 {i}에 '{item.itemName}' 추가.");
+                return;
             }
         }
 
@@ -216,12 +241,23 @@ public class Inventory : Singleton<Inventory>
                 }
             }
             // 인벤토리 슬롯에서 아이템을 제거하고 UI 인스턴스 파괴
-            if (itemToDropUI.activeSlot != null)
+            bool wasHotbarItem = false;
+            for (int i = 0; i < hotbarSlots.Length; i++)
             {
-                itemToDropUI.activeSlot.ClearSlot(); // 해당 슬롯을 비움 (데이터 및 UI 참조 제거)
-                Debug.Log($"아이템 '{itemToDropUI.myItem.itemName}' {quantityToDrop}개 모두 슬롯에서 버려졌습니다.");
+                if (hotbarSlots[i] == itemToDropUI.activeSlot)
+                {
+                    hotbarSlots[i].ClearSlot(); 
+                    SyncHotbarSlotUI(i); // 핫바 동기화
+                    wasHotbarItem = true;
+                    break;
+                }
             }
-            else
+
+            if (!wasHotbarItem && itemToDropUI.activeSlot != null) // 일반 인벤토리 슬롯에서 버려진 경우
+            {
+                itemToDropUI.activeSlot.ClearSlot();
+            }
+            else if (itemToDropUI.activeSlot == null) // 슬롯에 없던 아이템이 버려진 경우 (예: 드래그 중 월드 밖으로 버림)
             {
                 Destroy(itemToDropUI.gameObject);
             }
@@ -287,6 +323,7 @@ public class Inventory : Singleton<Inventory>
                     int currentStack = hotbarSlots[i].myItemUI.CurrentQuantity;
                     hotbarSlots[i].ClearSlot();
                     removedCount += currentStack;
+                    SyncHotbarSlotUI(i);
                     if (removedCount >= amount) break;
                 }
             }
@@ -321,6 +358,154 @@ public class Inventory : Singleton<Inventory>
         if (removedCount < amount)
         {
             Debug.LogWarning($"요청한 {amount}개 중 {amount - removedCount}개를 제거하지 못했습니다. 아이템 부족.");
+        }
+    }
+
+    // 새롭게 추가된 메서드: 상시 핫바 슬롯 초기화 및 동기화
+    private void InitializePersistentHotbarSlots()
+    {
+        if (hotbarSlots == null || persistentHotbarSlots == null)
+        {
+            Debug.LogError("Hotbar slots arrays are not assigned!");
+            return;
+        }
+
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            // 인벤토리 내 핫바 슬롯에 아이템 UI가 존재하는지 확인합니다.
+            if (hotbarSlots[i].myItemUI != null)
+            {
+                var newItemUI = Instantiate(itemPrefab, persistentHotbarSlots[i].transform);
+                newItemUI.Initialize(hotbarSlots[i].myItemUI.myItem, persistentHotbarSlots[i]);
+                newItemUI.CurrentQuantity = hotbarSlots[i].myItemUI.CurrentQuantity;
+                persistentHotbarSlots[i].SetItem(newItemUI);
+            }
+            else // 인벤토리 내 핫바 슬롯이 비어있는 경우
+            {
+                persistentHotbarSlots[i].ClearSlot();
+            }
+        }
+    }
+
+    // 새롭게 추가된 메서드: 핫바 슬롯 변경 시 동기화
+    private void SyncHotbarSlotUI(int index)
+    {
+        if (index < 0 || index >= hotbarSlots.Length || index >= persistentHotbarSlots.Length) return;
+
+        
+
+        // UI 인스턴스 동기화 (기존 UI 파괴 후 새로 생성 또는 업데이트)
+        if (persistentHotbarSlots[index].myItemUI != null)
+        {
+            Destroy(persistentHotbarSlots[index].myItemUI.gameObject);
+            persistentHotbarSlots[index].myItemUI = null;
+        }
+
+        // 원본 핫바 슬롯의 아이템 데이터를 상시 핫바 슬롯으로 복사
+        persistentHotbarSlots[index].myItemData = hotbarSlots[index].myItemData;
+
+        if (hotbarSlots[index].myItemUI != null)
+        {
+            var newItemUI = Instantiate(itemPrefab, persistentHotbarSlots[index].transform);
+            newItemUI.Initialize(hotbarSlots[index].myItemUI.myItem, persistentHotbarSlots[index]);
+            newItemUI.CurrentQuantity = hotbarSlots[index].myItemUI.CurrentQuantity;
+        }
+
+        OnHotbarSlotItemUpdated?.Invoke(index, persistentHotbarSlots[index].myItemData,
+                                        persistentHotbarSlots[index].myItemUI != null ? persistentHotbarSlots[index].myItemUI.CurrentQuantity : 0);
+    }
+
+    public void HandleItemDropOrClick(InventorySlot targetSlot, InventoryItem droppedItemUI)
+    {
+        // 아무것도 들고 있지 않고, 빈 슬롯을 클릭했거나 아이템 없는 곳에 드롭
+        if (CarriedItem == null && droppedItemUI == null)
+        {
+            return;
+        }
+        // 아무것도 들고 있지 않고, 아이템이 있는 슬롯을 클릭 (=> 해당 아이템을 들기)
+        else if (CarriedItem == null && droppedItemUI != null)
+        {
+            SetCarriedItem(droppedItemUI);
+        }
+        // 아이템을 들고 있고, 빈 슬롯에 드롭/클릭 (=> 아이템 내려놓기)
+        else if (CarriedItem != null && targetSlot.myItemUI == null)
+        {
+            // 이전 슬롯 비우기
+            if (CarriedItem.activeSlot != null)
+            {
+                CarriedItem.activeSlot.ClearSlot(); // 이전 슬롯 UI 파괴 포함
+                                                    // 이전 슬롯이 핫바 슬롯이었다면 persistentHotbarSlots도 동기화
+                CheckAndSyncSlotIfHotbar(CarriedItem.activeSlot);
+            }
+
+            targetSlot.SetItem(CarriedItem); // 대상 슬롯에 아이템 설정
+            CheckAndSyncSlotIfHotbar(targetSlot); // 대상 슬롯이 핫바라면 동기화
+
+            CarriedItem = null; // 들고 있는 아이템 해제
+        }
+        // 아이템을 들고 있고, 아이템이 있는 슬롯에 드롭/클릭 (=> 아이템 교환 또는 스택)
+        else if (CarriedItem != null && targetSlot.myItemUI != null)
+        {
+            // 같은 아이템이고 스택 가능하다면 스택 시도
+            if (CarriedItem.myItem == targetSlot.myItemData && CarriedItem.myItem.isStackable)
+            {
+                int transferAmount = Mathf.Min(
+                    CarriedItem.CurrentQuantity,
+                    CarriedItem.myItem.maxStackSize - targetSlot.myItemUI.CurrentQuantity
+                );
+
+                if (transferAmount > 0)
+                {
+                    targetSlot.myItemUI.CurrentQuantity += transferAmount;
+                    CarriedItem.CurrentQuantity -= transferAmount;
+
+                    // 동기화
+                    CheckAndSyncSlotIfHotbar(targetSlot);
+                    CheckAndSyncSlotIfHotbar(CarriedItem.activeSlot);
+
+                    if (CarriedItem.CurrentQuantity <= 0)
+                    {
+                        // 들고 있던 아이템이 모두 스택되었으면 파괴
+                        CarriedItem.activeSlot.ClearSlot();
+                        CarriedItem = null;
+                    }
+                    return; // 스택 완료
+                }
+            }
+
+            // 스택 불가능하거나 스택 공간이 없으면 아이템 교환
+            InventoryItem tempCarriedItem = CarriedItem;
+            InventoryItem tempTargetItem = targetSlot.myItemUI;
+
+            // 대상 슬롯에 들고 있던 아이템 설정
+            if (tempCarriedItem.activeSlot != null)
+            {
+                tempCarriedItem.activeSlot.SetItem(tempTargetItem); // 들고 있던 아이템이 원래 있던 곳에 대상 슬롯 아이템을 놓음
+                CheckAndSyncSlotIfHotbar(tempCarriedItem.activeSlot); // 동기화
+            }
+            else // 드래그 중이던 아이템이 원본 슬롯이 없었을 경우 (새로 생성된 아이템 등)
+            {
+                // 원래 있던 아이템 UI를 파괴
+                tempTargetItem.activeSlot.ClearSlot(); // 이전 슬롯 비움
+            }
+
+            targetSlot.SetItem(tempCarriedItem); // 대상 슬롯에 들고 있던 아이템을 놓음
+            CheckAndSyncSlotIfHotbar(targetSlot); // 동기화
+
+            CarriedItem = null; // 들고 있는 아이템 해제
+        }
+    }
+
+    // 주어진 슬롯이 핫바 슬롯 중 하나인지 확인하고, 그렇다면 SyncHotbarSlotUI를 호출
+    private void CheckAndSyncSlotIfHotbar(InventorySlot slot)
+    {
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            if (hotbarSlots[i] == slot)
+            {
+                SyncHotbarSlotUI(i);
+                return;
+            }
         }
     }
 

@@ -25,26 +25,48 @@ public class MineableResource : MonoBehaviour
         lastWholeHp = maxHealth;      // 처음엔 둘이 같음
     }
 
-    private void Update()
+    //private void Update()
+    //{
+    //    if (!isBeingMined || currentHealth <= 0f) return;
+
+    //    //초당 1씩 데미지
+    //    currentHealth -= 1f * Time.deltaTime;
+    //    currentHealth = Mathf.Max(currentHealth, 0f);   // 음수 방지
+
+    //    //체력이 1 깎였는지 확인
+    //    int currentWholeHp = Mathf.FloorToInt(currentHealth);
+    //    if (currentWholeHp < lastWholeHp)        // 한 칸 내려갔으면
+    //    {
+    //        SpawnLoot();                         // 드롭 1개
+    //        lastWholeHp = currentWholeHp;        // 기준 갱신
+    //    }
+
+    //    //0이 되었으면 파괴 연출
+    //    if (currentHealth <= 0f)
+    //        StartCoroutine(FadeOutAndDestroy());
+    //}
+    public void TakeMiningDamage(float miningDamage)
     {
-        if (!isBeingMined || currentHealth <= 0f) return;
+        if (currentHealth <= 0f) return;
 
-        //초당 1씩 데미지
-        currentHealth -= 1f * Time.deltaTime;
-        currentHealth = Mathf.Max(currentHealth, 0f);   // 음수 방지
+        currentHealth -= miningDamage;
+        currentHealth = Mathf.Max(currentHealth, 0f);
 
-        //체력이 1 깎였는지 확인
+        Debug.Log($"{gameObject.name}이 {miningDamage}만큼 데미지를 받았습니다");
         int currentWholeHp = Mathf.FloorToInt(currentHealth);
-        if (currentWholeHp < lastWholeHp)        // 한 칸 내려갔으면
+        if (currentWholeHp < lastWholeHp) // 한 칸 내려갔으면
         {
-            SpawnLoot();                         // 드롭 1개
-            lastWholeHp = currentWholeHp;        // 기준 갱신
+            SpawnLoot(); // 드롭 1개
+            lastWholeHp = currentWholeHp; // 기준 갱신
         }
 
-        //0이 되었으면 파괴 연출
         if (currentHealth <= 0f)
+        {
+            Debug.Log($"{gameObject.name} 채굴 완료!");
             StartCoroutine(FadeOutAndDestroy());
+        }
     }
+
 
     /* -------------------- Mining Control -------------------- */
     public void StartMining() => isBeingMined = true;

@@ -9,11 +9,23 @@ public class PlayerMiner : MonoBehaviour
     public KeyCode interactKey = KeyCode.E;      // 상호작용 키
     public LayerMask interactLayer;               // 상호작용 가능한 레이어 지정
 
+    public float miningRange = 3f;
+    public float miningDamagePerSecond = 1f;
+    
+
     private void Update()
     {
         if (Input.GetKeyDown(interactKey))
         {
             TryInteract();
+        }
+        if (Input.GetMouseButton(0))  //좌클릭 누르고 있는 동안
+        {
+            TryMine();
+        }
+        else
+        {
+            currentTarget = null;
         }
     }
 
@@ -35,32 +47,34 @@ public class PlayerMiner : MonoBehaviour
         }
         else
         {
-            Debug.Log("상호작용 대상이 없습니다.");
+            Debug.Log("상호작용 가능한 보급상자가 없습니다.");
         }
     }
-    private void OnTriggerEnter(Collider other)
+   
+    void TryMine()
     {
-        if (other.CompareTag("Resource"))
-        {
-            currentTarget = other.GetComponent<MineableResource>();
-            if (currentTarget != null)
-            {
-                currentTarget.StartMining();
-                Debug.Log("채굴 시작!");
-            }
-        }
-    }
+        Vector3 rayOrigin = transform.position + Vector3.up * 0.5f;
+        Vector3 rayDir = transform.forward;
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Resource"))
+        // ① 레이캐스트 시각화 (씬 뷰에서만 보임)
+        Debug.DrawRay(rayOrigin, rayDir * miningRange, Color.red, 0.1f);
+
+        Ray ray = new Ray(rayOrigin, rayDir);
+        if (Physics.Raycast(ray, out RaycastHit hit, miningRange))
         {
-            if (currentTarget != null)
+            if (hit.collider.CompareTag("Resource"))
             {
-                currentTarget.StopMining();
-                Debug.Log("채굴 중단!");
+                MineableResource resource = hit.collider.GetComponent<MineableResource>();
+                if (resource != null)
+                {
+                    currentTarget = resource;
+                    resource.TakeMiningDamage(miningDamagePerSecond * Time.deltaTime);
+                }
             }
-            currentTarget = null;
+        }
+        else
+        {
+            Debug.Log("상호작용 가능한 광물이 없습니다.");
         }
     }
 }

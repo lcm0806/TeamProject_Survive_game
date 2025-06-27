@@ -19,6 +19,17 @@ public class SamplePlayerAction : MonoBehaviour
 
     void UseEquippedItem()
     {
+        // 핫바 슬롯 선택 (예: 숫자 키 1~9)
+        // PlayerController에 구현 필요
+        //for (int i = 0; i < 9; i++) // 핫바 슬롯이 9개라고 가정
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Alpha1 + i)) // Alpha1은 숫자 1 키
+        //    {
+        //        // Inventory 스크립트의 핫바 선택 메소드를 호출
+        //        Inventory.Instance.SelectHotbarSlot(i);
+        //        break;
+        //    }
+        //}
         Item currentItem = Inventory.Instance.GetCurrentHotbarItem();
 
         if (currentItem == null)

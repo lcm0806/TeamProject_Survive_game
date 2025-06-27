@@ -39,6 +39,13 @@ public class TestUI : MonoBehaviour
                 _itemName.text = PlayerManager.Instance.InteractableStructure.name;
             }
         }
+        else if (PlayerManager.Instance.InteractableTestItem != null)
+        {
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableTestItem.itemData.name))
+            {
+                _itemName.text = PlayerManager.Instance.InteractableTestItem.itemData.name;
+            }
+        }
 
         SetInteractDelay(PlayerManager.Instance.InteractDelay);
     }

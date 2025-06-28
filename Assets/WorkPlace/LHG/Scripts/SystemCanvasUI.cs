@@ -8,14 +8,14 @@ using UnityEngine.SceneManagement;
 
 public class SystemCanvasUI : MonoBehaviour
 {
-    [SerializeField] public GameObject ShelterUICanvas;
+    [SerializeField] public GameObject ShelterUICanvas, LoadingCanvas;
     public StatusSystem StatusSystem;
     public SceneSystem SceneSystem;
-    public TMP_Text[] ExitWithNotEnoughOxygenText;
+    public TMP_Text[] ExitWithNotEnoughOxygenText, DayTransitionText;
 
     
     
-    public GameObject[] SystemCanvas; 
+    public GameObject[] SystemCanvas, LoadingSceneBG; 
 
     public void ExitWithNotEnoughOxygenTextDisplay()
     {
@@ -51,15 +51,37 @@ public class SystemCanvasUI : MonoBehaviour
 
 
     //침실-수면실행시 yes버튼
-    private void SleepAndNextDay()
+    public void SleepAndNextDay()
     {
-        //오늘밤 이벤트의 효과를 스테이터스에 넘겨주고
-        //날짜전환 캔버스를 보여주고
-        //날짜를 변경
-        //쉘터 기본캔버스를 띄워줌
+        //TODO 오늘밤 이벤트의 효과를 스테이터스시스템에 넘겨주고
+
+        //TODO 날짜전환 캔버스를 보여주고
+
+
+        if (LoadingCanvas.activeSelf == false)
+        {
+            
+
+            StartCoroutine(DelayTime());
+
+            IEnumerator DelayTime()
+            {
+                LoadingCanvas.SetActive(true);
+
+                yield return new WaitForSeconds(1f);
+            }
+
+
+            //날짜및 스탯을 변경
+            SceneSystem.Instance.LoadDayTransitionScene(); //다음날로 스탯을 넘겨줌
+            SceneSystem.Instance.LoadShelterScene(); //다시쉘터씬처음띄워줌 자기전세이브와, 일어난후 세이브도 포함되어있음
+            LoadingSceneBG[0].SetActive(false);
+
+        }
+        
     }
 
 
-    
+
 
 }

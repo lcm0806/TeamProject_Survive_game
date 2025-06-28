@@ -118,6 +118,7 @@ public class Inventory : Singleton<Inventory>
 
     public void SpawnInventoryItem(Item item)
     {
+        Debug.Log($"[Inventory] SpawnInventoryItem 호출됨. 추가 시도 아이템: {item.itemName}");
         // 스택 가능한 아이템인 경우, 먼저 기존 슬롯을 확인
         if (item.isStackable)
         {
@@ -144,6 +145,7 @@ public class Inventory : Singleton<Inventory>
         }
 
         // 스택 불가능하거나 꽉 찼을 경우, 빈 슬롯에 생성
+        Debug.Log($"[Inventory] '{item.itemName}' 스택 불가능하거나 빈 슬롯 탐색 시작.");
         // 먼저 핫바의 빈 슬롯 확인 (두 배열 모두)
         for (int i = 0; i < hotbarSlots.Length; i++)
         {

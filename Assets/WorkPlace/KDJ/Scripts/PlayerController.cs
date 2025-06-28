@@ -262,9 +262,12 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.E))
         {
             // 땅에 떨어진 아이템은 E누르면 즉시 상호작용
-            if (PlayerManager.Instance.InteractableTestItem != null)
+            if (PlayerManager.Instance.InteractableItem != null)
+            {
+                Debug.Log($"[PlayerManager] E키 눌림. 상호작용할 아이템: {PlayerManager.Instance.InteractableItem.name}");
                 // PlayerManager.Instance.InteractableItem.Interact();
-                PlayerManager.Instance.InteractableTestItem.Interact(); // 테스트 코드
+                PlayerManager.Instance.InteractableItem.Interact(); // 테스트 코드
+            }
         }
 
         if (Input.GetKey(KeyCode.E))
@@ -337,16 +340,10 @@ public class PlayerController : MonoBehaviour
         {
             PlayerManager.Instance.SelectItem = curItem; // 현재 핫바에 아이템이 있으면 선택 아이템으로 설정
 
-            if (curItem as TestToolItem && _testHandItem == null)
-            {
-                // _testHandItem = (curItem as TestToolItem).toolObject; // 현재 핫바 아이템의 toolObject를 설정
-                // _testHandItem.SetActive(true); // 아이템이 활성화되어 있지 않다면 활성화
-                _testHandItem = Instantiate((curItem as TestToolItem).toolPrefab, _playerHand.position, _playerHand.rotation);
-            }
-            else if (_testHandItem == null)
+            if (_testHandItem == null)
             {
                 // 소비아이템의 프리팹을 생성하는 로직 생성
-                _testHandItem = Instantiate(curItem.WorldPrefab, _playerHand.position, _playerHand.rotation);
+                _testHandItem = Instantiate(curItem.HandleItem, _playerHand.position, _playerHand.rotation);
             }
         }
         #endregion

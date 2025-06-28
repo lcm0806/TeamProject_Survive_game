@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class SystemCanvasUI : MonoBehaviour
 {
     [SerializeField] public GameObject ShelterUICanvas;
     public StatusSystem StatusSystem;
-    private SceneSystem _sceneSystem;
+    public SceneSystem SceneSystem;
     public TMP_Text[] ExitWithNotEnoughOxygenText;
+
+    
+    
+    public GameObject[] SystemCanvas; 
 
     public void ExitWithNotEnoughOxygenTextDisplay()
     {
@@ -19,10 +24,24 @@ public class SystemCanvasUI : MonoBehaviour
 
     public void ExitWithEnoughOxygenYes()
     {
-        //»ê¼Ò¸¦ -100ÇÏ°í
+        //ì‚°ì†Œë¥¼ -100í•˜ê³ 
         StatusSystem.SetMinusOxygen(-100);
-        //¿ùµå·Î ¾ÀÀüÈ¯ÇØÁÖ°í
-        _sceneSystem.LoadFarmingScene();
 
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ö°ï¿½
+        SceneSystem.Instance.LoadScene("TEST");
+    }
+
+    public void ExitWithNotEnoughOxygenYes()
+    {
+        //ï¿½ï¿½Ò¸ï¿½ ï¿½ï¿½ï¿½çº¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å­ - ï¿½Ï°ï¿½
+        StatusSystem.SetMinusOxygen(StatusSystem.GetOxygen());
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
+        SceneSystem.Instance.LoadScene("TEST");
+    }
+
+    // È®ï¿½ï¿½Ã¢ï¿½ï¿½ï¿½ï¿½ no ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã½ï¿½ï¿½ï¿½Äµï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½Ñ¼ï¿½ Ã¢ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public void DeActivateExitConfirmPanel(int systemCanvas)
+    {
+        SystemCanvas[systemCanvas].SetActive(false);
     }
 }

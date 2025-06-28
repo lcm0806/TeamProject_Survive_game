@@ -1953,7 +1953,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 190104231}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 490541462}
+        m_TargetAssemblyTypeName: SystemCanvasUI, Assembly-CSharp
+        m_MethodName: DeActivateExitConfirmPanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &190104231
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2074,7 +2086,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 204549363}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 490541462}
+        m_TargetAssemblyTypeName: SystemCanvasUI, Assembly-CSharp
+        m_MethodName: DeActivateExitConfirmPanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &204549363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4426,8 +4450,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShelterUICanvas: {fileID: 1708774632}
   StatusSystem: {fileID: 1374089532}
+  SceneSystem: {fileID: 0}
   ExitWithNotEnoughOxygenText:
   - {fileID: 307473870}
+  SystemCanvas:
+  - {fileID: 490541457}
 --- !u!1 &503735093
 GameObject:
   m_ObjectHideFlags: 0
@@ -5131,7 +5158,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 578180171}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 490541462}
+        m_TargetAssemblyTypeName: SystemCanvasUI, Assembly-CSharp
+        m_MethodName: DeActivateExitConfirmPanel
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &578180171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16369,7 +16408,7 @@ GameObject:
   - component: {fileID: 2036502002}
   - component: {fileID: 2036502001}
   m_Layer: 5
-  m_Name: EmptyPanel
+  m_Name: EmptyPanel_ForBlockBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TestDrillMining : TestToolAction
+public class TestDrillMining : ToolAction
 {
     private Collider[] _colls =  new Collider[10];
     private LayerMask _layerMask = 1 << 8;
@@ -22,12 +22,12 @@ public class TestDrillMining : TestToolAction
             for (int i = 0; i < count; i++)
             {
                 //_colls[i].GetComponent<TestOre>()?.TakeDamage(power);
-                bool s = _colls[i].TryGetComponent<TestOre>(out TestOre ore);
+                bool s = _colls[i].TryGetComponent<MineableResource>(out MineableResource ore);
                 if (!s)
                 {
                     continue;
                 }
-                ore.TakeDamage(power);
+                ore.TakeMiningDamage(power);
             }
         }
         else

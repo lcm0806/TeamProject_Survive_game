@@ -107,16 +107,11 @@ public class AudioSystem : MonoBehaviour
     {
         if (_bgmSlider != null)
             _bgmSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
-        
+    
         if (_sfxSlider != null)
             _sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
-        
-        if (_okButton != null)
-            _okButton.onClick.AddListener(OnOKButtonClicked);
-        
-        if (_backButton != null)
-            _backButton.onClick.AddListener(OnBackButtonClicked);
     }
+    
 
     public void OnBGMVolumeChanged(float value)
     {
@@ -256,7 +251,7 @@ public class AudioSystem : MonoBehaviour
         LoadVolumeSettings();
     }
 
-    void SaveVolumeSettings()
+    public void SaveVolumeSettings()
     {
         PlayerPrefs.SetFloat(BGMVolumeKey, BGMVolume);
         PlayerPrefs.SetFloat(SFXVolumeKey, SFXVolume);

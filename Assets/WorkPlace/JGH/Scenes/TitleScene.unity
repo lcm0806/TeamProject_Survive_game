@@ -811,7 +811,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac1596db838844830a7afd42aad309e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableManualSave: 0
   enableEncryption: 0
 --- !u!114 &1323672475
 MonoBehaviour:
@@ -871,7 +870,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _titleSceneName: TitleScene
   _shelterSceneName: DevShelterScene
-  _farmingSceneName: DemoScene
+  _farmingSceneName: MapTest
   _dayTransitionSceneName: DevShelterScene
 --- !u!1 &1452507993 stripped
 GameObject:

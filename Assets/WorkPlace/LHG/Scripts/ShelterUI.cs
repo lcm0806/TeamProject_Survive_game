@@ -19,7 +19,9 @@ public class ShelterUI : MonoBehaviour
     public Sprite InactiveTabBG, ActiveTabBG; // 활성 비활성 시각화를 백그라운드스프라이트로 처리할 때 필요
     
     [SerializeField] private EventState testState; //TODO 이벤트마다 스테이트를 가져야함, 충족시 해당 이벤트의 스테이트를 변경해주도록 만들어야
-    [SerializeField] private double testOxygen = StatusSystem.Instance.GetOxygen();
+    // 250628 빌드 오류
+    // [SerializeField] private double testOxygen = StatusSystem.Instance.GetOxygen();
+    [SerializeField] private double testOxygen;
     
 
 

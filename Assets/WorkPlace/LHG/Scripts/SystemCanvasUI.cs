@@ -28,7 +28,7 @@ public class SystemCanvasUI : MonoBehaviour
         StatusSystem.SetMinusOxygen(-100);
 
         //����� ����ȯ���ְ�
-        SceneSystem.Instance.LoadScene("TEST");
+        SceneSystem.Instance.LoadFarmingScene();
     }
 
     public void ExitWithNotEnoughOxygenYes()
@@ -36,7 +36,7 @@ public class SystemCanvasUI : MonoBehaviour
         //��Ҹ� ���纸������ŭ - �ϰ�
         StatusSystem.SetMinusOxygen(StatusSystem.GetOxygen());
         //����� ���� ��ȯ
-        SceneSystem.Instance.LoadScene("TEST");
+        SceneSystem.Instance.LoadFarmingScene();
     }
 
     // Ȯ��â���� no �������� �ý���ĵ���� ��ü�� ��Ȱ��ȭ ���Ѽ� â�� ����

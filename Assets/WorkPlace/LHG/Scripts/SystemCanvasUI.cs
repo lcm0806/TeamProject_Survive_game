@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 
 public class SystemCanvasUI : MonoBehaviour
@@ -19,10 +20,12 @@ public class SystemCanvasUI : MonoBehaviour
 
     public void ExitWithEnoughOxygenYes()
     {
-        //»ê¼Ò¸¦ -100ÇÏ°í
+        //ì‚°ì†Œë¥¼ -100í•˜ê³ 
         StatusSystem.SetMinusOxygen(-100);
-        //¿ùµå·Î ¾ÀÀüÈ¯ÇØÁÖ°í
-        _sceneSystem.LoadFarmingScene();
+        //ì›”ë“œë¡œ ì”¬ì „í™˜í•´ì£¼ê³ 
+        // _sceneSystem.LoadFarmingScene();
 
+        // 250628 ì¶”ê°€
+        SceneSystem.Instance.LoadFarmingScene();
     }
 }

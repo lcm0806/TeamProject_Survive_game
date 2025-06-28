@@ -175,25 +175,15 @@ public class GraphicsSystem : MonoBehaviour
     /// </summary>
     void SetupEventListeners()
     {
-        // 기존 리스너 제거 (중복 방지)
-        RemoveEventListeners();
-        
-        // 그래픽 설정 이벤트
+        // 그래픽 설정 이벤트만 등록 (버튼 이벤트 제거)
         if (_fullscreenToggle != null)
             _fullscreenToggle.onValueChanged.AddListener(OnFullscreenToggleChanged);
-        
+    
         if (_resolutionDropdown != null)
             _resolutionDropdown.onValueChanged.AddListener(OnResolutionChanged);
-        
+    
         if (_qualityDropdown != null)
             _qualityDropdown.onValueChanged.AddListener(OnQualityChanged);
-        
-        // 버튼 이벤트
-        if (_okButton != null)
-            _okButton.onClick.AddListener(OnOKButtonClicked);
-        
-        if (_backButton != null)
-            _backButton.onClick.AddListener(OnBackButtonClicked);
     }
 
     /// <summary>

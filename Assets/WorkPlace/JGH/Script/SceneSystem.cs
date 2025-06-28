@@ -112,6 +112,10 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     public void LoadFarmingScene()
     {
+        if (StatusSystem.Instance.GetIsToDay() == true)
+        {
+            return;
+        }
         // 탐색 여부 먼저 설정
         StatusSystem.Instance.SetIsToDay(true);
         // 씬 로드는 저장 없이

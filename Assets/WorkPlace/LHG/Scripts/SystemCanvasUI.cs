@@ -10,8 +10,12 @@ public class SystemCanvasUI : MonoBehaviour
 {
     [SerializeField] public GameObject ShelterUICanvas;
     public StatusSystem StatusSystem;
-    private SceneSystem _sceneSystem;
+    public SceneSystem SceneSystem;
     public TMP_Text[] ExitWithNotEnoughOxygenText;
+
+    
+    
+    public GameObject[] SystemCanvas; 
 
     public void ExitWithNotEnoughOxygenTextDisplay()
     {
@@ -22,10 +26,22 @@ public class SystemCanvasUI : MonoBehaviour
     {
         //산소를 -100하고
         StatusSystem.SetMinusOxygen(-100);
-        //월드로 씬전환해주고
-        // _sceneSystem.LoadFarmingScene();
 
-        // 250628 추가
-        SceneSystem.Instance.LoadFarmingScene();
+        //����� ����ȯ���ְ�
+        SceneSystem.Instance.LoadScene("TEST");
+    }
+
+    public void ExitWithNotEnoughOxygenYes()
+    {
+        //��Ҹ� ���纸������ŭ - �ϰ�
+        StatusSystem.SetMinusOxygen(StatusSystem.GetOxygen());
+        //����� ���� ��ȯ
+        SceneSystem.Instance.LoadScene("TEST");
+    }
+
+    // Ȯ��â���� no �������� �ý���ĵ���� ��ü�� ��Ȱ��ȭ ���Ѽ� â�� ����
+    public void DeActivateExitConfirmPanel(int systemCanvas)
+    {
+        SystemCanvas[systemCanvas].SetActive(false);
     }
 }

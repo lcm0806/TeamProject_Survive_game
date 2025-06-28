@@ -7,7 +7,7 @@ using TMPro;
 
 public class SampleUIManager : Singleton<SampleUIManager>
 {
-    [SerializeField] private GameObject inventoryPanel;
+    
     [SerializeField] private TextMeshProUGUI _itemDescriptionText;
 
     [Header("Hotbar UI")]
@@ -15,6 +15,8 @@ public class SampleUIManager : Singleton<SampleUIManager>
 
     [Header("Crafting UI")]
     [SerializeField] private GameObject craftingPanel; // 제작 UI의 최상위 패널
+
+    public GameObject inventoryPanel;
 
     private int _currentSelectedHotbarIndex = -1;
 

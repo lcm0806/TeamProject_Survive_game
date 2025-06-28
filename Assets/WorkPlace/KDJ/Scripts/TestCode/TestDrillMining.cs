@@ -22,12 +22,12 @@ public class TestDrillMining : ToolAction
             for (int i = 0; i < count; i++)
             {
                 //_colls[i].GetComponent<TestOre>()?.TakeDamage(power);
-                bool s = _colls[i].TryGetComponent<TestOre>(out TestOre ore);
+                bool s = _colls[i].TryGetComponent<MineableResource>(out MineableResource ore);
                 if (!s)
                 {
                     continue;
                 }
-                ore.TakeDamage(power);
+                ore.TakeMiningDamage(power);
             }
         }
         else

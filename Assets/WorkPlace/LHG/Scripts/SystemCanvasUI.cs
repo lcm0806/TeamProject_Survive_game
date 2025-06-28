@@ -28,7 +28,7 @@ public class SystemCanvasUI : MonoBehaviour
         StatusSystem.SetMinusOxygen(-100);
 
         //����� ����ȯ���ְ�
-        SceneSystem.Instance.LoadScene("TEST");
+        SceneSystem.Instance.LoadFarmingScene();
     }
 
     public void ExitWithNotEnoughOxygenYes()
@@ -36,7 +36,7 @@ public class SystemCanvasUI : MonoBehaviour
         //��Ҹ� ���纸������ŭ - �ϰ�
         StatusSystem.SetMinusOxygen(StatusSystem.GetOxygen());
         //����� ���� ��ȯ
-        SceneSystem.Instance.LoadScene("TEST");
+        SceneSystem.Instance.LoadFarmingScene();
     }
 
     // Ȯ��â���� no �������� �ý���ĵ���� ��ü�� ��Ȱ��ȭ ���Ѽ� â�� ����
@@ -44,4 +44,22 @@ public class SystemCanvasUI : MonoBehaviour
     {
         SystemCanvas[systemCanvas].SetActive(false);
     }
+
+
+    
+    
+
+
+    //침실-수면실행시 yes버튼
+    private void SleepAndNextDay()
+    {
+        //오늘밤 이벤트의 효과를 스테이터스에 넘겨주고
+        //날짜전환 캔버스를 보여주고
+        //날짜를 변경
+        //쉘터 기본캔버스를 띄워줌
+    }
+
+
+    
+
 }

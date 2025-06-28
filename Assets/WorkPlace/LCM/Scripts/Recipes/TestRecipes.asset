@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
   m_Name: TestRecipes
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 0}
+  craftedItem: {fileID: 11400000, guid: 0e75b6e6f237d6d46acde45b0e4cd9d5, type: 2}
   craftedAmount: 1
-  requiredMaterials: []
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: 7fdc3ce51dcc7ef4686dac2e29d61f16, type: 2}
+    quantity: 1
+  - materialItem: {fileID: 11400000, guid: 27bfcdbf8961b834c8f8670c1e25fcec, type: 2}
+    quantity: 1
+  description: GlassPlate

@@ -17,6 +17,8 @@ MonoBehaviour:
   icon: {fileID: 631761609, guid: a57c648ea30efac428d86507a3c66f44, type: 3}
   WorldPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
     type: 3}
+  HandleItem: {fileID: 8680699254563988124, guid: e926a7ece7e03c647ae73ad9c4e21712,
+    type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 1
   maxStackSize: 99

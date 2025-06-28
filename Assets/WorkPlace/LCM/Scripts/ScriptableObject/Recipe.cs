@@ -5,19 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Recipe", menuName = "Crafting/Recipe")]
 public class Recipe : ScriptableObject
 {
-    [Header("Crafted Item")]
-    public Item craftedItem; // 제작 결과물 아이템 (완성된 퀘스트 아이템 등)
-    public int craftedAmount = 1; // 제작 시 얻는 개수
-
-    [Header("Required Materials")]
-    // 필요한 재료 아이템과 각 재료의 수량
-    public List<CraftingMaterial> requiredMaterials = new List<CraftingMaterial>();
+    public Item craftedItem; // 제작될 아이템 (Item ScriptableObject)
+    public int craftedAmount = 1; // 제작될 아이템의 수량
 
     [System.Serializable]
-    public class CraftingMaterial
+    public class Material
     {
-        public Item materialItem;
-        public int quantity;
+        public Item materialItem; // 재료 아이템
+        public int quantity; // 필요한 수량
     }
+
+    public List<Material> requiredMaterials; // 필요한 재료 목록
+    public string description; // 제작 아이템에 대한 설명
 }
 

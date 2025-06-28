@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TestDrillMining : TestToolAction
+public class TestDrillMining : ToolAction
 {
     private Collider[] _colls =  new Collider[10];
     private LayerMask _layerMask = 1 << 8;

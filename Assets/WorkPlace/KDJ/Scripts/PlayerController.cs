@@ -358,7 +358,7 @@ public class PlayerController : MonoBehaviour
             // 손에 자원 아이템이 들려 있는 경우
             _animator.SetTrigger("Swing");
         }
-        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as TestToolItem)
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as ToolItem)
         {
             _testBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
@@ -370,7 +370,7 @@ public class PlayerController : MonoBehaviour
                 PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
             }
         }
-        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem != null)
+        else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as ConsumableItem)
         {
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
             if (PlayerManager.Instance.ItemDelay >= 1f)

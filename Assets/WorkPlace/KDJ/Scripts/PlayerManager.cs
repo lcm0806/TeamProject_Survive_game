@@ -43,5 +43,6 @@ public class PlayerManager : Singleton<PlayerManager>
         // 플레이어 임시 생성 코드
         GameObject player = Instantiate(_playerPrefab, _playerSpawnPoint.position, _playerSpawnPoint.rotation);
         Player = player.GetComponent<PlayerController>();
+        Debug.Log("플레이어 생성 완료");
     }
 }

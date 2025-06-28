@@ -85,7 +85,6 @@ public class FileSystem : MonoBehaviour
     }
 
     [Header("저장 설정")]
-    [SerializeField] private bool enableManualSave = false;
     [SerializeField] private bool enableEncryption = false;
 
     private string saveDirectory;
@@ -877,7 +876,7 @@ public class FileSystem : MonoBehaviour
                 Debug.Log($"산소: {loadedData.playerStatus?.oxygenRemaining}");
                 Debug.Log($"에너지: {loadedData.playerStatus?.electricalEnergy}");
                 Debug.Log($"내구도: {loadedData.playerStatus?.shelterDurability}");
-                Debug.Log($"낮/밤: {(loadedData.playerStatus?.isToDay == true ? "낮" : "밤")}");
+                Debug.Log($"탐색: {(loadedData.playerStatus?.isToDay == true ? "이미 탐색함" : "아직 탐색 안함")}");
                 Debug.Log($"플레이어 위치: {loadedData.playerStatus?.playerPosition}");
                 Debug.Log("================================");
             }

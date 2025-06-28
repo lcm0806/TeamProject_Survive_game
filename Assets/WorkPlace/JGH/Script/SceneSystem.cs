@@ -65,6 +65,7 @@ public class SceneSystem : MonoBehaviour
     public void LoadShelterScene()
     {
         // 씬 로드 후 저장하도록 변경
+        // LoadSceneWithDelay(_dayTransitionSceneName);
         LoadSceneWithDelayAndSave(_shelterSceneName);
     }
     
@@ -82,10 +83,7 @@ public class SceneSystem : MonoBehaviour
         // 탐색 여부 먼저 설정
         StatusSystem.Instance.SetIsToDay(true);
         // 씬 로드는 저장 없이
-        // LoadSceneWithDelay(_farmingSceneName);
-        
-        // 씬 로드 후 저장하도록 변경
-        LoadSceneWithDelayAndSave(_farmingSceneName);
+        LoadSceneWithDelay(_farmingSceneName);
     }
     
     /// <summary>
@@ -101,8 +99,8 @@ public class SceneSystem : MonoBehaviour
         FileSystem.Instance.SaveOrUpdateGameData();
         
         // LoadScene(_dayTransitionScene);
-        // LoadSceneWithDelay(_dayTransitionSceneName);
-        LoadSceneWithDelayAndSave(_dayTransitionSceneName);
+        LoadSceneWithDelay(_dayTransitionSceneName);
+        // LoadSceneWithDelayAndSave(_dayTransitionSceneName);
     }
     
     /// <summary>

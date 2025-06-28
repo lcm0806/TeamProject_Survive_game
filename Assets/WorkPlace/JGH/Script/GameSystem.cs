@@ -57,6 +57,10 @@ public class GameSystem : MonoBehaviour
         Time.timeScale = 0f;  // 게임 시간 정지
         isPaused = true;
         Debug.Log("게임 일시정지");
+        
+        // 마우스 잠김 문제
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     /// <summary>

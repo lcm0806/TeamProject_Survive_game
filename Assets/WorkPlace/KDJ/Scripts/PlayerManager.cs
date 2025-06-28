@@ -30,6 +30,11 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void Update()
     {
+        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName() && Player == null)
+        {
+            PlayerInit();
+        }
+
     }
 
     private void Init()

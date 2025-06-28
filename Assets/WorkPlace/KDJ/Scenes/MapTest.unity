@@ -11244,7 +11244,7 @@ Transform:
   m_GameObject: {fileID: 1107610372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: 2, z: -4}
+  m_LocalPosition: {x: 233.36589, y: 11.905424, z: -114.44132}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -12237,6 +12237,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 391273388}
   m_SourcePrefab: {fileID: 100100000, guid: d38de96123fae004f9b6d2a1deecd7c2, type: 3}
+--- !u!224 &1237067686 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 4953865846048784282, guid: 23c47fe9f1a78d442a0326512acffccb,
+    type: 3}
+  m_PrefabInstance: {fileID: 1301303900}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1237476261 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6298321776852225085, guid: 1d16cfe7b0d8e9a4fbef8d25db4b4fe0,
@@ -13104,6 +13110,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6264348631228407797, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: draggablesTransform
+      value: 
+      objectReference: {fileID: 1722479034}
     - target: {fileID: 6311843412268582548, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -13496,7 +13507,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4953865846048784282, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1722479034}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23c47fe9f1a78d442a0326512acffccb, type: 3}
 --- !u!1001 &1317803758
@@ -17407,7 +17422,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  lootPrefab: {fileID: 2309119357322554594, guid: efe0e21145be78844bd8b2e2e3e37dc8,
+  lootPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
@@ -18381,6 +18396,41 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
+--- !u!1 &1722479033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1722479034}
+  m_Layer: 5
+  m_Name: Draggables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1722479034
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1722479033}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.5999999, y: 1.5999999, z: 1.5999999}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1237067686}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1723609892 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2092699411737458788, guid: 96b90d03eda807f4fbe7ca6773b77255,

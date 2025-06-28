@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: Aluminum
   m_EditorClassIdentifier: 
   itemName: Aluminum
-  description: A basic item.
-  icon: {fileID: 0}
-  itemTag: 0
+  description: Aluminium
+  icon: {fileID: -797213450, guid: a57c648ea30efac428d86507a3c66f44, type: 3}
   WorldPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
     type: 3}
   equipmentPrefab: {fileID: 0}

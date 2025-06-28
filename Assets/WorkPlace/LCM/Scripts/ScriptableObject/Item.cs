@@ -16,6 +16,8 @@ public class Item : ScriptableObject
     [Header("World Representation")]
     public GameObject WorldPrefab;
 
+    public GameObject HandleItem;// 플레이어 손에 들릴 오브젝트 프리팹
+
 
     [Header("If the item can be equipped")]
     public GameObject equipmentPrefab;

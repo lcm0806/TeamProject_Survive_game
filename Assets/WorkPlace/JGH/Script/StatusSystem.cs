@@ -155,8 +155,7 @@ public class StatusSystem : MonoBehaviour
     /// </summary>
     public void NextCurrentDay()
     {
-        _currentDay += 1;
-        _isToDay = false;
+        _currentDay = GetCurrentDay() + 1;
     }
     
     

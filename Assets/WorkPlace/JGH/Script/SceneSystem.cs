@@ -127,12 +127,8 @@ public class SceneSystem : MonoBehaviour
         StatusSystem.Instance.NextCurrentDay();
         // 탐색 여부
         StatusSystem.Instance.SetIsToDay(false);
-
-        FileSystem.Instance.SaveOrUpdateGameData();
         
-        // LoadScene(_dayTransitionScene);
-        LoadSceneWithDelay(_dayTransitionSceneName);
-        // LoadSceneWithDelayAndSave(_dayTransitionSceneName);
+        LoadSceneWithDelayAndSave(_shelterSceneName);
     }
     
     /// <summary>

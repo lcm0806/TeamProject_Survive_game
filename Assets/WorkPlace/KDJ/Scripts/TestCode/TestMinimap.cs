@@ -8,7 +8,7 @@ public class TestMinimap : MonoBehaviour
     {
         transform.position = new Vector3(
             PlayerManager.Instance.Player.transform.position.x,
-            100f, // 고정된 높이
+            150f, // 고정된 높이
             PlayerManager.Instance.Player.transform.position.z
         );
     }

@@ -7,14 +7,14 @@ public class PlayerManager : Singleton<PlayerManager>
     [SerializeField] private Transform _playerSpawnPoint;
 
     public bool IsInIntercation = false;
-    public WorldItem InteractableItem { get; set; }
-    public TestWorldItem InteractableTestItem { get; set; }
-    public Structure InteractableStructure { get; set; }
+    [field: SerializeField] public WorldItem InteractableItem { get; set; }
+    [field: SerializeField] public TestWorldItem InteractableTestItem { get; set; }
+    [field: SerializeField] public Structure InteractableStructure { get; set; }
     public Item SelectItem { get; set; }
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
     public PlayerController Player { get; private set; }
-    public float InteractDelay { get; set; }
+    [field: SerializeField] public float InteractDelay { get; set; }
     public float ItemDelay { get; set; }
 
     private void Awake()
@@ -37,7 +37,7 @@ public class PlayerManager : Singleton<PlayerManager>
         AirGauge.Value = 100f;
         ElecticGauge.Value = 100f;
     }
-    
+
     private void PlayerInit()
     {
         // 플레이어 임시 생성 코드

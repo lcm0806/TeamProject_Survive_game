@@ -57,6 +57,14 @@ public class GameSystem : MonoBehaviour
         Time.timeScale = 0f;  // 게임 시간 정지
         isPaused = true;
         Debug.Log("게임 일시정지");
+        
+        // 파밍 씬에서 일시 정지 시 마우스 잠김 문제
+        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        
     }
 
     /// <summary>
@@ -67,15 +75,18 @@ public class GameSystem : MonoBehaviour
         Time.timeScale = 1f;  // 게임 시간 재개
         isPaused = false;
         Debug.Log("게임 재개");
-    }
-    
-    /// <summary>
-    /// 일시정지 상태 확인
-    /// </summary>
-    /// <returns></returns>
-    public bool IsPaused()
-    {
-        return isPaused;
+
+        // 파밍 씬에서 일시 게임 재개 시 마우스 보이는 문제
+        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true; 
+        }
     }
     
     private void Start()

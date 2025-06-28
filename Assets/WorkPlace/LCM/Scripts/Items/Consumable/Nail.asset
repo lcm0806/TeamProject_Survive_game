@@ -9,12 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85879ff987a41cc4c83d735bd223cc1e, type: 3}
-  m_Name: BaseBatteryPack
+  m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
+  m_Name: Nail
   m_EditorClassIdentifier: 
-  itemName: BatteryPack
-  description: "\uC0AC\uC6A9\uC2DC \uC804\uAE30\uB97C \uCDA9\uC804\uD574\uC900\uB2E4"
-  icon: {fileID: 0}
-  itemTag: 0
+  itemName: Nail
+  description: Nail
+  icon: {fileID: 21300000, guid: b8a123a31a6f7734ebc07e962943c230, type: 3}
+  WorldPrefab: {fileID: 0}
+  HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}
-  ElectricRestoreAmount: 50
+  isStackable: 1
+  maxStackSize: 99

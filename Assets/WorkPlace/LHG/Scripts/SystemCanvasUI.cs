@@ -9,8 +9,12 @@ public class SystemCanvasUI : MonoBehaviour
 {
     [SerializeField] public GameObject ShelterUICanvas;
     public StatusSystem StatusSystem;
-    private SceneSystem _sceneSystem;
+    public SceneSystem SceneSystem;
     public TMP_Text[] ExitWithNotEnoughOxygenText;
+
+    
+    
+    public GameObject[] SystemCanvas; 
 
     public void ExitWithNotEnoughOxygenTextDisplay()
     {
@@ -22,7 +26,20 @@ public class SystemCanvasUI : MonoBehaviour
         //산소를 -100하고
         StatusSystem.SetMinusOxygen(-100);
         //월드로 씬전환해주고
-        _sceneSystem.LoadFarmingScene();
+        SceneSystem.Instance.LoadScene("TEST");
+    }
 
+    public void ExitWithNotEnoughOxygenYes()
+    {
+        //산소를 현재보유량만큼 - 하고
+        StatusSystem.SetMinusOxygen(StatusSystem.GetOxygen());
+        //월드로 씬을 전환
+        SceneSystem.Instance.LoadScene("TEST");
+    }
+
+    // 확인창에서 no 눌렀을때 시스템캔버스 자체를 비활성화 시켜서 창을 닫음
+    public void DeActivateExitConfirmPanel(int systemCanvas)
+    {
+        SystemCanvas[systemCanvas].SetActive(false);
     }
 }

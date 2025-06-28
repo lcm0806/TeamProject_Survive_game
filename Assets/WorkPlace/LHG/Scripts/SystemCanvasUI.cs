@@ -27,16 +27,15 @@ public class SystemCanvasUI : MonoBehaviour
         //산소를 -100하고
         StatusSystem.SetMinusOxygen(-100);
 
-        //����� ����ȯ���ְ�
-        SceneSystem.Instance.LoadFarmingScene();
-    }
-
-    public void ExitWithNotEnoughOxygenYes()
-    {
-        //��Ҹ� ���纸������ŭ - �ϰ�
-        StatusSystem.SetMinusOxygen(StatusSystem.GetOxygen());
-        //����� ���� ��ȯ
-        SceneSystem.Instance.LoadFarmingScene();
+        // Singleton null 체크 추가
+        if (SceneSystem.Instance != null)
+        {
+            SceneSystem.Instance.LoadFarmingScene();
+        }
+        else
+        {
+            Debug.LogError("SceneSystem Instance is null!");
+        }
     }
 
     // Ȯ��â���� no �������� �ý���ĵ���� ��ü�� ��Ȱ��ȭ ���Ѽ� â�� ����
@@ -46,42 +45,22 @@ public class SystemCanvasUI : MonoBehaviour
     }
 
 
-    
-    
-
-
     //침실-수면실행시 yes버튼
     public void SleepAndNextDay()
     {
-        //TODO 오늘밤 이벤트의 효과를 스테이터스시스템에 넘겨주고
-
-        //TODO 날짜전환 캔버스를 보여주고
-
-
         if (LoadingCanvas.activeSelf == false)
         {
-            
-
-            StartCoroutine(DelayTime());
-
-            IEnumerator DelayTime()
-            {
-                LoadingCanvas.SetActive(true);
-
-                yield return new WaitForSeconds(1f);
-            }
-
-
-            //날짜및 스탯을 변경
-            SceneSystem.Instance.LoadDayTransitionScene(); //다음날로 스탯을 넘겨줌
-            SceneSystem.Instance.LoadShelterScene(); //다시쉘터씬처음띄워줌 자기전세이브와, 일어난후 세이브도 포함되어있음
-            LoadingSceneBG[0].SetActive(false);
-
-        }
+            LoadingCanvas.SetActive(true);
         
+            // 코루틴 대신 Invoke 사용
+            Invoke(nameof(DelayedSceneTransition), 2f);
+        }
     }
-
-
-
-
+    
+    private void DelayedSceneTransition()
+    {
+        SceneSystem.Instance.LoadDayTransitionScene();
+        LoadingSceneBG[0].SetActive(false);
+    }
+    
 }

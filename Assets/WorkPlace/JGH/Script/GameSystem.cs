@@ -82,6 +82,11 @@ public class GameSystem : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true; 
+        }
     }
     
     private void Start()

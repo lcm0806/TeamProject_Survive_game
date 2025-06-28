@@ -30,7 +30,7 @@ public class StatusSystem : MonoBehaviour
     private double _oxygenRemaining = 100f; // 남은 산소량 (100에서 시작)
     private double _electricalEnergy = 100f; // 전력 (100에서 시작)
     private double _shelterDurability = 100f; // 쉘터 내구도 (100에서 시작)
-    private bool _isToDay= false; // 오늘 탐색했는지 여부
+    private bool _isToDay; // 오늘 탐색했는지 여부
     
     void Awake()
     {
@@ -158,10 +158,6 @@ public class StatusSystem : MonoBehaviour
         _currentDay = GetCurrentDay() + 1;
     }
     
-    
-    
-    
-    
     /// <summary>
     /// 탐색을 했는지 여부
     /// </summary>
@@ -179,7 +175,5 @@ public class StatusSystem : MonoBehaviour
     {
         _isToDay = value;
     }
-    
-    
     
 }

@@ -37,8 +37,12 @@ public class SampleCraftingUIController : MonoBehaviour
 
     void OnEnable()
     {
-        // OnEnable에서는 항상 구독합니다.
-        // 하지만 혹시 모를 상황을 대비해 널 체크를 할 수도 있습니다 (정상 플레이 시에는 널이 아니어야 함)
+        // UI 상태 초기화 및 목록 채우기
+        PopulateCraftingList();
+        _craftingDetailPanel.SetActive(false);
+        _currentSelectedRecipe = null;
+
+        // 이벤트를 한 번만 구독하고, 반드시 널 체크를 포함합니다.
         if (CraftingManager.Instance != null)
         {
             CraftingManager.Instance.OnRecipeSelected += DisplayRecipeDetails;
@@ -46,27 +50,19 @@ public class SampleCraftingUIController : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("OnEnable에서 CraftingManager.Instance가 null입니다. 정상적인 플레이 중에는 이러면 안 됩니다.");
+            Debug.LogWarning("OnEnable: CraftingManager.Instance가 null입니다. 이벤트가 구독되지 않습니다.");
         }
+
         if (Inventory.Instance != null)
         {
             Inventory.Instance.OnHotbarSlotItemUpdated += OnInventoryOrHotbarChanged;
-            // 만약 OnInventoryChanged 이벤트를 사용한다면:
+            // Inventory에 OnInventoryChanged 이벤트가 있다면:
             // Inventory.Instance.OnInventoryChanged += OnInventoryOrHotbarChanged;
         }
         else
         {
-            Debug.LogWarning("OnEnable에서 Inventory.Instance가 null입니다. 정상적인 플레이 중에는 이러면 안 됩니다.");
+            Debug.LogWarning("OnEnable: Inventory.Instance가 null입니다. 이벤트가 구독되지 않습니다.");
         }
-        PopulateCraftingList(); // UI가 켜질 때마다 목록 갱신
-        _craftingDetailPanel.SetActive(false); // 상세 패널은 비활성화
-        _currentSelectedRecipe = null; // 선택된 레시피 초기화
-
-        // CraftingManager와 Inventory 이벤트 구독
-        CraftingManager.Instance.OnRecipeSelected += DisplayRecipeDetails;
-        CraftingManager.Instance.OnCraftingCompleted += UpdateUIOnCraftingCompleted;
-        Inventory.Instance.OnHotbarSlotItemUpdated += OnInventoryOrHotbarChanged;
-        // Inventory.Instance.OnInventoryChanged += OnInventoryOrHotbarChanged; // Inventory에 이 이벤트가 있다면 사용
     }
 
     void OnDisable()
@@ -116,66 +112,44 @@ public class SampleCraftingUIController : MonoBehaviour
     // 제작 목록을 스크롤뷰에 채우는 함수
     private void PopulateCraftingList()
     {
-        // 기존 슬롯 제거
-        foreach (GameObject go in _instantiatedRecipeSlots)
+        ClearCraftingListSlots(); // 기존 슬롯 정리
+
+        // _craftingItemSlotPrefab과 _craftingListContent가 할당되었는지 안전성 체크 추가 
+        if (_craftingItemSlotPrefab == null)
         {
-            Destroy(go);
+            Debug.LogError("_craftingItemSlotPrefab이 할당되지 않았습니다!");
+            return;
         }
-        _instantiatedRecipeSlots.Clear();
+        if (_craftingListContent == null)
+        {
+            Debug.LogError("_craftingListContent가 할당되지 않았습니다!");
+            return;
+        }
 
         // 모든 레시피를 가져와서 슬롯 생성
         foreach (Recipe recipe in CraftingManager.Instance.AllCraftingRecipes)
         {
-            // 레시피의 제작 아이템이 할당되었는지 확인
             if (recipe.craftedItem == null)
             {
                 Debug.LogWarning($"레시피 '{recipe.name}'에 제작 아이템이 할당되지 않았습니다. 이 레시피는 건너뜝니다.");
-                continue; // 다음 레시피로 넘어감
+                continue;
             }
 
             GameObject slotGO = Instantiate(_craftingItemSlotPrefab, _craftingListContent);
-            // 프리팹 인스턴스화가 성공했는지 확인
-            if (slotGO == null)
-            {
-                Debug.LogError($"레시피 '{recipe.name}'의 제작 슬롯을 인스턴스화하지 못했습니다. '_craftingItemSlotPrefab' 또는 '_craftingListContent' 할당을 확인하세요.");
-                continue;
-            }
             _instantiatedRecipeSlots.Add(slotGO);
 
-            // 슬롯 UI 설정
-            Image itemIcon = slotGO.transform.Find("ItemIcon").GetComponent<Image>();
-            TextMeshProUGUI itemNameText = slotGO.transform.Find("ItemNameText").GetComponent<TextMeshProUGUI>();
+            // --- 여기가 변경되는 부분입니다! ---
+            CraftingItemUISlot uiSlot = slotGO.GetComponent<CraftingItemUISlot>();
 
-            if (itemIcon != null) itemIcon.sprite = recipe.craftedItem.icon;
-            if (itemNameText != null) itemNameText.text = recipe.craftedItem.itemName;
-
-            // 아이콘과 텍스트 컴포넌트가 존재하고, 아이템 아이콘 스프라이트가 할당되었는지 확인
-            if (itemIcon != null && recipe.craftedItem.icon != null)
+            if (uiSlot == null)
             {
-                itemIcon.sprite = recipe.craftedItem.icon;
-            }
-            else
-            {
-                Debug.LogWarning($"레시피 '{recipe.name}'의 아이콘을 찾을 수 없거나, 아이템 '{recipe.craftedItem.name}'에 스프라이트가 할당되지 않았습니다. (itemIcon 존재: {itemIcon != null}, 아이템 스프라이트 존재: {recipe.craftedItem.icon != null})");
-                // 필요하다면 기본 아이콘을 할당하거나 시각적으로 처리
+                Debug.LogError($"'{_craftingItemSlotPrefab.name}' 프리팹에 CraftingItemUISlot 컴포넌트가 없습니다! 확인해주세요.");
+                Destroy(slotGO); // 잘못된 슬롯은 파괴
+                continue;
             }
 
-            if (itemNameText != null)
-            {
-                itemNameText.text = recipe.craftedItem.itemName;
-            }
-            else
-            {
-                Debug.LogWarning($"레시피 '{recipe.name}'의 아이템 이름 텍스트 컴포넌트를 찾을 수 없습니다.");
-            }
-
-            // 버튼 클릭 이벤트 추가
-            Button slotButton = slotGO.GetComponent<Button>();
-            if (slotButton != null)
-            {
-                // 람다 표현식으로 현재 레시피를 인자로 전달
-                slotButton.onClick.AddListener(() => CraftingManager.Instance.SelectRecipe(recipe));
-            }
+            // 이제 uiSlot의 SetUI 메서드를 호출하여 데이터를 설정합니다.
+            uiSlot.SetUI(recipe);
         }
     }
 
@@ -211,22 +185,24 @@ public class SampleCraftingUIController : MonoBehaviour
         foreach (var material in recipe.requiredMaterials)
         {
             GameObject materialUI = Instantiate(_materialItemUIPrefab, _materialListContainer);
+            if (materialUI == null) continue;
             _instantiatedMaterialUIs.Add(materialUI);
 
-            Image materialIcon = materialUI.transform.Find("MaterialIcon").GetComponent<Image>();
-            TextMeshProUGUI materialName = materialUI.transform.Find("MaterialNameText").GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI materialQuantity = materialUI.transform.Find("MaterialQuantityText").GetComponent<TextMeshProUGUI>();
+            MaterialItemUISlot uiSlot = materialUI.GetComponent<MaterialItemUISlot>();
 
-            if (materialIcon != null) materialIcon.sprite = material.materialItem.icon;
-            if (materialName != null) materialName.text = material.materialItem.itemName;
-
-            int playerHasAmount = Inventory.Instance.GetItemCount(material.materialItem);
-            if (materialQuantity != null)
+            if (uiSlot == null)
             {
-                materialQuantity.text = $"{playerHasAmount} / {material.quantity}";
-                // 필요 개수보다 적으면 빨간색으로 표시
-                materialQuantity.color = (playerHasAmount < material.quantity) ? Color.red : Color.white;
+                Debug.LogError($"'{_materialItemUIPrefab.name}' 프리팹에 MaterialItemUISlot 컴포넌트가 없습니다! 확인해주세요.");
+                continue;
             }
+
+            Sprite icon = material.materialItem?.icon; // Null-conditional operator로 안전하게 접근
+            string name = material.materialItem?.itemName;
+            int playerHasAmount = Inventory.Instance.GetItemCount(material.materialItem);
+            string quantityText = $"{playerHasAmount} / {material.quantity}";
+            Color quantityColor = (playerHasAmount < material.quantity) ? Color.red : Color.white;
+
+            uiSlot.SetUI(icon, name, quantityText, quantityColor); // MaterialItemUISlot의 SetUI 메서드 사용
         }
 
         // 제작 가능 여부에 따라 버튼 활성화/비활성화

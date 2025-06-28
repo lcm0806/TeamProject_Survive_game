@@ -30,6 +30,7 @@ public class WorldItem : MonoBehaviour, IInteractable
         Debug.Log("아이템과 상호작용 했습니다. 인벤토리에 추가 하겠습니다");
 
         Inventory.Instance.SpawnInventoryItem(this.itemData);
+
         PlayerManager.Instance.SelectItem = this.itemData;
 
         ToolItem toolItem = this.itemData as ToolItem;
@@ -40,7 +41,7 @@ public class WorldItem : MonoBehaviour, IInteractable
             // toolItem.toolAction = toolObject.GetComponent<TestToolAction>();
             // toolObject.SetActive(false);
             // 혹은 해당 핫바를 선택할때 마다 생성 및 파괴
-            toolItem.toolAction = toolItem.toolPrefab.GetComponent<ToolAction>();
+            toolItem.toolAction = toolItem.HandleItem.GetComponent<ToolAction>();
         }
         Debug.Log($"[WorldItem] Destroy(gameObject) 호출 직전. 파괴될 오브젝트: {gameObject.name}");
         Destroy(gameObject);

@@ -143,8 +143,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4667943171651770541}
+  - component: {fileID: 2792750528360070842}
   m_Layer: 5
-  m_Name: MaterialListContainer
+  m_Name: MaterialItemUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -172,6 +173,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2792750528360070842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5090769209341672081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f574f136a74498745acd27a038faec25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  materialIcon: {fileID: 5053593528567013461}
+  materialName: {fileID: 4544444268421436202}
+  materialQuantity: {fileID: 383912697125152750}
 --- !u!1 &6254905372610857719
 GameObject:
   m_ObjectHideFlags: 0

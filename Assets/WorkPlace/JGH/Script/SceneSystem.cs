@@ -24,12 +24,50 @@ public class SceneSystem : MonoBehaviour
             return _instance;
         }
     }
+
+    [Header("Scene Names - 빌드 설정에서 추가된 씬 이름들")] 
+    [SerializeField] private string _titleSceneName;
+    [SerializeField] private string _shelterSceneName;
+    [SerializeField] private string _farmingSceneName;
+    [SerializeField] private string _dayTransitionSceneName;
     
-    [Header("Scene Names - 빌드 설정에서 추가된 씬 이름들")]
-    [SerializeField] private string _titleSceneName = "TitleScene";
-    [SerializeField] private string _shelterSceneName = "DevShelterScene";
-    [SerializeField] private string _farmingSceneName = "DemoScene";
-    [SerializeField] private string _dayTransitionSceneName = "DevShelterScene";
+    
+    /// <summary>
+    /// 타이틀 씬 이름을 반환합니다.
+    /// </summary>
+    /// <returns>타이틀 씬 이름</returns>
+    public string GetTitleSceneName()
+    {
+        return _titleSceneName;
+    }
+
+    /// <summary>
+    /// 쉘터 씬 이름을 반환합니다.
+    /// </summary>
+    /// <returns>쉘터 씬 이름</returns>
+    public string GetShelterSceneName()
+    {
+        return _shelterSceneName;
+    }
+
+    /// <summary>
+    /// 파밍 씬 이름을 반환합니다.
+    /// </summary>
+    /// <returns>파밍 씬 이름</returns>
+    public string GetFarmingSceneName()
+    {
+        return _farmingSceneName;
+    }
+
+    /// <summary>
+    /// 하루 전환 씬 이름을 반환합니다.
+    /// </summary>
+    /// <returns>하루 전환 씬 이름</returns>
+    public string GetDayTransitionSceneName()
+    {
+        return _dayTransitionSceneName;
+    }
+    
     
     private void Awake()
     {

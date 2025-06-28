@@ -4,7 +4,6 @@ using UnityEngine;
 public class PlayerManager : Singleton<PlayerManager>
 {
     [SerializeField] private GameObject _playerPrefab;
-    [SerializeField] private Transform _playerSpawnPoint;
 
     public bool IsInIntercation = false;
     [field: SerializeField] public WorldItem InteractableItem { get; set; }
@@ -46,7 +45,7 @@ public class PlayerManager : Singleton<PlayerManager>
     private void PlayerInit()
     {
         // 플레이어 임시 생성 코드
-        GameObject player = Instantiate(_playerPrefab, _playerSpawnPoint.position, _playerSpawnPoint.rotation);
+        GameObject player = Instantiate(_playerPrefab, new Vector3(237.29f, 10.225f, -110.03f), Quaternion.identity);
         Player = player.GetComponent<PlayerController>();
         Debug.Log("플레이어 생성 완료");
     }

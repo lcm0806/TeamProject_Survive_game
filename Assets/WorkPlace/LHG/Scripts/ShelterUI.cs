@@ -14,14 +14,16 @@ public class ShelterUI : MonoBehaviour
     [SerializeField] public GameObject SystemCanvas;
 
     public GameObject[] ShelterMenu, Tabs, EventContainer, CompleteBtn, MapLocations, ExitShelterCases;
-    [SerializeField] public TMP_Text[] Indicators;
+    [SerializeField] public TMP_Text[] Indicators, TonightEventText;
     public Image[] TabButtons, MapLocationsButtons;
     public Sprite InactiveTabBG, ActiveTabBG; // 활성 비활성 시각화를 백그라운드스프라이트로 처리할 때 필요
     
     [SerializeField] private EventState testState; //TODO 이벤트마다 스테이트를 가져야함, 충족시 해당 이벤트의 스테이트를 변경해주도록 만들어야
+
     // 250628 빌드 오류
     // [SerializeField] private double testOxygen = StatusSystem.Instance.GetOxygen();
     [SerializeField] private double testOxygen;
+
     
 
 
@@ -177,14 +179,7 @@ public class ShelterUI : MonoBehaviour
 
 
 
-        //true라면
-
-        //1-1 산소 100이 넘는 경우-> 팝업창 예(산소100깎고, 씬체인지) 아니오(창닫기)
-
-        //1-2 산소 100 미만인 경우 -> 팝업창 예(산소 {현재량} 깎고, 씬체인지) 아니오(창닫기)
-
-
-        //2. 이미 탐색을 한 경우 탐색 불가 -> 팝업창 (오늘은 이미 탐색을 끝냈습니다) 확인(창닫기)
+        
 
     }
     
@@ -232,6 +227,12 @@ public class ShelterUI : MonoBehaviour
         AlreadyComplted
     }
 
-
+    private void TonightEventDisplay()
+    {
+        //오늘밤의 이벤트 이름과 효과를 보여주고
+        //TODO 이벤트 시스템에서 값을 가져와야 함
+        //TODO 복수의 이벤트이름과 효과가 있는 경우..어떻게? 반복문?
+        TonightEventText[0].SetText($"{"이벤트이름"} : {"이벤트효과"}");
+    }
 
 }

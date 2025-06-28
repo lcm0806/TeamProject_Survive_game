@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Litium
   description: A basic item.
-  icon: {fileID: 0}
-  itemTag: 0
+  icon: {fileID: 1318073231, guid: a57c648ea30efac428d86507a3c66f44, type: 3}
   WorldPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  HandleItem: {fileID: 380808698533326205, guid: e72c4b73d6688d34ba86c8e0e519e051,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 1

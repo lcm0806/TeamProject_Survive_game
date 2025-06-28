@@ -1,36 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.VersionControl;
+// using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class PickupItem : MonoBehaviour, IInteractable
 {
-    [Header("µå·Ó ÇÁ¸®ÆÕ")]
+    [Header("ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public GameObject batteryPrefab;
     public GameObject oxygenPrefab;
     public float lootLaunchForce = 5f;
 
-    [Header("ÆÄ±«(ÆäÀÌµå) ¿¬Ãâ")]
-    public float fadeDuration = 2f;     // 2ÃÊ µ¿¾È Åõ¸íÈ­
+    [Header("ï¿½Ä±ï¿½(ï¿½ï¿½ï¿½Ìµï¿½) ï¿½ï¿½ï¿½ï¿½")]
+    public float fadeDuration = 2f;     // 2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
 
-    private bool _used = false;         // ÀÌ¹Ì »óÈ£ÀÛ¿ë Çß´ÂÁö
+    private bool _used = false;         // ï¿½Ì¹ï¿½ ï¿½ï¿½È£ï¿½Û¿ï¿½ ï¿½ß´ï¿½ï¿½ï¿½
 
-    /* ------------------- ÀÎÅÍ·¢Æ® ------------------- */
+    /* ------------------- ï¿½ï¿½ï¿½Í·ï¿½Æ® ------------------- */
     public void Interact()
     {
-        if (_used) return;              // Áßº¹ ¹æÁö
+        if (_used) return;              // ï¿½ßºï¿½ ï¿½ï¿½ï¿½ï¿½
         _used = true;
 
         float roll = Random.value;
 
         if (roll < 0.3f) SpawnLoot(batteryPrefab);
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
-        else ShowMessage("ºñ¾îÀÖ´Â º¸±Þ »óÀÚÀÔ´Ï´Ù...");
+        else ShowMessage("ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½...");
 
         StartCoroutine(FadeOutAndDestroy());
     }
 
-    /* ------------------- µå·Ó ------------------- */
+    /* ------------------- ï¿½ï¿½ï¿½ ------------------- */
     private void SpawnLoot(GameObject prefab)
     {
         if (prefab == null) return;
@@ -38,7 +38,7 @@ public class PickupItem : MonoBehaviour, IInteractable
         Vector3 pos = transform.position + Vector3.up * 1.2f;
         GameObject loot = Instantiate(prefab, pos, Quaternion.identity);
 
-        // »óÀÚ¿Í Ãæµ¹ ¹«½Ã
+        // ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
         if (TryGetComponent<Collider>(out var boxCol) &&
             loot.TryGetComponent<Collider>(out var lootCol))
         {
@@ -53,20 +53,20 @@ public class PickupItem : MonoBehaviour, IInteractable
         }
     }
 
-    /* ------------------- ÆäÀÌµå & ÆÄ±« ------------------- */
+    /* ------------------- ï¿½ï¿½ï¿½Ìµï¿½ & ï¿½Ä±ï¿½ ------------------- */
     private System.Collections.IEnumerator FadeOutAndDestroy()
     {
-        //º¸±Þ»óÀÚ ¸ðµç MeshRenderer ¼öÁý
+        //ï¿½ï¿½ï¿½Þ»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ MeshRenderer ï¿½ï¿½ï¿½ï¿½
         var renderers = GetComponentsInChildren<MeshRenderer>();
         if (renderers.Length == 0) { Destroy(gameObject); yield break; }
 
-        //°¢ ¸ÓÆ¼¸®¾ó ÀÎ½ºÅÏ½º¡¤ÃÊ±â»ö ÀúÀå
+        //ï¿½ï¿½ ï¿½ï¿½Æ¼ï¿½ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         var mats = new System.Collections.Generic.List<Material[]>();
         var startCols = new System.Collections.Generic.List<Color[]>();
 
         foreach (var r in renderers)
         {
-            Material[] arr = r.materials;          // ÀÎ½ºÅÏ½º ¹è¿­
+            Material[] arr = r.materials;          // ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½è¿­
             mats.Add(arr);
 
             Color[] cols = new Color[arr.Length];
@@ -74,7 +74,7 @@ public class PickupItem : MonoBehaviour, IInteractable
             startCols.Add(cols);
         }
 
-        //ÆäÀÌµå ·çÇÁ
+        //ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
         float t = 0f;
         while (t < fadeDuration)
         {
@@ -97,7 +97,7 @@ public class PickupItem : MonoBehaviour, IInteractable
         Destroy(gameObject);
     }
 
-    /* ------------------- UI ¸Þ½ÃÁö ------------------- */
+    /* ------------------- UI ï¿½Þ½ï¿½ï¿½ï¿½ ------------------- */
     private void ShowMessage(string message)
     {
         if (UIManager.Instance != null)
@@ -106,7 +106,7 @@ public class PickupItem : MonoBehaviour, IInteractable
         }
         else
         {
-            Debug.LogWarning("UIManager°¡ ¾À¿¡ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("UIManagerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
     }
 }

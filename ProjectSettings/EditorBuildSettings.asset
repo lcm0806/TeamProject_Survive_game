@@ -12,6 +12,6 @@ EditorBuildSettings:
     path: Assets/WorkPlace/LHG/Scenes/DevShelterScene.unity
     guid: 02d3e279795ed134e9a38b465ccda70f
   - enabled: 1
-    path: Assets/WorkPlace/KDJ/Scenes/Test.unity
-    guid: 12807580f66a3a34dab78f7c8ca4e1fc
+    path: Assets/WorkPlace/LJH/Scenes/DemoScene.unity
+    guid: 0a746b54ece413b47b7c3c6e39c157a2
   m_configObjects: {}

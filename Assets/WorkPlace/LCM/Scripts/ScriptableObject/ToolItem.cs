@@ -1,28 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Unity.VisualScripting.Dependencies.Sqlite.SQLite3;
+// using static Unity.VisualScripting.Dependencies.Sqlite.SQLite3;
 
 [CreateAssetMenu(menuName = "Item/Tool Item")]
 public class ToolItem : Item
 {
     [Header("Tool Specific Info")]
-    public float miningPower = 1f; // Ã¤±¼ µµ±¸ÀÇ Ã¤±¼·Â (¿¹: ±¤¹°ÀÇ Ã¼·ÂÀ» ±ğ´Â ¾ç)
-    public ToolType toolType;       // ÀÌ µµ±¸ÀÇ Á¾·ù (¿¹: °î±ªÀÌ, µµ³¢, »ğ µî)
+
+    public float miningPower = 1f; // ì±„êµ´ ë„êµ¬ì˜ ì±„êµ´ë ¥ (ì˜ˆ: ê´‘ë¬¼ì˜ ì²´ë ¥ì„ ê¹ëŠ” ì–‘)
+    public ToolType toolType;       // ì´ ë„êµ¬ì˜ ì¢…ë¥˜ (ì˜ˆ: ê³¡ê´­ì´, ë„ë¼, ì‚½ ë“±)
+    public GameObject toolPrefab;     // í”Œë ˆì´ì–´ ì†ì— ë“¤ë¦´ ì˜¤ë¸Œì íŠ¸ í”„ë¦¬íŒ¹
+    public GameObject toolObject;     // ë„êµ¬ì˜ ì‹¤ì œ ì˜¤ë¸Œì íŠ¸ (ì˜ˆ: ê³¡ê´­ì´, ë„ë¼ ë“±)
+    public ToolAction toolAction;
 
     public override void Use(GameObject user)
     {
-        // ºÎ¸ğ Item Å¬·¡½ºÀÇ Use ¸Ş¼Òµå¸¦ È£ÃâÇÕ´Ï´Ù.
-        base.Use(user); // µğ¹ö±ë ¿ë
+        // ë¶€ëª¨ Item í´ë˜ìŠ¤ì˜ Use ë©”ì†Œë“œë¥¼ í˜¸ì¶œí•©ë‹ˆë‹¤.
+        /*base.Use(user);*/ // ë””ë²„ê¹… ìš©
+        toolAction.Action((int)miningPower);
 
-        Debug.Log($"{itemName}À» »ç¿ëÇß½À´Ï´Ù. (³»±¸µµ ¾øÀ½)");
+        Debug.Log($"{itemName}å ì™ì˜™ å ì™ì˜™å ì™ì˜™é¢¯å ì™ì˜™æ±‚å . (å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™)");
 
     }
 }
 
 public enum ToolType
 {
-    //µµ±¸ÀÇ Á¾·ù ±¸ºĞ
+    //å ì™ì˜™å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™ å ì™ì˜™å ì™ì˜™
     None,
     Pickaxe,
     Axe,

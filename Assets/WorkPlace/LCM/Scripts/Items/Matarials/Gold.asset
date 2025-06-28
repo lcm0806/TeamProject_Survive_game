@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Gold
   description: This is Gold
-  icon: {fileID: 1269801657, guid: 383aef37898fa624db3efdbee6c0df52, type: 3}
-  itemTag: 0
+  icon: {fileID: -1309796191, guid: a57c648ea30efac428d86507a3c66f44, type: 3}
   WorldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  HandleItem: {fileID: 8756736371672221449, guid: 801f5b1c72287ea478c02c6066c252f2,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 1

@@ -200,7 +200,7 @@ public class Inventory : Singleton<Inventory>
             Item droppedItemData = itemToDropUI.myItem;
 
             //아이템이 떨어질 위치를 계산 (플레이어 전방)
-            Transform playerTransform = SamplePlayerManager.Instance.Player.transform; // PlayerController의 transform
+            Transform playerTransform = PlayerManager.Instance.Player.transform; // PlayerController의 transform
             Vector3 playerForward = playerTransform.forward;
             Vector3 dropPosition = playerTransform.position + playerTransform.forward * _dropDistance;
             dropPosition.y += 0.5f;

@@ -5630,7 +5630,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 631
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 955eeff6ff52acb4c901701f11c64e90, type: 2}
   m_TargetDisplay: 0
@@ -11204,7 +11204,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 70.18617
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -11231,7 +11231,7 @@ Transform:
   m_GameObject: {fileID: 1107610372}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 234.511, y: 11.90382, z: -109.38}
+  m_LocalPosition: {x: 0.6, y: 2, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

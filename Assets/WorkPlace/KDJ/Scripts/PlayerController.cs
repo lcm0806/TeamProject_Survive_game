@@ -288,15 +288,16 @@ public class PlayerController : MonoBehaviour
                 PlayerManager.Instance.InteractDelay = 0f; // 중간에 다른곳을 바라보아도 초기화
             }
         }
+        else
+        {
+            PlayerManager.Instance.InteractDelay = 0f; // E키를 떼면 초기화
+        }
+        #endregion
+
         if (Input.GetKeyDown(KeyCode.C)) // 'C' 키를 눌렀을 때
         {
             SampleUIManager.Instance.ToggleCraftingUI();
         }
-        else
-        {
-            PlayerManager.Instance.InteractDelay = 0f; // E 키를 떼면 딜레이 초기화
-        }
-        #endregion
 
         if (Input.GetKeyDown(KeyCode.Q)) // 'Q' 키를 눌렀을 때
         {

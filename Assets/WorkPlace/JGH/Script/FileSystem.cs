@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Collections;
+using DesignPattern;
 
 // ========== 데이터 클래스들 ==========
 
@@ -64,26 +65,8 @@ public class GameSettingsData
 
 // ========== 파일 시스템 ==========
 
-public class FileSystem : MonoBehaviour
+public class FileSystem : Singleton<FileSystem>
 {
-    private static FileSystem _instance;
-    public static FileSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<FileSystem>();
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("FileSystem");
-                    _instance = go.AddComponent<FileSystem>();
-                }
-            }
-            return _instance;
-        }
-    }
-
     [Header("저장 설정")]
     [SerializeField] private bool enableEncryption = false;
 
@@ -96,15 +79,7 @@ public class FileSystem : MonoBehaviour
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
-        
+        SingletonInit();
         // Awake에서 초기화를 수행하여 다른 어떤 스크립트보다 먼저 실행되도록 보장합니다.
         InitializeFileSystem();
     }
@@ -906,7 +881,7 @@ public class FileSystem : MonoBehaviour
     void OnDestroy()
     {
         // 인스턴스가 정상적으로 초기화된 경우에만 설정 저장
-        if (!string.IsNullOrEmpty(saveDirectory) && _instance == this)
+        if (!string.IsNullOrEmpty(saveDirectory))
         {
             SaveGameSettings();
         }

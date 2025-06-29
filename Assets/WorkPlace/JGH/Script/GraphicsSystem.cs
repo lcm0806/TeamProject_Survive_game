@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using DesignPattern;
 
 [System.Serializable]
 public class ResolutionOption
@@ -19,28 +20,8 @@ public class ResolutionOption
     }
 }
 
-public class GraphicsSystem : MonoBehaviour
+public class GraphicsSystem : Singleton<GraphicsSystem>
 {
-    // 싱글톤 인스턴스
-    private static GraphicsSystem _instance;
-    public static GraphicsSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GraphicsSystem>();
-                if (_instance == null)
-                {
-                    GameObject graphicsSystemObject = new GameObject("GraphicsSystem");
-                    _instance = graphicsSystemObject.AddComponent<GraphicsSystem>();
-                    DontDestroyOnLoad(graphicsSystemObject);
-                }
-            }
-            return _instance;
-        }
-    }
-
     [Header("그래픽 UI 요소들")]
     [SerializeField] private Toggle _fullscreenToggle;
     [SerializeField] private TMP_Dropdown _resolutionDropdown;
@@ -68,27 +49,8 @@ public class GraphicsSystem : MonoBehaviour
 
     void Awake()
     {
-        // 싱글톤 패턴 구현
-        if (_instance == null)
-        {
-            _instance = this;
-            
-            // 부모가 있다면 루트로 이동
-            if (transform.parent != null)
-            {
-                transform.SetParent(null);
-            }
-            
-            DontDestroyOnLoad(gameObject);
-            
-            // 해상도 옵션 초기화
-            InitializeResolutionOptions();
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // 해상도 옵션 초기화
+        InitializeResolutionOptions();
     }
 
     void Start()

@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using DesignPattern;
 
-public class MenuSystem : MonoBehaviour
+public class MenuSystem : Singleton<MenuSystem>
 {
     [Header("메인 메뉴")] 
     public GameObject MainMenu;
@@ -52,36 +52,10 @@ public class MenuSystem : MonoBehaviour
     private float _backupSFXVolume;
     private bool _backupFullscreen;
     private int _backupQualityIndex;
-    
-    private static MenuSystem _instance;
-    public static MenuSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<MenuSystem>();
-                if (_instance == null)
-                {
-                    var go = new GameObject("MenuSystem");
-                    _instance = go.AddComponent<MenuSystem>();
-                    DontDestroyOnLoad(go);
-                }
-            }
-            return _instance;
-        }
-    }
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        SingletonInit();
     }
     
     void Update()

@@ -28,6 +28,7 @@ public class Inventory : Singleton<Inventory>
 
     [Header("UI Management")]
     [SerializeField] private GameObject _inventoryUIRootPanel; // 인벤토리 UI의 최상위 GameObject (Panel 등)
+    [SerializeField] private Canvas _gameCanvas; // 게임의 메인 Canvas (수동으로 할당하거나 자동으로 찾기)
 
     [Header("Hotbar Management")]
     [SerializeField] public int _currentHotbarSlotIndex = 0; // 현재 선택된 핫바 슬롯 인덱스 (기본값 0)
@@ -49,7 +50,10 @@ public class Inventory : Singleton<Inventory>
     {
         SingletonInit();
 
-        // 인벤토리 UI 패널 초기 상태 설정 (시작 시 비활성화)
+        // Canvas를 찾거나 설정
+        SetupCanvas();
+
+        // 인벤토리 UI 패널 초기 상태 설정 (처음엔 비활성화)
         if (_inventoryUIRootPanel != null)
         {
             _inventoryUIRootPanel.SetActive(false);
@@ -64,6 +68,62 @@ public class Inventory : Singleton<Inventory>
 
         // 상시 핫바 슬롯 배열 초기화 및 동기화 (Awake 또는 Start에서 한 번만 호출)
         InitializePersistentHotbarSlots();
+    }
+
+    void SetupCanvas()
+    {
+        // Canvas가 수동으로 할당되지 않았다면 자동으로 찾기
+        if (_gameCanvas == null)
+        {
+            _gameCanvas = FindObjectOfType<Canvas>();
+            if (_gameCanvas == null)
+            {
+                Debug.LogError("Canvas를 찾을 수 없습니다. Canvas를 생성하거나 _gameCanvas 필드에 할당해주세요.");
+                return;
+            }
+        }
+
+        // 인벤토리 UI 패널이 Canvas의 자식이 아니라면 Canvas 아래로 이동
+        if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)
+        {
+            _inventoryUIRootPanel.transform.SetParent(_gameCanvas.transform, false);
+            
+            // UI 위치 및 크기 조정 (필요시)
+            RectTransform rectTransform = _inventoryUIRootPanel.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                // 중앙에 배치하고 적절한 크기로 설정
+                rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+                rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+                rectTransform.anchoredPosition = Vector2.zero;
+                
+                // 필요하다면 크기도 설정
+                // rectTransform.sizeDelta = new Vector2(800, 600);
+            }
+            
+            Debug.Log("인벤토리 UI 패널이 Canvas 아래로 이동되었습니다.");
+        }
+
+        // draggablesTransform도 Canvas 아래에 설정 (아이템 드래그용)
+        if (draggablesTransform == null)
+        {
+            GameObject draggablesGO = new GameObject("DraggableItems");
+            draggablesTransform = draggablesGO.transform;
+            draggablesTransform.SetParent(_gameCanvas.transform, false);
+            
+            // 최상위 레이어에 표시되도록 설정
+            RectTransform dragRect = draggablesGO.AddComponent<RectTransform>();
+            dragRect.anchorMin = Vector2.zero;
+            dragRect.anchorMax = Vector2.one;
+            dragRect.offsetMin = Vector2.zero;
+            dragRect.offsetMax = Vector2.zero;
+            
+            Debug.Log("DraggableItems 컨테이너가 생성되고 Canvas 아래에 배치되었습니다.");
+        }
+        else if (draggablesTransform.parent != _gameCanvas.transform)
+        {
+            draggablesTransform.SetParent(_gameCanvas.transform, false);
+        }
     }
 
     void Update()

@@ -2563,7 +2563,7 @@ GameObject:
   - component: {fileID: 325781799}
   - component: {fileID: 325781798}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2646,8 +2646,8 @@ RectTransform:
   m_Children:
   - {fileID: 1583827162}
   - {fileID: 578670391}
-  - {fileID: 437046598}
   - {fileID: 331615584}
+  - {fileID: 437046598}
   - {fileID: 1590401665}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -14540,12 +14540,12 @@ PrefabInstance:
     - target: {fileID: 4955564322734174580, guid: 79272d9b5f77222489acbda31e7d48b3,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4955564322734174580, guid: 79272d9b5f77222489acbda31e7d48b3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 19
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4955564322734174580, guid: 79272d9b5f77222489acbda31e7d48b3,
         type: 3}

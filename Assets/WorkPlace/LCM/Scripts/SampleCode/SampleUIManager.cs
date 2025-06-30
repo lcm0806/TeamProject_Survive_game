@@ -16,6 +16,8 @@ public class SampleUIManager : Singleton<SampleUIManager>
     [Header("Crafting UI")]
     [SerializeField] private GameObject craftingPanel; // 제작 UI의 최상위 패널
 
+    [SerializeField] private GameObject sceneSpecificUIRoot;
+
     public GameObject inventoryPanel;
 
     private int _currentSelectedHotbarIndex = -1;
@@ -23,6 +25,8 @@ public class SampleUIManager : Singleton<SampleUIManager>
     public event Action<bool> OnInventoryUIToggled;
 
     public event Action<bool> OnCraftingUIToggled;
+
+    
 
     private void Awake()
     {
@@ -41,6 +45,12 @@ public class SampleUIManager : Singleton<SampleUIManager>
         // Inventory의 핫바 관련 이벤트 구독
         Inventory.Instance.OnHotbarSlotChanged += OnHotbarSlotSelectionChanged;
         Inventory.Instance.OnHotbarSlotItemUpdated += OnHotbarSlotItemContentUpdated;
+
+        if (sceneSpecificUIRoot != null)
+        {
+            sceneSpecificUIRoot.SetActive(false);
+            Debug.Log($"씬 고유 UI 루트 '{sceneSpecificUIRoot.name}'를 비활성화했습니다.");
+        }
 
         // 초기 핫바 선택 상태 UI 업데이트 (Awake에서 Inventory가 초기화된 후 호출)
         // Inventory에서 _currentHotbarSlotIndex를 초기화하므로, 그 값을 반영해야 함

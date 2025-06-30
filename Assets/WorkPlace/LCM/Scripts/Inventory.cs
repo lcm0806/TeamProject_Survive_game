@@ -20,9 +20,6 @@ public class Inventory : Singleton<Inventory>
     public Transform draggablesTransform;
     [SerializeField] InventoryItem itemPrefab;
 
-    [Header("Item List")]
-    [SerializeField] Item[] items;
-
     //[Header("Debug")]
     //[SerializeField] Button giveItemBtn;
 
@@ -51,8 +48,37 @@ public class Inventory : Singleton<Inventory>
         SingletonInit();
 
         // Canvas를 찾거나 설정
-        SetupCanvas();
+        //SetupCanvas();
 
+        
+
+        if (_gameCanvas.gameObject.scene.buildIndex != -1) // -1은 DontDestroyOnLoad 씬을 의미
+        {
+            DontDestroyOnLoad(_gameCanvas.gameObject);
+            Debug.Log("Inventory: _gameCanvas를 DontDestroyOnLoad로 설정했습니다.");
+        }
+        else
+        {
+            Debug.Log("Inventory: _gameCanvas가 이미 DontDestroyOnLoad 씬에 있습니다.");
+        }
+
+        if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)
+        {
+            _inventoryUIRootPanel.transform.SetParent(_gameCanvas.transform, false);
+            // UI 위치 및 크기 조정 (필요시)
+            RectTransform rectTransform = _inventoryUIRootPanel.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+                rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+                rectTransform.anchoredPosition = Vector2.zero;
+            }
+            Debug.Log("인벤토리 UI 패널이 Canvas 아래로 이동되었습니다.");
+        }
+        
+
+        
+        
         // 인벤토리 UI 패널 초기 상태 설정 (처음엔 비활성화)
         if (_inventoryUIRootPanel != null)
         {
@@ -62,69 +88,99 @@ public class Inventory : Singleton<Inventory>
         {
             Debug.LogWarning("Inventory: Inventory UI Root Panel이 할당되지 않았습니다. UI 토글이 작동하지 않을 수 있습니다.");
         }
+        
 
-        // 초기 핫바 슬롯 선택을 알림
-        OnHotbarSlotChanged?.Invoke(_currentHotbarSlotIndex);
-
-        // 상시 핫바 슬롯 배열 초기화 및 동기화 (Awake 또는 Start에서 한 번만 호출)
-        InitializePersistentHotbarSlots();
     }
-
-    void SetupCanvas()
+    private void Start()
     {
-        // Canvas가 수동으로 할당되지 않았다면 자동으로 찾기
-        if (_gameCanvas == null)
-        {
-            _gameCanvas = FindObjectOfType<Canvas>();
-            if (_gameCanvas == null)
-            {
-                Debug.LogError("Canvas를 찾을 수 없습니다. Canvas를 생성하거나 _gameCanvas 필드에 할당해주세요.");
-                return;
-            }
-        }
-
-        // 인벤토리 UI 패널이 Canvas의 자식이 아니라면 Canvas 아래로 이동
-        if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)
-        {
-            _inventoryUIRootPanel.transform.SetParent(_gameCanvas.transform, false);
-            
-            // UI 위치 및 크기 조정 (필요시)
-            RectTransform rectTransform = _inventoryUIRootPanel.GetComponent<RectTransform>();
-            if (rectTransform != null)
-            {
-                // 중앙에 배치하고 적절한 크기로 설정
-                rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-                rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-                rectTransform.anchoredPosition = Vector2.zero;
-                
-                // 필요하다면 크기도 설정
-                // rectTransform.sizeDelta = new Vector2(800, 600);
-            }
-            
-            Debug.Log("인벤토리 UI 패널이 Canvas 아래로 이동되었습니다.");
-        }
-
-        // draggablesTransform도 Canvas 아래에 설정 (아이템 드래그용)
         if (draggablesTransform == null)
         {
             GameObject draggablesGO = new GameObject("DraggableItems");
             draggablesTransform = draggablesGO.transform;
             draggablesTransform.SetParent(_gameCanvas.transform, false);
-            
             // 최상위 레이어에 표시되도록 설정
             RectTransform dragRect = draggablesGO.AddComponent<RectTransform>();
             dragRect.anchorMin = Vector2.zero;
             dragRect.anchorMax = Vector2.one;
             dragRect.offsetMin = Vector2.zero;
             dragRect.offsetMax = Vector2.zero;
-            
+            draggablesTransform.SetAsLastSibling();
             Debug.Log("DraggableItems 컨테이너가 생성되고 Canvas 아래에 배치되었습니다.");
         }
         else if (draggablesTransform.parent != _gameCanvas.transform)
         {
             draggablesTransform.SetParent(_gameCanvas.transform, false);
+            draggablesTransform.SetAsLastSibling();
         }
+
+        draggablesTransform.SetAsLastSibling();
+        Debug.Log("DraggableItems 컨테이너가 Canvas의 최상위 형제로 설정되었습니다.");
+
+        // 초기 핫바 슬롯 선택을 알림 (기존 Awake에 있었다면 Start로 이동)
+        OnHotbarSlotChanged?.Invoke(_currentHotbarSlotIndex);
+
+        // 상시 핫바 슬롯 배열 초기화 및 동기화 (기존 Awake에 있었다면 Start로 이동)
+        InitializePersistentHotbarSlots();
     }
+
+
+
+
+    //void SetupCanvas()
+    //{
+    //    // Canvas가 수동으로 할당되지 않았다면 자동으로 찾기
+    //    if (_gameCanvas == null)
+    //    {
+    //        _gameCanvas = FindObjectOfType<Canvas>();
+    //        if (_gameCanvas == null)
+    //        {
+    //            Debug.LogError("Canvas를 찾을 수 없습니다. Canvas를 생성하거나 _gameCanvas 필드에 할당해주세요.");
+    //            return;
+    //        }
+    //    }
+
+    //    // 인벤토리 UI 패널이 Canvas의 자식이 아니라면 Canvas 아래로 이동
+    //    if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)
+    //    {
+    //        _inventoryUIRootPanel.transform.SetParent(_gameCanvas.transform, false);
+
+    //        // UI 위치 및 크기 조정 (필요시)
+    //        RectTransform rectTransform = _inventoryUIRootPanel.GetComponent<RectTransform>();
+    //        if (rectTransform != null)
+    //        {
+    //            // 중앙에 배치하고 적절한 크기로 설정
+    //            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+    //            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+    //            rectTransform.anchoredPosition = Vector2.zero;
+
+    //            // 필요하다면 크기도 설정
+    //            // rectTransform.sizeDelta = new Vector2(800, 600);
+    //        }
+
+    //        Debug.Log("인벤토리 UI 패널이 Canvas 아래로 이동되었습니다.");
+    //    }
+
+    //    // draggablesTransform도 Canvas 아래에 설정 (아이템 드래그용)
+    //    if (draggablesTransform == null)
+    //    {
+    //        GameObject draggablesGO = new GameObject("DraggableItems");
+    //        draggablesTransform = draggablesGO.transform;
+    //        draggablesTransform.SetParent(_gameCanvas.transform, false);
+
+    //        // 최상위 레이어에 표시되도록 설정
+    //        RectTransform dragRect = draggablesGO.AddComponent<RectTransform>();
+    //        dragRect.anchorMin = Vector2.zero;
+    //        dragRect.anchorMax = Vector2.one;
+    //        dragRect.offsetMin = Vector2.zero;
+    //        dragRect.offsetMax = Vector2.zero;
+
+    //        Debug.Log("DraggableItems 컨테이너가 생성되고 Canvas 아래에 배치되었습니다.");
+    //    }
+    //    else if (draggablesTransform.parent != _gameCanvas.transform)
+    //    {
+    //        draggablesTransform.SetParent(_gameCanvas.transform, false);
+    //    }
+    //}
 
     void Update()
     {
@@ -205,8 +261,7 @@ public class Inventory : Singleton<Inventory>
         }
 
         // 스택 불가능하거나 꽉 찼을 경우, 빈 슬롯에 생성
-        Debug.Log($"[Inventory] '{item.itemName}' 스택 불가능하거나 빈 슬롯 탐색 시작.");
-        // 먼저 핫바의 빈 슬롯 확인 (두 배열 모두)
+        //먼저 핫바의 빈 슬롯 확인(두 배열 모두)
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i].myItemUI == null) // 빈 핫바 슬롯을 찾음
@@ -434,17 +489,50 @@ public class Inventory : Singleton<Inventory>
 
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
-            // 인벤토리 내 핫바 슬롯에 아이템 UI가 존재하는지 확인합니다.
+            // persistentHotbarSlots[i] 슬롯 자체의 InventoryItem UI를 가져오거나, 없다면 생성
+            // 이 예시에서는 persistentHotbarSlots[i] 밑에 InventoryItem 컴포넌트가 있다고 가정합니다.
+            // 만약 없다면, 여기에 미리 할당된 InventoryItem GameObject를 활성화/비활성화하는 로직이 필요합니다.
+
+            InventoryItem persistentItemUI = persistentHotbarSlots[i].GetComponentInChildren<InventoryItem>(true); // 비활성화된 자식도 찾기
+            if (persistentItemUI == null)
+            {
+                // 만약 persistentItemUI가 미리 할당되지 않았다면 여기서 생성 (한번만)
+                // 이 부분은 InitializePersistentHotbarSlots()가 아니라, 씬 로드 시 persistentHotbarSlots 자체를 구성할 때 하는 것이 좋습니다.
+                // 이 예시에서는 슬롯에 이미 InventoryItem이 있다고 가정합니다.
+                // 또는 persistentHotbarSlots[i]의 자식으로 InventoryItem 프리팹을 Instantiate하고,
+                // 그 InventoryItem을 persistentItemUI로 할당하는 방식으로 구현할 수 있습니다.
+                Debug.LogWarning($"Persistent Hotbar Slot {i}에 InventoryItem이 없습니다. 프리팹 설정 확인.");
+                if (hotbarSlots[i].myItemUI != null)
+                {
+                    // 만약 persistentItemUI가 없다면 새로 생성해야 합니다.
+                    // 이 로직은 한번만 실행되도록 (예: 씬 로드 시) 주의해야 합니다.
+                    persistentItemUI = Instantiate(itemPrefab, persistentHotbarSlots[i].transform);
+                }
+                else
+                {
+                    persistentHotbarSlots[i].ClearSlot();
+                    if (persistentItemUI != null) Destroy(persistentItemUI.gameObject); // 비어있는데 UI가 남아있으면 파괴
+                    continue;
+                }
+            }
+
             if (hotbarSlots[i].myItemUI != null)
             {
-                var newItemUI = Instantiate(itemPrefab, persistentHotbarSlots[i].transform);
-                newItemUI.Initialize(hotbarSlots[i].myItemUI.myItem, persistentHotbarSlots[i]);
-                newItemUI.CurrentQuantity = hotbarSlots[i].myItemUI.CurrentQuantity;
-                persistentHotbarSlots[i].SetItem(newItemUI);
+                // 원본 핫바 슬롯의 아이템 데이터를 상시 핫바 슬롯의 UI로 업데이트
+                persistentItemUI.Initialize(hotbarSlots[i].myItemUI.myItem, persistentHotbarSlots[i]);
+                persistentItemUI.CurrentQuantity = hotbarSlots[i].myItemUI.CurrentQuantity;
+                persistentItemUI.gameObject.SetActive(true); // 활성화
+                persistentHotbarSlots[i].SetItem(persistentItemUI); // 슬롯 데이터도 업데이트
             }
-            else // 인벤토리 내 핫바 슬롯이 비어있는 경우
+            else
             {
+                // 원본 핫바 슬롯이 비어있다면, persistent 핫바 슬롯을 비움
                 persistentHotbarSlots[i].ClearSlot();
+                if (persistentItemUI != null)
+                {
+                    persistentItemUI.gameObject.SetActive(false); // 비활성화
+                                                                  // persistentItemUI.ClearData(); // 필요하다면 내부 데이터도 초기화하는 메서드 호출
+                }
             }
         }
     }

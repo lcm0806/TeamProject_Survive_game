@@ -32,9 +32,9 @@ public class PlayerController : MonoBehaviour
     private RaycastHit _rayHit;
     private bool _isMoving => _moveDir != Vector3.zero;
     private bool _isGrabbing => PlayerManager.Instance.SelectItem != null;
-    // 아래는 테스트 코드
-    // private bool _isGrabbing = false;
     private bool _testBool;
+    private bool _isMiningPrev = false;
+    private bool _isMining => _testBool;
     public GameObject _testHandItem;
     #endregion
 
@@ -236,12 +236,11 @@ public class PlayerController : MonoBehaviour
     private void HandlePlayer()
     {
         AimControl();
+        PlayerEffect();
         Move();
         Jump();
         Run();
         CameraLimit();
-        //FindCloseInteractableItemFromPlayer();
-        //FindCloseInteractableItemFromRay();
         FindCloseInteractableItemAtRay();
     }
 
@@ -357,6 +356,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as ToolItem && !SampleUIManager.Instance.inventoryPanel.activeSelf)
         {
             _testBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
+            
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
             if (PlayerManager.Instance.ItemDelay >= 0.1f)
@@ -396,8 +396,8 @@ public class PlayerController : MonoBehaviour
         // 카메라를 기준으로 정면을 잡고 움직이도록 수정해야함
         Vector3 move = transform.TransformDirection(_moveDir) * _speed;
 
-        // 화성이 배경이니 중력은 3.73
-        _verVelocity.y -= 3.73f * Time.deltaTime;
+        // 화성이 배경이니 중력은 5.5
+        _verVelocity.y -= 5.5f * Time.deltaTime;
 
         _controller.Move((move + _verVelocity) * Time.deltaTime);
     }
@@ -406,7 +406,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && _controller.isGrounded)
         {
-            _verVelocity.y = 5f; // Jump force
+            // 점프력
+            _verVelocity.y = 10f;
         }
     }
 
@@ -496,26 +497,50 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    #region 아이템 사용에 다른 플레이어 스텟 변화
+    private void PlayerEffect()
+    {
+        MiningSlow();
+    }
+
+    private void MiningSlow()
+    {
+        if (_isMiningPrev.Equals(_isMining)) return;
+
+        if (_isMining)
+        {
+            // 마이닝 중일 때 슬로우 적용
+            PlayerSlow(50f);
+        }
+        else
+        {
+            // 마이닝 종료시 슬로우 제거
+            RemoveSlow(50f);
+        }
+
+        _isMiningPrev = _isMining;
+    }
+    #endregion
 
     #region 미사용 코드
     /// <summary>
     /// 슬로우 강도를 퍼센테이지로 입력 받아 플레이어 감속
     /// </summary>
     /// <param name="percentage"></param>0~100 사이의 값으로 입력, 0은 감속 없음, 100은 정지
-    //public void PlayerSlow(float percentage)
-    //{
-    //    _speed = _speed * (1f - percentage / 100f);
-    //}
-    //
+    public void PlayerSlow(float percentage)
+    {
+        _speed = _speed * (1f - percentage / 100f);
+    }
+    
     /// <summary>
     /// 슬로우의 역순으로 계산하기에 슬로우 한 퍼센테이지를 그대로 입력해야함
     /// </summary>
     /// <param name="percentage"></param>
-    //public void OutOfSlow(float percentage)
-    //{
-    //    // 슬로우의 역순
-    //    _speed = _speed / (1f - percentage / 100f);
-    //}
+    public void RemoveSlow(float percentage)
+    {
+        // 슬로우의 역순
+        _speed = _speed / (1f - percentage / 100f);
+    }
 
     // overlapsphere로 교체하기에 주석처리.
     // 현재 인터렉션 방식은 한곳에 하나의 오브젝트만 있다는 걸 전제로 제작됨

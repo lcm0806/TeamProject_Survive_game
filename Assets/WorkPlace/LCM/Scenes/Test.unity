@@ -1601,18 +1601,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1820700528}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &661113998 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1368635475638549735, guid: 6ef50ad4c1ae20f4dba59e524c78a4c1,
-    type: 3}
-  m_PrefabInstance: {fileID: 1820700528}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 661113997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cffc6d918c79bf043bb36f6352e567f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &670299473
 GameObject:
   m_ObjectHideFlags: 0
@@ -2217,6 +2205,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6662373069113161442, guid: 79272d9b5f77222489acbda31e7d48b3,
+        type: 3}
+      propertyPath: _gameCanvas
+      value: 
+      objectReference: {fileID: 1082465610}
     - target: {fileID: 6662373069113161442, guid: 79272d9b5f77222489acbda31e7d48b3,
         type: 3}
       propertyPath: draggablesTransform
@@ -3116,8 +3109,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 825ac84d3dfdb4c47b789969f8d7488f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerPrefab: {fileID: 661113997}
   IsInIntercation: 0
-  <Player>k__BackingField: {fileID: 661113998}
+  <InteractableItem>k__BackingField: {fileID: 0}
+  <InteractableTestItem>k__BackingField: {fileID: 0}
+  <InteractableStructure>k__BackingField: {fileID: 0}
+  <InteractDelay>k__BackingField: 0
 --- !u!4 &884450838
 Transform:
   m_ObjectHideFlags: 0
@@ -3146,8 +3143,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerPrefab: {fileID: 661113997}
-  _playerSpawnPoint: {fileID: 1756121590}
   IsInIntercation: 0
+  <InteractableItem>k__BackingField: {fileID: 0}
+  <InteractableTestItem>k__BackingField: {fileID: 0}
+  <InteractableStructure>k__BackingField: {fileID: 0}
+  <InteractDelay>k__BackingField: 0
 --- !u!1 &934363443
 GameObject:
   m_ObjectHideFlags: 0
@@ -5362,10 +5362,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 875fa8d8d0b67b44391d4b33bd73d807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 1974422755}
   _itemDescriptionText: {fileID: 1721411132}
   hotbarSelectionIndicators: []
   craftingPanel: {fileID: 2139812276}
+  inventoryPanel: {fileID: 1974422755}
 --- !u!1 &1908056844
 GameObject:
   m_ObjectHideFlags: 0

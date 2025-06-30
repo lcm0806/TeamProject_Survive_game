@@ -42,7 +42,7 @@ public class JetPack : MonoBehaviour
             _airUsage = 0f;
         }
 
-        return camForward * 5f;
+        return camForward * 10f;
     }
      
 }

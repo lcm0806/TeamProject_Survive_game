@@ -16,9 +16,9 @@ public class PlayerManager : Singleton<PlayerManager>
     public float InteractDelay { get; set; }
     public float ItemDelay { get; set; }
     /// <summary>
-    /// 플레이어 강화. 배열 크기는 3. 0 = 제트팩, 1,2는 차후 추가 예정
+    /// 플레이어 강화 상태를 표시하는 Bool 배열. 크기는 3. 0 = 제트팩, 1,2는 차후 추가 예정
     /// </summary>
-    public bool[] PlayerUpgrade { get; set; } = new bool[3];
+    public bool[] IsUpgraded { get; set; } = new bool[3];
 
 
     private void Awake()

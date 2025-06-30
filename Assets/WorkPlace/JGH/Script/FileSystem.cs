@@ -2,9 +2,26 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Collections;
+using System.Collections.Generic;
 using DesignPattern;
 
 // ========== 데이터 클래스들 ==========
+
+[System.Serializable]
+public class InventoryData
+{
+    [SerializeField] public InventoryItemData[] inventoryItems;
+    [SerializeField] public InventoryItemData[] hotbarItems;
+    [SerializeField] public int currentHotbarSlotIndex = 0;
+}
+
+[System.Serializable]
+public class InventoryItemData
+{
+    [SerializeField] public string itemName;
+    [SerializeField] public int quantity;
+    [SerializeField] public int slotIndex;
+}
 
 [System.Serializable]
 public class GameSaveData
@@ -14,10 +31,12 @@ public class GameSaveData
     [SerializeField] public string currentSceneName = "";
     [SerializeField] public float totalPlayTime;
     [SerializeField] public PlayerStatusData playerStatus;
+    [SerializeField] public InventoryData inventoryData;
 
     public GameSaveData()
     {
         playerStatus = new PlayerStatusData();
+        inventoryData = new InventoryData();
         saveDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
     }
     
@@ -415,6 +434,82 @@ public class FileSystem : Singleton<FileSystem>
             saveData.playerStatus.playerPosition = player.transform.position;
             saveData.playerStatus.playerRotation = player.transform.eulerAngles;
         }
+        
+        // 인벤토리 데이터 저장
+        SaveInventoryData(saveData);
+    }
+
+    /// <summary>
+    /// 인벤토리 데이터 저장
+    /// </summary>
+    private void SaveInventoryData(GameSaveData saveData)
+    {
+        try
+        {
+            var inventoryInstance = FindObjectOfType<Inventory>();
+            if (inventoryInstance != null)
+            {
+                saveData.inventoryData = new InventoryData();
+                
+                // Reflection으로 private 필드 접근
+                var invSlotsField = typeof(Inventory).GetField("inventorySlots", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var hotbarSlotsField = typeof(Inventory).GetField("hotbarSlots", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                
+                InventorySlot[] inventorySlots = (InventorySlot[])invSlotsField?.GetValue(inventoryInstance);
+                InventorySlot[] hotbarSlots = (InventorySlot[])hotbarSlotsField?.GetValue(inventoryInstance);
+                
+                // 인벤토리 아이템 저장
+                if (inventorySlots != null)
+                {
+                    List<InventoryItemData> invItemsList = new List<InventoryItemData>();
+                    for (int i = 0; i < inventorySlots.Length; i++)
+                    {
+                        if (inventorySlots[i] != null && inventorySlots[i].myItemData != null)
+                        {
+                            InventoryItemData itemData = new InventoryItemData();
+                            itemData.itemName = inventorySlots[i].myItemData.itemName;
+                            itemData.quantity = inventorySlots[i].myItemUI?.CurrentQuantity ?? 1;
+                            itemData.slotIndex = i;
+                            invItemsList.Add(itemData);
+                        }
+                    }
+                    saveData.inventoryData.inventoryItems = invItemsList.ToArray();
+                    Debug.Log($"[저장] 인벤토리 아이템 {invItemsList.Count}개 저장");
+                }
+                
+                // 핫바 아이템 저장
+                if (hotbarSlots != null)
+                {
+                    List<InventoryItemData> hotbarItemsList = new List<InventoryItemData>();
+                    for (int i = 0; i < hotbarSlots.Length; i++)
+                    {
+                        if (hotbarSlots[i] != null && hotbarSlots[i].myItemData != null)
+                        {
+                            InventoryItemData itemData = new InventoryItemData();
+                            itemData.itemName = hotbarSlots[i].myItemData.itemName;
+                            itemData.quantity = hotbarSlots[i].myItemUI?.CurrentQuantity ?? 1;
+                            itemData.slotIndex = i;
+                            hotbarItemsList.Add(itemData);
+                        }
+                    }
+                    saveData.inventoryData.hotbarItems = hotbarItemsList.ToArray();
+                    Debug.Log($"[저장] 핫바 아이템 {hotbarItemsList.Count}개 저장");
+                }
+                
+                // 현재 선택된 핫바 인덱스 저장
+                saveData.inventoryData.currentHotbarSlotIndex = inventoryInstance._currentHotbarSlotIndex;
+            }
+            else
+            {
+                Debug.LogWarning("[저장] Inventory를 찾을 수 없습니다. 인벤토리 저장을 건너뜁니다.");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[저장] 인벤토리 저장 중 오류 발생: {e.Message}");
+        }
     }
 
     /// <summary>
@@ -492,6 +587,128 @@ public class FileSystem : Singleton<FileSystem>
         {
             player.transform.position = loadedData.playerStatus.playerPosition;
             player.transform.eulerAngles = loadedData.playerStatus.playerRotation;
+        }
+        
+        // 인벤토리 데이터 복원
+        RestoreInventoryData(loadedData);
+    }
+
+    /// <summary>
+    /// 인벤토리 데이터 복원
+    /// </summary>
+    private void RestoreInventoryData(GameSaveData loadedData)
+    {
+        if (loadedData.inventoryData == null) return;
+        
+        try
+        {
+            var inventoryInstance = FindObjectOfType<Inventory>();
+            if (inventoryInstance != null)
+            {
+                Debug.Log("[복원] 인벤토리 데이터 복원 시작");
+                
+                // Reflection으로 필요한 필드들 가져오기
+                var invSlotsField = typeof(Inventory).GetField("inventorySlots", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var hotbarSlotsField = typeof(Inventory).GetField("hotbarSlots", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var itemPrefabField = typeof(Inventory).GetField("itemPrefab", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var itemsField = typeof(Inventory).GetField("items", 
+                    System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                
+                InventorySlot[] inventorySlots = (InventorySlot[])invSlotsField?.GetValue(inventoryInstance);
+                InventorySlot[] hotbarSlots = (InventorySlot[])hotbarSlotsField?.GetValue(inventoryInstance);
+                InventoryItem itemPrefab = (InventoryItem)itemPrefabField?.GetValue(inventoryInstance);
+                Item[] items = (Item[])itemsField?.GetValue(inventoryInstance);
+                
+                if (itemPrefab == null) 
+                {
+                    Debug.LogError("[복원] itemPrefab을 찾을 수 없습니다!");
+                    return;
+                }
+                
+                // 모든 슬롯 초기화
+                if (inventorySlots != null)
+                {
+                    foreach (var slot in inventorySlots) 
+                    {
+                        slot?.ClearSlot();
+                    }
+                }
+                if (hotbarSlots != null)
+                {
+                    for (int i = 0; i < hotbarSlots.Length; i++)
+                    {
+                        hotbarSlots[i]?.ClearSlot();
+                        inventoryInstance.CheckAndSyncSlotIfHotbar(hotbarSlots[i]);
+                    }
+                }
+                
+                // 인벤토리 아이템 복원
+                if (loadedData.inventoryData.inventoryItems != null && inventorySlots != null)
+                {
+                    foreach (var itemData in loadedData.inventoryData.inventoryItems)
+                    {
+                        Item item = null;
+                        if (items != null)
+                        {
+                            item = System.Array.Find(items, x => x != null && x.itemName == itemData.itemName);
+                        }
+                        
+                        if (item == null)
+                        {
+                            item = Resources.Load<Item>($"Items/{itemData.itemName}");
+                        }
+                        
+                        if (item != null && itemData.slotIndex < inventorySlots.Length)
+                        {
+                            var newItemUI = Instantiate(itemPrefab, inventorySlots[itemData.slotIndex].transform);
+                            newItemUI.Initialize(item, inventorySlots[itemData.slotIndex]);
+                            newItemUI.CurrentQuantity = itemData.quantity;
+                        }
+                    }
+                }
+                
+                // 핫바 아이템 복원
+                if (loadedData.inventoryData.hotbarItems != null && hotbarSlots != null)
+                {
+                    foreach (var itemData in loadedData.inventoryData.hotbarItems)
+                    {
+                        Item item = null;
+                        if (items != null)
+                        {
+                            item = System.Array.Find(items, x => x != null && x.itemName == itemData.itemName);
+                        }
+                        
+                        if (item == null)
+                        {
+                            item = Resources.Load<Item>($"Items/{itemData.itemName}");
+                        }
+                        
+                        if (item != null && itemData.slotIndex < hotbarSlots.Length)
+                        {
+                            var newItemUI = Instantiate(itemPrefab, hotbarSlots[itemData.slotIndex].transform);
+                            newItemUI.Initialize(item, hotbarSlots[itemData.slotIndex]);
+                            newItemUI.CurrentQuantity = itemData.quantity;
+                            inventoryInstance.CheckAndSyncSlotIfHotbar(hotbarSlots[itemData.slotIndex]);
+                        }
+                    }
+                }
+                
+                // 핫바 선택 인덱스 복원
+                inventoryInstance.SelectHotbarSlot(loadedData.inventoryData.currentHotbarSlotIndex);
+                
+                Debug.Log("[복원] 인벤토리 데이터 복원 완료");
+            }
+            else
+            {
+                Debug.LogWarning("[복원] Inventory를 찾을 수 없습니다. 인벤토리 복원을 건너뜁니다.");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[복원] 인벤토리 복원 중 오류 발생: {e.Message}");
         }
     }
 
@@ -853,6 +1070,17 @@ public class FileSystem : Singleton<FileSystem>
                 Debug.Log($"내구도: {loadedData.playerStatus?.shelterDurability}");
                 Debug.Log($"탐색: {(loadedData.playerStatus?.isToDay == true ? "이미 탐색함" : "아직 탐색 안함")}");
                 Debug.Log($"플레이어 위치: {loadedData.playerStatus?.playerPosition}");
+                
+                // 인벤토리 정보 추가
+                if (loadedData.inventoryData != null)
+                {
+                    int invCount = loadedData.inventoryData.inventoryItems?.Length ?? 0;
+                    int hotbarCount = loadedData.inventoryData.hotbarItems?.Length ?? 0;
+                    Debug.Log($"인벤토리 아이템: {invCount}개");
+                    Debug.Log($"핫바 아이템: {hotbarCount}개");
+                    Debug.Log($"선택된 핫바 슬롯: {loadedData.inventoryData.currentHotbarSlotIndex}");
+                }
+                
                 Debug.Log("================================");
             }
             else

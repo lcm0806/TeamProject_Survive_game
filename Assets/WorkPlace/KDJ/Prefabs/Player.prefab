@@ -304,6 +304,7 @@ MonoBehaviour:
   _jetPackObject: {fileID: 7490630861213120048}
   _noJetPack: {fileID: 2100000, guid: 4367cd6b42a5e1745beb7bd620f7ec87, type: 2}
   _jetPack: {fileID: 2100000, guid: bc585dd9c6790f74797ebdd651df4001, type: 2}
+  _isJetPackOn: 1
 --- !u!1 &1871056140452973887
 GameObject:
   m_ObjectHideFlags: 0

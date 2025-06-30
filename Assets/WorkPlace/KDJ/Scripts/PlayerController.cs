@@ -1,4 +1,5 @@
 using Cinemachine;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -43,10 +44,13 @@ public class PlayerController : MonoBehaviour
     private bool _isMining => _testBool;
     private bool _isJumping = false;
     private bool _isUsingJetPack = false;
-    private bool _isSlipping => _groundCos < _slopeCos; // 경사면에서 미끄러지는지 여부
+    private bool _isSlipping => _groundCos < _slopeCos && _controller.isGrounded; // 경사면에서 미끄러지는지 여부
+    private bool _isStuck = false; // 경사에 끼인 경우 
     private float _totalMouseY = 0f;
     private float _groundCos;
     private float _slopeCos;
+    private float _curY;
+    private float _lastY;
     public GameObject _testHandItem;
     #endregion
 
@@ -61,13 +65,14 @@ public class PlayerController : MonoBehaviour
         HandlePlayer();
         Animation();
         MineGunSetPos(); // 테스트용 마인건 위치 설정
-        Debug.Log("땅에 닿았는지 체크 : " + _controller.isGrounded);
+        Debug.Log("끼였는가? : " + _isStuck);
         Debug.Log("미끄러지는가? :" + _isSlipping);
     }
 
     private void LateUpdate()
     {
         OnControllerColliderExit(); // 콜라이더에서 벗어났는지 체크
+        StuckCheck(); // 플레이어가 끼인 상태인지 확인
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -76,6 +81,25 @@ public class PlayerController : MonoBehaviour
         _groundNormal = hit.normal; // 충돌한 표면의 법선 벡터를 저장
         _groundCos = Vector3.Dot(hit.normal, Vector3.up);
     }
+
+    private void OnDrawGizmos()
+    {
+        // Gizmos를 사용하여 레이 표시
+        Gizmos.color = Color.green;
+        //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
+
+        if (_isRayHit)
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
+            Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
+        }
+        else
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayEndPos);
+            Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
+        }
+    }
+
     private void Init()
     {
         // 테스트용 마우스 숨기기
@@ -325,7 +349,7 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         // 제트팩은 공중에서만 사용
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !_controller.isGrounded)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_controller.isGrounded && PlayerManager.Instance.IsUpgraded[0])
         {
             _isUsingJetPack = true;
             _moveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화
@@ -341,12 +365,13 @@ public class PlayerController : MonoBehaviour
         float y = Input.GetAxisRaw("Vertical");
 
         _moveDir = new Vector3(x, 0, y).normalized;
-
     }
 
     #region 플레이어 이동
     private void Move()
     {
+        _curY = transform.position.y; // 현재 y축 위치 저장
+
         // 카메라를 기준으로 정면을 잡고 움직이도록 수정해야함
         Vector3 move = transform.TransformDirection(_moveDir) * _speed;
 
@@ -370,8 +395,9 @@ public class PlayerController : MonoBehaviour
         {
             // 경사면인 경우에는 중력을 적용하고 땅의 법선벡터방향으로 밀어서 미끌어지게 만듬
             _fixedDir = Vector3.zero; // 고정 방향 초기화
-            move = _groundNormal; // 땅의 법선 벡터 방향으로 밀어서 미끌어지게 함
-            _controller.Move((move + _verVelocity) * Time.deltaTime);
+            _moveDir = Vector3.zero; // 이동 방향 초기화
+            move = _groundNormal * 2f; // 땅의 법선 벡터 방향으로 밀어서 미끌어지게 함
+            _controller.Move((move + _verVelocity) * 2f * Time.deltaTime);
             return;
         }
 
@@ -396,7 +422,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (_controller.isGrounded && !_isSlipping)
+            if (_controller.isGrounded && !_isSlipping || _isStuck)
             {
                 _isJumping = true; // 점프 상태로 변경
                 // 점프력
@@ -413,8 +439,7 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        // 달리기 기능이 필요하지 않을 수도 있음.
-        // 넣는다면 슬로우랑 상호작용 고려할것.
+        // 달리기 기능는 테스트상 편하기 위해 넣은 것. 정식 빌드에선 제거
         if (Input.GetKeyDown(KeyCode.LeftShift) && _controller.isGrounded)
         {
             _speed *= 2;
@@ -464,25 +489,7 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    private void OnDrawGizmos()
-    {
-        // Gizmos를 사용하여 레이 표시
-        Gizmos.color = Color.green;
-        //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
-
-        if (_isRayHit)
-        {
-            Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
-            Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
-        }
-        else
-        {
-            Gizmos.DrawLine(Camera.main.transform.position, _rayEndPos);
-            Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
-        }
-    }
-
-    #region 테스트 코드
+    #region 잡다한 코드 코드
     private void MineGunSetPos()
     {
         if (_testHandItem != null)
@@ -491,6 +498,30 @@ public class PlayerController : MonoBehaviour
             _testHandItem.transform.position = _playerHand.position;
             _testHandItem.transform.rotation = _playerHand.rotation;
         }
+    }
+
+    private void StuckCheck()
+    {
+        if (_isSlipping && _controller.isGrounded)
+        {
+            // 경사면에서 미끄러지는 경우, 플레이어가 끼인 상태인지 확인
+            // 현재 y축과 마지막 y축을 비교하여 같다면 끼인 상태
+            if (Mathf.Abs(_curY - _lastY) < 0.00001f)
+            {
+                _isStuck = true; // 끼인 상태로 설정
+            }
+            else
+            {
+                _isStuck = false; // 끼이지 않은 상태로 설정
+            }
+        }
+        else
+        {
+            _isStuck = false; // 경사면이 아니거나 점프 중이면 끼이지 않은 상태로 설정
+        }
+
+        _lastY = _curY; // 현재 y축을 마지막 y축으로 저장
+        _curY = 0f; // 현재 y축 초기화
     }
     #endregion
 

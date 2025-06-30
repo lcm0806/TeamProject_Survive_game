@@ -7,12 +7,13 @@ public class JetPack : MonoBehaviour
     [SerializeField] GameObject _jetPackObject;
     [SerializeField] Material _noJetPack;
     [SerializeField] Material _jetPack;
+    [SerializeField] bool _isJetPackOn;
 
     private float _airUsage = 0;
 
     private void Awake()
     {
-        PlayerManager.Instance.IsUpgraded[0] = true;
+        PlayerManager.Instance.IsUpgraded[0] = _isJetPackOn;
 
         if (PlayerManager.Instance.IsUpgraded[0])
         {

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
+using DesignPattern;
 
 [System.Serializable]
 public class AudioClipGroup
@@ -12,28 +12,8 @@ public class AudioClipGroup
     public AudioClip audioClip;
 }
 
-public class AudioSystem : MonoBehaviour
+public class AudioSystem : Singleton<AudioSystem>
 {
-    // 싱글톤 인스턴스
-    private static AudioSystem _instance;
-    public static AudioSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<AudioSystem>();
-                if (_instance == null)
-                {
-                    GameObject audioSystemObject = new GameObject("AudioSystem");
-                    _instance = audioSystemObject.AddComponent<AudioSystem>();
-                    DontDestroyOnLoad(audioSystemObject);
-                }
-            }
-            return _instance;
-        }
-    }
-
     [Header("UI 요소들")]
     [SerializeField] private Slider _bgmSlider;
     [SerializeField] private Slider _sfxSlider;
@@ -65,33 +45,16 @@ public class AudioSystem : MonoBehaviour
 
     void Awake()
     {
-        // 싱글톤 패턴 구현
-        if (_instance == null)
-        {
-            _instance = this;
-            
-            // 부모가 있다면 루트로 이동
-            if (transform.parent != null)
-            {
-                transform.SetParent(null);
-            }
-            
-            DontDestroyOnLoad(gameObject);
-            
-            // AudioSource 컴포넌트 생성
-            _bgmAudioSource = gameObject.AddComponent<AudioSource>();
-            _bgmAudioSource.loop = true;
-            _bgmAudioSource.playOnAwake = false;
-            
-            _sfxAudioSource = gameObject.AddComponent<AudioSource>();
-            _sfxAudioSource.loop = false;
-            _sfxAudioSource.playOnAwake = false;
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        SingletonInit();
+        
+        // AudioSource 컴포넌트 생성
+        _bgmAudioSource = gameObject.AddComponent<AudioSource>();
+        _bgmAudioSource.loop = true;
+        _bgmAudioSource.playOnAwake = false;
+        
+        _sfxAudioSource = gameObject.AddComponent<AudioSource>();
+        _sfxAudioSource.loop = false;
+        _sfxAudioSource.playOnAwake = false;
     }
 
     void Start()

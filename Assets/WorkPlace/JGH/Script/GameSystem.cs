@@ -1,52 +1,17 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DesignPattern;
 
-public class GameSystem : MonoBehaviour
+public class GameSystem : Singleton<GameSystem>
 {
-    // 싱글톤 패턴 추가
-    private static GameSystem _instance;
-    public static GameSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<GameSystem>();
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("GameSystem");
-                    _instance = go.AddComponent<GameSystem>();
-                    DontDestroyOnLoad(go);
-                }
-            }
-            return _instance;
-        }
-    }
-
     private bool isPaused = false;
     private Stack<GameObject> activeMenuStack = new Stack<GameObject>(); // 활성화된 메뉴들을 추적하는 스택
     private Coroutine statusDecreaseCoroutine;
 
     void Awake()
     {
-        // 싱글톤 중복 방지
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
-        _instance = this;
-        
-        // 부모가 있다면 루트로 이동
-        if (transform.parent != null)
-        {
-            transform.SetParent(null);
-        }
-        
-        DontDestroyOnLoad(gameObject);
+        SingletonInit();
     }
     
     /// <summary>

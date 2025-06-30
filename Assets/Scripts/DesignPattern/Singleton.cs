@@ -14,7 +14,13 @@ namespace DesignPattern
                 if (_instance == null)
                 {
                     _instance = FindObjectOfType<T>();
-                    DontDestroyOnLoad(_instance);
+                    if (_instance == null)
+                    {
+                        GameObject singletonObject = new GameObject(typeof(T).Name);
+                        _instance = singletonObject.AddComponent<T>();
+                        DontDestroyOnLoad(singletonObject);
+                    }
+                    // DontDestroyOnLoad(_instance);
                 }
                 return _instance;
             }
@@ -22,14 +28,23 @@ namespace DesignPattern
 
         protected void SingletonInit()
         {
-            if (_instance != null && _instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else
+            // 싱글톤 패턴 구현
+            if (_instance == null)
             {
                 _instance = this as T;
-                DontDestroyOnLoad(_instance);
+                
+                // 부모가 있다면 루트로 이동
+                if (transform.parent != null)
+                {
+                    transform.SetParent(null);
+                }
+            
+                DontDestroyOnLoad(gameObject);
+            
+            }
+            else if (_instance != this)
+            {
+                Destroy(gameObject);
             }
         }
     }

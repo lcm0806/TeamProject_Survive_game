@@ -1,20 +1,28 @@
 using DesignPattern;
+using System.ComponentModel;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
 {
     [SerializeField] private GameObject _playerPrefab;
 
+    public bool[] IsUpgraded { get; set; } = new bool[3];
     public bool IsInIntercation = false;
-    [field: SerializeField] public WorldItem InteractableItem { get; set; }
-    [field: SerializeField] public TestWorldItem InteractableTestItem { get; set; }
-    [field: SerializeField] public Structure InteractableStructure { get; set; }
+    public WorldItem InteractableItem { get; set; }
+    public TestWorldItem InteractableTestItem { get; set; }
+    public Structure InteractableStructure { get; set; }
     public Item SelectItem { get; set; }
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
     public PlayerController Player { get; private set; }
-    [field: SerializeField] public float InteractDelay { get; set; }
+    public float InteractDelay { get; set; }
     public float ItemDelay { get; set; }
+    /// <summary>
+    /// 플레이어 강화 상태를 표시하는 Bool 배열. 크기는 3. 0 = 제트팩, 1,2는 차후 추가 예정
+    /// </summary>
+
+    
+
 
     private void Awake()
     {

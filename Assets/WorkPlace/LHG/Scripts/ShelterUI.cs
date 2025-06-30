@@ -11,7 +11,9 @@ using UnityEngine.UI;
 public class ShelterUI : MonoBehaviour
 {
     public StatusSystem StatusSystem;
+    public SystemCanvasUI SystemCanvasUI;
     [SerializeField] public GameObject SystemCanvas;
+
 
     public GameObject[] ShelterMenu, Tabs, EventContainer, CompleteBtn, MapLocations, ExitShelterCases;
     [SerializeField] public TMP_Text[] Indicators, TonightEventText;
@@ -40,6 +42,9 @@ public class ShelterUI : MonoBehaviour
         Indicators[2].SetText($"Oxygen : {StatusSystem.GetOxygen()}");
         Indicators[3].SetText($"Energy : {StatusSystem.GetEnergy()}");
         Indicators[4].SetText($"Durability : {StatusSystem.GetDurability()}");
+        Indicators[5].SetText($"Oxygen : {StatusSystem.GetOxygen()}");
+        Indicators[6].SetText($"Energy : {StatusSystem.GetEnergy()}");
+        Indicators[7].SetText($"Durability : {StatusSystem.GetDurability()}");
     }
 
     public void ActiveUI(int ShelterMenuID)
@@ -172,15 +177,6 @@ public class ShelterUI : MonoBehaviour
                 ExitShelterCases[2].SetActive(true);
             }
         }
-
-
-        
-
-
-
-
-        
-
     }
     
 
@@ -235,4 +231,27 @@ public class ShelterUI : MonoBehaviour
         TonightEventText[0].SetText($"{"이벤트이름"} : {"이벤트효과"}");
     }
 
+
+
+    //침실 잠자기 버튼
+    public void GoToSleep()
+    {
+        Debug.Log("잠자기 버튼눌림");
+        if (SystemCanvas.activeSelf == false) 
+        {
+            SystemCanvas.SetActive(true);
+            Debug.Log("시스템캔버스 액티브");
+
+            //잠잘때는 경우의수가 없음
+            //exit shelter cases배열의 4번에 그냥 배치하고 불러오자
+
+            foreach (GameObject go in ExitShelterCases)
+            {
+                Debug.Log("기존ui비활성");
+                go.SetActive(false);
+            }
+            ExitShelterCases[3].SetActive(true);
+            SystemCanvasUI.BedRoomProceedConfirmTextDisplay();
+        }
+    }
 }

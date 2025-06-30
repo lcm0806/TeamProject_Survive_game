@@ -1,9 +1,11 @@
 using Cinemachine;
-using Test;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // 만약 시간이 난다면 기능별로 클래스 분리 고려하기
+
     #region 직렬화 변수
     [SerializeField] private CharacterController _controller;
     [SerializeField] private CinemachineVirtualCamera _virCam;
@@ -20,21 +22,35 @@ public class PlayerController : MonoBehaviour
     #region 변수
     private Vector3 _verVelocity;
     private Vector3 _moveDir;
+    private Vector3 _rayEndPos;
+    private Vector3 _fixedDir;
+    private Vector3 _groundNormal = Vector3.up; // 땅의 법선 벡터
     private Vector2 _mouseInput;
-    private float _totalMouseY = 0f;
     private LayerMask _ignoreMask = ~(1 << 3);
     private LayerMask _layerMask = 1 << 6;
-    private Collider[] _colls = new Collider[10];
-    private WorldItem _worldItem;
-    private Animator _animator;
-    private Vector3 _rayEndPos;
-    private bool _isRayHit;
     private RaycastHit _rayHit;
+    private Collider[] _colls = new Collider[10];
+    private Collider _curHitColl;
+    private Collider _lastHitColl;
+    private Animator _animator;
+    private JetPack _jetPack;
+    private bool _isRayHit;
     private bool _isMoving => _moveDir != Vector3.zero;
+    private bool _canMove => !_isSlipping && !_isUsingJetPack;
     private bool _isGrabbing => PlayerManager.Instance.SelectItem != null;
-    // 아래는 테스트 코드
-    // private bool _isGrabbing = false;
     private bool _testBool;
+    private bool _isMiningPrev = false;
+    private bool _isRunning = false;
+    private bool _isMining => _testBool;
+    private bool _isJumping = false;
+    private bool _isUsingJetPack = false;
+    private bool _isSlipping => _groundCos < _slopeCos && _controller.isGrounded; // 경사면에서 미끄러지는지 여부
+    private bool _isStuck = false; // 경사에 끼인 경우 
+    private float _totalMouseY = 0f;
+    private float _groundCos;
+    private float _slopeCos;
+    private float _curY;
+    private float _lastY;
     public GameObject _testHandItem;
     #endregion
 
@@ -49,109 +65,64 @@ public class PlayerController : MonoBehaviour
         HandlePlayer();
         Animation();
         MineGunSetPos(); // 테스트용 마인건 위치 설정
+        Debug.Log("끼였는가? : " + _isStuck);
+        Debug.Log("미끄러지는가? :" + _isSlipping);
+    }
+
+    private void LateUpdate()
+    {
+        OnControllerColliderExit(); // 콜라이더에서 벗어났는지 체크
+        StuckCheck(); // 플레이어가 끼인 상태인지 확인
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        _curHitColl = hit.collider; // 현재 충돌한 콜라이더를 저장
+        _groundNormal = hit.normal; // 충돌한 표면의 법선 벡터를 저장
+        _groundCos = Vector3.Dot(hit.normal, Vector3.up);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Gizmos를 사용하여 레이 표시
+        Gizmos.color = Color.green;
+        //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
+
+        if (_isRayHit)
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
+            Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
+        }
+        else
+        {
+            Gizmos.DrawLine(Camera.main.transform.position, _rayEndPos);
+            Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
+        }
     }
 
     private void Init()
     {
         // 테스트용 마우스 숨기기
         _animator = GetComponentInChildren<Animator>();
+        _jetPack = GetComponent<JetPack>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         _speed = _baseSpeed;
+        _slopeCos = Mathf.Cos(_controller.slopeLimit * Mathf.Deg2Rad); // slopeLimit를 라디안으로 변환하여 코사인 값 계산
     }
 
-    #region 상호작용 : 플레이어에 가장 가까운 물체
-    private void FindCloseInteractableItemFromPlayer()
+    private void OnControllerColliderExit()
     {
-        // 트리거를 사용하지 않고 overlapsphere를 사용하여 주변의 인터렉션 가능한 오브젝트 감지
-        // 플레이어로부터 가장 가까이 있는 오브젝트를 _interactableItem로 설정
-        Collider closestColl = null;
-        int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
-        if (collsCount > 0)
+        // 콜라이더에 닿았었는데 이제는 닿지 않는 경우
+        if (_lastHitColl != null && _curHitColl == null)
         {
-            for (int i = 0; i < collsCount; i++)
-            {
-                // 플레이어와 오브젝트의 거리 측정
-                float distance = Vector3.Distance(transform.position, _colls[i].transform.position);
-                // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
-                if (closestColl == null || distance < Vector3.Distance(transform.position, closestColl.transform.position))
-                {
-                    closestColl = _colls[i];
-                }
-            }
-            // 끝나면 closestColl의 내용을 _interactableItem에 할당
-            if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
-            {
-                if (interactable as WorldItem)
-                {
-                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
-                    PlayerManager.Instance.IsInIntercation = true;
-                }
-                else if (interactable as Structure)
-                {
-                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
-                    PlayerManager.Instance.IsInIntercation = true;
-                }
-            }
+            // 움직임을 고정 방향으로 설정
+            _fixedDir = transform.TransformDirection(_moveDir) * _speed * 0.5f;
         }
-        else
-        {
-            // 주변에 인터렉션 가능한 오브젝트가 없으면 상호작용을 null로 설정
-            PlayerManager.Instance.InteractableStructure = null;
-            PlayerManager.Instance.InteractableItem = null;
-            PlayerManager.Instance.IsInIntercation = false;
-        }
-    }
-    #endregion
 
-    #region 상호작용 : 화면 중앙에 가장 가까운 물체
-    private void FindCloseInteractableItemFromRay()
-    {
-        // 스크린 중앙 기준 가장 가까이 있는 오브젝트를 _interactableItem로 설정
-        // 레이캐스트로 중앙을 감지하고 감지된 hit 기준 거리 계산
-        Collider closestColl = null;
-        int collsCount = Physics.OverlapSphereNonAlloc(transform.position + new Vector3(0, 0.92f, 0), 2.5f, _colls, _layerMask);
-        // 레이캐스트로 중앙을 감지하고 감지된 hit 기준 거리 계산
-
-        if (collsCount > 0)
-        {
-            for (int i = 0; i < collsCount; i++)
-            {
-                // 화면 중앙에서 오브젝트의 거리 측정
-                Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-                RaycastHit hit;
-                bool isHit = Physics.Raycast(ray, out hit, 10f);
-                float distance = Vector3.Distance(hit.point, _colls[i].transform.position);
-                // closestColl이 null이거나 현재 오브젝트가 closestColl보다 가까운 경우 현재 인덱스의 콜라이더를 closestColl로 설정
-                if (closestColl == null || distance < Vector3.Distance(hit.point, closestColl.transform.position))
-                {
-                    closestColl = _colls[i];
-                }
-            }
-            // 끝나면 closestColl의 내용을 _interactableItem에 할당
-            if (closestColl != null && closestColl.TryGetComponent<IInteractable>(out IInteractable interactable))
-            {
-                if (interactable as WorldItem)
-                {
-                    PlayerManager.Instance.InteractableItem = interactable as WorldItem;
-                    PlayerManager.Instance.IsInIntercation = true;
-                }
-                else if (interactable as Structure)
-                {
-                    PlayerManager.Instance.InteractableStructure = interactable as Structure;
-                    PlayerManager.Instance.IsInIntercation = true;
-                }
-            }
-        }
-        else
-        {
-            // 주변에 인터렉션 가능한 오브젝트가 없으면 상호작용을 null로 설정
-            PlayerManager.Instance.InteractableStructure = null;
-            PlayerManager.Instance.InteractableItem = null;
-            PlayerManager.Instance.IsInIntercation = false;
-        }
+        _lastHitColl = _curHitColl; // 현재 콜라이더를 마지막 콜라이더로 저장
+        _curHitColl = null; // 현재 콜라이더를 null로 초기화
     }
-    #endregion
 
     #region 상호작용 : 레이캐스트의 위치에서 감지
     private void FindCloseInteractableItemAtRay()
@@ -236,22 +207,15 @@ public class PlayerController : MonoBehaviour
     private void HandlePlayer()
     {
         AimControl();
+        PlayerEffect();
         Move();
         Jump();
         Run();
         CameraLimit();
-        //FindCloseInteractableItemFromPlayer();
-        //FindCloseInteractableItemFromRay();
         FindCloseInteractableItemAtRay();
     }
-
     private void PlayerInput()
     {
-        float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
-
-        _moveDir = new Vector3(x, 0, y).normalized;
-
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
 
@@ -357,6 +321,7 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as ToolItem && !SampleUIManager.Instance.inventoryPanel.activeSelf)
         {
             _testBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
+
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
             if (PlayerManager.Instance.ItemDelay >= 0.1f)
@@ -383,44 +348,107 @@ public class PlayerController : MonoBehaviour
         }
         #endregion
 
-        // 테스트 코드
-        // if (Input.GetKeyDown(KeyCode.T))
-        // {
-        //     _isGrabbing = !_isGrabbing; // Grab 상태 토글
-        // }
+        // 제트팩은 공중에서만 사용
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !_controller.isGrounded && PlayerManager.Instance.IsUpgraded[0])
+        {
+            _isUsingJetPack = true;
+            _moveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift) && _isUsingJetPack || _controller.isGrounded)
+        {
+            _isUsingJetPack = false;
+        }
+
+        if (!_canMove) return; // 움직일 수 없다면 이동은 생략
+
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
+
+        _moveDir = new Vector3(x, 0, y).normalized;
     }
 
     #region 플레이어 이동
     private void Move()
     {
+        _curY = transform.position.y; // 현재 y축 위치 저장
+
         // 카메라를 기준으로 정면을 잡고 움직이도록 수정해야함
         Vector3 move = transform.TransformDirection(_moveDir) * _speed;
 
-        // 화성이 배경이니 중력은 3.73
-        _verVelocity.y -= 3.73f * Time.deltaTime;
+        // 화성이 배경이니 중력은 5.5
+        _verVelocity.y -= 5.5f * Time.deltaTime; // 중력 적용
+
+        // 제트팩 사용
+        if (_isUsingJetPack)
+        {
+            _verVelocity.y += 1.5f * Time.deltaTime; // 제트팩 사용시 중력 약화
+
+            _fixedDir = _jetPack.UseUpgrade(Camera.main.transform.forward);
+
+            if (_fixedDir != Vector3.zero)
+            {
+                _verVelocity.y += _fixedDir.y * Time.deltaTime; // 제트팩의 힘을 적용
+            }
+        }
+
+        if (_isSlipping && _controller.isGrounded)
+        {
+            // 경사면인 경우에는 중력을 적용하고 땅의 법선벡터방향으로 밀어서 미끌어지게 만듬
+            _fixedDir = Vector3.zero; // 고정 방향 초기화
+            _moveDir = Vector3.zero; // 이동 방향 초기화
+            move = _groundNormal * 2f; // 땅의 법선 벡터 방향으로 밀어서 미끌어지게 함
+            _controller.Move((move + _verVelocity) * 2f * Time.deltaTime);
+            return;
+        }
+
+        if (_controller.isGrounded && !_isJumping)
+        {
+            _verVelocity.y = -2f;
+        }
+
+        if (!_controller.isGrounded)
+        {
+            // 기존 운동량 보존. 플레이어의 입력은 20%만 적용
+            Vector3 airDir = _fixedDir + (transform.TransformDirection(_moveDir) * _speed * 0.2f);
+            _controller.Move((airDir + _verVelocity) * Time.deltaTime);
+            return;
+        }
 
         _controller.Move((move + _verVelocity) * Time.deltaTime);
+
     }
 
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && _controller.isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            _verVelocity.y = 5f; // Jump force
+            if (_controller.isGrounded && !_isSlipping || _isStuck)
+            {
+                _isJumping = true; // 점프 상태로 변경
+                // 점프력
+                _verVelocity.y = 7f;
+                // 점프시 이동 방향을 고정
+                _fixedDir = transform.TransformDirection(_moveDir) * _speed;
+            }
+        }
+        else
+        {
+            _isJumping = false; // 점프 상태 해제
         }
     }
 
     private void Run()
     {
-        // 달리기 기능이 필요하지 않을 수도 있음.
-        // 넣는다면 슬로우랑 상호작용 고려할것.
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        // 달리기 기능는 테스트상 편하기 위해 넣은 것. 정식 빌드에선 제거
+        if (Input.GetKeyDown(KeyCode.LeftShift) && _controller.isGrounded)
         {
             _speed *= 2;
+            _isRunning = true;
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift) && _isRunning)
         {
             _speed /= 2;
+            _isRunning = false;
         }
     }
     #endregion
@@ -461,32 +489,9 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
-    private void OnDrawGizmos()
-    {
-        // Gizmos를 사용하여 레이 표시
-        Gizmos.color = Color.green;
-        //Gizmos.DrawWireSphere(transform.position + new Vector3(0, 0.92f, 0), 2.5f);
-
-        if (_isRayHit)
-        {
-            Gizmos.DrawLine(Camera.main.transform.position, _rayHit.point);
-            Gizmos.DrawWireSphere(_rayHit.point, 2.5f);
-        }
-        else
-        {
-            Gizmos.DrawLine(Camera.main.transform.position, _rayEndPos);
-            Gizmos.DrawWireSphere(_rayEndPos, 2.5f);
-        }
-    }
-
-    #region 테스트 코드
+    #region 잡다한 코드 코드
     private void MineGunSetPos()
     {
-        //if (PlayerManager.Instance.SelectItem != null && _testHandItem == null)
-        //{
-        //    _testHandItem = Instantiate(_mineGunPrefab, _playerHand.position, _playerHand.rotation);
-        //}
-
         if (_testHandItem != null)
         {
             // 플레이어의 손 위치에 마인건을 위치시킴
@@ -494,53 +499,79 @@ public class PlayerController : MonoBehaviour
             _testHandItem.transform.rotation = _playerHand.rotation;
         }
     }
+
+    private void StuckCheck()
+    {
+        if (_isSlipping && _controller.isGrounded)
+        {
+            // 경사면에서 미끄러지는 경우, 플레이어가 끼인 상태인지 확인
+            // 현재 y축과 마지막 y축을 비교하여 같다면 끼인 상태
+            if (Mathf.Abs(_curY - _lastY) < 0.00001f)
+            {
+                _isStuck = true; // 끼인 상태로 설정
+            }
+            else
+            {
+                _isStuck = false; // 끼이지 않은 상태로 설정
+            }
+        }
+        else
+        {
+            _isStuck = false; // 경사면이 아니거나 점프 중이면 끼이지 않은 상태로 설정
+        }
+
+        _lastY = _curY; // 현재 y축을 마지막 y축으로 저장
+        _curY = 0f; // 현재 y축 초기화
+    }
     #endregion
 
+    #region 아이템 사용에 다른 플레이어 스텟 변화
+    private void PlayerEffect()
+    {
+        MiningSlow();
+    }
 
-    #region 미사용 코드
+    private void MiningSlow()
+    {
+        if (_isMiningPrev.Equals(_isMining)) return;
+
+        if (_isMining)
+        {
+            // 마이닝 중일 때 슬로우 적용
+            PlayerSlow(50f);
+        }
+        else
+        {
+            // 마이닝 종료시 슬로우 제거
+            RemoveSlow(50f);
+        }
+
+        _isMiningPrev = _isMining;
+    }
+
     /// <summary>
     /// 슬로우 강도를 퍼센테이지로 입력 받아 플레이어 감속
     /// </summary>
-    /// <param name="percentage"></param>0~100 사이의 값으로 입력, 0은 감속 없음, 100은 정지
-    //public void PlayerSlow(float percentage)
-    //{
-    //    _speed = _speed * (1f - percentage / 100f);
-    //}
-    //
+    /// <param name="percentage">0~100 사이의 값으로 입력, 0은 감속 없음, 100은 정지</param>
+    public void PlayerSlow(float percentage)
+    {
+        _speed = _speed * (1f - percentage / 100f);
+    }
+
     /// <summary>
-    /// 슬로우의 역순으로 계산하기에 슬로우 한 퍼센테이지를 그대로 입력해야함
+    /// 슬로우의 역순으로 계산하기에 PlayerSlow에서 입력한 수치를 그대로 입력해야함
     /// </summary>
     /// <param name="percentage"></param>
-    //public void OutOfSlow(float percentage)
-    //{
-    //    // 슬로우의 역순
-    //    _speed = _speed / (1f - percentage / 100f);
-    //}
+    public void RemoveSlow(float percentage)
+    {
+        // 슬로우의 역순
+        _speed = _speed / (1f - percentage / 100f);
+    }
+    #endregion
 
-    // overlapsphere로 교체하기에 주석처리.
-    // 현재 인터렉션 방식은 한곳에 하나의 오브젝트만 있다는 걸 전제로 제작됨
-    // 무조건 처음 접근한 오브젝트만 인터렉션이 가능하도록 제작
-    // 여러 오브젝트가 있을 경우, 지금 방식이 아닌 다른 방식으로 코드를 작성하여야 함
-    // private void OnTriggerEnter(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact) && _interactableItem == null)
-    //     {
-    //         _interactableItem = interact as TestItem;
-    //         TestPlayerManager.Instance.IsInIntercation = true;
-    //         // 나중에 아이템과 상호작용 물체가 나뉜다고 하면
-    //         // _interactableItem에 as로 넣을때 조건문을 이용하여 상황에 맞게 넣는 로직 필요
-    //         // Item이라면 as Item으로, 구조물이라면 as Structure로 넣는 식으로
-    //     }
-    // }
-    // 
-    // private void OnTriggerExit(Collider other)
-    // {
-    //     if (other.TryGetComponent<IInteractable>(out IInteractable interact))
-    //     {
-    //         TestPlayerManager.Instance.IsInIntercation = false;
-    //         _interactableItem = null;
-    //     }
-    // }
+    #region 미사용 코드
+
+
     #endregion
 
     #region 애니메이션

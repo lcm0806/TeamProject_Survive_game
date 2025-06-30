@@ -4372,6 +4372,11 @@ PrefabInstance:
       propertyPath: _playerSpawnPoint
       value: 
       objectReference: {fileID: 1482300960}
+    - target: {fileID: 3158203632517766945, guid: 28900b6b521f4484c8d8a58100242ac7,
+        type: 3}
+      propertyPath: <IsUpgraded>k__BackingField.Array.data[0]
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4175126884182285236, guid: 28900b6b521f4484c8d8a58100242ac7,
         type: 3}
       propertyPath: m_LocalPosition.x

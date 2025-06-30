@@ -41,11 +41,6 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
     
     // 해상도 옵션들
     private List<ResolutionOption> _resolutionOptions;
-    
-    // PlayerPrefs 키들
-    private const string _fullscreenKey = "Fullscreen";
-    private const string _resolutionIndexKey = "ResolutionIndex";
-    private const string _qualityIndexKey = "QualityIndex";
 
     void Awake()
     {
@@ -55,7 +50,7 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
 
     void Start()
     {
-        LoadGraphicsSettings();
+        InitializeGraphicsSettings();
         SetupEventListeners();
         SetupDropdowns();
     }
@@ -91,6 +86,21 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
                 break;
             }
         }
+    }
+
+    /// <summary>
+    /// 초기 그래픽 설정
+    /// </summary>
+    private void InitializeGraphicsSettings()
+    {
+        _isFullscreen = Screen.fullScreen;
+        _currentQualityIndex = QualitySettings.GetQualityLevel();
+        
+        Debug.Log($"그래픽 설정 초기화됨 - 전체화면: {_isFullscreen}, " +
+                  $"해상도: {_resolutionOptions[_currentResolutionIndex].displayName}, " +
+                  $"품질: {QualitySettings.names[_currentQualityIndex]}");
+        
+        UpdateGraphicsUI();
     }
 
     /// <summary>
@@ -211,16 +221,12 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
     
     public void OnOKButtonClicked()
     {
-        Debug.Log("OK 버튼 클릭 - 설정 저장");
-        SaveGraphicsSettings();
-        Debug.Log("그래픽 설정이 저장되었습니다.");
+        Debug.Log("OK 버튼 클릭됨");
     }
 
     public void OnBackButtonClicked()
     {
-        Debug.Log("Back 버튼 클릭 - 설정 복원 시작");
-        LoadGraphicsSettings();
-        Debug.Log("그래픽 설정이 이전 상태로 되돌려졌습니다.");
+        Debug.Log("Back 버튼 클릭됨");
     }
 
     // ========== 설정 적용 메서드들 ==========
@@ -312,9 +318,6 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
             }
         }
         
-        // 설정 저장
-        SaveGraphicsSettings();
-        
         // 적용 완료 확인
         yield return new WaitForSeconds(0.5f);
         VerifyAppliedSettings();
@@ -363,38 +366,6 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
     {
         yield return new WaitForSeconds(0.5f);
         ApplyGraphicsSettings();
-    }
-
-    // ========== 설정 저장/로드 메서드들 ==========
-
-    public void SaveGraphicsSettings()
-    {
-        PlayerPrefs.SetInt(_fullscreenKey, _isFullscreen ? 1 : 0);
-        PlayerPrefs.SetInt(_resolutionIndexKey, _currentResolutionIndex);
-        PlayerPrefs.SetInt(_qualityIndexKey, _currentQualityIndex);
-        
-        PlayerPrefs.Save();
-        
-        Debug.Log($"그래픽 설정 저장됨 - 전체화면: {_isFullscreen}, " +
-                  $"해상도: {_resolutionOptions[_currentResolutionIndex].displayName}, " +
-                  $"품질: {QualitySettings.names[_currentQualityIndex]}");
-    }
-
-    public void LoadGraphicsSettings()
-    {
-        _isFullscreen = PlayerPrefs.GetInt(_fullscreenKey, 1) == 1;
-        _currentResolutionIndex = PlayerPrefs.GetInt(_resolutionIndexKey, 0);
-        _currentQualityIndex = PlayerPrefs.GetInt(_qualityIndexKey, 2);
-        
-        // 범위 체크
-        _currentResolutionIndex = Mathf.Clamp(_currentResolutionIndex, 0, _resolutionOptions.Count - 1);
-        _currentQualityIndex = Mathf.Clamp(_currentQualityIndex, 0, QualitySettings.names.Length - 1);
-        
-        Debug.Log($"그래픽 설정 로드됨 - 전체화면: {_isFullscreen}, " +
-                  $"해상도: {_resolutionOptions[_currentResolutionIndex].displayName}, " +
-                  $"품질: {QualitySettings.names[_currentQualityIndex]}");
-        
-        UpdateGraphicsUI();
     }
     
     private void UpdateGraphicsUI()

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.Audio;
 using System.Collections.Generic;
 using DesignPattern;
+using UnityEngine.Serialization;
 
 [System.Serializable]
 public class AudioClipGroup
@@ -15,8 +16,8 @@ public class AudioClipGroup
 public class AudioSystem : Singleton<AudioSystem>
 {
     [Header("UI 요소들")]
-    [SerializeField] private Slider _bgmSlider;
-    [SerializeField] private Slider _sfxSlider;
+    [SerializeField] private Scrollbar _bgmScrollbar;
+    [SerializeField] private Scrollbar _sfxScrollbar;
     [SerializeField] private TMP_Text _bgmVolumeText;
     [SerializeField] private TMP_Text _sfxVolumeText;
     [SerializeField] private Button _okButton;
@@ -38,10 +39,6 @@ public class AudioSystem : Singleton<AudioSystem>
     // 볼륨 값 저장용
     public float BGMVolume = 0.5f;
     public float SFXVolume = 0.5f;
-    
-    // PlayerPrefs 키
-    public string BGMVolumeKey = "BGMVolume";
-    public string SFXVolumeKey = "SFXVolume";
 
     void Awake()
     {
@@ -59,8 +56,8 @@ public class AudioSystem : Singleton<AudioSystem>
 
     void Start()
     {
-        LoadVolumeSettings();
         SetupEventListeners();
+        InitializeVolumeSettings();
     }
 
     /// <summary>
@@ -68,13 +65,31 @@ public class AudioSystem : Singleton<AudioSystem>
     /// </summary>
     void SetupEventListeners()
     {
-        if (_bgmSlider != null)
-            _bgmSlider.onValueChanged.AddListener(OnBGMVolumeChanged);
+        if (_bgmScrollbar != null)
+            _bgmScrollbar.onValueChanged.AddListener(OnBGMVolumeChanged);
     
-        if (_sfxSlider != null)
-            _sfxSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
+        if (_sfxScrollbar != null)
+            _sfxScrollbar.onValueChanged.AddListener(OnSFXVolumeChanged);
     }
-    
+
+    /// <summary>
+    /// 초기 볼륨 설정
+    /// </summary>
+    void InitializeVolumeSettings()
+    {
+        // UI 업데이트
+        if (_bgmScrollbar != null)
+            _bgmScrollbar.value = BGMVolume;
+        
+        if (_sfxScrollbar != null)
+            _sfxScrollbar.value = SFXVolume;
+        
+        // 실제 볼륨 적용
+        OnBGMVolumeChanged(BGMVolume);
+        OnSFXVolumeChanged(SFXVolume);
+        
+        Debug.Log($"볼륨 설정 초기화됨 - BGM: {BGMVolume:F2}, SFX: {SFXVolume:F2}");
+    }
 
     public void OnBGMVolumeChanged(float value)
     {
@@ -206,50 +221,22 @@ public class AudioSystem : Singleton<AudioSystem>
 
     public void OnOKButtonClicked()
     {
-        SaveVolumeSettings();
+        Debug.Log("OK 버튼 클릭됨");
     }
 
     public void OnBackButtonClicked()
     {
-        LoadVolumeSettings();
-    }
-
-    public void SaveVolumeSettings()
-    {
-        PlayerPrefs.SetFloat(BGMVolumeKey, BGMVolume);
-        PlayerPrefs.SetFloat(SFXVolumeKey, SFXVolume);
-        PlayerPrefs.Save();
-        
-        Debug.Log($"볼륨 설정 저장됨 - BGM: {BGMVolume:F2}, SFX: {SFXVolume:F2}");
-    }
-
-    public void LoadVolumeSettings()
-    {
-        BGMVolume = PlayerPrefs.GetFloat(BGMVolumeKey, 0.5f);
-        SFXVolume = PlayerPrefs.GetFloat(SFXVolumeKey, 0.5f);
-        
-        // UI 업데이트
-        if (_bgmSlider != null)
-            _bgmSlider.value = BGMVolume;
-        
-        if (_sfxSlider != null)
-            _sfxSlider.value = SFXVolume;
-        
-        // 실제 볼륨 적용
-        OnBGMVolumeChanged(BGMVolume);
-        OnSFXVolumeChanged(SFXVolume);
-        
-        Debug.Log($"볼륨 설정 로드됨 - BGM: {BGMVolume:F2}, SFX: {SFXVolume:F2}");
+        Debug.Log("Back 버튼 클릭됨");
     }
 
     void OnDestroy()
     {
         // 이벤트 리스너 해제
-        if (_bgmSlider != null)
-            _bgmSlider.onValueChanged.RemoveListener(OnBGMVolumeChanged);
+        if (_bgmScrollbar != null)
+            _bgmScrollbar.onValueChanged.RemoveListener(OnBGMVolumeChanged);
         
-        if (_sfxSlider != null)
-            _sfxSlider.onValueChanged.RemoveListener(OnSFXVolumeChanged);
+        if (_sfxScrollbar != null)
+            _sfxScrollbar.onValueChanged.RemoveListener(OnSFXVolumeChanged);
         
         if (_okButton != null)
             _okButton.onClick.RemoveListener(OnOKButtonClicked);

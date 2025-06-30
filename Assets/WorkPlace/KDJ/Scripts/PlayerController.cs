@@ -65,8 +65,8 @@ public class PlayerController : MonoBehaviour
         HandlePlayer();
         Animation();
         MineGunSetPos(); // 테스트용 마인건 위치 설정
-        Debug.Log("끼였는가? : " + _isStuck);
-        Debug.Log("미끄러지는가? :" + _isSlipping);
+        //Debug.Log("끼였는가? : " + _isStuck);
+        //Debug.Log("미끄러지는가? :" + _isSlipping);
     }
 
     private void LateUpdate()

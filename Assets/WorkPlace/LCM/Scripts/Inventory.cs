@@ -41,6 +41,8 @@ public class Inventory : Singleton<Inventory>
     //// 추가: 핫바 슬롯들의 아이템 데이터를 동기화하기 위한 이벤트 (필요하다면)
     public event Action<int, Item, int> OnHotbarSlotItemUpdated;
 
+    private const string MAIN_CANVAS_TAG = "MainUICanvas";
+
 
 
     void Awake()
@@ -52,14 +54,31 @@ public class Inventory : Singleton<Inventory>
 
         
 
-        if (_gameCanvas.gameObject.scene.buildIndex != -1) // -1은 DontDestroyOnLoad 씬을 의미
+        // _gameCanvas가 에디터에서 직접 할당되지 않았다면 태그로 찾기
+        if (_gameCanvas == null)
+        {
+            GameObject canvasGO = GameObject.FindWithTag(MAIN_CANVAS_TAG);
+            if (canvasGO != null)
+            {
+                _gameCanvas = canvasGO.GetComponent<Canvas>();
+            }
+
+            if (_gameCanvas == null)
+            {
+                Debug.LogError($"'{MAIN_CANVAS_TAG}' 태그를 가진 Canvas를 찾을 수 없습니다. 씬에 Canvas가 있는지, 태그가 올바른지 확인해주세요.");
+                return;
+            }
+        }
+
+        // _gameCanvas가 DDOL 씬에 있는지 확인 (최초 1회만 설정)
+        if (_gameCanvas.gameObject.scene.buildIndex != -1)
         {
             DontDestroyOnLoad(_gameCanvas.gameObject);
-            Debug.Log("Inventory: _gameCanvas를 DontDestroyOnLoad로 설정했습니다.");
+            Debug.Log($"Inventory: '{MAIN_CANVAS_TAG}' 태그를 가진 _gameCanvas를 DontDestroyOnLoad로 설정했습니다.");
         }
         else
         {
-            Debug.Log("Inventory: _gameCanvas가 이미 DontDestroyOnLoad 씬에 있습니다.");
+            Debug.Log($"Inventory: '{MAIN_CANVAS_TAG}' 태그를 가진 _gameCanvas가 이미 DontDestroyOnLoad 씬에 있습니다.");
         }
 
         if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)

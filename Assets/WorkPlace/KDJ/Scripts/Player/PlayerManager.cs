@@ -5,12 +5,15 @@ using UnityEngine;
 public class PlayerManager : Singleton<PlayerManager>
 {
     [SerializeField] private GameObject _playerPrefab;
-
+    [SerializeField] private float _baseSpeed = 5f;
+    
+    public float Speed;
     public bool[] IsUpgraded { get; set; } = new bool[3];
     public bool IsInIntercation = false;
     public WorldItem InteractableItem { get; set; }
     public TestWorldItem InteractableTestItem { get; set; }
     public Structure InteractableStructure { get; set; }
+    public GameObject InHandItem { get; set; }
     public Item SelectItem { get; set; }
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
@@ -48,6 +51,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
         AirGauge.Value = 100f;
         ElecticGauge.Value = 100f;
+        Speed = _baseSpeed;
     }
 
     private void PlayerInit()

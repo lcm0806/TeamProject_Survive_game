@@ -52,6 +52,8 @@ public class MineableResource : MonoBehaviour
         currentHealth -= miningDamage;
         currentHealth = Mathf.Max(currentHealth, 0f);
 
+        UpdateEmissionColor();
+
         Debug.Log($"{gameObject.name}이 {miningDamage}만큼 데미지를 받았습니다");
         int currentWholeHp = Mathf.FloorToInt(currentHealth);
         if (currentWholeHp < lastWholeHp) // 한 칸 내려갔으면
@@ -63,7 +65,7 @@ public class MineableResource : MonoBehaviour
         if (currentHealth <= 0f)
         {
             Debug.Log($"{gameObject.name} 채굴 완료!");
-            StartCoroutine(FadeOutAndDestroy());
+            //StartCoroutine(FadeOutAndDestroy());
         }
     }
 
@@ -101,45 +103,66 @@ public class MineableResource : MonoBehaviour
     }
 
     /* -------------------- Fade & Destroy -------------------- */
-    private IEnumerator FadeOutAndDestroy()
+    //private IEnumerator FadeOutAndDestroy()
+    //{
+    //    isBeingMined = false;
+
+    //    MeshRenderer renderer = GetComponent<MeshRenderer>();
+    //    if (renderer == null)
+    //    {
+    //        Debug.LogWarning("MeshRenderer가 없습니다.");
+    //        Destroy(gameObject);
+    //        yield break;
+    //    }
+
+    //    Material[] materials = renderer.materials; // 메테리얼 인스턴스 배열
+
+    //    // 각 메테리얼의 초기 색상 저장
+    //    Color[] startColors = new Color[materials.Length];
+    //    for (int i = 0; i < materials.Length; i++)
+    //    {
+    //        startColors[i] = materials[i].color;
+    //    }
+
+    //    float timer = 0f;
+
+    //    while (timer < shrinkDuration)
+    //    {
+    //        float t = timer / shrinkDuration;
+    //        float fade = Mathf.SmoothStep(1f, 0f, t);
+
+    //        for (int i = 0; i < materials.Length; i++)
+    //        {
+    //            Color newColor = startColors[i];
+    //            newColor.a = fade;
+    //            materials[i].color = newColor;
+    //        }
+
+    //        timer += Time.deltaTime;
+    //        yield return null;
+    //    }
+
+    //    Destroy(gameObject);
+    //}
+
+    private void UpdateEmissionColor()
     {
-        isBeingMined = false;
+        HpCount hpCount = GetComponent<HpCount>();
+        if (hpCount == null) return;
 
         MeshRenderer renderer = GetComponent<MeshRenderer>();
-        if (renderer == null)
+        if (renderer == null) return;
+
+        Material[] materials = renderer.materials;
+        Color emitColor = hpCount.GetEmitColor(Mathf.RoundToInt(currentHealth));
+
+        foreach (var mat in materials)
         {
-            Debug.LogWarning("MeshRenderer가 없습니다.");
-            Destroy(gameObject);
-            yield break;
-        }
-
-        Material[] materials = renderer.materials; // 메테리얼 인스턴스 배열
-
-        // 각 메테리얼의 초기 색상 저장
-        Color[] startColors = new Color[materials.Length];
-        for (int i = 0; i < materials.Length; i++)
-        {
-            startColors[i] = materials[i].color;
-        }
-
-        float timer = 0f;
-
-        while (timer < shrinkDuration)
-        {
-            float t = timer / shrinkDuration;
-            float fade = Mathf.SmoothStep(1f, 0f, t);
-
-            for (int i = 0; i < materials.Length; i++)
+            if (mat.HasProperty("_EmissionColor"))
             {
-                Color newColor = startColors[i];
-                newColor.a = fade;
-                materials[i].color = newColor;
+                mat.SetColor("_EmissionColor", emitColor);
+                mat.EnableKeyword("_EMISSION"); // Emission 활성화 필요!
             }
-
-            timer += Time.deltaTime;
-            yield return null;
         }
-
-        Destroy(gameObject);
     }
 }

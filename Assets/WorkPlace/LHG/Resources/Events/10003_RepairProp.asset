@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64c30005ee49f1b45b0d519f6d9d4111, type: 3}
-  m_Name: GameEventData 2
+  m_Name: 10003_RepairProp
   m_EditorClassIdentifier: 
   id: 10003
   title: "\uC9C0\uC9C0\uB300 \uBCF4\uAC15\uD558\uAE30"

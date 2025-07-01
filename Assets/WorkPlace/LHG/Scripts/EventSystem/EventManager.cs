@@ -5,11 +5,14 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 {
     //전체 이벤트 시스템을 관리, 이벤트 데이터 로드, 이벤트 활성화, 진행 상태 업데이트, 이벤트완료 등
-
-    // 이벤트 데이터 목록을 가져오고
+    
     public static EventManager Instance { get; private set; }
     private Dictionary<int, GameEventData> eventDict = new();
     public List<GameEventData> allEvents = new();
+
+    private int _curGameDay = StatusSystem.Instance.GetCurrentDay();
+
+    //인벤토리 및 창고 참조
 
     private void Awake()
     {
@@ -20,6 +23,7 @@ public class EventManager : MonoBehaviour
         LoadAllEvents();
     }
 
+    // 이벤트 데이터 목록을 가져오고
     private void LoadAllEvents()
     {
         var events = Resources.LoadAll<GameEventData>("Events");
@@ -34,7 +38,6 @@ public class EventManager : MonoBehaviour
             {
                 Debug.LogWarning($"중복된 이벤트 ID : {e.id}");
             }
-
         }
         Debug.Log($"이벤트 {eventDict.Count}개 로드 완료");
     }
@@ -45,33 +48,28 @@ public class EventManager : MonoBehaviour
         return result;
     }
 
+    
 
-    public List<GameEventData> GetEventsByPhase(TriggerPhase phase)
+    public void TriggerEvent()
     {
-        return allEvents.FindAll(e => e.triggerphase == phase);
+        if (GameEventData.Instance.reactiveAfterEnd==true)
+        {
+
+        }
+        //1일차에
+
+
+
+        //1~3일차에
+        
+
+
+        //4일차~ 
     }
 
-    private void TriggerRandomEvent(int gameDay)
-    {
-        TriggerPhase phase = GetPhaseFromDay(gameDay);
-        var candidates = EventManager.Instance.GetEventsByPhase(phase);
+   
 
-        if (candidates.Count == 0) return;
-
-        int index = Random.Range(0, candidates.Count);
-        GameEventData todayEvent = candidates[index];
-
-        Debug.Log($"오늘의 이벤트 :{todayEvent.title} - {todayEvent.description}");
-    }
-
-    TriggerPhase GetPhaseFromDay(int day)
-    {
-        if (day == 1) return TriggerPhase.Start;
-        if (day <= 3) return TriggerPhase.Early;
-        return TriggerPhase.Mid;
-    }
-
-    //인벤토리 및 창고 참조
+    
 
 
     // 이벤트 발생

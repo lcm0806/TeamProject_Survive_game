@@ -407,8 +407,6 @@ public class MenuSystem : Singleton<MenuSystem>
     {
         Debug.Log("설정 메뉴 - 뒤로가기 버튼 클릭");
         
-        AudioSystem.Instance?.LoadVolumeSettings();
-        GraphicsSystem.Instance?.LoadGraphicsSettings();
         // 백업된 설정값들로 복구
         RestoreBackupSettings(); 
         // 메뉴 닫기
@@ -425,10 +423,6 @@ public class MenuSystem : Singleton<MenuSystem>
     private void OnSettingOkButtonClick()
     {
         Debug.Log("설정 메뉴 - 확인 버튼 클릭");
-    
-        // 다른 시스템들의 설정 저장
-        AudioSystem.Instance?.SaveVolumeSettings();
-        GraphicsSystem.Instance?.SaveGraphicsSettings();
     
         // 메뉴 닫기
         CloseCurrentMenu();

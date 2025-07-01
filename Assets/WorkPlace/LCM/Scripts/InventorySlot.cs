@@ -85,4 +85,19 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         myItemData = null; // 데이터도 비움
         // UI를 시각적으로 초기화하는 로직 (예: 이미지 숨기기)
     }
+
+    public void SetItemData(Item item)
+    {
+        myItemData = item;
+        // myItemUI가 있다면 이 시점에서 UI 업데이트를 트리거할 수도 있습니다.
+    }
+
+    public void SetItemQuantity(int quantity)
+    {
+        if (myItemUI != null)
+        {
+            myItemUI.CurrentQuantity = quantity;
+        }
+        // myItemUI가 없다면 오류 처리 또는 데이터만 저장
+    }
 }

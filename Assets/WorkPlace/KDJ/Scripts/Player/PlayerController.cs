@@ -100,9 +100,10 @@ public class PlayerController : MonoBehaviour
         // 제트팩 사용
         if (IsUsingJetPack)
         {
-            _verVelocity.y += 1.5f * Time.deltaTime; // 제트팩 사용시 중력 약화
+            _verVelocity.y += 3.5f * Time.deltaTime; // 제트팩 사용시 중력 약화
 
-            FixedDir = _jetPack.UseUpgrade(Camera.main.transform.forward);
+            // 제트팩이 너무 쳐지는걸 막기 위해 살짝 위쪽을 향하도록 vector3.up을 더함
+            FixedDir = _jetPack.UseUpgrade(Camera.main.transform.forward) + Vector3.up;
 
             if (FixedDir != Vector3.zero)
             {

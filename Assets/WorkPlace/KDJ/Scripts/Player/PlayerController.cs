@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     
     public Vector3 FixedDir { get; set; } // 고정 방향 벡터, 플레이어가 움직일 때 사용
     public CharacterController Controller => _controller;
+    public PlayerInteraction PlayerInteraction => _playerInteraction;
     public Transform VirCamAxis => _virCamAxis;
     public Transform PlayerHand => _playerHand;
     public bool IsUsingJetPack { get; set; } = false;
@@ -33,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private JetPack _jetPack;
     private bool _isMiningPrev = false;
     private bool _isRunning = false;
-    private bool _isMining => InputManager.Instance.TestBool;
+    private bool _isMining => InputManager.Instance.IsUsingTool;
     private bool _isJumping = false;
     private bool _isStuck = false; // 경사에 끼인 경우 
     private float _totalMouseY = 0f;

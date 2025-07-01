@@ -47,6 +47,6 @@ public class PlayerAnimation : MonoBehaviour
 
     public void MiningAnim()
     {
-        _animator.SetBool("IsMining", InputManager.Instance.TestBool);
+        _animator.SetBool("IsMining", InputManager.Instance.IsUsingTool);
     }
 }

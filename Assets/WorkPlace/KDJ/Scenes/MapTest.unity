@@ -11629,7 +11629,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -21048,6 +21048,74 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6127727044112686077, guid: 73e659beb3eabfc46b10e9be37e29491, type: 3}
+--- !u!1001 &1933942913
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 240.87672
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.086926
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -101.2407
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4549532238603850017, guid: 3de660d592f659f49906805f46479099,
+        type: 3}
+      propertyPath: m_Name
+      value: ElectromagnetGun
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3de660d592f659f49906805f46479099, type: 3}
 --- !u!1001 &1942851224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24592,3 +24660,4 @@ SceneRoots:
   - {fileID: 2082122480}
   - {fileID: 1885662862}
   - {fileID: 3104558482517342614}
+  - {fileID: 1933942913}

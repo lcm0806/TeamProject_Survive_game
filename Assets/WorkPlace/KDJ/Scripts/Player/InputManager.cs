@@ -8,7 +8,7 @@ public class InputManager : Singleton<InputManager>
     public Vector2 MouseInput { get; private set; } // 마우스 입력
     public Vector3 MoveDir { get; set; } // 이동 방향
 
-    public bool TestBool { get; private set; } // 테스트용 bool 값, 마이닝 애니메이션 실행 여부
+    public bool IsUsingTool { get; private set; } // 테스트용 bool 값, 마이닝 애니메이션 실행 여부
     public bool CanMove => !PlayerManager.Instance.Player.IsSlipping && !PlayerManager.Instance.Player.IsUsingJetPack;
 
     private void Awake()
@@ -137,7 +137,7 @@ public class InputManager : Singleton<InputManager>
         }
         else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as ToolItem && !SampleUIManager.Instance.inventoryPanel.activeSelf)
         {
-            TestBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
+            IsUsingTool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
 
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
@@ -160,7 +160,7 @@ public class InputManager : Singleton<InputManager>
         }
         else
         {
-            TestBool = false;
+            IsUsingTool = false;
             PlayerManager.Instance.ItemDelay = 0f; // 마우스를 떼면 아이템 사용 딜레이 초기화
         }
         #endregion

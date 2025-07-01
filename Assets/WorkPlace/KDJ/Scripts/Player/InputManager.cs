@@ -6,7 +6,7 @@ using DesignPattern;
 public class InputManager : Singleton<InputManager>
 {
     public Vector2 MouseInput { get; private set; } // 마우스 입력
-    public Vector3 MoveDir { get; private set; } // 이동 방향
+    public Vector3 MoveDir { get; set; } // 이동 방향
 
     public bool TestBool { get; private set; } // 테스트용 bool 값, 마이닝 애니메이션 실행 여부
     public bool CanMove => !PlayerManager.Instance.Player.IsSlipping && !PlayerManager.Instance.Player.IsUsingJetPack;
@@ -158,7 +158,8 @@ public class InputManager : Singleton<InputManager>
         #endregion
 
         // 제트팩은 공중에서만 사용
-        if (Input.GetKeyDown(KeyCode.LeftShift) && PlayerManager.Instance.Player.Controller.isGrounded && PlayerManager.Instance.IsUpgraded[0])
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded && 
+            PlayerManager.Instance.IsUpgraded[0] && PlayerManager.Instance.AirGauge.Value > 0)
         {
             PlayerManager.Instance.Player.IsUsingJetPack = true;
             MoveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화

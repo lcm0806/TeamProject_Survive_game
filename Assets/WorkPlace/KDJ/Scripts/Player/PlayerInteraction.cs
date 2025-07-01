@@ -17,7 +17,7 @@ public class PlayerInteraction : MonoBehaviour
     public bool IsRayHit { get; private set; } // 레이캐스트가 성공했는지 여부
 
 
-    private void Awake()
+    private void Start()
     {
         Init();
     }

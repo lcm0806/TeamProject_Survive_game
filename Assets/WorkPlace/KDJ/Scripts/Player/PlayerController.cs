@@ -27,7 +27,6 @@ public class PlayerController : MonoBehaviour
     public bool IsSlipping => _playerInteraction.GroundCos < _playerInteraction.SlopeCos && Controller.isGrounded; // 경사면에서 미끄러지는지 여부
 
     private Vector3 _verVelocity;
-    private Vector3 _groundNormal = Vector3.up; // 땅의 법선 벡터
     private LayerMask _ignoreMask = ~(1 << 3);
     private PlayerInteraction _playerInteraction;
     private PlayerAnimation _playerAnimation;
@@ -51,23 +50,28 @@ public class PlayerController : MonoBehaviour
     {
         HandlePlayer();
         MineGunSetPos(); // 테스트용 마인건 위치 설정
-        //Debug.Log("끼였는가? : " + _isStuck);
-        //Debug.Log("미끄러지는가? :" + _isSlipping);
+        DebugLog(); // 디버그 로그 출력
     }
 
     private void LateUpdate()
     {
         StuckCheck(); // 플레이어가 끼인 상태인지 확인
-
     }
 
     private void Init()
     {
-        // 테스트용 마우스 숨기기
         _jetPack = GetComponent<JetPack>();
         _playerInteraction = GetComponent<PlayerInteraction>();
+        // 테스트용 마우스 숨기기
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+    }
+
+    private void DebugLog()
+    {
+        // Debug.Log("끼였는가? : " + _isStuck);
+        // Debug.Log("미끄러지는가? :" + IsSlipping);
+        // Debug.Log("땅에 붙어있는가?: " + Controller.isGrounded);
     }
 
     private void HandlePlayer()
@@ -87,8 +91,7 @@ public class PlayerController : MonoBehaviour
         _curY = transform.position.y; // 현재 y축 위치 저장
 
         // 카메라를 기준으로 정면을 잡고 움직이도록 수정해야함
-        Vector3 moveDir = InputManager.Instance.MoveDir; // 이동 방향 벡터
-        Vector3 move = transform.TransformDirection(moveDir) * speed;
+        Vector3 move = transform.TransformDirection(InputManager.Instance.MoveDir) * speed;
         
 
         // 화성이 배경이니 중력은 5.5
@@ -107,30 +110,30 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (IsSlipping && _controller.isGrounded)
+        if (IsSlipping && Controller.isGrounded)
         {
             // 경사면인 경우에는 중력을 적용하고 땅의 법선벡터방향으로 밀어서 미끌어지게 만듬
             FixedDir = Vector3.zero; // 고정 방향 초기화
-            moveDir = Vector3.zero; // 이동 방향 초기화
-            move = _groundNormal * 2f; // 땅의 법선 벡터 방향으로 밀어서 미끌어지게 함
-            _controller.Move((move + _verVelocity) * 2f * Time.deltaTime);
+            InputManager.Instance.MoveDir = Vector3.zero; // 이동 방향 초기화
+            move = _playerInteraction.GroundNormal * 2f; // 땅의 법선 벡터 방향으로 밀어서 미끌어지게 함
+            Controller.Move((move + _verVelocity) * 2f * Time.deltaTime);
             return;
         }
 
-        if (_controller.isGrounded && !_isJumping)
+        if (Controller.isGrounded && !_isJumping)
         {
             _verVelocity.y = -2f;
         }
 
-        if (!_controller.isGrounded)
+        if (!Controller.isGrounded)
         {
             // 기존 운동량 보존. 플레이어의 입력은 20%만 적용
-            Vector3 airDir = FixedDir + (transform.TransformDirection(moveDir) * speed * 0.2f);
-            _controller.Move((airDir + _verVelocity) * Time.deltaTime);
+            Vector3 airDir = FixedDir + (transform.TransformDirection(InputManager.Instance.MoveDir) * speed * 0.2f);
+            Controller.Move((airDir + _verVelocity) * Time.deltaTime);
             return;
         }
 
-        _controller.Move((move + _verVelocity) * Time.deltaTime);
+        Controller.Move((move + _verVelocity) * Time.deltaTime);
 
     }
 
@@ -138,7 +141,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (_controller.isGrounded && !IsSlipping || _isStuck)
+            if (Controller.isGrounded && !IsSlipping || _isStuck)
             {
                 _isJumping = true; // 점프 상태로 변경
                 // 점프력
@@ -156,7 +159,7 @@ public class PlayerController : MonoBehaviour
     private void Run(ref float speed)
     {
         // 달리기 기능는 테스트상 편하기 위해 넣은 것. 정식 빌드에선 제거
-        if (Input.GetKeyDown(KeyCode.LeftShift) && _controller.isGrounded)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Controller.isGrounded)
         {
             speed *= 2;
             _isRunning = true;
@@ -218,7 +221,7 @@ public class PlayerController : MonoBehaviour
 
     private void StuckCheck()
     {
-        if (IsSlipping && _controller.isGrounded)
+        if (IsSlipping && Controller.isGrounded)
         {
             // 경사면에서 미끄러지는 경우, 플레이어가 끼인 상태인지 확인
             // 현재 y축과 마지막 y축을 비교하여 같다면 끼인 상태

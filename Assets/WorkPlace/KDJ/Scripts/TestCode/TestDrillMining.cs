@@ -13,7 +13,7 @@ public class TestDrillMining : ToolAction
     public override void Action(int power)
     {
         // ±¤¹° Ã¼±¼ ·ÎÁ÷
-        int count = Physics.OverlapSphereNonAlloc(PlayerManager.Instance.Player._testHandItem.transform.position 
+        int count = Physics.OverlapSphereNonAlloc(PlayerManager.Instance.InHandItem.transform.position 
             + PlayerManager.Instance.Player.transform.forward * 1.5f, 3f, _colls, _layerMask);
         
         if (count > 0)
@@ -39,19 +39,19 @@ public class TestDrillMining : ToolAction
 
     private void OnDrawGizmos()
     {
-        if(PlayerManager.Instance.Player._testHandItem == null)
+        if(PlayerManager.Instance.InHandItem == null)
             return;
     
         if (_isMining)
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(PlayerManager.Instance.Player._testHandItem.transform.position 
+            Gizmos.DrawWireSphere(PlayerManager.Instance.InHandItem.transform.position 
                 + PlayerManager.Instance.Player.transform.forward * 1.5f, 3f);
         }
         else
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(PlayerManager.Instance.Player._testHandItem.transform.position
+            Gizmos.DrawWireSphere(PlayerManager.Instance.InHandItem.transform.position
                 + PlayerManager.Instance.Player.transform.forward * 1.5f, 3f);
         }
     }

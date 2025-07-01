@@ -2,7 +2,7 @@ using Cinemachine;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class backupPlayerController : MonoBehaviour
 {
     // 만약 시간이 난다면 기능별로 클래스 분리 고려하기
 

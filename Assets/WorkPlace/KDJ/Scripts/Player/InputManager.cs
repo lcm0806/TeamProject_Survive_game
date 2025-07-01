@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DesignPattern;
+using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
@@ -26,7 +24,8 @@ public class InputManager : Singleton<InputManager>
         }
 
         // 테스트로 사용하는 경우
-        PlayerInput(); // 플레이어 입력 처리
+        if (PlayerManager.Instance.Player != null)
+            PlayerInput(); // 플레이어 입력 처리
     }
 
     private void PlayerInput()
@@ -122,8 +121,8 @@ public class InputManager : Singleton<InputManager>
             if (PlayerManager.Instance.InHandItem == null)
             {
                 // 소비아이템의 프리팹을 생성하는 로직 생성
-                PlayerManager.Instance.InHandItem = Instantiate(curItem.HandleItem, 
-                    PlayerManager.Instance.Player.PlayerHand.position, 
+                PlayerManager.Instance.InHandItem = Instantiate(curItem.HandleItem,
+                    PlayerManager.Instance.Player.PlayerHand.position,
                     PlayerManager.Instance.Player.PlayerHand.rotation);
             }
         }
@@ -166,7 +165,7 @@ public class InputManager : Singleton<InputManager>
         #endregion
 
         // 제트팩은 공중에서만 사용
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded && 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded &&
             PlayerManager.Instance.IsUpgraded[0] && PlayerManager.Instance.AirGauge.Value > 0)
         {
             PlayerManager.Instance.Player.IsUsingJetPack = true;

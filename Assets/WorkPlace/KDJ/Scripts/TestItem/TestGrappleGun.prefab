@@ -85,6 +85,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5076833316333516735, guid: 3da4c0812d0278d4fb2878e84bdfc6f3,
         type: 3}
+      propertyPath: m_Name
+      value: MiningRig
+      objectReference: {fileID: 0}
+    - target: {fileID: -5076833316333516735, guid: 3da4c0812d0278d4fb2878e84bdfc6f3,
+        type: 3}
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}

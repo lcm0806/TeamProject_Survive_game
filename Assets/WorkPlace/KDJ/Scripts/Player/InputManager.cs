@@ -1,14 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DesignPattern;
+using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
 {
     public Vector2 MouseInput { get; private set; } // 마우스 입력
     public Vector3 MoveDir { get; set; } // 이동 방향
 
-    public bool TestBool { get; private set; } // 테스트용 bool 값, 마이닝 애니메이션 실행 여부
+    public bool IsUsingTool { get; private set; } // 테스트용 bool 값, 마이닝 애니메이션 실행 여부
     public bool CanMove => !PlayerManager.Instance.Player.IsSlipping && !PlayerManager.Instance.Player.IsUsingJetPack;
 
     private void Awake()
@@ -26,7 +24,8 @@ public class InputManager : Singleton<InputManager>
         }
 
         // 테스트로 사용하는 경우
-        PlayerInput(); // 플레이어 입력 처리
+        if (PlayerManager.Instance.Player != null)
+            PlayerInput(); // 플레이어 입력 처리
     }
 
     private void PlayerInput()
@@ -122,8 +121,8 @@ public class InputManager : Singleton<InputManager>
             if (PlayerManager.Instance.InHandItem == null)
             {
                 // 소비아이템의 프리팹을 생성하는 로직 생성
-                PlayerManager.Instance.InHandItem = Instantiate(curItem.HandleItem, 
-                    PlayerManager.Instance.Player.PlayerHand.position, 
+                PlayerManager.Instance.InHandItem = Instantiate(curItem.HandleItem,
+                    PlayerManager.Instance.Player.PlayerHand.position,
                     PlayerManager.Instance.Player.PlayerHand.rotation);
             }
         }
@@ -137,7 +136,7 @@ public class InputManager : Singleton<InputManager>
         }
         else if (Input.GetMouseButton(0) && PlayerManager.Instance.SelectItem as ToolItem && !SampleUIManager.Instance.inventoryPanel.activeSelf)
         {
-            TestBool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
+            IsUsingTool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
 
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
@@ -160,13 +159,13 @@ public class InputManager : Singleton<InputManager>
         }
         else
         {
-            TestBool = false;
+            IsUsingTool = false;
             PlayerManager.Instance.ItemDelay = 0f; // 마우스를 떼면 아이템 사용 딜레이 초기화
         }
         #endregion
 
         // 제트팩은 공중에서만 사용
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded && 
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded &&
             PlayerManager.Instance.IsUpgraded[0] && PlayerManager.Instance.AirGauge.Value > 0)
         {
             PlayerManager.Instance.Player.IsUsingJetPack = true;

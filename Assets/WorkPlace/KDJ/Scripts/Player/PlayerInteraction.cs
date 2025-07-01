@@ -8,6 +8,7 @@ public class PlayerInteraction : MonoBehaviour
     private RaycastHit _rayHit;
     private Vector3 _rayEndPos;
     private Collider[] _colls = new Collider[10];
+    private Collider[] _colls2 = new Collider[20]; // 모든 접근용
 
     public Vector3 GroundNormal { get; private set; } = Vector3.up; // 땅의 법선 벡터
     public Collider CurHitColl { get; private set; } // 현재 충돌한 콜라이더
@@ -150,6 +151,27 @@ public class PlayerInteraction : MonoBehaviour
             PlayerManager.Instance.InteractableStructure = null;
             PlayerManager.Instance.InteractableItem = null;
             PlayerManager.Instance.IsInIntercation = false;
+        }
+    }
+
+    public void InteractAllNearItem()
+    {
+        // 플레이어 주변 상호작용 가능한 모든 오브젝트와 상호작용을 시도
+        int count = Physics.OverlapSphereNonAlloc(PlayerManager.Instance.Player.transform.position, 4f, _colls2, _layerMask);
+
+        if (count > 0)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                if (_colls2[i].TryGetComponent<IInteractable>(out IInteractable interactable))
+                {
+                    if (interactable as WorldItem)
+                    {
+                        PlayerManager.Instance.InteractableItem = interactable as WorldItem;
+                        PlayerManager.Instance.InteractableItem?.Interact();
+                    }
+                }
+            }
         }
     }
 }

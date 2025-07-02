@@ -9,7 +9,11 @@ public class StatusSystem : Singleton<StatusSystem>
     private double _electricalEnergy = 100f; // 전력 (100에서 시작)
     private double _shelterDurability = 100f; // 쉘터 내구도 (100에서 시작)
     private bool _isToDay; // 오늘 탐색했는지 여부
-    
+
+    //획득효율감소이벤트관련 배율처리변수추가 25.7.2. 이학권
+    private double _oxygenGainMultiplier = 1.0;
+    private double _energyGainMultiplier = 1.0;
+
     void Awake()
     {
         SingletonInit();
@@ -44,7 +48,7 @@ public class StatusSystem : Singleton<StatusSystem>
     /// <param name="value"></param>
     public void SetPlusOxygen(double value)
     {
-        _oxygenRemaining += value;
+        _oxygenRemaining += value * _oxygenGainMultiplier;
     }
     
     /// <summary>
@@ -81,7 +85,7 @@ public class StatusSystem : Singleton<StatusSystem>
     /// <param name="value"></param>
     public void SetPlusEnergy(double value)
     {
-        _electricalEnergy += value;
+        _electricalEnergy += value * _energyGainMultiplier;
     }
     
     /// <summary>
@@ -169,4 +173,15 @@ public class StatusSystem : Singleton<StatusSystem>
         _isToDay = value;
     }
     
+
+    //산소와 전력 획득효율감소 함수 25.7.2. 이학권
+    public void SetMinusOxygenGainMultiplier(double value)
+    {
+        _oxygenGainMultiplier = -value;
+    }
+
+    public void SetMinusEnergyGainMultiplier(double value)
+    {
+        _energyGainMultiplier = -value;
+    }
 }

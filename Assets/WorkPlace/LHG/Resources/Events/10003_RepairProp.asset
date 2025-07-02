@@ -17,10 +17,19 @@ MonoBehaviour:
   description: "\uAC70\uC13C \uBC14\uB78C\uC5D0 \uC9C0\uC9C0\uB300\uAC00 \uC2EC\uD558\uAC8C
     \uD754\uB4E4\uB838\uB2E4. \uC774\uB300\uB85C\uB294 \uC258\uD130 \uC804 \uC9C0\uC5ED\uC5D0
     \uC804\uB825\uC744 \uACF5\uAE09\uD558\uAE30 \uC5B4\uB824\uC6CC\uC9C4\uB2E4."
-  effectDescription: "\uB9E4\uC77C\uBC24 \uC804\uB825 -30"
-  requiredItem: "\uACE0\uC815 \uBABB"
-  requiredAmount: 2
-  endEffectDescription: "\uC774\uBCA4\uD2B8 \uD6A8\uACFC\uB97C \uC81C\uAC70"
+  RandomMinusDuraValue: 0
+  PlusDurability: 0
+  MinusDurability: 0
+  MinusOxygen: 0
+  MinusEnergy: 30
+  PlusBatteryEfficiency: 0
+  MinusBatteryEfficiency: 0
+  PlusOxygenEfficiency: 0
+  MinusOxygenEfficiency: 0
+  requiredItemA: 
+  requiredAmountA: 0
+  requiredItemB: 
+  requiredAmountB: 0
   reactiveAfterEnd: 0
   dialogue: "\uC9C0\uC9C0\uB300\uAC00 \uD754\uB4E4\uB824 \uC804\uB825 \uACF5\uAE09
     \uC911 \uB204\uC804\uC774 \uC77C\uC5B4\uB0AC\uB2E4..."

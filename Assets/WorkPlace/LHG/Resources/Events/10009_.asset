@@ -18,10 +18,19 @@ MonoBehaviour:
     \uC6B4\uC11D\uC774 \uADA4\uB3C4\uB97C \uD5A5\uD558\uACE0 \uC788\uB2E4. \uC9C1\uC811
     \uCDA9\uB3CC\uC740 \uC544\uB2C8\uB354\uB77C\uB3C4 \uD30C\uD3B8\uC5D0 \uB300\uBE44\uD574\uC57C
     \uD55C\uB2E4."
-  effectDescription: "\uB9E4\uC77C\uBC24 \uB0B4\uAD6C\uB3C4 -50"
-  requiredItem: "\uAC15\uD654\uD569\uD3102 \uCC2F\uB2E8\uB9CC1"
-  requiredAmount: 0
-  endEffectDescription: "\uC774\uBCA4\uD2B8 \uD6A8\uACFC\uB97C \uC81C\uAC70"
+  RandomMinusDuraValue: 0
+  PlusDurability: 0
+  MinusDurability: 50
+  MinusOxygen: 0
+  MinusEnergy: 0
+  PlusBatteryEfficiency: 0
+  MinusBatteryEfficiency: 0
+  PlusOxygenEfficiency: 0
+  MinusOxygenEfficiency: 0
+  requiredItemA: 
+  requiredAmountA: 0
+  requiredItemB: 
+  requiredAmountB: 0
   reactiveAfterEnd: 0
   dialogue: "\uC6B4\uC11D \uD30C\uD3B8\uC73C\uB85C \uC258\uD130\uAC00 \uD070 \uD0C0\uACA9\uC744
     \uBC1B\uC558\uB2E4..."

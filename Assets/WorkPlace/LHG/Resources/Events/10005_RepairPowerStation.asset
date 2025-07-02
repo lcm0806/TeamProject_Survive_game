@@ -17,10 +17,18 @@ MonoBehaviour:
   description: "\uB099\uB8B0\uB85C \uCD95\uC804\uAE30\uAC00 \uC791\uB3D9\uC744 \uBA48\uCDC4\uB2E4.
     \uAE30\uC9C0\uAC00 \uC554\uD751\uC5D0 \uBE60\uC9C0\uAE30 \uC804\uC5D0 \uBCF5\uAD6C\uD574\uC57C
     \uD55C\uB2E4."
-  triggerphase: 2
-  effectDescription: "\uBC30\uD130\uB9AC \uCDA9\uC804\uD6A8\uC728 -20%"
-  requiredItem: "\uCD95\uC804\uC18C \uC218\uB9AC \uD0A4\uD2B8"
-  requiredAmount: 1
-  endEffectDescription: "\uC774\uBCA4\uD2B8 \uD6A8\uACFC\uB97C \uC81C\uAC70"
+  RandomMinusDuraValue: 0
+  PlusDurability: 0
+  MinusDurability: 0
+  MinusOxygen: 0
+  MinusEnergy: 0
+  PlusBatteryEfficiency: 0
+  MinusBatteryEfficiency: 20
+  PlusOxygenEfficiency: 0
+  MinusOxygenEfficiency: 0
+  requiredItemA: 
+  requiredAmountA: 0
+  requiredItemB: 
+  requiredAmountB: 0
   reactiveAfterEnd: 0
   dialogue: "\uBBF8\uC815(id10005)"

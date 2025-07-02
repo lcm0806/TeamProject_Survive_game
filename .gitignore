@@ -82,3 +82,5 @@ Assets/.DS_Store
 /Assets/TextMesh Pro
 Windows/
 /Assets/JMO Assets
+/Window
+*.json

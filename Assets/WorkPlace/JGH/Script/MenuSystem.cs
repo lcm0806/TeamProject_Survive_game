@@ -551,7 +551,11 @@ public class MenuSystem : Singleton<MenuSystem>
         #endif
     }
 
-    private void OnClickExitBack() => OpenMenu(MainMenu);
+    private void OnClickExitBack()
+    {
+        MainMenu.SetActive(true);
+        ExitMenu.SetActive(false);
+    }
 
     private void OnClickNewGameOk()
     {

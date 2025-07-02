@@ -4,14 +4,77 @@ using UnityEngine;
 
 public class EventManager : MonoBehaviour
 {
-    //전체 퀘스트 시스템을 관리하는 중심 역할을 합니다. 퀘스트 데이터 로드, 퀘스트 활성화, 진행 상태 업데이트 등을 담당합니다.
+    //전체 이벤트 시스템을 관리, 이벤트 데이터 로드, 이벤트 활성화, 진행 상태 업데이트, 이벤트완료 등
     
-    //인벤토리 및 창고 
+    public static EventManager Instance { get; private set; }
+    private Dictionary<int, GameEventData> eventDict = new();
+    public List<GameEventData> allEvents = new();
+
+    private int _curGameDay = StatusSystem.Instance.GetCurrentDay();
+
+    //인벤토리 및 창고 참조
+
+    private void Awake()
+    {
+        if (Instance != null) { Destroy(gameObject); return; }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        LoadAllEvents();
+    }
 
     // 이벤트 데이터 목록을 가져오고
-    // 이벤트 발생
+    private void LoadAllEvents()
+    {
+        var events = Resources.LoadAll<GameEventData>("Events");
+        foreach(var e in events)
+        {
+            if(!eventDict.ContainsKey(e.id))
+            {
+                eventDict[e.id] = e;
+                allEvents.Add(e);
+            }
+            else
+            {
+                Debug.LogWarning($"중복된 이벤트 ID : {e.id}");
+            }
+        }
+        Debug.Log($"이벤트 {eventDict.Count}개 로드 완료");
+    }
+
+    public GameEventData GetEventById(int id)
+    {
+        eventDict.TryGetValue(id, out var result);
+        return result;
+    }
 
     
+
+    public void TriggerEvent()
+    {
+        if (GameEventData.Instance.reactiveAfterEnd==true)
+        {
+
+        }
+        //1일차에
+
+
+
+        //1~3일차에
+        
+
+
+        //4일차~ 
+    }
+
+   
+
+    
+
+
+    // 이벤트 발생
+
+
 
     // 이벤트 진행상태판별
 

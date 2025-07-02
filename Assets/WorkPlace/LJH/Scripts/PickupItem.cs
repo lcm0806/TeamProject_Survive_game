@@ -5,32 +5,41 @@ using UnityEngine;
 
 public class PickupItem : MonoBehaviour, IInteractable
 {
-    [Header("��� ������")]
+    
     public GameObject batteryPrefab;
     public GameObject oxygenPrefab;
     public float lootLaunchForce = 5f;
 
-    [Header("�ı�(���̵�) ����")]
-    public float fadeDuration = 2f;     // 2�� ���� ����ȭ
+    
+    public float fadeDuration = 2f;     
 
-    private bool _used = false;         // �̹� ��ȣ�ۿ� �ߴ���
+    private bool _used = false;         
 
-    /* ------------------- ���ͷ�Ʈ ------------------- */
+    
     public void Interact()
     {
-        if (_used) return;              // �ߺ� ����
+        if (_used) return;
         _used = true;
 
         float roll = Random.value;
 
         if (roll < 0.3f) SpawnLoot(batteryPrefab);
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
-        else ShowMessage("����ִ� ���� �����Դϴ�...");
+        else ShowMessage("보급상자가 비어있다...");
 
-        StartCoroutine(FadeOutAndDestroy());
+        var dissolve = GetComponent<DissolveExample.DissolveChilds>();
+        if (dissolve != null)
+        {
+            dissolve.StartDissolve(2f); // 2초에 걸쳐 사라짐
+        }
+
+        // Destroy는 늦게
+        Destroy(gameObject, 2.5f); // 약간 여유를 둠
+
+        //StartCoroutine(FadeOutAndDestroy());
     }
 
-    /* ------------------- ��� ------------------- */
+    
     private void SpawnLoot(GameObject prefab)
     {
         if (prefab == null) return;
@@ -53,49 +62,49 @@ public class PickupItem : MonoBehaviour, IInteractable
         }
     }
 
-    /* ------------------- ���̵� & �ı� ------------------- */
-    private System.Collections.IEnumerator FadeOutAndDestroy()
-    {
-        //���޻��� ��� MeshRenderer ����
-        var renderers = GetComponentsInChildren<MeshRenderer>();
-        if (renderers.Length == 0) { Destroy(gameObject); yield break; }
+    ///* ------------------- ���̵� & �ı� ------------------- */
+    //private System.Collections.IEnumerator FadeOutAndDestroy()
+    //{
+    //    //���޻��� ��� MeshRenderer ����
+    //    var renderers = GetComponentsInChildren<MeshRenderer>();
+    //    if (renderers.Length == 0) { Destroy(gameObject); yield break; }
 
-        //�� ��Ƽ���� �ν��Ͻ����ʱ�� ����
-        var mats = new System.Collections.Generic.List<Material[]>();
-        var startCols = new System.Collections.Generic.List<Color[]>();
+        
+    //    var mats = new System.Collections.Generic.List<Material[]>();
+    //    var startCols = new System.Collections.Generic.List<Color[]>();
 
-        foreach (var r in renderers)
-        {
-            Material[] arr = r.materials;          // �ν��Ͻ� �迭
-            mats.Add(arr);
+    //    foreach (var r in renderers)
+    //    {
+    //        Material[] arr = r.materials;          // �ν��Ͻ� �迭
+    //        mats.Add(arr);
 
-            Color[] cols = new Color[arr.Length];
-            for (int i = 0; i < arr.Length; ++i) cols[i] = arr[i].color;
-            startCols.Add(cols);
-        }
+    //        Color[] cols = new Color[arr.Length];
+    //        for (int i = 0; i < arr.Length; ++i) cols[i] = arr[i].color;
+    //        startCols.Add(cols);
+    //    }
 
-        //���̵� ����
-        float t = 0f;
-        while (t < fadeDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
+    //    //���̵� ����
+    //    float t = 0f;
+    //    while (t < fadeDuration)
+    //    {
+    //        float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
 
-            for (int m = 0; m < mats.Count; ++m)
-            {
-                for (int i = 0; i < mats[m].Length; ++i)
-                {
-                    Color c = startCols[m][i];
-                    c.a = alpha;
-                    mats[m][i].color = c;
-                }
-            }
+    //        for (int m = 0; m < mats.Count; ++m)
+    //        {
+    //            for (int i = 0; i < mats[m].Length; ++i)
+    //            {
+    //                Color c = startCols[m][i];
+    //                c.a = alpha;
+    //                mats[m][i].color = c;
+    //            }
+    //        }
 
-            t += Time.deltaTime;
-            yield return null;
-        }
+    //        t += Time.deltaTime;
+    //        yield return null;
+    //    }
 
-        Destroy(gameObject);
-    }
+    //    Destroy(gameObject);
+    //}
 
     /* ------------------- UI �޽��� ------------------- */
     private void ShowMessage(string message)
@@ -106,7 +115,7 @@ public class PickupItem : MonoBehaviour, IInteractable
         }
         else
         {
-            Debug.LogWarning("UIManager�� ���� �����ϴ�.");
+            Debug.LogWarning("UIManager가 씬에 없습니다.");
         }
     }
 }

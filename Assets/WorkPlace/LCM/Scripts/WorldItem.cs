@@ -34,6 +34,7 @@ public class WorldItem : MonoBehaviour, IInteractable
         PlayerManager.Instance.SelectItem = this.itemData;
 
         ToolItem toolItem = this.itemData as ToolItem;
+
         if (toolItem != null)
         {
             // GameObject toolObject = Instantiate(toolItem.toolPrefab);

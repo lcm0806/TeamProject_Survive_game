@@ -1,30 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DesignPattern;
+using UnityEngine;
 
-public class SamplePlayerManager : Singleton<SamplePlayerManager>
+public class SamplePlayerManager : Singleton<PlayerManager>
 {
-    //[SerializeField] private GameObject _playerPrefab;
-    //[SerializeField] private Transform _playerSpawnPoint;
+    [SerializeField] private GameObject _playerPrefab;
 
     public bool IsInIntercation = false;
-    public WorldItem InteractableItem { get; set; }
+    [field: SerializeField] public WorldItem InteractableItem { get; set; }
+    [field: SerializeField] public TestWorldItem InteractableTestItem { get; set; }
+    [field: SerializeField] public Structure InteractableStructure { get; set; }
+    public Item SelectItem { get; set; }
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
-
-    [field:SerializeField]
     public PlayerController Player { get; private set; }
-    //테스트용 인벤토리
-
-    public bool IsInAirChamber { get; set; } = false;
+    [field: SerializeField] public float InteractDelay { get; set; }
+    public float ItemDelay { get; set; }
 
     private void Awake()
     {
         SingletonInit();
         Init();
-
-        
     }
 
     private void Start()
@@ -34,7 +29,11 @@ public class SamplePlayerManager : Singleton<SamplePlayerManager>
 
     private void Update()
     {
-        //TestCode();
+        //if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName() && Player == null)
+        //{
+        //    PlayerInit();
+        //}
+
     }
 
     private void Init()
@@ -43,18 +42,11 @@ public class SamplePlayerManager : Singleton<SamplePlayerManager>
         ElecticGauge.Value = 100f;
     }
 
-    /// <summary>
-    /// 테스트용 코드
-    /// </summary>
-    //private void TestCode()
-    //{
-    //    if (!IsInAirChamber)
-    //        AirGauge.Value -= Time.deltaTime * 1f;
-    //}
-
     //private void PlayerInit()
     //{
     //    // 플레이어 임시 생성 코드
-    //    GameObject player = Instantiate(_playerPrefab, _playerSpawnPoint.position, _playerSpawnPoint.rotation);
+    //    GameObject player = Instantiate(_playerPrefab, new Vector3(237.29f, 10.225f, -110.03f), Quaternion.identity);
+    //    Player = player.GetComponent<PlayerController>();
+    //    Debug.Log("플레이어 생성 완료");
     //}
 }

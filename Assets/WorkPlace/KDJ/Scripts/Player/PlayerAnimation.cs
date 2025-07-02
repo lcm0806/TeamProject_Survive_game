@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerAnimation : MonoBehaviour
@@ -19,6 +17,7 @@ public class PlayerAnimation : MonoBehaviour
         GrabAnim();
         SwingAnim();
         MiningAnim();
+        SetAkimbo();
     }
 
     private void Awake()
@@ -43,6 +42,11 @@ public class PlayerAnimation : MonoBehaviour
         {
             _animator.SetTrigger("Swing");
         }
+    }
+
+    public void SetAkimbo()
+    {
+        _animator.SetBool("IsAkimbo", PlayerManager.Instance.IsAkimbo);
     }
 
     public void MiningAnim()

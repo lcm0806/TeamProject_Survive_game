@@ -275,12 +275,13 @@ public class GameSystem : Singleton<GameSystem>
             Debug.Log("게임 오버!");
             
             // 게임 오버 처리
-            Pause();
-            
-            // TODO: 게임 오버 씬으로 이동
-            // SceneSystem.Instance.LoadGameOverScene();
-            SceneSystem.Instance.LoadTitleScene();
+            MenuSystem.Instance.ShowGameoverView();
         }
+    }
+
+    void GameOver()
+    {
+        
     }
     
     // 씬 전환 시 스택 초기화

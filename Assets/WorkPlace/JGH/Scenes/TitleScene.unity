@@ -1995,10 +1995,40 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2352600917330128042, guid: bf6c691c39f6a4e0a8e77161d38c20a9,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 256.8005
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352600917330128042, guid: bf6c691c39f6a4e0a8e77161d38c20a9,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 330.1316
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352600917330128042, guid: bf6c691c39f6a4e0a8e77161d38c20a9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -7.6246
+      objectReference: {fileID: 0}
+    - target: {fileID: 2352600917330128042, guid: bf6c691c39f6a4e0a8e77161d38c20a9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.8815
+      objectReference: {fileID: 0}
     - target: {fileID: 5271345711539790978, guid: bf6c691c39f6a4e0a8e77161d38c20a9,
         type: 3}
       propertyPath: m_Name
       value: PauseMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 5271345711539790978, guid: bf6c691c39f6a4e0a8e77161d38c20a9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5838669821013742624, guid: bf6c691c39f6a4e0a8e77161d38c20a9,
+        type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

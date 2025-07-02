@@ -65,6 +65,9 @@ public class MenuSystem : Singleton<MenuSystem>
     public GameObject CreatorsDialog;
     private Button _creatorsYesButton;
     
+    public GameObject GameOverDialog;
+    private Button _gameOverYesButton;
+    
     [Header("경고 메뉴")]
     public GameObject WarningDialog;
     private Button _warningYesButton;
@@ -72,6 +75,7 @@ public class MenuSystem : Singleton<MenuSystem>
     public GameObject BackToMenuDialog;
     private Button _backToMenuDialogNoButton;
     private Button _backToMenuDialogYesButton;
+    
     
     // 전체화면 상태 관리
     private bool _isFullscreenEnabled = false;
@@ -130,9 +134,6 @@ public class MenuSystem : Singleton<MenuSystem>
             {
                 return;
             }
-
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true; 
             
             TogglePauseMenu();
         }
@@ -143,18 +144,38 @@ public class MenuSystem : Singleton<MenuSystem>
         bool isCurrentlyActive = PauseMenu.activeSelf;
 
         AllMenuFalse(); // 항상 모든 메뉴 비활성화
+        
 
         if (!isCurrentlyActive)
         {
             // PauseMenu를 열 때
             PauseMenu.SetActive(true);
             Time.timeScale = 0f;
+            
+            if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true; 
+            }
+            
         }
         else
         {
             // PauseMenu를 닫을 때
             PauseMenu.SetActive(false);
             Time.timeScale = 1f;
+            
+            if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = true; 
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true; 
+            }
+
         }
     }
 
@@ -317,6 +338,12 @@ public class MenuSystem : Singleton<MenuSystem>
             _backToMenuDialogNoButton = BackToMenuDialog.transform.Find("NoButton").GetComponent<Button>();
             _backToMenuDialogYesButton.onClick.AddListener(OnClickBackToMenuYes);
             _backToMenuDialogNoButton.onClick.AddListener(OnClickBackToMenuNo);
+        }
+
+        if (GameOverDialog != null)
+        {
+            _gameOverYesButton= GameOverDialog.transform.Find("YesButton").GetComponent<Button>();
+            _gameOverYesButton.onClick.AddListener(OnClickGameOverYes);
         }
     }
 
@@ -714,6 +741,24 @@ public class MenuSystem : Singleton<MenuSystem>
     {
         AllMenuFalse();
         PauseMenu.SetActive(true);
+    }
+
+    public void ShowGameoverView()
+    {
+        GameOverDialog.SetActive(true);
+    }
+    
+    private void OnClickGameOverYes()
+    {
+        SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
+        {
+            // 씬이 전환된 후 1~2 프레임 기다린 뒤 수행
+            StartCoroutine(SetupVideoAfterSceneLoad());
+        });
+
+        AllMenuFalse();
+        GameOverDialog.SetActive(false);
+        MainMenu.SetActive(true);
     }
 
     // 공개 메서드

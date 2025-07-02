@@ -51,8 +51,7 @@ public class CraftingItemUISlot : MonoBehaviour, IPointerClickHandler
         Debug.Log("CraftingItemUISlot 클릭됨: " + _assignedRecipe?.craftedItem?.itemName);
         if (_assignedRecipe != null)
         {
-            // CraftingManager의 레시피 선택 메서드를 호출
-            //CraftingManager.Instance.SelectRecipe(_assignedRecipe);
+            _craftingManager.SelectRecipe(_assignedRecipe);
         }
     }
 }

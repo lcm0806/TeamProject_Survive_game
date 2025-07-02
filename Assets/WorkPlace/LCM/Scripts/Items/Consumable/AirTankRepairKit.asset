@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af3b48003925ed4fa4ee0553cd55a7f, type: 3}
   m_Name: AirTankRepairKit
   m_EditorClassIdentifier: 
-  itemName: New Item
+  itemName: AirTankRepairKit
   description: A basic item.
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 508d165ece597f34f9804422bd96709d, type: 3}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}

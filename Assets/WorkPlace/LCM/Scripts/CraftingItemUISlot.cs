@@ -12,12 +12,14 @@ public class CraftingItemUISlot : MonoBehaviour, IPointerClickHandler
 
     // 이 슬롯이 어떤 레시피를 나타내는지 저장할 변수
     private Recipe _assignedRecipe;
+    private CraftingManager _craftingManager;
     // Start is called before the first frame update
 
     // UI를 설정하고 레시피를 할당하는 메서드
-    public void SetUI(Recipe recipeToAssign)
+    public void SetUI(Recipe recipeToAssign, CraftingManager manager)
     {
         _assignedRecipe = recipeToAssign;
+        _craftingManager = manager;
 
         if (recipeToAssign != null && recipeToAssign.craftedItem != null)
         {
@@ -50,7 +52,7 @@ public class CraftingItemUISlot : MonoBehaviour, IPointerClickHandler
         if (_assignedRecipe != null)
         {
             // CraftingManager의 레시피 선택 메서드를 호출
-            CraftingManager.Instance.SelectRecipe(_assignedRecipe);
+            //CraftingManager.Instance.SelectRecipe(_assignedRecipe);
         }
     }
 }

@@ -1,14 +1,12 @@
 using System;
 using System.Collections;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
-using UnityEngine.UI;
 using DesignPattern;
 using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine.UIElements;
-using UnityEngine.Windows;
+using UnityEngine.Video;
 using Button = UnityEngine.UI.Button;
+using Cursor = UnityEngine.Cursor;
 using Input = UnityEngine.Input;
 using Slider = UnityEngine.UI.Slider;
 using Toggle = UnityEngine.UI.Toggle;
@@ -67,6 +65,9 @@ public class MenuSystem : Singleton<MenuSystem>
     public GameObject CreatorsDialog;
     private Button _creatorsYesButton;
     
+    public GameObject GameOverDialog;
+    private Button _gameOverYesButton;
+    
     [Header("경고 메뉴")]
     public GameObject WarningDialog;
     private Button _warningYesButton;
@@ -74,6 +75,7 @@ public class MenuSystem : Singleton<MenuSystem>
     public GameObject BackToMenuDialog;
     private Button _backToMenuDialogNoButton;
     private Button _backToMenuDialogYesButton;
+    
     
     // 전체화면 상태 관리
     private bool _isFullscreenEnabled = false;
@@ -89,6 +91,9 @@ public class MenuSystem : Singleton<MenuSystem>
     
     // 이전 메뉴 추적
     private GameObject _previousMenu = null;
+    
+    // 현재 어떤 설정인지 추적
+    private bool _isPauseSettingMode = false;
     
     // 설정값 백업
     private bool _tempFullscreen;
@@ -116,36 +121,61 @@ public class MenuSystem : Singleton<MenuSystem>
         LoadAndApplySettings();
         
         AudioSystem.Instance.PlayBGMByName("MainBGM");
+        
     }
-    
+
     void Update()
     {
-        // TitleScene에서는 무시
-        if (SceneManager.GetActiveScene().name == "TitleScene")
-            return;
-
         // ESC 키 감지
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            // TitleScene에서는 무시
+            if (SceneManager.GetActiveScene().name == SceneSystem.Instance.GetTitleSceneName())
+            {
+                return;
+            }
+            
             TogglePauseMenu();
         }
     }
     
     private void TogglePauseMenu()
     {
-        bool isActive = PauseMenu.activeSelf;
+        bool isCurrentlyActive = PauseMenu.activeSelf;
 
-        if (isActive)
+        AllMenuFalse(); // 항상 모든 메뉴 비활성화
+        
+
+        if (!isCurrentlyActive)
         {
-            // 닫기
-            PauseMenu.SetActive(false);
-            Time.timeScale = 1f;  // 게임 재개
+            // PauseMenu를 열 때
+            PauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            
+            if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true; 
+            }
+            
         }
         else
         {
-            // 열기
-            OpenMenu(PauseMenu);
-            Time.timeScale = 0f;  // 일시정지
+            // PauseMenu를 닫을 때
+            PauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            
+            if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = true; 
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true; 
+            }
+
         }
     }
 
@@ -309,6 +339,12 @@ public class MenuSystem : Singleton<MenuSystem>
             _backToMenuDialogYesButton.onClick.AddListener(OnClickBackToMenuYes);
             _backToMenuDialogNoButton.onClick.AddListener(OnClickBackToMenuNo);
         }
+
+        if (GameOverDialog != null)
+        {
+            _gameOverYesButton= GameOverDialog.transform.Find("YesButton").GetComponent<Button>();
+            _gameOverYesButton.onClick.AddListener(OnClickGameOverYes);
+        }
     }
 
     private void LoadAndApplySettings()
@@ -428,9 +464,6 @@ public class MenuSystem : Singleton<MenuSystem>
 
     private void FullscreenYes() 
     {
-        Debug.Log("저장될 설정:");
-        Debug.Log($"Fullscreen: {_tempFullscreen}, Quality: {_tempQuality}, BGM: {_tempBGM}, SFX: {_tempSFX}");
-
         // 실제 저장값 갱신
         _currentFullscreen = _tempFullscreen;
         _currentQuality = _tempQuality;
@@ -454,7 +487,15 @@ public class MenuSystem : Singleton<MenuSystem>
             sfxVolume = _currentSFX
         });
         
-        SettingMenu.SetActive(false);
+        if (_isPauseSettingMode == true)
+        {
+            SettingMenu.SetActive(false);
+            PauseMenu.SetActive(true);
+        }
+        else
+        {
+            SettingMenu.SetActive(false);
+        }
     }
 
     private void FullscreenNo()
@@ -492,7 +533,15 @@ public class MenuSystem : Singleton<MenuSystem>
         Screen.fullScreen = _currentFullscreen;
         QualitySettings.SetQualityLevel(_currentQuality);
         
-        SettingMenu.SetActive(false);
+        if (_isPauseSettingMode == true)
+        {
+            SettingMenu.SetActive(false);
+            PauseMenu.SetActive(true);
+        }
+        else
+        {
+            SettingMenu.SetActive(false);
+        }
     }
 
     private void ChangeQuality()
@@ -509,37 +558,54 @@ public class MenuSystem : Singleton<MenuSystem>
     // 나머지 메뉴 관련 메서드들...
     private void OnClickStart()
     {
-        OpenMenu(NewGameDialog);  
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        NewGameDialog.SetActive(true);
     }
 
     private void OnClickContinue()
     {
-        OpenMenu(ContinueDialog);
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        ContinueDialog.SetActive(true);
     }
 
     private void OnClickSetting()
     {
-     OpenMenu(SettingMenu);   
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        _isPauseSettingMode = false;
+        SettingMenu.SetActive(true);
     }
 
     private void OnClickCreators()
     {
-     OpenMenu(CreatorsDialog);   
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        CreatorsDialog.SetActive(true);
     }
 
     private void OnClickExit()
     {
-     OpenMenu(ExitMenu);   
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        ExitMenu.SetActive(true);
     }
 
     private void OnClickPauseSetting()
     {
-     OpenMenu(SettingMenu);   
+        AllMenuFalse();
+        MainMenu.SetActive(false);
+        _isPauseSettingMode = true;
+        SettingMenu.SetActive(true);
+        
     }
 
     private void OnClickPauseExit()
     {
-         OpenMenu(BackToMenuDialog);   
+        AllMenuFalse();
+        MainMenu.SetActive(false);
+        BackToMenuDialog.SetActive(true);
     }
 
     private void OnClickExitOk()
@@ -553,17 +619,35 @@ public class MenuSystem : Singleton<MenuSystem>
 
     private void OnClickExitBack()
     {
+        AllMenuFalse();
         MainMenu.SetActive(true);
         ExitMenu.SetActive(false);
     }
 
+    private void AllMenuFalse()
+    {
+        NewGameDialog.SetActive(false);
+        ExitMenu.SetActive(false);
+        ContinueDialog.SetActive(false);
+        CreatorsDialog.SetActive(false);
+        WarningDialog.SetActive(false);
+        PauseMenu.SetActive(false);
+        SettingMenu.SetActive(false);
+        BackToMenuDialog.SetActive(false);
+    }
+
     private void OnClickNewGameOk()
     {
+        AudioSystem.Instance.StopBGM();
         SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
         MainMenu.SetActive(false);
+        AllMenuFalse();
+    }
+    private void OnClickNewGameBack()
+    {
+        AllMenuFalse();
         NewGameDialog.SetActive(false);
     }
-    private void OnClickNewGameBack() => NewGameDialog.SetActive(false);
 
     private void OnClickContinueOk()
     {
@@ -586,28 +670,95 @@ public class MenuSystem : Singleton<MenuSystem>
 
         ContinueDialog.SetActive(false); // 이어하기 팝업 닫기
     }
-    private void OnClickContinueBack() => ContinueDialog.SetActive(false);
+    
+    private void OnClickContinueBack()
+    {
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+    }
 
-    private void OnClickCreatorsYes() => CreatorsDialog.SetActive(false);
-    private void OnClickWarningYes() => Debug.Log("경고 확인");
+    private void OnClickCreatorsYes()
+    {
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+    }
+
+    private void OnClickWarningYes()
+    {
+        Debug.Log("경고 확인");
+    }
 
     private void OnClickBackToMenuYes()
     {
-        SceneSystem.Instance.LoadScene(SceneSystem.Instance.GetTitleSceneName());
-        MainMenu.SetActive(true);
-        BackToMenuDialog.SetActive(false);
-    } 
-    private void OnClickBackToMenuNo() => BackToMenuDialog.SetActive(false);
- 
-    private void OpenMenu(GameObject menu)
-    {
-        if (_currentOpenMenu != null)
+        SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
         {
-            _currentOpenMenu.SetActive(false);
-        }
+            // 씬이 전환된 후 1~2 프레임 기다린 뒤 수행
+            StartCoroutine(SetupVideoAfterSceneLoad());
+        });
 
-        _currentOpenMenu = menu;
-        _currentOpenMenu.SetActive(true);
+        AllMenuFalse();
+    } 
+    
+    private IEnumerator SetupVideoAfterSceneLoad()
+    {
+        // 씬 오브젝트들이 완전히 로드될 때까지 기다림
+        yield return null;
+        yield return new WaitForEndOfFrame();
+
+        // MenuSystem 인스턴스에서 직접 접근 (Find 말고 싱글톤 활용 권장)
+        var menuSystem = MenuSystem.Instance;
+        if (menuSystem != null && menuSystem.MainMenu != null)
+        {
+            var videoPlayer = menuSystem.MainMenu.GetComponent<VideoPlayer>();
+            if (videoPlayer != null)
+            {
+                videoPlayer.renderMode = VideoRenderMode.CameraNearPlane;
+
+                if (videoPlayer.targetCamera == null && Camera.main != null)
+                {
+                    videoPlayer.targetCamera = Camera.main;
+                    Debug.Log("Main Camera 재연결 완료");
+                }
+
+                videoPlayer.Prepare();
+                videoPlayer.prepareCompleted += vp =>
+                {
+                    vp.Play();
+                    Debug.Log("VideoPlayer 재생 시작");
+                };
+            }
+
+            menuSystem.MainMenu.SetActive(true); // 혹시 꺼져 있으면 다시 켜기
+        }
+        else
+        {
+            Debug.LogError("MenuSystem.Instance 또는 MainMenu를 찾을 수 없음");
+        }
+    }
+
+    
+    private void OnClickBackToMenuNo()
+    {
+        AllMenuFalse();
+        PauseMenu.SetActive(true);
+    }
+
+    public void ShowGameoverView()
+    {
+        GameOverDialog.SetActive(true);
+    }
+    
+    private void OnClickGameOverYes()
+    {
+        SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
+        {
+            // 씬이 전환된 후 1~2 프레임 기다린 뒤 수행
+            StartCoroutine(SetupVideoAfterSceneLoad());
+        });
+
+        AllMenuFalse();
+        GameOverDialog.SetActive(false);
+        MainMenu.SetActive(true);
     }
 
     // 공개 메서드

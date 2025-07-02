@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//ÀüÃ¼ ÀÌº¥Æ® ½Ã½ºÅÛÀ» °ü¸®, ÀÌº¥Æ® µ¥ÀÌÅÍ ·Îµå, ÀÌº¥Æ® È°¼ºÈ­, ÁøÇà »óÅÂ ¾÷µ¥ÀÌÆ®, ÀÌº¥Æ®¿Ï·á µî
+//ì „ì²´ ì´ë²¤íŠ¸ ì‹œìŠ¤í…œì„ ê´€ë¦¬, ì´ë²¤íŠ¸ ë°ì´í„° ë¡œë“œ, ì´ë²¤íŠ¸ í™œì„±í™”, ì§„í–‰ ìƒíƒœ ì—…ë°ì´íŠ¸, ì´ë²¤íŠ¸ì™„ë£Œ ë“±
 public class EventManager : MonoBehaviour
 {
     public static EventManager Instance { get; private set; }
@@ -10,10 +10,12 @@ public class EventManager : MonoBehaviour
     public List<GameEventData> allEvents = new();
 
 
+    // 250702 ë¹Œë“œì‹œ ì˜¤ë¥˜ë‚˜ì„œ ë³€ê²½
+    // private int _curGameDay = StatusSystem.Instance.GetCurrentDay();
+    private int _curGameDay;
 
-    private GameEventData _curEventData;
 
-    //ÀÎº¥Åä¸® ¹× Ã¢°í ÂüÁ¶
+    //ì¸ë²¤í† ë¦¬ ë° ì°½ê³  ì°¸ì¡°
 
     private void Awake()
     {
@@ -21,10 +23,28 @@ public class EventManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
+        // Initialize _curGameDay safely in Awake
+        // 250702 ë¹Œë“œì‹œ ì˜¤ë¥˜ë‚˜ì„œ ì¶”ê°€
+        InitializeCurrentDay();
         LoadAllEvents();
     }
+    
+    // 250702 ë¹Œë“œì‹œ ì˜¤ë¥˜ë‚˜ì„œ ì¶”ê°€
+    private void InitializeCurrentDay()
+    {
+        // Check if StatusSystem.Instance is available
+        if (StatusSystem.Instance != null)
+        {
+            _curGameDay = StatusSystem.Instance.GetCurrentDay();
+        }
+        else
+        {
+            Debug.LogWarning("StatusSystem.Instance is not available yet. Using default value for current day.");
+            _curGameDay = 1; // or whatever default value makes sense
+        }
+    }
 
-    // ¸ğµç ÀÌº¥Æ® µ¥ÀÌÅÍ ¸ñ·ÏÀ» °¡Á®¿À°í
+    // ëª¨ë“  ì´ë²¤íŠ¸ ë°ì´í„° ëª©ë¡ì„ ê°€ì ¸ì˜¤ê³ 
     private void LoadAllEvents()
     {
         var events = Resources.LoadAll<GameEventData>("Events");
@@ -36,10 +56,10 @@ public class EventManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"Áßº¹µÈ ÀÌº¥Æ® ID : {e.id}");
+                Debug.LogWarning($"ì¤‘ë³µëœ ì´ë²¤íŠ¸ ID : {e.id}");
             }
         }
-        Debug.Log($"ÀÌº¥Æ® {eventDict.Count}°³ ·Îµå ¿Ï·á");
+        Debug.Log($"ì´ë²¤íŠ¸ {eventDict.Count}ê°œ ë¡œë“œ ì™„ë£Œ");
     }
 
     public GameEventData GetEventById(int id)
@@ -48,61 +68,61 @@ public class EventManager : MonoBehaviour
         return result;
     }
 
-    //ÇöÀç ¹ßµ¿µÈ ÀÌº¥Æ®µéÀÇ ¸ñ·Ï ÀÖ¾î¾ß ÇÒµí ? onWorkingEvents => ÇÊ¿ä¾ø³ªº½ 
+    //í˜„ì¬ ë°œë™ëœ ì´ë²¤íŠ¸ë“¤ì˜ ëª©ë¡ ìˆì–´ì•¼ í• ë“¯ ? onWorkingEvents => í•„ìš”ì—†ë‚˜ë´„ 
 
 
-    public void GenerateDailyEvent() //°ÔÀÓ½ÃÀÛ + ¾ÆÄ§½ÃÁ¡¿¡ È£ÃâµÇ¾î¾ß ÇÔ
+    public void GenerateDailyEvent() //ê²Œì„ì‹œì‘ + ì•„ì¹¨ì‹œì ì— í˜¸ì¶œë˜ì–´ì•¼ í•¨
     {
         _curEventData = eventDict[10001];
-        Debug.Log("³»±¸µµ ¼ö¸® ÀÌº¥Æ® ¹ß»ı(¸ÅÀÏ)");
+        Debug.Log("ë‚´êµ¬ë„ ìˆ˜ë¦¬ ì´ë²¤íŠ¸ ë°œìƒ(ë§¤ì¼)");
     }
 
-    public void GenerateRandomEvent() // ******¾ÆÄ§½ÃÁ¡¿¡ È£ÃâµÇ¾î¾ßÇÔ ¾Àº¯°æ°ü·Ã½Ã½ºÅÛ»ìÆìº¸±â, 1~3ÀÏÂ÷´Â È£Ãâ1¹ø, 4~6ÀÏÂ÷¿¡´Â È£Ãâ2¹ø, 7ÀÏÂ÷~È£Ãâ2¹ø
+    public void GenerateRandomEvent() // ******ì•„ì¹¨ì‹œì ì— í˜¸ì¶œë˜ì–´ì•¼í•¨ ì”¬ë³€ê²½ê´€ë ¨ì‹œìŠ¤í…œì‚´í´ë³´ê¸°, 1~3ì¼ì°¨ëŠ” í˜¸ì¶œ1ë²ˆ, 4~6ì¼ì°¨ì—ëŠ” í˜¸ì¶œ2ë²ˆ, 7ì¼ì°¨~í˜¸ì¶œ2ë²ˆ
     {
         int eventID = 0;
         if (3 >= StatusSystem.Instance.GetCurrentDay())
         {
-            eventID = Random.Range(10002, 10005); //ÀÌ»ó¹Ì¸¸
-            Debug.Log("1~3ÀÏÂ÷ ÀÌº¥Æ® ¹ß»ı");
+            eventID = Random.Range(10002, 10005); //ì´ìƒë¯¸ë§Œ
+            Debug.Log("1~3ì¼ì°¨ ì´ë²¤íŠ¸ ë°œìƒ");
         }
         else if (6 >= StatusSystem.Instance.GetCurrentDay())
         {
             eventID = Random.Range(10002, 10007);
-            Debug.Log("4~6ÀÏÂ÷ ÀÌº¥Æ® ¹ß»ı");
+            Debug.Log("4~6ì¼ì°¨ ì´ë²¤íŠ¸ ë°œìƒ");
         }
         else
         {
             eventID = Random.Range(10005, 10010);
-            Debug.Log("7ÀÏÂ÷~ ÀÌº¥Æ® ¹ß»ı");
+            Debug.Log("7ì¼ì°¨~ ì´ë²¤íŠ¸ ë°œìƒ");
         }
 
         _curEventData = eventDict[eventID];
-        //1~3ÀÏÂ÷¿¡ id 10002~10004 Áß 1°³
+        //1~3ì¼ì°¨ì— id 10002~10004 ì¤‘ 1ê°œ
 
-        //4~6ÀÏÂ÷¿¡ id10002~10006 Áß 2°³
+        //4~6ì¼ì°¨ì— id10002~10006 ì¤‘ 2ê°œ
 
-        //7ÀÏÂ÷~ id10005~10009 Áß 2°³
+        //7ì¼ì°¨~ id10005~10009 ì¤‘ 2ê°œ
     }
 
-    // ÀÌº¥Æ®°¡ ¿Ï·á°¡´ÉÀÎÁö ÆÇº°
-    public void DetermineEventComplete() //*¹öÆ°¿¡ È£Ãâ ´Ş¾ÆÁà¾ßÇÔ
+    // ì´ë²¤íŠ¸ê°€ ì™„ë£Œê°€ëŠ¥ì¸ì§€ íŒë³„
+    public void DetermineEventComplete() //*ë²„íŠ¼ì— í˜¸ì¶œ ë‹¬ì•„ì¤˜ì•¼í•¨
     {
 
-        //**¾ÆÀÌÅÛº¸À¯¿©ºÎ¸¦ ÆÄ¾ÇÇÒ¼öÀÖ´Â ÀÌ¸§ÀÌµç id°ªÀÌµç È®ÀÎ
-        //¼øÈ¸·Î º¸À¯¿©ºÎ ÆÄ¾Ç true false 
-        // if required item count < ÀÎº¥Åä¸®ÀÇ cur_item_countÀÌ¸é item count --ÇØÁÖ°í
-        // ÇØ´ç idÀÇ ÀÌº¥Æ® ÀÚÃ¼¸¦ Á¦°Å
+        //**ì•„ì´í…œë³´ìœ ì—¬ë¶€ë¥¼ íŒŒì•…í• ìˆ˜ìˆëŠ” ì´ë¦„ì´ë“  idê°’ì´ë“  í™•ì¸
+        //ìˆœíšŒë¡œ ë³´ìœ ì—¬ë¶€ íŒŒì•… true false 
+        // if required item count < ì¸ë²¤í† ë¦¬ì˜ cur_item_countì´ë©´ item count --í•´ì£¼ê³ 
+        // í•´ë‹¹ idì˜ ì´ë²¤íŠ¸ ìì²´ë¥¼ ì œê±°
 
     }
 
-    public void EventEffect(GameEventData data) //******³¯Â¥°¡ ³Ñ¾î°¥¶§ Àû¿ëµÇ¾î¾ßÇÔ ÀÌÇÔ¼ö°¡ ¾îµğ¼±°¡ È£ÃâµÇ¾î¾ß ÇÔ => ³¯Â¥³Ñ¾î°¡´Â½Ã½ºÅÛÂÊ È®ÀÎÇØ¼­ Áı¾î³Ö±â
+    public void EventEffect(GameEventData data) //******ë‚ ì§œê°€ ë„˜ì–´ê°ˆë•Œ ì ìš©ë˜ì–´ì•¼í•¨ ì´í•¨ìˆ˜ê°€ ì–´ë””ì„ ê°€ í˜¸ì¶œë˜ì–´ì•¼ í•¨ => ë‚ ì§œë„˜ì–´ê°€ëŠ”ì‹œìŠ¤í…œìª½ í™•ì¸í•´ì„œ ì§‘ì–´ë„£ê¸°
     {
 
         if (isEventCompleted() == false)
         {
-            //À§¿¡¼­ °áÁ¤µÈ °ÔÀÓÀÌº¥Æ®  ÇØ´çÀ» ¸Å°³º¯¼ö·Î ¹Ş¾Æ¼­ Àû¿ë¸¸
-            //³»±¸µµ »ê¼Ò Àü·ÂÀ» 
-            //³¯Â¥º¯°æ½Ã Á¾·á¸ñÇ¥¸¦ ´Ş¼ºÇÏÁö ¸øÇÏ¸é Àû¿ëµÊ
+            //ìœ„ì—ì„œ ê²°ì •ëœ ê²Œì„ì´ë²¤íŠ¸  í•´ë‹¹ì„ ë§¤ê°œë³€ìˆ˜ë¡œ ë°›ì•„ì„œ ì ìš©ë§Œ
+            //ë‚´êµ¬ë„ ì‚°ì†Œ ì „ë ¥ì„ 
+            //ë‚ ì§œë³€ê²½ì‹œ ì¢…ë£Œëª©í‘œë¥¼ ë‹¬ì„±í•˜ì§€ ëª»í•˜ë©´ ì ìš©ë¨
             StatusSystem.Instance.SetMinusDurability(data.RandomMinusDuraValue);
             StatusSystem.Instance.SetMinusDurability(data.MinusDurability);
             StatusSystem.Instance.SetMinusEnergy(data.MinusEnergy);

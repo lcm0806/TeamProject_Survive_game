@@ -12,23 +12,24 @@ public class PlayerManager : Singleton<PlayerManager>
     
     public float Speed;
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î °­È­ »óÅÂ¸¦ Ç¥½ÃÇÏ´Â Bool ¹è¿­. Å©±â´Â 3. 0 = Á¦Æ®ÆÑ, 1,2´Â Â÷ÈÄ Ãß°¡ ¿¹Á¤
+    /// í”Œë ˆì´ì–´ ê°•í™” ìƒíƒœë¥¼ í‘œì‹œí•˜ëŠ” Bool ë°°ì—´. í¬ê¸°ëŠ” 3. 0 = ì œíŠ¸íŒ©, 1,2ëŠ” ì°¨í›„ ì¶”ê°€ ì˜ˆì •
     /// </summary>
     public bool[] IsUpgraded { get; set; } = new bool[3];
     public bool IsInIntercation = false;
-    public bool IsAkimbo { get; set; } = false; // ¾ÆÅ´º¸ »óÅÂ ¿©ºÎ
+    public bool IsAkimbo { get; set; } = false;
     public WorldItem InteractableItem { get; set; }
     public TestWorldItem InteractableTestItem { get; set; }
     public Structure InteractableStructure { get; set; }
     public GameObject InHandItem { get; set; }
-    public GameObject InHandItem2 { get; set; } // ¾ÆÅ´º¸ »óÅÂÀÏ ¶§ µÎ¹øÂ° ¾ÆÀÌÅÛ
-    public GameObject InHeadItem { get; set; } // Çï¸ä, ¼±±Û¶ó½º µî ¸Ó¸®¿¡ Âø¿ëÇÏ´Â ¾ÆÀÌÅÛ
+    public GameObject InHandItem2 { get; set; } 
+    public GameObject InHeadItem { get; set; } // í—¬ë©§, ì„ ê¸€ë¼ìŠ¤ ë“± ë¨¸ë¦¬ì— ì°©ìš©í•˜ëŠ” ì•„ì´í…œ
     public Item SelectItem { get; set; }
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
     public PlayerController Player { get; private set; }
     public float InteractDelay { get; set; }
     public float ItemDelay { get; set; }
+
 
     private void Awake()
     {
@@ -48,7 +49,7 @@ public class PlayerManager : Singleton<PlayerManager>
             PlayerInit();
         }
 
-        AkimboCheck(); // ¾ÆÅ´º¸ »óÅÂ È®ÀÎ
+        AkimboCheck(); // ì•„í‚´ë³´ ìƒíƒœ í™•ì¸
     }
 
     private void Init()
@@ -60,15 +61,17 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void PlayerInit()
     {
-        // ÇÃ·¹ÀÌ¾î ÀÓ½Ã »ı¼º ÄÚµå
-        GameObject player = Instantiate(_playerPrefab, new Vector3(255.86f, 10.24f, -123.64f), Quaternion.identity);
+
+
+        GameObject player = Instantiate(_playerPrefab, new Vector3(237.29f, 10.225f, -110.03f), Quaternion.identity);
+
         Player = player.GetComponent<PlayerController>();
-        Debug.Log("ÇÃ·¹ÀÌ¾î »ı¼º ¿Ï·á");
+
     }
 
     private void AkimboCheck()
     {
-        if (_akimboCheck != null) return; // ÀÌ¹Ì ¾ÆÅ´º¸¸¦ ¹Ş¾Æ¿Ô´Ù¸é Å»Ãâ
+        if (_akimboCheck != null) return;
 
 
         if (SelectItem != null)
@@ -79,7 +82,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     public void AkimboReset()
     {
-        // ¾ÆÅ´º¸ »óÅÂ ÃÊ±âÈ­
+        // ì•„í‚´ë³´ ìƒíƒœ ì´ˆê¸°í™”
         IsAkimbo = false;
         _akimboCheck = null;
     }

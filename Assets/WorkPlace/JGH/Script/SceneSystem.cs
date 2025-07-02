@@ -214,7 +214,7 @@ public class SceneSystem : Singleton<SceneSystem>
     /// </summary>
     /// <param name="sceneName"></param>
     /// <returns></returns>
-    private IEnumerator LoadSceneCoroutine(string sceneName)
+    public IEnumerator LoadSceneCoroutine(string sceneName)
     {
         Debug.Log($"씬 로드 준비: {sceneName}");
         

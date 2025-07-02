@@ -99,5 +99,34 @@ public class InventorySlot : MonoBehaviour, IDropHandler
             myItemUI.CurrentQuantity = quantity;
         }
         // myItemUI가 없다면 오류 처리 또는 데이터만 저장
+
+
+    }
+
+    public void UpdateSlotUI()
+    {
+        if (myItemUI != null && myItemData != null)
+        {
+            // 아이템이 슬롯에 있을 때:
+            // InventoryItem의 GameObject를 활성화하여 보이게 합니다.
+            if (!myItemUI.gameObject.activeSelf)
+            {
+                myItemUI.gameObject.SetActive(true);
+            }
+            // myItemUI.CurrentQuantity = myItemUI.CurrentQuantity; // 이 코드는 불필요
+            // myItemUI 내부에 quantityText 업데이트 로직이 있으므로 별도 호출 필요 없음
+            // myItemUI 내부에 itemIcon 업데이트 로직이 있으므로 별도 호출 필요 없음
+        }
+        else
+        {
+            // 슬롯에 아이템이 없을 때:
+            // InventoryItem의 GameObject를 비활성화하여 숨깁니다.
+            if (myItemUI != null) // myItemUI가 ClearSlot에 의해 이미 null이 된 경우를 대비
+            {
+                myItemUI.gameObject.SetActive(false);
+            }
+            // InventorySlot 자체에 아이콘/수량 텍스트가 있었다면 여기에서 숨기겠지만,
+            // 현재 구성상 InventoryItem이 모든 UI를 관리하므로 추가 작업은 필요 없습니다.
+        }
     }
 }

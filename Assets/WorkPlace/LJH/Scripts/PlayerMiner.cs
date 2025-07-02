@@ -9,8 +9,8 @@ public class PlayerMiner : MonoBehaviour
     public KeyCode interactKey = KeyCode.E;      // 상호작용 키
     public LayerMask interactLayer;               // 상호작용 가능한 레이어 지정
 
-    public float miningRange = 3f;
-    public float miningDamagePerSecond = 10f;
+    [SerializeField] public float miningRange = 6f;
+    [SerializeField] public float miningDamagePerSecond = 1f;
     
 
     private void Update()

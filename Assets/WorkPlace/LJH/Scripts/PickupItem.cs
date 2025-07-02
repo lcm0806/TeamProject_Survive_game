@@ -27,10 +27,11 @@ public class PickupItem : MonoBehaviour, IInteractable
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
         else ShowMessage("보급상자가 비어있다...");
 
-        var dissolve = GetComponent<DissolveExample.DissolveChilds>();
+        var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
+        
         if (dissolve != null)
-        {
-            dissolve.StartDissolve(2f); // 2초에 걸쳐 사라짐
+        {        
+            dissolve.StartDissolve(2f);
         }
 
         // Destroy는 늦게

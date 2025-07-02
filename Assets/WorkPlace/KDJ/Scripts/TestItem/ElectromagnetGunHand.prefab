@@ -1066,7 +1066,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adc8da651930de34984d533d6bd37849, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _electroEffect: {fileID: 9027514048236820045, guid: 46992b1bde5e83646bef9a4d76be2526,
+  _electroEffect: {fileID: 9027514048236820045, guid: 501addb92f647eb49bbf75d6b42ff89e,
     type: 3}
 --- !u!1001 &4144433197550075500
 PrefabInstance:

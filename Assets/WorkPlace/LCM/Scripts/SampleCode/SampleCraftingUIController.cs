@@ -43,15 +43,15 @@ public class SampleCraftingUIController : MonoBehaviour
         _currentSelectedRecipe = null;
 
         // 이벤트를 한 번만 구독하고, 반드시 널 체크를 포함합니다.
-        if (CraftingManager.Instance != null)
-        {
-            CraftingManager.Instance.OnRecipeSelected += DisplayRecipeDetails;
-            CraftingManager.Instance.OnCraftingCompleted += UpdateUIOnCraftingCompleted;
-        }
-        else
-        {
-            Debug.LogWarning("OnEnable: CraftingManager.Instance가 null입니다. 이벤트가 구독되지 않습니다.");
-        }
+        //if (CraftingManager.Instance != null)
+        //{
+        //    CraftingManager.Instance.OnRecipeSelected += DisplayRecipeDetails;
+        //    CraftingManager.Instance.OnCraftingCompleted += UpdateUIOnCraftingCompleted;
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("OnEnable: CraftingManager.Instance가 null입니다. 이벤트가 구독되지 않습니다.");
+        //}
 
         if (Inventory.Instance != null)
         {
@@ -67,16 +67,16 @@ public class SampleCraftingUIController : MonoBehaviour
 
     void OnDisable()
     {
-        if (CraftingManager.Instance != null) // 명확성을 위한 명시적인 널 체크
-        {
-            CraftingManager.Instance.OnRecipeSelected -= DisplayRecipeDetails;
-            CraftingManager.Instance.OnCraftingCompleted -= UpdateUIOnCraftingCompleted;
-        }
-        else
-        {
-            // 애플리케이션 종료/씬 전환 시 유용한 메시지입니다.
-            Debug.Log("SampleCraftingUIController.OnDisable 실행 시 CraftingManager.Instance가 이미 파괴되었거나 null입니다. 구독 해제를 건너뜁니다.");
-        }
+        //if (CraftingManager.Instance != null) // 명확성을 위한 명시적인 널 체크
+        //{
+        //    CraftingManager.Instance.OnRecipeSelected -= DisplayRecipeDetails;
+        //    CraftingManager.Instance.OnCraftingCompleted -= UpdateUIOnCraftingCompleted;
+        //}
+        //else
+        //{
+        //    // 애플리케이션 종료/씬 전환 시 유용한 메시지입니다.
+        //    Debug.Log("SampleCraftingUIController.OnDisable 실행 시 CraftingManager.Instance가 이미 파괴되었거나 null입니다. 구독 해제를 건너뜁니다.");
+        //}
         if (Inventory.Instance != null) // 명확성을 위한 명시적인 널 체크
         {
             Inventory.Instance.OnHotbarSlotItemUpdated -= OnInventoryOrHotbarChanged;
@@ -127,30 +127,30 @@ public class SampleCraftingUIController : MonoBehaviour
         }
 
         // 모든 레시피를 가져와서 슬롯 생성
-        foreach (Recipe recipe in CraftingManager.Instance.AllCraftingRecipes)
-        {
-            if (recipe.craftedItem == null)
-            {
-                Debug.LogWarning($"레시피 '{recipe.name}'에 제작 아이템이 할당되지 않았습니다. 이 레시피는 건너뜝니다.");
-                continue;
-            }
+        //foreach (Recipe recipe in CraftingManager.Instance.AllCraftingRecipes)
+        //{
+        //    if (recipe.craftedItem == null)
+        //    {
+        //        Debug.LogWarning($"레시피 '{recipe.name}'에 제작 아이템이 할당되지 않았습니다. 이 레시피는 건너뜝니다.");
+        //        continue;
+        //    }
 
-            GameObject slotGO = Instantiate(_craftingItemSlotPrefab, _craftingListContent);
-            _instantiatedRecipeSlots.Add(slotGO);
+        //    GameObject slotGO = Instantiate(_craftingItemSlotPrefab, _craftingListContent);
+        //    _instantiatedRecipeSlots.Add(slotGO);
 
-            // --- 여기가 변경되는 부분입니다! ---
-            CraftingItemUISlot uiSlot = slotGO.GetComponent<CraftingItemUISlot>();
+        //    // --- 여기가 변경되는 부분입니다! ---
+        //    CraftingItemUISlot uiSlot = slotGO.GetComponent<CraftingItemUISlot>();
 
-            if (uiSlot == null)
-            {
-                Debug.LogError($"'{_craftingItemSlotPrefab.name}' 프리팹에 CraftingItemUISlot 컴포넌트가 없습니다! 확인해주세요.");
-                Destroy(slotGO); // 잘못된 슬롯은 파괴
-                continue;
-            }
+        //    if (uiSlot == null)
+        //    {
+        //        Debug.LogError($"'{_craftingItemSlotPrefab.name}' 프리팹에 CraftingItemUISlot 컴포넌트가 없습니다! 확인해주세요.");
+        //        Destroy(slotGO); // 잘못된 슬롯은 파괴
+        //        continue;
+        //    }
 
-            // 이제 uiSlot의 SetUI 메서드를 호출하여 데이터를 설정합니다.
-            uiSlot.SetUI(recipe);
-        }
+        //    // 이제 uiSlot의 SetUI 메서드를 호출하여 데이터를 설정합니다.
+        //    uiSlot.SetUI(recipe);
+        //}
     }
 
     // 선택된 레시피의 상세 정보를 UI에 표시
@@ -206,7 +206,7 @@ public class SampleCraftingUIController : MonoBehaviour
         }
 
         // 제작 가능 여부에 따라 버튼 활성화/비활성화
-        _craftButton.interactable = CraftingManager.Instance.CanCraft(recipe);
+        //_craftButton.interactable = CraftingManager.Instance.CanCraft(recipe);
     }
 
     // 재료 목록 UI를 비우는 함수
@@ -224,7 +224,7 @@ public class SampleCraftingUIController : MonoBehaviour
     {
         if (_currentSelectedRecipe != null)
         {
-            CraftingManager.Instance.CraftItem(_currentSelectedRecipe);
+            //CraftingManager.Instance.CraftItem(_currentSelectedRecipe);
         }
     }
 

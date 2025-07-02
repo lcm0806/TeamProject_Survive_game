@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Gold
   description: This is Gold
-  icon: {fileID: -1309796191, guid: a57c648ea30efac428d86507a3c66f44, type: 3}
+  icon: {fileID: 21300000, guid: 16c9c84a9d198d94fb60aa457d7a52ac, type: 3}
   WorldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
     type: 3}
   HandleItem: {fileID: 8756736371672221449, guid: 801f5b1c72287ea478c02c6066c252f2,

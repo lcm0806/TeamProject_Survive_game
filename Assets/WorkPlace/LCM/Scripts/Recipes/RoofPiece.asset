@@ -12,7 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
   m_Name: RoofPiece
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 0}
+  craftedItem: {fileID: 11400000, guid: d84ca822bfa17b0428dcfc97b3e00c8c, type: 2}
   craftedAmount: 1
-  requiredMaterials: []
-  description: 
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: b69e1c68bbc5db9409c3041458924317, type: 2}
+    quantity: 4
+  - materialItem: {fileID: 11400000, guid: 2e8ad88021d9c3446aa895c9854fef94, type: 2}
+    quantity: 3
+  - materialItem: {fileID: 11400000, guid: 9a5c5334c1d5f104481f4f0f1960fcc6, type: 2}
+    quantity: 2
+  description: RoofPiece

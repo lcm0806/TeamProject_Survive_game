@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64c30005ee49f1b45b0d519f6d9d4111, type: 3}
+  m_Name: 10008_InstallLightningRod
+  m_EditorClassIdentifier: 
+  id: 10008
+  title: "\uD53C\uB8B0\uCE68 \uC124\uCE58\uD558\uAE30"
+  description: "\uAC15\uB825\uD55C \uB099\uB8B0\uAC00 \uC790\uC8FC \uBC1C\uC0DD\uD558\uC5EC
+    \uD53C\uB8B0 \uC2DC\uC2A4\uD15C\uC744 \uC124\uCE58\uD574\uC57C \uD55C\uB2E4.
+    \uB2A6\uAE30 \uC804\uC5D0 \uC124\uCE58\uB97C \uC644\uB8CC\uD558\uC790."
+  effectDescription: "\uB9E4\uC77C\uBC24 \uC804\uB825 -50"
+  requiredItem: "\uACE0\uC815\uBABB3 \uAC15\uD654\uCCA0\uBD091"
+  requiredAmount: 0
+  endEffectDescription: "\uC774\uBCA4\uD2B8 \uD6A8\uACFC\uB97C \uC81C\uAC70"
+  reactiveAfterEnd: 0
+  dialogue: "\uB099\uB8B0\uAC00 \uCD95\uC804\uAE30\uB97C \uAC15\uD0C0\uD558\uC5EC
+    \uCDA9\uC804\uB41C \uC804\uB825\uC774 \uC18C\uC2E4\uB418\uC5C8\uB2E4..."

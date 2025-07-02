@@ -425,15 +425,15 @@ public class Inventory : Singleton<Inventory>
         foreach(var slot in inventorySlots)
         {
             if(slot.myItemData == item) 
-            { 
-                count++; 
+            {
+                count += slot.myItemUI.CurrentQuantity; 
             }
         }
         foreach(var slot in hotbarSlots)
         {
             if(slot.myItemData == item)
             {
-                count++;
+                count += slot.myItemUI.CurrentQuantity;
             }
         }
 

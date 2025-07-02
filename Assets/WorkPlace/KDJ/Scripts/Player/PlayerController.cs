@@ -1,5 +1,4 @@
 using Cinemachine;
-using DesignPattern;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour

@@ -1,5 +1,4 @@
 using DesignPattern;
-using System.ComponentModel;
 using UnityEngine;
 
 public class PlayerManager : Singleton<PlayerManager>
@@ -21,7 +20,7 @@ public class PlayerManager : Singleton<PlayerManager>
     public float InteractDelay { get; set; }
     public float ItemDelay { get; set; }
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î °­È­ »óÅÂ¸¦ Ç¥½ÃÇÏ´Â Bool ¹è¿­. Å©±â´Â 3. 0 = Á¦Æ®ÆÑ, 1,2´Â Â÷ÈÄ Ãß°¡ ¿¹Á¤
+    /// ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½È­ ï¿½ï¿½ï¿½Â¸ï¿½ Ç¥ï¿½ï¿½ï¿½Ï´ï¿½ Bool ï¿½è¿­. Å©ï¿½ï¿½ï¿½ 3. 0 = ï¿½ï¿½Æ®ï¿½ï¿½, 1,2ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ ï¿½ï¿½ï¿½ï¿½
     /// </summary>
 
     
@@ -56,9 +55,9 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void PlayerInit()
     {
-        // ÇÃ·¹ÀÌ¾î ÀÓ½Ã »ý¼º ÄÚµå
+        // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½
         GameObject player = Instantiate(_playerPrefab, new Vector3(237.29f, 10.225f, -110.03f), Quaternion.identity);
         Player = player.GetComponent<PlayerController>();
-        Debug.Log("ÇÃ·¹ÀÌ¾î »ý¼º ¿Ï·á");
+        Debug.Log("ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
     }
 }

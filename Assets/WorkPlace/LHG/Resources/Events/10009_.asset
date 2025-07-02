@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64c30005ee49f1b45b0d519f6d9d4111, type: 3}
-  m_Name: 10003_RepairProp
+  m_Name: 10009_
   m_EditorClassIdentifier: 
-  id: 10003
-  title: "\uC9C0\uC9C0\uB300 \uBCF4\uAC15\uD558\uAE30"
-  description: "\uAC70\uC13C \uBC14\uB78C\uC5D0 \uC9C0\uC9C0\uB300\uAC00 \uC2EC\uD558\uAC8C
-    \uD754\uB4E4\uB838\uB2E4. \uC774\uB300\uB85C\uB294 \uC258\uD130 \uC804 \uC9C0\uC5ED\uC5D0
-    \uC804\uB825\uC744 \uACF5\uAE09\uD558\uAE30 \uC5B4\uB824\uC6CC\uC9C4\uB2E4."
+  id: 10009
+  title: "\uC6B4\uC11D \uB300\uBE44\uD558\uAE30"
+  description: "\uC704\uC131 \uACBD\uBCF4\uC5D0 \uB530\uB974\uBA74 \uADFC\uCC98 \uC18C\uD615
+    \uC6B4\uC11D\uC774 \uADA4\uB3C4\uB97C \uD5A5\uD558\uACE0 \uC788\uB2E4. \uC9C1\uC811
+    \uCDA9\uB3CC\uC740 \uC544\uB2C8\uB354\uB77C\uB3C4 \uD30C\uD3B8\uC5D0 \uB300\uBE44\uD574\uC57C
+    \uD55C\uB2E4."
   RandomMinusDuraValue: 0
   PlusDurability: 0
-  MinusDurability: 0
+  MinusDurability: 50
   MinusOxygen: 0
-  MinusEnergy: 30
+  MinusEnergy: 0
   PlusBatteryEfficiency: 0
   MinusBatteryEfficiency: 0
   PlusOxygenEfficiency: 0
@@ -31,5 +32,5 @@ MonoBehaviour:
   requiredItemB: 
   requiredAmountB: 0
   reactiveAfterEnd: 0
-  dialogue: "\uC9C0\uC9C0\uB300\uAC00 \uD754\uB4E4\uB824 \uC804\uB825 \uACF5\uAE09
-    \uC911 \uB204\uC804\uC774 \uC77C\uC5B4\uB0AC\uB2E4..."
+  dialogue: "\uC6B4\uC11D \uD30C\uD3B8\uC73C\uB85C \uC258\uD130\uAC00 \uD070 \uD0C0\uACA9\uC744
+    \uBC1B\uC558\uB2E4..."

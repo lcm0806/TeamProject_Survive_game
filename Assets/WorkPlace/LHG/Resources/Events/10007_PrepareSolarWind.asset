@@ -10,18 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64c30005ee49f1b45b0d519f6d9d4111, type: 3}
-  m_Name: 10003_RepairProp
+  m_Name: 10007_PrepareSolarWind
   m_EditorClassIdentifier: 
-  id: 10003
-  title: "\uC9C0\uC9C0\uB300 \uBCF4\uAC15\uD558\uAE30"
-  description: "\uAC70\uC13C \uBC14\uB78C\uC5D0 \uC9C0\uC9C0\uB300\uAC00 \uC2EC\uD558\uAC8C
-    \uD754\uB4E4\uB838\uB2E4. \uC774\uB300\uB85C\uB294 \uC258\uD130 \uC804 \uC9C0\uC5ED\uC5D0
-    \uC804\uB825\uC744 \uACF5\uAE09\uD558\uAE30 \uC5B4\uB824\uC6CC\uC9C4\uB2E4."
+  id: 10007
+  title: "\uD0DC\uC591\uD48D \uB300\uBE44\uD558\uAE30"
+  description: "\uACE0\uC5D0\uB108\uC9C0 \uC785\uC790\uB97C \uB3D9\uBC18\uD55C \uD0DC\uC591\uD48D\uC774
+    \uC811\uADFC \uC911\uC774\uB2E4. \uC804\uC790\uAE30\uAE30\uC5D0 \uC2EC\uAC01\uD55C
+    \uD53C\uD574\uB97C \uC904 \uC218 \uC788\uC73C\uB2C8, \uBBF8\uB9AC \uB300\uBE44\uD574
+    \uB450\uC790."
   RandomMinusDuraValue: 0
   PlusDurability: 0
   MinusDurability: 0
-  MinusOxygen: 0
-  MinusEnergy: 30
+  MinusOxygen: 50
+  MinusEnergy: 0
   PlusBatteryEfficiency: 0
   MinusBatteryEfficiency: 0
   PlusOxygenEfficiency: 0
@@ -31,5 +32,5 @@ MonoBehaviour:
   requiredItemB: 
   requiredAmountB: 0
   reactiveAfterEnd: 0
-  dialogue: "\uC9C0\uC9C0\uB300\uAC00 \uD754\uB4E4\uB824 \uC804\uB825 \uACF5\uAE09
-    \uC911 \uB204\uC804\uC774 \uC77C\uC5B4\uB0AC\uB2E4..."
+  dialogue: "\uAC15\uB825\uD55C \uD0DC\uC591\uD48D\uC73C\uB85C \uC778\uD574 \uC0B0\uC18C\uAC00
+    \uC678\uBD80\uB85C \uC720\uCD9C\uB418\uC5C8\uB2E4..."

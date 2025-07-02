@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class HpCount : MonoBehaviour

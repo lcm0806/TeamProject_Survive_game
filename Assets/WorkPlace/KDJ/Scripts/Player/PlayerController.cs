@@ -1,5 +1,4 @@
 using Cinemachine;
-using DesignPattern;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,20 +9,25 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CharacterController _controller;
     [SerializeField] private Transform _virCamAxis;
     [SerializeField] private CinemachineVirtualCamera _virCam;
-    [SerializeField] private Transform _playerHand;
+    [SerializeField] private Transform _playerRightHand;
+    [SerializeField] private Transform _playerLeftHand;
+    [SerializeField] private Transform _playerHead; // 플레이어 머리 위치
     [SerializeField] private GameObject _mineGunPrefab; // 테스트용 마인건 프리팹
+    [SerializeField] private GameObject _playerObject; // 회전 할 플레이어 오브젝트
 
     [Header("Config")]
     [SerializeField][Range(0, 5)] private float _mouseSensitivity = 1;
     #endregion
 
     #region 변수
-    
+
     public Vector3 FixedDir { get; set; } // 고정 방향 벡터, 플레이어가 움직일 때 사용
     public CharacterController Controller => _controller;
     public PlayerInteraction PlayerInteraction => _playerInteraction;
     public Transform VirCamAxis => _virCamAxis;
-    public Transform PlayerHand => _playerHand;
+    public Transform PlayerRightHand => _playerRightHand;
+    public Transform PlayerLeftHand => _playerLeftHand;
+    public Transform PlayerHead => _playerHead; // 플레이어 머리 위치
     public bool IsUsingJetPack { get; set; } = false;
     public bool IsSlipping => _playerInteraction.GroundCos < _playerInteraction.SlopeCos && Controller.isGrounded; // 경사면에서 미끄러지는지 여부
 
@@ -93,7 +97,7 @@ public class PlayerController : MonoBehaviour
 
         // 카메라를 기준으로 정면을 잡고 움직이도록 수정해야함
         Vector3 move = transform.TransformDirection(InputManager.Instance.MoveDir) * speed;
-        
+
 
         // 화성이 배경이니 중력은 5.5
         _verVelocity.y -= 5.5f * Time.deltaTime; // 중력 적용
@@ -147,7 +151,7 @@ public class PlayerController : MonoBehaviour
             {
                 _isJumping = true; // 점프 상태로 변경
                 // 점프력
-                _verVelocity.y = 7f;
+                _verVelocity.y = 8f;
                 // 점프시 이동 방향을 고정
                 FixedDir = transform.TransformDirection(InputManager.Instance.MoveDir) * speed;
             }
@@ -177,6 +181,14 @@ public class PlayerController : MonoBehaviour
     #region 플레이어 시점 관련
     private void AimControl()
     {
+        if (Cursor.lockState != CursorLockMode.Locked)
+        {
+            // 마우스가 잠겨있지 않으면 카메라 회전하지 않음
+            return;
+        }
+
+
+
         Vector2 mouseInput = InputManager.Instance.MouseInput * _mouseSensitivity;
         _totalMouseY = Mathf.Clamp(_totalMouseY - mouseInput.y, -75, 75);
 
@@ -189,6 +201,27 @@ public class PlayerController : MonoBehaviour
         _virCamAxis.transform.localRotation = Quaternion.Euler(_totalMouseY, 0, 0);
 
         transform.Rotate(Vector3.up * mouseInput.x);
+
+        // 평소에는 플레이어의 정면 방향을 보고 움직이다가 툴을 사용할 때만 카메라 방향을 바라보게 수정
+        if (InputManager.Instance.IsUsingTool)
+        {
+            // 툴을 사용할 때는 카메라 방향을 부드럽게 바라보도록 수정 => 오직 y축만 변경해야함
+            Vector3 camForward = _virCam.transform.forward;
+            camForward.y = 0; // y축은 무시하고 평면에서 바라보도록 함
+            Quaternion targetRotation = Quaternion.LookRotation(camForward);
+            _playerObject.transform.rotation = Quaternion.Slerp(_playerObject.transform.rotation, targetRotation, Time.deltaTime * 10f);
+
+        }
+        else
+        {
+            // 툴을 사용하지 않을 때는 MoveDir 방향을 바라보도록 수정
+            Vector3 moveDir = transform.TransformDirection(InputManager.Instance.MoveDir);
+            if (moveDir != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDir);
+                _playerObject.transform.rotation = Quaternion.Slerp(_playerObject.transform.rotation, targetRotation, Time.deltaTime * 10f);
+            }
+        }
     }
 
     private void CameraLimit()
@@ -216,8 +249,22 @@ public class PlayerController : MonoBehaviour
         if (PlayerManager.Instance.InHandItem != null)
         {
             // 플레이어의 손 위치에 마인건을 위치시킴
-            PlayerManager.Instance.InHandItem.transform.position = _playerHand.position;
-            PlayerManager.Instance.InHandItem.transform.rotation = _playerHand.rotation;
+            PlayerManager.Instance.InHandItem.transform.position = _playerRightHand.position;
+            PlayerManager.Instance.InHandItem.transform.rotation = _playerRightHand.rotation;
+        }
+
+        if (PlayerManager.Instance.InHandItem2 != null)
+        {
+            // 플레이어의 왼손 위치에 마인건을 위치시킴
+            PlayerManager.Instance.InHandItem2.transform.position = _playerLeftHand.position;
+            PlayerManager.Instance.InHandItem2.transform.rotation = _playerLeftHand.rotation;
+        }
+
+        if (PlayerManager.Instance.InHeadItem != null)
+        {
+            // 플레이어의 머리 위치에 선글라스를 위치시킴
+            PlayerManager.Instance.InHeadItem.transform.position = _playerHead.position;
+            PlayerManager.Instance.InHeadItem.transform.rotation = _playerHead.rotation;
         }
     }
 
@@ -255,6 +302,11 @@ public class PlayerController : MonoBehaviour
     private void MiningSlow()
     {
         if (_isMiningPrev.Equals(_isMining)) return;
+
+        if (PlayerManager.Instance.IsAkimbo)
+        {
+            return; // 아킴보 상태일 때는 슬로우 적용 안함
+        }
 
         if (_isMining)
         {

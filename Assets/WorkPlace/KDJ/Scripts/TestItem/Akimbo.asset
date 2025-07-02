@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4fdafe40d65041a40a48aae8c5ad7410, type: 3}
-  m_Name: ElectroMagnetGun
+  m_Name: Akimbo
   m_EditorClassIdentifier: 
-  itemName: ElectromagnetGun
-  description: Collect items while mining.
-  icon: {fileID: 21300000, guid: 75b9992ee03fad749aef16536d227780, type: 3}
-  WorldPrefab: {fileID: 5908831798058297219, guid: a80b0918dff5dbf449d038c62dcb0264,
+  itemName: New Item
+  description: A basic item.
+  icon: {fileID: 21300000, guid: dac859c53cb773e4b99b194baf563dbd, type: 3}
+  WorldPrefab: {fileID: 4477834618670588494, guid: 6bde9563558eab540bea86a5df9197ee,
     type: 3}
-  HandleItem: {fileID: 5908831798058297219, guid: 297a47447daf78c4d8fc43c9daa765e2,
+  HandleItem: {fileID: 4477834618670588494, guid: 643d3df462cd8cf459bb8f7ddd25565c,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 0
@@ -25,5 +25,5 @@ MonoBehaviour:
   miningPower: 1
   toolType: 0
   toolObject: {fileID: 0}
-  toolAction: {fileID: 8215819011452811507, guid: a168851e2628113409393c05d15f1ee9,
+  toolAction: {fileID: 128527565398972500, guid: 643d3df462cd8cf459bb8f7ddd25565c,
     type: 3}

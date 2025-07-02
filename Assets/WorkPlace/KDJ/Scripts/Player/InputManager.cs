@@ -1,4 +1,5 @@
 using DesignPattern;
+using System.Collections;
 using UnityEngine;
 
 public class InputManager : Singleton<InputManager>
@@ -8,6 +9,8 @@ public class InputManager : Singleton<InputManager>
 
     public bool IsUsingTool { get; private set; } // 테스트용 bool 값, 마이닝 애니메이션 실행 여부
     public bool CanMove => !PlayerManager.Instance.Player.IsSlipping && !PlayerManager.Instance.Player.IsUsingJetPack;
+
+    private Coroutine _itemCo;
 
     private void Awake()
     {
@@ -82,21 +85,30 @@ public class InputManager : Singleton<InputManager>
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             PlayerManager.Instance.SelectItem = null;
+            PlayerManager.Instance.AkimboReset();
             Destroy(PlayerManager.Instance.InHandItem);
+            Destroy(PlayerManager.Instance.InHandItem2); // 아킴보 상태일 때 두번째 아이템 제거
+            Destroy(PlayerManager.Instance.InHeadItem); // 머리에 착용한 아이템 제거
             // 인벤토리 핫바 1번 선택
             Inventory.Instance.SelectHotbarSlot(0);
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             PlayerManager.Instance.SelectItem = null;
+            PlayerManager.Instance.AkimboReset();
             Destroy(PlayerManager.Instance.InHandItem);
+            Destroy(PlayerManager.Instance.InHandItem2);
+            Destroy(PlayerManager.Instance.InHeadItem);
             // 인벤토리 핫바 2번 선택
             Inventory.Instance.SelectHotbarSlot(1);
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             PlayerManager.Instance.SelectItem = null;
+            PlayerManager.Instance.AkimboReset();
             Destroy(PlayerManager.Instance.InHandItem);
+            Destroy(PlayerManager.Instance.InHandItem2);
+            Destroy(PlayerManager.Instance.InHeadItem);
             // 인벤토리 핫바 3번 선택
             Inventory.Instance.SelectHotbarSlot(2);
         }
@@ -120,10 +132,11 @@ public class InputManager : Singleton<InputManager>
 
             if (PlayerManager.Instance.InHandItem == null)
             {
-                // 소비아이템의 프리팹을 생성하는 로직 생성
-                PlayerManager.Instance.InHandItem = Instantiate(curItem.HandleItem,
-                    PlayerManager.Instance.Player.PlayerHand.position,
-                    PlayerManager.Instance.Player.PlayerHand.rotation);
+                if(_itemCo == null)
+                {
+                    // 아이템 핸들러가 없다면 생성 코루틴 실행
+                    _itemCo = StartCoroutine(ItemInstantiate());
+                }
             }
         }
         #endregion
@@ -138,9 +151,16 @@ public class InputManager : Singleton<InputManager>
         {
             IsUsingTool = true; // 마이닝 애니메이션 실행을 위한 bool 값 설정
 
+            float itemUseRate = 0.1f;
+
+            if (PlayerManager.Instance.IsAkimbo)
+            {
+                itemUseRate = 0.05f; // 아킴보 상태에서는 아이템 사용 속도를 빠르게
+            }
+
             // 아이템 사용은 중간에 마우스를 때면 멈춰야 하기에 코루틴이 아닌 그냥 구현
             PlayerManager.Instance.ItemDelay += Time.deltaTime;
-            if (PlayerManager.Instance.ItemDelay >= 0.1f)
+            if (PlayerManager.Instance.ItemDelay >= itemUseRate)
             {
                 Debug.Log("아이템 사용!");
                 PlayerManager.Instance.SelectItem.Use(this.gameObject);
@@ -182,5 +202,36 @@ public class InputManager : Singleton<InputManager>
         float y = Input.GetAxisRaw("Vertical");
 
         MoveDir = new Vector3(x, 0, y).normalized;
+    }
+
+    IEnumerator ItemInstantiate()
+    {
+        // 아이템 생성 딜레이를 위한 코루틴
+        // 순서상 아이템 생성은 아이템 interact 후 각 변수들에 할당 후 이루어져야 하기에 딜레이를 추가함
+        yield return new WaitForSeconds(0.01f);
+
+        Item curItem = Inventory.Instance.GetCurrentHotbarItem();
+
+        if (PlayerManager.Instance.IsAkimbo)
+        {
+            // 아킴보인 경우 양손에 툴 생성
+            PlayerManager.Instance.InHandItem = Instantiate(curItem.HandleItem,
+                PlayerManager.Instance.Player.PlayerRightHand.position,
+                PlayerManager.Instance.Player.PlayerRightHand.rotation);
+            PlayerManager.Instance.InHandItem2 = Instantiate(curItem.HandleItem,
+                PlayerManager.Instance.Player.PlayerLeftHand.position,
+                PlayerManager.Instance.Player.PlayerLeftHand.rotation);
+            PlayerManager.Instance.InHeadItem = Instantiate(PlayerManager.Instance.SunGlasses,
+                PlayerManager.Instance.Player.PlayerHead.position,
+                PlayerManager.Instance.Player.PlayerHead.rotation);
+        }
+        else
+        {
+            PlayerManager.Instance.InHandItem = Instantiate(curItem.HandleItem,
+            PlayerManager.Instance.Player.PlayerRightHand.position,
+            PlayerManager.Instance.Player.PlayerRightHand.rotation);
+        }
+
+        _itemCo = null; // 코루틴 종료 후 null로 설정
     }
 }

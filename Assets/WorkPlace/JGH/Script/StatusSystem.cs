@@ -93,10 +93,6 @@ public class StatusSystem : Singleton<StatusSystem>
         _electricalEnergy -= value;
     }
     
-    
-    
-    
-    
     /// <summary>
     /// 현재 내구도 얻기
     /// </summary>

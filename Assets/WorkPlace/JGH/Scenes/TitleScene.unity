@@ -1478,6 +1478,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6024469526972087720, guid: f26923c3529f9401181b8409823a3f41,
         type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024469526972087720, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6024469526972087720, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
       propertyPath: m_TargetCamera
       value: 
       objectReference: {fileID: 330585545}

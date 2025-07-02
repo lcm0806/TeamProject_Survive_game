@@ -112,7 +112,7 @@ public class SceneSystem : Singleton<SceneSystem>
     public void LoadShelterScene()
     {
         // 씬 로드 후 저장하도록 변경
-        LoadSceneWithDelayAndSave(_shelterSceneName);
+        LoadSceneWithDelay(_shelterSceneName);
     }
     
     /// <summary>
@@ -130,18 +130,6 @@ public class SceneSystem : Singleton<SceneSystem>
         LoadSceneWithDelay(_farmingSceneName);
     }
     
-    /// <summary>
-    /// 다음날 전환 씬으로 이동
-    /// </summary>
-    public void LoadDayTransitionScene()
-    {
-        // 날짜 + 1
-        StatusSystem.Instance.NextCurrentDay();
-        // 탐색 여부
-        StatusSystem.Instance.SetIsToDay(false);
-        
-        LoadSceneWithDelayAndSave(_shelterSceneName);
-    }
     
     /// <summary>
     /// 씬 이름으로 직접 로드 (딜레이 포함)

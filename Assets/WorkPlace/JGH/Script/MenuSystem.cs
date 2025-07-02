@@ -638,6 +638,16 @@ public class MenuSystem : Singleton<MenuSystem>
 
     private void OnClickNewGameOk()
     {
+        if (StatusSystem.Instance != null)
+        {
+            StatusSystem.Instance.SetCurrentDay(1);
+            StatusSystem.Instance.SetOxygen(100f);
+            StatusSystem.Instance.SetEnergy(100f);
+            StatusSystem.Instance.SetDurability(100f);
+            StatusSystem.Instance.SetIsToDay(false);
+            Debug.Log("StatusSystem 기본값으로 초기화 완료");
+        }
+        
         AudioSystem.Instance.StopBGM();
         SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
         MainMenu.SetActive(false);
@@ -661,7 +671,7 @@ public class MenuSystem : Singleton<MenuSystem>
             Debug.Log("게임 데이터 불러오기 및 적용 완료");
 
             // 이어하기 씬 전환
-            SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
+            SceneSystem.Instance.LoadSceneWithDelay(SceneSystem.Instance.GetShelterSceneName());
         }
         else
         {

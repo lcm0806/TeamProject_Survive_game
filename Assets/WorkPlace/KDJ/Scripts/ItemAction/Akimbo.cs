@@ -1,30 +1,10 @@
 using UnityEngine;
 
-public class ElectromagnetGun : ToolAction
+public class Akimbo : ToolAction
 {
-    [SerializeField] private GameObject _electroEffect;
-
     private Collider[] _colls = new Collider[10];
     private LayerMask _layerMask = 1 << 10;
     private bool _isMining = false;
-    private GameObject _electroEffectInstance;
-
-    private void Update()
-    {
-        if (InputManager.Instance.IsUsingTool && _electroEffectInstance == null)
-        {
-            _electroEffectInstance = Instantiate(_electroEffect, PlayerManager.Instance.InHandItem.transform.position + Vector3.up * 0.3f, Quaternion.identity);
-        }
-        else if(!InputManager.Instance.IsUsingTool && _electroEffectInstance != null)
-        {
-            Destroy(_electroEffectInstance);
-        }
-
-        if (_electroEffectInstance != null)
-        {
-            _electroEffectInstance.transform.position = PlayerManager.Instance.InHandItem.transform.position + Vector3.up * 0.3f;
-        }
-    }
 
     public override void Action(int power)
     {
@@ -32,11 +12,15 @@ public class ElectromagnetGun : ToolAction
         int count = Physics.OverlapSphereNonAlloc(PlayerManager.Instance.InHandItem.transform.position
             + PlayerManager.Instance.Player.transform.forward * 1.5f, 3f, _colls, _layerMask);
 
+        Debug.Log("현재 검출 레이어" + _layerMask.value);
+
         if (count > 0)
         {
+            Debug.Log($"주변 광물 개수: {count}");
             _isMining = true;
             for (int i = 0; i < count; i++)
             {
+                //_colls[i].GetComponent<TestOre>()?.TakeDamage(power);
                 bool s = _colls[i].TryGetComponent<MineableResource>(out MineableResource ore);
                 if (!s)
                 {
@@ -47,10 +31,9 @@ public class ElectromagnetGun : ToolAction
         }
         else
         {
+            Debug.Log("주변에 광물이 없습니다.");
             _isMining = false;
         }
-
-        PlayerManager.Instance.Player.PlayerInteraction.InteractAllNearItem();
     }
 
     private void OnDrawGizmos()
@@ -70,9 +53,5 @@ public class ElectromagnetGun : ToolAction
             Gizmos.DrawWireSphere(PlayerManager.Instance.InHandItem.transform.position
                 + PlayerManager.Instance.Player.transform.forward * 1.5f, 3f);
         }
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(PlayerManager.Instance.Player.transform.position, 4f);
     }
 }
-

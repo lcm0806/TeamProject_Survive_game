@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DesignPattern;
 using System;
 
-public class CraftingManager : Singleton<CraftingManager>
+public class CraftingManager : MonoBehaviour
 {
 
     [Header("All Crafting Recipes")]
@@ -22,7 +21,10 @@ public class CraftingManager : Singleton<CraftingManager>
 
     protected void Awake()
     {
-        SingletonInit();
+        if (Storage.Instance == null)
+        {
+            Debug.LogError("CraftingManager: Storage.Instance를 찾을 수 없습니다. Storage 스크립트가 씬에 있는지 확인해주세요!", this);
+        }
     }
     
     public bool CanCraft(Recipe recipe)
@@ -40,7 +42,7 @@ public class CraftingManager : Singleton<CraftingManager>
                 return false;
             }
 
-            int playerHasAmount = Inventory.Instance.GetItemCount(material.materialItem);
+            int playerHasAmount = Storage.Instance.GetItemCount(material.materialItem);
             if (playerHasAmount < material.quantity)
             {
                 // 디버그는 자주 뜨므로, 필요할 때만 출력하도록 주석 처리하거나 조건부로 사용
@@ -62,12 +64,12 @@ public class CraftingManager : Singleton<CraftingManager>
         //재료 소모
         foreach(var material in recipe.requiredMaterials)
         {
-            Inventory.Instance.RemoveItem(material.materialItem, material.quantity);
+            Storage.Instance.RemoveItem(material.materialItem, material.quantity);
         }
         //아이템 제작 및 인벤토리 추가
         for(int i = 0; i < recipe.craftedAmount; i++)
         {
-            Inventory.Instance.SpawnInventoryItem(recipe.craftedItem);
+            Storage.Instance.AddItemToStorage(recipe.craftedItem, recipe.craftedAmount);
         }
 
         Debug.Log($"'{recipe.craftedItem.name}' (x{recipe.craftedAmount}) 제작 완료!");

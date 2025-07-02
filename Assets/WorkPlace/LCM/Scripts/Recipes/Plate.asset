@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
   m_Name: Plate
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 0}
+  craftedItem: {fileID: 11400000, guid: d7abb8f3714d5924eaa92f25dddd677b, type: 2}
   craftedAmount: 1
-  requiredMaterials: []
-  description: 
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: 27bfcdbf8961b834c8f8670c1e25fcec, type: 2}
+    quantity: 6
+  - materialItem: {fileID: 11400000, guid: 2e8ad88021d9c3446aa895c9854fef94, type: 2}
+    quantity: 6
+  description: Plate

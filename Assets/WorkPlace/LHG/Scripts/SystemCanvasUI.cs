@@ -11,15 +11,16 @@ public class SystemCanvasUI : MonoBehaviour
     [SerializeField] public GameObject ShelterUICanvas, LoadingCanvas;
     public StatusSystem StatusSystem;
     public SceneSystem SceneSystem;
-    public TMP_Text[] ExitWithNotEnoughOxygenText, DayTransitionText;
+    public TMP_Text[] ExitWithNotEnoughOxygenText, NightTransitionText, BedRoomProceedConfirmText;
+    public GameObject[] SystemCanvas, LoadingSceneBG;
 
-    
-    
-    public GameObject[] SystemCanvas, LoadingSceneBG; 
+    public string fullText;
+    public float typingSpeed = 0.1f;
+    private int currentIndex;
 
     public void ExitWithNotEnoughOxygenTextDisplay()
     {
-        ExitWithNotEnoughOxygenText[0].SetText($"(This choice will use {StatusSystem.GetOxygen()} oxygen to leave the Shelter and go out to explore.\r\nExploration is limited to 'Once' per day.\r\nAre you sure to proceed this choice?");
+        ExitWithNotEnoughOxygenText[0].SetText($"(This choice will use {StatusSystem.GetOxygen()} oxygen to leave the Shelter and go out to explore.\r\nExploration is limited to 'Once' per day.\r\nAre you sure to proceed this decision?");
     }
 
     public void ExitWithEnoughOxygenYes()
@@ -38,12 +39,19 @@ public class SystemCanvasUI : MonoBehaviour
         }
     }
 
-    // Ȯ��â���� no �������� �ý���ĵ���� ��ü�� ��Ȱ��ȭ ���Ѽ� â�� ����
+    
     public void DeActivateExitConfirmPanel(int systemCanvas)
     {
         SystemCanvas[systemCanvas].SetActive(false);
     }
 
+
+
+    public void BedRoomProceedConfirmTextDisplay()
+    {
+        Debug.Log("잠자기 확인창 텍스트 출력");
+        BedRoomProceedConfirmText[0].SetText($"Tonight {"event.name"} will occur. \r\n Once you go to bed, it can't be reversed.\r\n Are you ready to go to sleep after all the preparations?");
+    }
 
     //침실-수면실행시 yes버튼
     public void SleepAndNextDay()
@@ -55,6 +63,8 @@ public class SystemCanvasUI : MonoBehaviour
             // 코루틴 대신 Invoke 사용
             Invoke(nameof(DelayedSceneTransition), 2f);
         }
+
+        //TODO 게임오버 확인(산소,전력,내구도) - 기훈님께 확인필요
     }
     
     private void DelayedSceneTransition()
@@ -62,5 +72,26 @@ public class SystemCanvasUI : MonoBehaviour
         SceneSystem.Instance.LoadDayTransitionScene();
         LoadingSceneBG[0].SetActive(false);
     }
+
+    //public void NightTransitionTextDisplay()
+    //{
+
+    //    StartCoroutine(TypingEffect());
+    //    NightTransitionText[0].SetText($"{StatusSystem.GetIsToDay()}일차.. \r\n 이벤트: {"event.name"} 가 발생. \r\n 효과 : {"event.effect"} \r\n ...");
+    //}
+
+    //IEnumerator TypingEffect()
+    //{
+    //    currentIndex = 0;
+    //    NightTransitionText[0].text = ""; 
+    //    while(currentIndex < fullText.Length)
+    //    {
+    //        NightTransitionText[0].text += fullText[currentIndex];
+    //        currentIndex++;
+    //        yield return new WaitForSeconds(typingSpeed);
+    //    }
+    //}
     
+
+
 }

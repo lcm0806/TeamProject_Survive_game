@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Nail
   description: Nail
-  icon: {fileID: 21300000, guid: b8a123a31a6f7734ebc07e962943c230, type: 3}
+  icon: {fileID: 21300000, guid: da391bf5a3fcd5742812179ffa94f2bd, type: 3}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}

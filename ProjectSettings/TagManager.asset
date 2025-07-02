@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Resource
+  - MainUICanvas
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Plane
   - Mineable
   - Marker
-  - 
+  - Resouce
   - 
   - 
   - 

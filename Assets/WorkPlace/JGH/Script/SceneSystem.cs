@@ -3,28 +3,10 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Object = UnityEngine.Object;
+using DesignPattern;
 
-public class SceneSystem : MonoBehaviour
+public class SceneSystem : Singleton<SceneSystem>
 {
-    private static SceneSystem _instance;
-    public static SceneSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<SceneSystem>();
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("SceneSystem");
-                    _instance = go.AddComponent<SceneSystem>();
-                    DontDestroyOnLoad(go);
-                }
-            }
-            return _instance;
-        }
-    }
-
     [Header("Scene Names - 빌드 설정에서 추가된 씬 이름들")] 
     [SerializeField] private string _titleSceneName;
     [SerializeField] private string _shelterSceneName;
@@ -71,23 +53,50 @@ public class SceneSystem : MonoBehaviour
     
     private void Awake()
     {
-        // 싱글톤 중복 방지
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        // Singleton 초기화 먼저 호출
+        SingletonInit();
         
-        _instance = this;
+        ValidateSceneNames();
         
-        // 부모가 있다면 루트로 이동
-        if (transform.parent != null)
-        {
-            transform.SetParent(null);
-        }
-        
-        DontDestroyOnLoad(gameObject);
     }
+    
+    /// <summary>
+    /// 씬 이름들이 제대로 설정되었는지 검증합니다.
+    /// </summary>
+    private void ValidateSceneNames()
+    {
+        bool hasError = false;
+    
+        if (string.IsNullOrEmpty(_titleSceneName))
+        {
+            Debug.LogError("Title Scene Name이 설정되지 않았습니다!");
+            hasError = true;
+        }
+    
+        if (string.IsNullOrEmpty(_shelterSceneName))
+        {
+            Debug.LogError("Shelter Scene Name이 설정되지 않았습니다!");
+            hasError = true;
+        }
+    
+        if (string.IsNullOrEmpty(_farmingSceneName))
+        {
+            Debug.LogError("Farming Scene Name이 설정되지 않았습니다!");
+            hasError = true;
+        }
+    
+        if (string.IsNullOrEmpty(_dayTransitionSceneName))
+        {
+            Debug.LogError("Day Transition Scene Name이 설정되지 않았습니다!");
+            hasError = true;
+        }
+    
+        if (hasError)
+        {
+            Debug.LogError("SceneSystem: 일부 씬 이름이 설정되지 않았습니다. Inspector에서 확인해주세요!");
+        }
+    }
+    
     
     /// <summary>
     /// 타이틀 씬으로 이동
@@ -103,7 +112,6 @@ public class SceneSystem : MonoBehaviour
     public void LoadShelterScene()
     {
         // 씬 로드 후 저장하도록 변경
-        // LoadSceneWithDelay(_dayTransitionSceneName);
         LoadSceneWithDelayAndSave(_shelterSceneName);
     }
     
@@ -206,7 +214,7 @@ public class SceneSystem : MonoBehaviour
     /// </summary>
     /// <param name="sceneName"></param>
     /// <returns></returns>
-    private IEnumerator LoadSceneCoroutine(string sceneName)
+    public IEnumerator LoadSceneCoroutine(string sceneName)
     {
         Debug.Log($"씬 로드 준비: {sceneName}");
         
@@ -243,7 +251,16 @@ public class SceneSystem : MonoBehaviour
         // 이제 저장 실행
         if (FileSystem.Instance != null)
         {
-            FileSystem.Instance.SaveOrUpdateGameData();
+            GameData data = new GameData
+            {
+                currentDay = StatusSystem.Instance.GetCurrentDay(),
+                oxygenRemaining = StatusSystem.Instance.GetOxygen(),
+                electricalEnergy = StatusSystem.Instance.GetEnergy(),
+                shelterDurability = StatusSystem.Instance.GetDurability(),
+                isToDay = StatusSystem.Instance.GetIsToDay()
+            };
+            FileSystem.Instance.SaveGameData(data);
+            
             Debug.Log($"씬 '{sceneName}' 로드 후 자동 저장 완료");
         }
         else

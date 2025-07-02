@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StorageManager : MonoBehaviour
 {
@@ -61,6 +62,9 @@ public class StorageManager : MonoBehaviour
                 rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
                 rectTransform.anchoredPosition = Vector2.zero;
             }
+
+            LayoutRebuilder.ForceRebuildLayoutImmediate(StorageUIPanel.GetComponent<RectTransform>());
+
             Debug.Log("Storage 로직 오브젝트가 Canvas 아래로 이동되었습니다.");
         }
         else if (StorageUIPanel != null && StorageUIPanel.transform.parent == _gameCanvas.transform)

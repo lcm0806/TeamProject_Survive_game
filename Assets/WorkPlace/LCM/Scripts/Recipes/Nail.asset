@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
   m_Name: Nail
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 0}
+  craftedItem: {fileID: 11400000, guid: 93b694a9ab4c4db4cb096bdcde5e89e8, type: 2}
   craftedAmount: 1
-  requiredMaterials: []
-  description: 
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: 27bfcdbf8961b834c8f8670c1e25fcec, type: 2}
+    quantity: 6
+  description: Nail

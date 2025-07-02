@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
   m_Name: Plate
   m_EditorClassIdentifier: 
-  itemName: New Item
+  itemName: Plate
   description: A basic item.
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 3e15791aa64299545b8bc3e16836e828, type: 3}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}

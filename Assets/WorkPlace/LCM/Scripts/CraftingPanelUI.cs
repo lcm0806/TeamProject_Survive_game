@@ -45,7 +45,6 @@ public class CraftingPanelUI : MonoBehaviour
         // SampleCraftingUIController의 Awake 내용 통합
         // 이 스크립트가 CraftingPanel 자체에 붙는다면 _craftingPanel 참조는 this.gameObject로 변경될 수 있습니다.
         // 여기서는 _craftingPanel은 전체 Crafting UI를 의미한다고 가정하고 그대로 둡니다.
-        if (_craftingPanel != null) _craftingPanel.SetActive(false);
         if (_craftingDetailPanel != null) _craftingDetailPanel.SetActive(false);
 
         // 안전성 체크

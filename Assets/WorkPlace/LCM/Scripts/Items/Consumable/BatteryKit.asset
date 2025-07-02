@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85879ff987a41cc4c83d735bd223cc1e, type: 3}
   m_Name: BatteryKit
   m_EditorClassIdentifier: 
-  itemName: New Item
+  itemName: BatteryRepairKit
   description: A basic item.
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 035c8247be0bb794db9b51b18ad647ce, type: 3}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}

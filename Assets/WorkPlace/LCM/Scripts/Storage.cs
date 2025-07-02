@@ -18,6 +18,7 @@ public class Storage : Singleton<Storage>
 
     private void Awake()
     {
+        Debug.Log("스토리지 생성");
         SingletonInit();
         if (_storageUIRootPanel != null)
         {

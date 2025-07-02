@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
   m_Name: ElectronicRepairKit
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 0}
+  craftedItem: {fileID: 11400000, guid: 2fb31ccf69057da4e9c991c32d230f2d, type: 2}
   craftedAmount: 1
-  requiredMaterials: []
-  description: 
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: 4ecea7ed59c25604abee38b3d917a93a, type: 2}
+    quantity: 5
+  - materialItem: {fileID: 11400000, guid: 2e8ad88021d9c3446aa895c9854fef94, type: 2}
+    quantity: 6
+  description: BatteryRe[airKit

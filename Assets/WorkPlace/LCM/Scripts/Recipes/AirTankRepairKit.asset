@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
   m_Name: AirTankRepairKit
   m_EditorClassIdentifier: 
-  craftedItem: {fileID: 0}
+  craftedItem: {fileID: 11400000, guid: 495b1522ea8b325449850d716daff447, type: 2}
   craftedAmount: 1
-  requiredMaterials: []
-  description: 
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: b69e1c68bbc5db9409c3041458924317, type: 2}
+    quantity: 7
+  - materialItem: {fileID: 11400000, guid: 9a5c5334c1d5f104481f4f0f1960fcc6, type: 2}
+    quantity: 4
+  description: AirTankRepairKit

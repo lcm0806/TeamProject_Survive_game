@@ -17,13 +17,13 @@ MonoBehaviour:
   description: "\uD3ED\uD48D\uC73C\uB85C \uC778\uD574 \uC678\uBCBD\uC5D0 \uAE4A\uC740
     \uADE0\uC5F4\uC774 \uC0DD\uACBC\uB2E4. \uBC29\uD638\uB825\uC774 \uD06C\uAC8C
     \uB5A8\uC5B4\uC9C4 \uC0C1\uD0DC\uB2E4."
-  RandomMinusDuraValue: 0
+  RandomMinusDuraValue: 15
   PlusDurability: 0
-  MinusDurability: 0
+  MinusDurability: 30
   MinusOxygen: 0
-  MinusEnergy: 30
-  PlusBatteryEfficiency: 0
-  MinusBatteryEfficiency: 0
+  MinusEnergy: 0
+  PlusEnergyEfficiency: 0
+  MinusEnergyEfficiency: 0
   PlusOxygenEfficiency: 0
   MinusOxygenEfficiency: 0
   requiredItemA: 

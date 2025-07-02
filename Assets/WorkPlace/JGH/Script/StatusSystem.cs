@@ -180,8 +180,17 @@ public class StatusSystem : Singleton<StatusSystem>
         _oxygenGainMultiplier = -value;
     }
 
+    public void SetPlusOxygenGainMultiplier(double value)
+    {
+        _oxygenGainMultiplier = +value;
+    }
+
     public void SetMinusEnergyGainMultiplier(double value)
     {
         _energyGainMultiplier = -value;
+    }
+    public void SetPlusEnergyGainMultiplier(double value)
+    {
+        _energyGainMultiplier = +value;
     }
 }

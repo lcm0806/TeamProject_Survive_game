@@ -17941,9 +17941,10 @@ GameObject:
   - component: {fileID: 1903160402}
   - component: {fileID: 1903160401}
   - component: {fileID: 1903160400}
+  - component: {fileID: 1903160404}
   m_Layer: 5
   m_Name: StorageCanvas
-  m_TagString: MainUICanvas
+  m_TagString: StorageUICanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18049,6 +18050,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 1
   m_TargetDisplay: 0
+--- !u!114 &1903160404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903160398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48285e861d1daf645abe7e134705e9a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneSpecificQuestUI: {fileID: 1903160398}
 --- !u!1 &1918712774
 GameObject:
   m_ObjectHideFlags: 0

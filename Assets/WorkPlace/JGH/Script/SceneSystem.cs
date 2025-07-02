@@ -56,7 +56,6 @@ public class SceneSystem : Singleton<SceneSystem>
         // Singleton 초기화 먼저 호출
         SingletonInit();
         
-        // Scene name validation
         ValidateSceneNames();
         
     }
@@ -113,7 +112,6 @@ public class SceneSystem : Singleton<SceneSystem>
     public void LoadShelterScene()
     {
         // 씬 로드 후 저장하도록 변경
-        // LoadSceneWithDelay(_dayTransitionSceneName);
         LoadSceneWithDelayAndSave(_shelterSceneName);
     }
     
@@ -253,7 +251,16 @@ public class SceneSystem : Singleton<SceneSystem>
         // 이제 저장 실행
         if (FileSystem.Instance != null)
         {
-            FileSystem.Instance.SaveOrUpdateGameData();
+            GameData data = new GameData
+            {
+                currentDay = StatusSystem.Instance.GetCurrentDay(),
+                oxygenRemaining = StatusSystem.Instance.GetOxygen(),
+                electricalEnergy = StatusSystem.Instance.GetEnergy(),
+                shelterDurability = StatusSystem.Instance.GetDurability(),
+                isToDay = StatusSystem.Instance.GetIsToDay()
+            };
+            FileSystem.Instance.SaveGameData(data);
+            
             Debug.Log($"씬 '{sceneName}' 로드 후 자동 저장 완료");
         }
         else

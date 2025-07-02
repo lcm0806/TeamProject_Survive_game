@@ -15,6 +15,19 @@ public class StatusSystem : Singleton<StatusSystem>
         SingletonInit();
     }
 
+    public void SetCurrentDay(int day)
+    {
+        _currentDay = day;
+    }
+    
+    /// <summary>
+    /// 현재 산소 설정
+    /// </summary>
+    /// <returns></returns>
+    public void SetOxygen(double value)
+    {
+        _oxygenRemaining = value;
+    }
 
     /// <summary>
     /// 현재 산소 얻기
@@ -52,6 +65,15 @@ public class StatusSystem : Singleton<StatusSystem>
     {
         return _electricalEnergy;
     }
+    
+    /// <summary>
+    /// 현재 전력 얻기
+    /// </summary>
+    /// <returns></returns>
+    public void SetEnergy(double value)
+    {
+        _electricalEnergy = value;
+    }
 
     /// <summary>
     ///  전력 올리기
@@ -83,6 +105,15 @@ public class StatusSystem : Singleton<StatusSystem>
     {
         return _shelterDurability;
     }
+    
+    /// <summary>
+    /// 현재 내구도 얻기
+    /// </summary>
+    /// <returns></returns>
+    public void SetDurability(double value)
+    {
+        _shelterDurability = value;
+    }
 
     /// <summary>
     /// 내구도 올리기
@@ -101,8 +132,6 @@ public class StatusSystem : Singleton<StatusSystem>
     {
         _shelterDurability -= value;
     }
-    
-    
     
     
     /// <summary>

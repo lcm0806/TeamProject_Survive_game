@@ -7,15 +7,26 @@ using TMPro;
 
 public class SampleUIManager : Singleton<SampleUIManager>
 {
-    [SerializeField] private GameObject inventoryPanel;
+    
     [SerializeField] private TextMeshProUGUI _itemDescriptionText;
 
     [Header("Hotbar UI")]
     [SerializeField] private GameObject[] hotbarSelectionIndicators;
 
+    [Header("Crafting UI")]
+    [SerializeField] private GameObject craftingPanel; // 제작 UI의 최상위 패널
+
+    [SerializeField] private GameObject sceneSpecificUIRoot;
+
+    public GameObject inventoryPanel;
+
     private int _currentSelectedHotbarIndex = -1;
 
     public event Action<bool> OnInventoryUIToggled;
+
+    public event Action<bool> OnCraftingUIToggled;
+
+    
 
     private void Awake()
     {
@@ -24,12 +35,22 @@ public class SampleUIManager : Singleton<SampleUIManager>
         {
             inventoryPanel.SetActive(false); // 인벤토리 UI는 시작 시 비활성화
         }
+        if (craftingPanel != null)
+        {
+            craftingPanel.SetActive(false);
+        }
 
         SetItemDescription(""); // 아이템 설명 초기화
 
         // Inventory의 핫바 관련 이벤트 구독
         Inventory.Instance.OnHotbarSlotChanged += OnHotbarSlotSelectionChanged;
         Inventory.Instance.OnHotbarSlotItemUpdated += OnHotbarSlotItemContentUpdated;
+
+        if (sceneSpecificUIRoot != null)
+        {
+            sceneSpecificUIRoot.SetActive(false);
+            Debug.Log($"씬 고유 UI 루트 '{sceneSpecificUIRoot.name}'를 비활성화했습니다.");
+        }
 
         // 초기 핫바 선택 상태 UI 업데이트 (Awake에서 Inventory가 초기화된 후 호출)
         // Inventory에서 _currentHotbarSlotIndex를 초기화하므로, 그 값을 반영해야 함
@@ -55,6 +76,37 @@ public class SampleUIManager : Singleton<SampleUIManager>
             Cursor.visible = false;
             // PlayerController.Instance.SetCanMove(true);
         }
+    }
+
+    public void ToggleCraftingUI()
+    {
+        bool currentStatus = !craftingPanel.activeSelf;
+        craftingPanel.SetActive(currentStatus);
+
+        OnCraftingUIToggled?.Invoke(currentStatus);
+
+        // 인벤토리와 마찬가지로 커서 및 플레이어 제어 로직을 적용
+        if (currentStatus)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            // PlayerController.Instance.SetCanMove(false);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            // PlayerController.Instance.SetCanMove(true);
+        }
+
+        // 만약 인벤토리와 제작 UI가 동시에 열릴 수 없다면,
+        // 제작 UI를 열 때 인벤토리 UI를 닫고, 그 반대도 마찬가지로 처리해야 합니다.
+        if (currentStatus && inventoryPanel.activeSelf)
+        {
+            ToggleInventoryUI(); // 제작 UI 열리면 인벤토리 닫기
+        }
+        // 또는, Inventory.cs의 ToggleInventoryUI에서도 이 로직을 추가하여
+        // 인벤토리 열릴 때 제작 UI 닫기
     }
 
     public void SetItemDescription(string description)

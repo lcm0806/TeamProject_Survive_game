@@ -1,36 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.VersionControl;
+// using UnityEditor.VersionControl;
 using UnityEngine;
 
 public class PickupItem : MonoBehaviour, IInteractable
 {
-    [Header("µå·Ó ÇÁ¸®ÆÕ")]
+    
     public GameObject batteryPrefab;
     public GameObject oxygenPrefab;
     public float lootLaunchForce = 5f;
 
-    [Header("ÆÄ±«(ÆäÀÌµå) ¿¬Ãâ")]
-    public float fadeDuration = 2f;     // 2ÃÊ µ¿¾È Åõ¸íÈ­
+    
+    public float fadeDuration = 2f;     
 
-    private bool _used = false;         // ÀÌ¹Ì »óÈ£ÀÛ¿ë Çß´ÂÁö
+    private bool _used = false;
 
-    /* ------------------- ÀÎÅÍ·¢Æ® ------------------- */
+
     public void Interact()
     {
-        if (_used) return;              // Áßº¹ ¹æÁö
+        if (_used) return;
         _used = true;
-
         float roll = Random.value;
 
         if (roll < 0.3f) SpawnLoot(batteryPrefab);
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
-        else ShowMessage("ºñ¾îÀÖ´Â º¸±Þ »óÀÚÀÔ´Ï´Ù...");
+        else ShowMessage("ë³´ê¸‰ìƒìžê°€ ë¹„ì–´ìžˆë‹¤...");
 
-        StartCoroutine(FadeOutAndDestroy());
+        var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
+        if (dissolve != null)
+        {
+            dissolve.StartDissolve(2f);
+        }
+
+        Destroy(gameObject, 2.5f);
     }
 
-    /* ------------------- µå·Ó ------------------- */
+
     private void SpawnLoot(GameObject prefab)
     {
         if (prefab == null) return;
@@ -38,7 +43,7 @@ public class PickupItem : MonoBehaviour, IInteractable
         Vector3 pos = transform.position + Vector3.up * 1.2f;
         GameObject loot = Instantiate(prefab, pos, Quaternion.identity);
 
-        // »óÀÚ¿Í Ãæµ¹ ¹«½Ã
+        // ï¿½ï¿½ï¿½Ú¿ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
         if (TryGetComponent<Collider>(out var boxCol) &&
             loot.TryGetComponent<Collider>(out var lootCol))
         {
@@ -53,51 +58,51 @@ public class PickupItem : MonoBehaviour, IInteractable
         }
     }
 
-    /* ------------------- ÆäÀÌµå & ÆÄ±« ------------------- */
-    private System.Collections.IEnumerator FadeOutAndDestroy()
-    {
-        //º¸±Þ»óÀÚ ¸ðµç MeshRenderer ¼öÁý
-        var renderers = GetComponentsInChildren<MeshRenderer>();
-        if (renderers.Length == 0) { Destroy(gameObject); yield break; }
+    ///* ------------------- ï¿½ï¿½ï¿½Ìµï¿½ & ï¿½Ä±ï¿½ ------------------- */
+    //private System.Collections.IEnumerator FadeOutAndDestroy()
+    //{
+    //    //ï¿½ï¿½ï¿½Þ»ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ MeshRenderer ï¿½ï¿½ï¿½ï¿½
+    //    var renderers = GetComponentsInChildren<MeshRenderer>();
+    //    if (renderers.Length == 0) { Destroy(gameObject); yield break; }
 
-        //°¢ ¸ÓÆ¼¸®¾ó ÀÎ½ºÅÏ½º¡¤ÃÊ±â»ö ÀúÀå
-        var mats = new System.Collections.Generic.List<Material[]>();
-        var startCols = new System.Collections.Generic.List<Color[]>();
+        
+    //    var mats = new System.Collections.Generic.List<Material[]>();
+    //    var startCols = new System.Collections.Generic.List<Color[]>();
 
-        foreach (var r in renderers)
-        {
-            Material[] arr = r.materials;          // ÀÎ½ºÅÏ½º ¹è¿­
-            mats.Add(arr);
+    //    foreach (var r in renderers)
+    //    {
+    //        Material[] arr = r.materials;          // ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½è¿­
+    //        mats.Add(arr);
 
-            Color[] cols = new Color[arr.Length];
-            for (int i = 0; i < arr.Length; ++i) cols[i] = arr[i].color;
-            startCols.Add(cols);
-        }
+    //        Color[] cols = new Color[arr.Length];
+    //        for (int i = 0; i < arr.Length; ++i) cols[i] = arr[i].color;
+    //        startCols.Add(cols);
+    //    }
 
-        //ÆäÀÌµå ·çÇÁ
-        float t = 0f;
-        while (t < fadeDuration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
+    //    //ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+    //    float t = 0f;
+    //    while (t < fadeDuration)
+    //    {
+    //        float alpha = Mathf.Lerp(1f, 0f, t / fadeDuration);
 
-            for (int m = 0; m < mats.Count; ++m)
-            {
-                for (int i = 0; i < mats[m].Length; ++i)
-                {
-                    Color c = startCols[m][i];
-                    c.a = alpha;
-                    mats[m][i].color = c;
-                }
-            }
+    //        for (int m = 0; m < mats.Count; ++m)
+    //        {
+    //            for (int i = 0; i < mats[m].Length; ++i)
+    //            {
+    //                Color c = startCols[m][i];
+    //                c.a = alpha;
+    //                mats[m][i].color = c;
+    //            }
+    //        }
 
-            t += Time.deltaTime;
-            yield return null;
-        }
+    //        t += Time.deltaTime;
+    //        yield return null;
+    //    }
 
-        Destroy(gameObject);
-    }
+    //    Destroy(gameObject);
+    //}
 
-    /* ------------------- UI ¸Þ½ÃÁö ------------------- */
+    /* ------------------- UI ï¿½Þ½ï¿½ï¿½ï¿½ ------------------- */
     private void ShowMessage(string message)
     {
         if (UIManager.Instance != null)
@@ -106,7 +111,7 @@ public class PickupItem : MonoBehaviour, IInteractable
         }
         else
         {
-            Debug.LogWarning("UIManager°¡ ¾À¿¡ ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("UIManagerê°€ ì”¬ì— ì—†ìŠµë‹ˆë‹¤.");
         }
     }
 }

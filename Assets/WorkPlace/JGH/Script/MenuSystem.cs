@@ -1,836 +1,830 @@
 using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using DesignPattern;
 using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.Video;
+using Button = UnityEngine.UI.Button;
+using Cursor = UnityEngine.Cursor;
+using Input = UnityEngine.Input;
+using Slider = UnityEngine.UI.Slider;
+using Toggle = UnityEngine.UI.Toggle;
 
-public class MenuSystem : MonoBehaviour
+
+[Serializable]
+public class SettingData
 {
-    [Header("메인 메뉴")] public GameObject MainMenu;
+    public bool fullscreen;
+    public int quality;
+    public float bgmVolume;
+    public float sfxVolume;
+}
+
+public class MenuSystem : Singleton<MenuSystem>
+{
+    [Header("메인 메뉴")] 
+    public GameObject MainMenu;
     private Button _mainStartButton;
+    private Button _mainContinueButton;
     private Button _mainSetButton;
+    private Button _mainCreatorsButton;
     private Button _mainExitButton;
-    private Button _mainSaveButton;
-    private Button _mainLoadButton;
+    
+    [Header("설정 메뉴")] 
+    public GameObject SettingMenu;
+    private Toggle _fullscreenCheckBox;       // CheckBox 버튼
+    private Button _fullscreenYesButton;      // YesButton
+    private Button _fullscreenNoButton;       // NoButton
+    private Button _fullscreenQualityButton;            // QualityButton 버튼
+    private Slider _bgmSlider;             // BGM_Slider (사용자가 Scrollbar로 변경)
+    private Slider _sfxSlider;             // SFX_Slider (사용자가 Scrollbar로 변경)
+    private TMP_Text _bgmValueText;               // BGM_PEC
+    private TMP_Text _sfxValueText;               // SFX_PEC
+    private TMP_Text _qualityText; 
 
-    [Header("설정 메뉴")] public GameObject SettingMenu;
-    private Button _settingOkButton;
-    private Button _settingBackButton;
-
-    [Header("슬롯 패널")] public GameObject SlotPanel;
-    private Button[] _slotButtons = new Button[5];
-    private Button[] _slotDeleteButtons = new Button[5];
-    private TextMeshProUGUI[] _slotTexts = new TextMeshProUGUI[5];
-    private Button _backButton;
-    private int slotIndexToDelete = -1;
-
-    [Header("확인 대화상자")] public GameObject ConfirmDialog;
-    private TextMeshProUGUI _confirmText;
-    private Button _confirmYesButton;
-    private Button _confirmNoButton;
-
-    [Header("종료 메뉴")] public GameObject ExitMenu;
+    [Header("일시정지 메뉴")] 
+    public GameObject PauseMenu;
+    private Button _pauseSetButton;
+    private Button _pauseBackToMenuButton;
+    
+    [Header("종료 메뉴")] 
+    public GameObject ExitMenu;
     private Button _exitOkButton;
     private Button _exitBackButton;
 
-    private bool _isSaveMode = false;
-    private int _selectedSlotIndex = -1;
+    [Header("확인 메뉴")]
+    public GameObject NewGameDialog;
+    private Button _newGameOkButton;
+    private Button _newGameBackButton;
+    
+    public GameObject ContinueDialog;
+    private Button _continueDialogOkButton;
+    private Button _continueDialogBackButton;
+    
+    public GameObject CreatorsDialog;
+    private Button _creatorsYesButton;
+    
+    public GameObject GameOverDialog;
+    private Button _gameOverYesButton;
+    
+    [Header("경고 메뉴")]
+    public GameObject WarningDialog;
+    private Button _warningYesButton;
 
-    private TextMeshProUGUI _menuTitleText;
+    public GameObject BackToMenuDialog;
+    private Button _backToMenuDialogNoButton;
+    private Button _backToMenuDialogYesButton;
+    
+    
+    // 전체화면 상태 관리
+    private bool _isFullscreenEnabled = false;
+    [SerializeField] private Toggle _fullscreenToggle;
+    [SerializeField] private GameObject _checkmarkImage;
+    
+    // 메뉴 상태 관리
+    private GameObject _currentOpenMenu = null;
+    private bool _isMenuOpen = false;
+    
+    // 설정 업데이트 플래그
+    private bool _isUpdatingSettings = false;
+    
+    // 이전 메뉴 추적
+    private GameObject _previousMenu = null;
+    
+    // 현재 어떤 설정인지 추적
+    private bool _isPauseSettingMode = false;
+    
+    // 설정값 백업
+    private bool _tempFullscreen;
+    private int _tempQuality;
+    private float _tempBGM;
+    private float _tempSFX;
 
-    // ESC 입력 씬별 활성화
-    private bool _escActive = true;
-    private bool _isInitialized = false;
-
-    private string _gameName = "Dangerous Mars";
-
-
-
-    private enum ConfirmType
-    {
-        None,
-        LoadGame,
-        DeleteSlot,
-        OverwriteSave,
-        SaveConfirm,
-        Alert
-    }
-
-    private ConfirmType currentConfirmType = ConfirmType.None;
-
-    private static MenuSystem _instance;
-
-    public static MenuSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<MenuSystem>();
-                if (_instance == null)
-                {
-                    var go = new GameObject("MenuSystem");
-                    _instance = go.AddComponent<MenuSystem>();
-                    DontDestroyOnLoad(go);
-                }
-            }
-
-            return _instance;
-        }
-    }
+    // 현재 설정값
+    private bool _currentFullscreen;
+    private int _currentQuality;
+    private float _currentBGM;
+    private float _currentSFX;
+    
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-
-        _instance = this;
-        DontDestroyOnLoad(gameObject);
+        SingletonInit();
     }
 
     void Start()
     {
-        InitializeUI();
-
-        // TODO: TEST
+        InitializeMainMenu();
+        InitializeSettingMenu();
+        InitializeOtherMenus();
+        LoadAndApplySettings();
+        
         AudioSystem.Instance.PlayBGMByName("MainBGM");
-    }
-
-    void OnEnable()
-    {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    void OnDisable()
-    {
-        UnityEngine.SceneManagement.SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, UnityEngine.SceneManagement.LoadSceneMode mode)
-    {
-        _escActive = false;
-        _isInitialized = false;
-        StartCoroutine(ReinitializeUIAfterSceneLoad());
-    }
-
-    private System.Collections.IEnumerator ReinitializeUIAfterSceneLoad()
-    {
-        yield return new WaitForSeconds(0.2f); // 딜레이 증가
-
-        FindUIElements();
-        InitializeUI();
-        ConfigureMenuForCurrentScene();
-
-        _escActive = true; // ESC 활성화
-        _isInitialized = true;
-
-        Debug.Log($"MenuSystem 초기화 완료 - 씬: {GetCurrentSceneName()}");
+        
     }
 
     void Update()
     {
-        // ESC 키 처리를 더 안전하게
-        if (_escActive && _isInitialized && Input.GetKeyDown(KeyCode.Escape))
+        // ESC 키 감지
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            string currentScene = GetCurrentSceneName();
-            if (!IsTitleScene(currentScene))
+            // TitleScene에서는 무시
+            if (SceneManager.GetActiveScene().name == SceneSystem.Instance.GetTitleSceneName())
             {
-                HandleEscapeInGame();
+                return;
             }
+            
+            TogglePauseMenu();
         }
     }
-
-    private void HandleEscapeInGame()
+    
+    private void TogglePauseMenu()
     {
-        // 확인 대화상자가 열려있으면 무시
-        if (ConfirmDialog != null && ConfirmDialog.activeSelf)
-        {
-            return;
-        }
+        bool isCurrentlyActive = PauseMenu.activeSelf;
 
-        // 슬롯 패널이 열려있으면 닫기
-        if (SlotPanel != null && SlotPanel.activeSelf)
-        {
-            ReturnToMainMenu();
-            return;
-        }
+        AllMenuFalse(); // 항상 모든 메뉴 비활성화
+        
 
-        // 설정 메뉴가 열려있으면 닫기
-        if (SettingMenu != null && SettingMenu.activeSelf)
+        if (!isCurrentlyActive)
         {
-            SettingMenu.SetActive(false);
-            MainMenu?.SetActive(true);
-            SetMenuTitle("일시정지"); // ESC로 돌아올 때 일시정지로 설정
-            return;
-        }
-
-        // 종료 메뉴가 열려있으면 닫기
-        if (ExitMenu != null && ExitMenu.activeSelf)
-        {
-            ExitMenu.SetActive(false);
-            MainMenu?.SetActive(true);
-            SetMenuTitle("일시정지"); // ESC로 돌아올 때 일시정지로 설정
-            return;
-        }
-
-        // 메인 메뉴가 열려있으면 닫기
-        if (MainMenu != null && MainMenu.activeSelf)
-        {
-            MainMenu.SetActive(false);
-            if (GameSystem.Instance != null)
+            // PauseMenu를 열 때
+            PauseMenu.SetActive(true);
+            Time.timeScale = 0f;
+            
+            if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
             {
-                GameSystem.Instance.Resume();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true; 
             }
-
-            return;
-        }
-
-        // 아무것도 열려있지 않으면 메인 메뉴 열기
-        if (MainMenu != null)
-        {
-            SetMenuTitle("일시정지"); // ESC로 메인메뉴 열 때 일시정지로 설정
-            MainMenu.SetActive(true);
-            if (GameSystem.Instance != null)
-            {
-                // GameSystem의 Pause 메서드 호출하지 않고 직접 처리
-                Time.timeScale = 0f;
-            }
-
-            Debug.Log("ESC로 메인메뉴 열림 - 타이틀을 '일시정지'로 변경");
-        }
-    }
-
-    private void FindUIElements()
-    {
-        // MainMenu
-        if (MainMenu == null)
-            MainMenu = GameObject.Find("MainMenu") ?? FindInCanvas("MainMenu");
-        // SettingMenu
-        if (SettingMenu == null)
-            SettingMenu = GameObject.Find("SettingMenu") ?? FindInCanvas("SettingMenu");
-        // ExitMenu
-        if (ExitMenu == null)
-            ExitMenu = GameObject.Find("ExitMenu") ?? FindInCanvas("ExitMenu");
-        // SlotPanel
-        if (SlotPanel == null)
-            SlotPanel = GameObject.Find("SlotPanel") ?? FindInCanvas("SlotPanel");
-        // ConfirmDialog
-        if (ConfirmDialog == null)
-            ConfirmDialog = GameObject.Find("ConfirmDialog") ?? FindInCanvas("ConfirmDialog");
-
-        Debug.Log($"UI 요소 찾기 완료 - MainMenu: {MainMenu != null}, SlotPanel: {SlotPanel != null}");
-    }
-
-    private GameObject FindInCanvas(string name)
-    {
-        Canvas canvas = FindObjectOfType<Canvas>();
-        if (canvas != null)
-        {
-            var t = canvas.transform.Find(name);
-            if (t != null) return t.gameObject;
-        }
-
-        return null;
-    }
-
-    private void InitializeUI()
-    {
-        RemoveAllListeners();
-        MainMenuButtons();
-        SettingMenuButtons();
-        ExitMenuButtons();
-        SlotPanelButtons();
-        ConfirmDialogButtons();
-        ConfigureMenuForCurrentScene();
-    }
-
-    private void ConfigureMenuForCurrentScene()
-    {
-        string currentScene = GetCurrentSceneName();
-        bool isTitle = IsTitleScene(currentScene);
-
-        // 타이틀 텍스트 찾기
-        Transform t = MainMenu?.transform.Find("TitleText") ??
-                      MainMenu?.transform.Find("Title") ??
-                      MainMenu?.transform.Find("MenuTitle");
-        if (t != null)
-        {
-            _menuTitleText = t.GetComponent<TextMeshProUGUI>();
-            if (_menuTitleText != null)
-                _menuTitleText.text = isTitle ? _gameName : "일시정지";
-        }
-
-        // 버튼 활성화/비활성화
-        if (_mainStartButton != null)
-            _mainStartButton.gameObject.SetActive(isTitle);
-        if (_mainSaveButton != null)
-            _mainSaveButton.gameObject.SetActive(!isTitle);
-    }
-
-    private void SetMenuTitle(string title)
-    {
-        // 메인 메뉴의 타이틀 텍스트 찾기 (더 많은 경우의 수 추가)
-        if (_menuTitleText == null && MainMenu != null)
-        {
-            Transform t = MainMenu.transform.Find("Logo/Title") ?? // Logo 안의 Title 먼저 찾기
-                          MainMenu.transform.Find("Logo") ??
-                          MainMenu.transform.Find("TitleText") ??
-                          MainMenu.transform.Find("Title") ??
-                          MainMenu.transform.Find("MenuTitle");
-
-            if (t != null)
-            {
-                _menuTitleText = t.GetComponent<TextMeshProUGUI>();
-                Debug.Log($"메인메뉴 타이틀 텍스트 찾음: {t.name}");
-            }
-
-            // Logo 안의 Title을 찾지 못했다면 Logo 오브젝트 안에서 재귀적으로 찾기
-            if (_menuTitleText == null)
-            {
-                Transform logoTransform = MainMenu.transform.Find("Logo");
-                if (logoTransform != null)
-                {
-                    // Logo 하위의 모든 TextMeshProUGUI 컴포넌트 찾기
-                    TextMeshProUGUI[] texts = logoTransform.GetComponentsInChildren<TextMeshProUGUI>();
-                    foreach (var text in texts)
-                    {
-                        if (text.name.Contains("Title") || text.name.Contains("title") ||
-                            text.name.Contains("Text") || text.name.Contains("Label"))
-                        {
-                            _menuTitleText = text;
-                            Debug.Log($"Logo 하위에서 타이틀 텍스트 찾음: {text.name}");
-                            break;
-                        }
-                    }
-
-                    // 여전히 찾지 못했다면 첫 번째 TextMeshProUGUI 사용
-                    if (_menuTitleText == null && texts.Length > 0)
-                    {
-                        _menuTitleText = texts[0];
-                        Debug.Log($"Logo 하위 첫 번째 텍스트 사용: {texts[0].name}");
-                    }
-                }
-            }
-        }
-
-        if (_menuTitleText != null)
-        {
-            _menuTitleText.text = title;
-            Debug.Log($"메인메뉴 타이틀 변경: {title}");
+            
         }
         else
         {
-            Debug.LogWarning("메인메뉴 타이틀 텍스트를 찾을 수 없습니다!");
-        }
-
-        // 슬롯 패널의 타이틀 텍스트도 찾아서 변경
-        if (SlotPanel != null)
-        {
-            Transform slotTitle = SlotPanel.transform.Find("Logo/Title") ?? // Logo 안의 Title 먼저 찾기
-                                  SlotPanel.transform.Find("TitleText") ??
-                                  SlotPanel.transform.Find("Title") ??
-                                  SlotPanel.transform.Find("MenuTitle") ??
-                                  SlotPanel.transform.Find("LOGO");
-
-            if (slotTitle != null)
+            // PauseMenu를 닫을 때
+            PauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            
+            if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
             {
-                TextMeshProUGUI slotTitleText = slotTitle.GetComponent<TextMeshProUGUI>();
-                if (slotTitleText != null)
-                {
-                    slotTitleText.text = title;
-                    Debug.Log($"슬롯 패널 타이틀 변경: {title}");
-                }
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = true; 
             }
             else
             {
-                // Logo 하위에서 재귀적으로 찾기
-                Transform logoTransform = SlotPanel.transform.Find("Logo");
-                if (logoTransform != null)
-                {
-                    TextMeshProUGUI[] texts = logoTransform.GetComponentsInChildren<TextMeshProUGUI>();
-                    foreach (var text in texts)
-                    {
-                        if (text.name.Contains("Title") || text.name.Contains("title"))
-                        {
-                            text.text = title;
-                            Debug.Log($"슬롯패널 Logo 하위 타이틀 변경: {text.name} -> {title}");
-                            break;
-                        }
-                    }
-                }
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true; 
             }
+
         }
     }
 
-    private void RemoveAllListeners()
-    {
-        _mainStartButton?.onClick.RemoveAllListeners();
-        _mainSaveButton?.onClick.RemoveAllListeners();
-        _mainLoadButton?.onClick.RemoveAllListeners();
-        _mainSetButton?.onClick.RemoveAllListeners();
-        _mainExitButton?.onClick.RemoveAllListeners();
-        _settingOkButton?.onClick.RemoveAllListeners();
-        _settingBackButton?.onClick.RemoveAllListeners();
-        _exitOkButton?.onClick.RemoveAllListeners();
-        _exitBackButton?.onClick.RemoveAllListeners();
-        for (int i = 0; i < 5; i++)
-        {
-            _slotButtons[i]?.onClick.RemoveAllListeners();
-            _slotDeleteButtons[i]?.onClick.RemoveAllListeners();
-        }
-
-        _backButton?.onClick.RemoveAllListeners();
-        _confirmYesButton?.onClick.RemoveAllListeners();
-        _confirmNoButton?.onClick.RemoveAllListeners();
-    }
-
-    private void MainMenuButtons()
+    
+    private void InitializeMainMenu()
     {
         if (MainMenu != null)
         {
-            _mainStartButton = FindButton(MainMenu, "StartButton");
-            _mainSaveButton = FindButton(MainMenu, "SaveButton");
-            _mainLoadButton = FindButton(MainMenu, "LoadButton");
-            _mainSetButton = FindButton(MainMenu, "SettingButton");
-            _mainExitButton = FindButton(MainMenu, "ExitButton");
+            _mainStartButton = MainMenu.transform.Find("StartButton").GetComponent<Button>();
+            _mainContinueButton = MainMenu.transform.Find("ContinueButton").GetComponent<Button>();
+            _mainSetButton = MainMenu.transform.Find("SettingButton").GetComponent<Button>();
+            _mainCreatorsButton = MainMenu.transform.Find("CreatorsButton").GetComponent<Button>();
+            _mainExitButton = MainMenu.transform.Find("ExitButton").GetComponent<Button>();
 
-            _mainStartButton?.onClick.AddListener(OnMainStartButtonClick);
-            _mainSaveButton?.onClick.AddListener(OnMainSaveButtonClick);
-            _mainLoadButton?.onClick.AddListener(OnMainLoadButtonClick);
-            _mainSetButton?.onClick.AddListener(OnMainSetButtonClick);
-            _mainExitButton?.onClick.AddListener(OnMainExitButtonClick);
+            _mainStartButton.onClick.AddListener(OnClickStart);
+            _mainContinueButton.onClick.AddListener(OnClickContinue);
+            _mainSetButton.onClick.AddListener(OnClickSetting);
+            _mainCreatorsButton.onClick.AddListener(OnClickCreators);
+            _mainExitButton.onClick.AddListener(OnClickExit);
         }
     }
 
-    private Button FindButton(GameObject parent, string name)
+    private void InitializeSettingMenu()
     {
-        var tf = parent.transform.Find(name);
-        return tf ? tf.GetComponent<Button>() : null;
-    }
-
-    private void SettingMenuButtons()
-    {
-        if (SettingMenu)
+        if (SettingMenu != null)
         {
-            _settingBackButton = FindButton(SettingMenu, "BackButton");
-            _settingOkButton = FindButton(SettingMenu, "OkButton");
+            // 컴포넌트 찾기
+            _fullscreenCheckBox = SettingMenu.transform.Find("CheckBox").GetComponent<Toggle>();
+            _fullscreenYesButton = SettingMenu.transform.Find("YesButton").GetComponent<Button>();
+            _fullscreenNoButton = SettingMenu.transform.Find("NoButton").GetComponent<Button>();
+            _fullscreenQualityButton = SettingMenu.transform.Find("QualityButton").GetComponent<Button>();
 
-            // 뒤로가기 버튼 - 설정 원복
-            _settingBackButton?.onClick.AddListener(() =>
+            // 슬라이더 찾기 및 설정
+            _bgmSlider = SettingMenu.transform.Find("BGM_Slider").GetComponent<Slider>();
+            _sfxSlider = SettingMenu.transform.Find("SFX_Slider").GetComponent<Slider>();
+
+            _bgmValueText = SettingMenu.transform.Find("BGM_PEC").GetComponent<TMP_Text>();
+            _sfxValueText = SettingMenu.transform.Find("SFX_PEC").GetComponent<TMP_Text>();
+
+            // 슬라이더 설정
+            SetupSlider(_bgmSlider, "BGM");
+            SetupSlider(_sfxSlider, "SFX");
+
+            // 이벤트 등록
+            if (_bgmSlider != null)
             {
-                // 오디오 설정 원복
-                if (AudioSystem.Instance != null)
-                {
-                    AudioSystem.Instance.LoadVolumeSettings();
-                }
-
-                // 그래픽 설정 원복
-                if (GraphicsSystem.Instance != null)
-                {
-                    GraphicsSystem.Instance.LoadGraphicsSettings();
-                }
-
-                SettingMenu.SetActive(false);
-                MainMenu.SetActive(true);
-                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? _gameName : "일시정지");
-            });
-
-            // 확인 버튼 - 설정 저장
-            _settingOkButton?.onClick.AddListener(() =>
-            {
-                // 오디오 설정 저장
-                if (AudioSystem.Instance != null)
-                {
-                    PlayerPrefs.SetFloat(AudioSystem.Instance.BGMVolumeKey, AudioSystem.Instance.BGMVolume);
-                    PlayerPrefs.SetFloat(AudioSystem.Instance.SFXVolumeKey, AudioSystem.Instance.SFXVolume);
-                }
-
-                // 그래픽 설정 저장
-                if (GraphicsSystem.Instance != null)
-                {
-                    GraphicsSystem.Instance.SaveGraphicsSettings();
-                }
-
-                PlayerPrefs.Save();
-
-
-                SettingMenu.SetActive(false);
-                MainMenu.SetActive(true);
-                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? _gameName : "일시정지");
-            });
-        }
-    }
-
-    private void ExitMenuButtons()
-    {
-        if (ExitMenu)
-        {
-            _exitBackButton = FindButton(ExitMenu, "BackButton");
-            _exitOkButton = FindButton(ExitMenu, "OkButton");
-            _exitBackButton?.onClick.AddListener(() =>
-            {
-                ExitMenu.SetActive(false);
-                MainMenu.SetActive(true);
-                SetMenuTitle(IsTitleScene(GetCurrentSceneName()) ? _gameName : "일시정지");
-            });
-            _exitOkButton?.onClick.AddListener(() =>
-            {
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#else
-                    Application.Quit();
-#endif
-            });
-        }
-    }
-
-    private void SlotPanelButtons()
-    {
-        if (SlotPanel == null) return;
-        for (int i = 0; i < 5; i++)
-        {
-            _slotButtons[i] = FindButton(SlotPanel, $"SlotButton{i + 1}");
-            _slotDeleteButtons[i] = FindButton(SlotPanel, $"SlotDeleteButton{i + 1}");
-            if (_slotButtons[i])
-            {
-                int idx = i;
-                _slotButtons[i].onClick.AddListener(() => OnSlotClicked(idx));
-                _slotTexts[i] = _slotButtons[i].GetComponentInChildren<TextMeshProUGUI>();
+                _bgmSlider.onValueChanged.RemoveAllListeners();
+                _bgmSlider.onValueChanged.AddListener(OnBGMSliderChanged);
             }
 
-            if (_slotDeleteButtons[i])
+            if (_sfxSlider != null)
             {
-                int idx = i;
-                _slotDeleteButtons[i].onClick.AddListener(() => OnSlotDeleteClicked(idx));
+                _sfxSlider.onValueChanged.RemoveAllListeners();
+                _sfxSlider.onValueChanged.AddListener(OnSFXSliderChanged);
             }
-        }
 
-        _backButton = FindButton(SlotPanel, "BackButton");
-        _backButton?.onClick.AddListener(OnSlotBackButtonClick);
-    }
-
-    private void ConfirmDialogButtons()
-    {
-        if (ConfirmDialog)
-        {
-            _confirmText = ConfirmDialog.transform.Find("ConfirmText")?.GetComponent<TextMeshProUGUI>();
-            _confirmYesButton = FindButton(ConfirmDialog, "YesButton");
-            _confirmNoButton = FindButton(ConfirmDialog, "NoButton");
-            _confirmYesButton?.onClick.AddListener(OnConfirmYes);
-            _confirmNoButton?.onClick.AddListener(OnConfirmNo);
+            // 다른 버튼 이벤트 등록
+            _fullscreenCheckBox.onValueChanged.AddListener(ApplyCheckBox);
+            _fullscreenYesButton.onClick.AddListener(FullscreenYes);
+            _fullscreenNoButton.onClick.AddListener(FullscreenNo);
+            _fullscreenQualityButton.onClick.AddListener(ChangeQuality);
         }
     }
 
-    // 메뉴 버튼 이벤트
-    public void OnMainStartButtonClick()
+    void SetupSlider(Slider slider, string sliderName)
     {
-        // TODO: TEST
-        if (AudioSystem.Instance != null) AudioSystem.Instance.StopBGM();
-
-
-        if (SceneSystem.Instance != null) SceneSystem.Instance.LoadShelterScene();
-
-        // TODO: TEST
-        if (AudioSystem.Instance != null) AudioSystem.Instance.PlaySFXByName("MainSFX");
-
-
-        MainMenu.SetActive(false);
-    }
-
-    private void OnMainSaveButtonClick()
-    {
-        string currentScene = GetCurrentSceneName();
-        if (IsTitleScene(currentScene))
+        if (slider == null)
         {
-            ShowAlert("게임을 시작한 후에 저장이 가능합니다.");
+            Debug.LogError($"{sliderName} Slider를 찾을 수 없습니다!");
             return;
         }
 
-        _isSaveMode = true;
-        MainMenu.SetActive(false);
-        SlotPanel.SetActive(true);
-        SetMenuTitle("게임 저장하기"); // 수정: 타이틀 변경
-        UpdateSlotDisplay();
-        Debug.Log("저장 모드로 전환, 타이틀을 '게임 저장하기'로 변경");
+        // 슬라이더 기본 설정
+        slider.minValue = 0f;
+        slider.maxValue = 1f;
+        slider.wholeNumbers = false;
+        slider.interactable = true;
+    
+        // Handle Rect 설정 및 크기 조정
+        if (slider.handleRect == null)
+        {
+            Transform handleTransform = slider.transform.Find("Handle Slide Area/Handle");
+            if (handleTransform != null)
+            {
+                slider.handleRect = handleTransform.GetComponent<RectTransform>();
+            }
+        }
+
+        // Handle 크기 정상화
+        if (slider.handleRect != null)
+        {
+            RectTransform handleRect = slider.handleRect;
+            handleRect.localScale = Vector3.one; // 스케일 초기화
+            handleRect.sizeDelta = new Vector2(50f, 5f); // Handle 크기 설정
+        }
+
+        // Fill Rect 설정
+        if (slider.fillRect == null)
+        {
+            Transform fillTransform = slider.transform.Find("Fill Area/Fill");
+            if (fillTransform != null)
+            {
+                slider.fillRect = fillTransform.GetComponent<RectTransform>();
+            }
+        }
+
+        Debug.Log($"{sliderName} Slider 설정 완료");
     }
 
-    private void OnMainLoadButtonClick()
+    private void InitializeOtherMenus()
     {
-        _isSaveMode = false;
-        MainMenu.SetActive(false);
-        SlotPanel.SetActive(true);
-        SetMenuTitle("게임 불러오기"); // 수정: 타이틀 변경
-        UpdateSlotDisplay();
-        Debug.Log("로드 모드로 전환, 타이틀을 '게임 불러오기'로 변경");
+        if (PauseMenu != null)
+        {
+            _pauseSetButton = PauseMenu.transform.Find("SetButton").GetComponent<Button>();
+            _pauseBackToMenuButton = PauseMenu.transform.Find("BackToMenu").GetComponent<Button>();
+            _pauseSetButton.onClick.AddListener(OnClickPauseSetting);
+            _pauseBackToMenuButton.onClick.AddListener(OnClickPauseExit);
+        }
+
+        if (ExitMenu != null)
+        {
+            _exitOkButton = ExitMenu.transform.Find("OkButton").GetComponent<Button>();
+            _exitBackButton = ExitMenu.transform.Find("BackButton").GetComponent<Button>();
+            _exitOkButton.onClick.AddListener(OnClickExitOk);
+            _exitBackButton.onClick.AddListener(OnClickExitBack);
+        }
+
+        if (NewGameDialog != null)
+        {
+            _newGameOkButton = NewGameDialog.transform.Find("OkButton").GetComponent<Button>();
+            _newGameBackButton = NewGameDialog.transform.Find("BackButton").GetComponent<Button>();
+            _newGameOkButton.onClick.AddListener(OnClickNewGameOk);
+            _newGameBackButton.onClick.AddListener(OnClickNewGameBack);
+        }
+
+        if (ContinueDialog != null)
+        {
+            _continueDialogOkButton = ContinueDialog.transform.Find("OkButton").GetComponent<Button>();
+            _continueDialogBackButton = ContinueDialog.transform.Find("BackButton").GetComponent<Button>();
+            _continueDialogOkButton.onClick.AddListener(OnClickContinueOk);
+            _continueDialogBackButton.onClick.AddListener(OnClickContinueBack);
+        }
+
+        if (CreatorsDialog != null)
+        {
+            _creatorsYesButton = CreatorsDialog.transform.Find("YesButton").GetComponent<Button>();
+            _creatorsYesButton.onClick.AddListener(OnClickCreatorsYes);
+        }
+
+
+        if (WarningDialog != null)
+        {
+            _warningYesButton = WarningDialog.transform.Find("YesButton").GetComponent<Button>();
+            _warningYesButton.onClick.AddListener(OnClickWarningYes);
+        }
+
+        if (BackToMenuDialog != null)
+        {
+            _backToMenuDialogYesButton = BackToMenuDialog.transform.Find("YesButton").GetComponent<Button>();
+            _backToMenuDialogNoButton = BackToMenuDialog.transform.Find("NoButton").GetComponent<Button>();
+            _backToMenuDialogYesButton.onClick.AddListener(OnClickBackToMenuYes);
+            _backToMenuDialogNoButton.onClick.AddListener(OnClickBackToMenuNo);
+        }
+
+        if (GameOverDialog != null)
+        {
+            _gameOverYesButton= GameOverDialog.transform.Find("YesButton").GetComponent<Button>();
+            _gameOverYesButton.onClick.AddListener(OnClickGameOverYes);
+        }
     }
 
-    private void OnMainSetButtonClick()
+    private void LoadAndApplySettings()
     {
-        MainMenu.SetActive(false);
+        var setting = FileSystem.Instance.LoadSetting();
+
+        _currentFullscreen = setting.fullscreen;
+        _currentQuality = setting.quality;
+        _currentBGM = setting.bgmVolume;
+        _currentSFX = setting.sfxVolume;
+
+        // 백업용에도 복사
+        _tempFullscreen = _currentFullscreen;
+        _tempQuality = _currentQuality;
+        _tempBGM = _currentBGM;
+        _tempSFX = _currentSFX;
+
+        // AudioSystem에 현재 볼륨 설정
+        if (AudioSystem.Instance != null)
+        {
+            AudioSystem.Instance.BGMVolume = _currentBGM;
+            AudioSystem.Instance.SFXVolume = _currentSFX;
+            AudioSystem.Instance.OnBGMVolumeChanged(_currentBGM);
+            AudioSystem.Instance.OnSFXVolumeChanged(_currentSFX);
+        }
+
+        // UI 반영 (이벤트 발생 방지)
+        _isUpdatingSettings = true;
+        
+        if (_fullscreenCheckBox != null)
+            _fullscreenCheckBox.isOn = _currentFullscreen;
+            
+        if (_bgmSlider != null)
+        {
+            _bgmSlider.value = _currentBGM;
+            Debug.Log($"BGM Slider value set to: {_currentBGM}");
+        }
+        
+        if (_sfxSlider != null)
+        {
+            _sfxSlider.value = _currentSFX;
+            Debug.Log($"SFX Slider value set to: {_currentSFX}");
+        }
+        
+        _isUpdatingSettings = false;
+
+        // 텍스트 업데이트
+        UpdateVolumeTexts();
+
+        // 실제 설정 적용
+        ApplyCheckBox(_currentFullscreen);
+        QualitySettings.SetQualityLevel(_currentQuality);
+        
+        if (SettingMenu != null)
+        {
+            _qualityText = SettingMenu.transform.Find("QualityButton").Find("Label").GetComponent<TMP_Text>();
+            if (_qualityText != null)
+                _qualityText.text = QualitySettings.names[_tempQuality];
+        }
+    }
+
+    // BGM 슬라이더 변경 시 호출
+    private void OnBGMSliderChanged(float value)
+    {
+        if (_isUpdatingSettings) return;
+        
+        Debug.Log($"BGM Slider changed to: {value}");
+        
+        _tempBGM = value;
+        
+        // AudioSystem을 통해 볼륨 적용
+        if (AudioSystem.Instance != null)
+        {
+            AudioSystem.Instance.OnBGMVolumeChanged(value);
+        }
+        
+        UpdateVolumeTexts();
+    }
+
+    // SFX 슬라이더 변경 시 호출
+    private void OnSFXSliderChanged(float value)
+    {
+        if (_isUpdatingSettings) return;
+        
+        Debug.Log($"SFX Slider changed to: {value}");
+        
+        _tempSFX = value;
+        
+        // AudioSystem을 통해 볼륨 적용
+        if (AudioSystem.Instance != null)
+        {
+            AudioSystem.Instance.OnSFXVolumeChanged(value);
+        }
+        
+        UpdateVolumeTexts();
+    }
+
+    private void UpdateVolumeTexts()
+    {
+        if (_bgmValueText != null)
+            _bgmValueText.text = Mathf.RoundToInt(_tempBGM * 100) + "%";
+        if (_sfxValueText != null)
+            _sfxValueText.text = Mathf.RoundToInt(_tempSFX * 100) + "%";
+    }
+    
+    private void ApplyCheckBox(bool isOn) 
+    {
+        _tempFullscreen = isOn;
+        _isFullscreenEnabled = isOn;
+        Screen.fullScreen = isOn;
+        
+        if (_checkmarkImage != null)
+        {
+            _checkmarkImage.SetActive(isOn);
+        }
+    }
+
+    private void FullscreenYes() 
+    {
+        // 실제 저장값 갱신
+        _currentFullscreen = _tempFullscreen;
+        _currentQuality = _tempQuality;
+        _currentBGM = _tempBGM;
+        _currentSFX = _tempSFX;
+
+        // AudioSystem에 최종 볼륨 적용
+        if (AudioSystem.Instance != null)
+        {
+            AudioSystem.Instance.BGMVolume = _currentBGM;
+            AudioSystem.Instance.SFXVolume = _currentSFX;
+            AudioSystem.Instance.OnBGMVolumeChanged(_currentBGM);
+            AudioSystem.Instance.OnSFXVolumeChanged(_currentSFX);
+        }
+
+        // 저장
+        FileSystem.Instance.SaveSetting(new SettingData {
+            fullscreen = _currentFullscreen,
+            quality = _currentQuality,
+            bgmVolume = _currentBGM,
+            sfxVolume = _currentSFX
+        });
+        
+        if (_isPauseSettingMode == true)
+        {
+            SettingMenu.SetActive(false);
+            PauseMenu.SetActive(true);
+        }
+        else
+        {
+            SettingMenu.SetActive(false);
+        }
+    }
+
+    private void FullscreenNo()
+    {
+        // 임시로 바꾼 설정 원복
+        _tempFullscreen = _currentFullscreen;
+        _tempQuality = _currentQuality;
+        _tempBGM = _currentBGM;
+        _tempSFX = _currentSFX;
+
+        // AudioSystem에 원래 볼륨 복원
+        if (AudioSystem.Instance != null)
+        {
+            AudioSystem.Instance.BGMVolume = _currentBGM;
+            AudioSystem.Instance.SFXVolume = _currentSFX;
+            AudioSystem.Instance.OnBGMVolumeChanged(_currentBGM);
+            AudioSystem.Instance.OnSFXVolumeChanged(_currentSFX);
+        }
+
+        // UI 복원
+        _isUpdatingSettings = true;
+        
+        if (_fullscreenCheckBox != null)
+            _fullscreenCheckBox.isOn = _currentFullscreen;
+        if (_bgmSlider != null)
+            _bgmSlider.value = _currentBGM;
+        if (_sfxSlider != null)
+            _sfxSlider.value = _currentSFX;
+            
+        _isUpdatingSettings = false;
+
+        UpdateVolumeTexts();
+
+        // 실제 적용
+        Screen.fullScreen = _currentFullscreen;
+        QualitySettings.SetQualityLevel(_currentQuality);
+        
+        if (_isPauseSettingMode == true)
+        {
+            SettingMenu.SetActive(false);
+            PauseMenu.SetActive(true);
+        }
+        else
+        {
+            SettingMenu.SetActive(false);
+        }
+    }
+
+    private void ChangeQuality()
+    {
+        _tempQuality = (_tempQuality + 1) % QualitySettings.names.Length;
+        QualitySettings.SetQualityLevel(_tempQuality);
+        
+        if (_qualityText != null)
+            _qualityText.text = QualitySettings.names[_tempQuality];
+        
+        Debug.Log("퀄리티 변경: " + _tempQuality);
+    }
+
+    // 나머지 메뉴 관련 메서드들...
+    private void OnClickStart()
+    {
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        NewGameDialog.SetActive(true);
+    }
+
+    private void OnClickContinue()
+    {
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        ContinueDialog.SetActive(true);
+    }
+
+    private void OnClickSetting()
+    {
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        _isPauseSettingMode = false;
         SettingMenu.SetActive(true);
     }
 
-    private void OnMainExitButtonClick()
+    private void OnClickCreators()
     {
-        MainMenu.SetActive(false);
+        AllMenuFalse();
+        MainMenu.SetActive(true);
+        CreatorsDialog.SetActive(true);
+    }
+
+    private void OnClickExit()
+    {
+        AllMenuFalse();
+        MainMenu.SetActive(true);
         ExitMenu.SetActive(true);
     }
 
-    // 슬롯 클릭
-    private void OnSlotClicked(int slotIndex)
+    private void OnClickPauseSetting()
     {
-        _selectedSlotIndex = slotIndex;
-        if (_isSaveMode) HandleSaveSlot(slotIndex);
-        else HandleLoadSlot(slotIndex);
+        AllMenuFalse();
+        MainMenu.SetActive(false);
+        _isPauseSettingMode = true;
+        SettingMenu.SetActive(true);
+        
     }
 
-    private void HandleSaveSlot(int idx)
+    private void OnClickPauseExit()
     {
-        if (FileSystem.Instance == null) return;
-        var infos = FileSystem.Instance.GetAllSlotInfo();
-        if (!infos[idx].isEmpty)
-        {
-            currentConfirmType = ConfirmType.OverwriteSave;
-            ShowConfirm($"슬롯 {idx + 1}에 이미 저장된 데이터가 있습니다.\n덮어쓰시겠습니까?");
-        }
-        else
-        {
-            currentConfirmType = ConfirmType.SaveConfirm;
-            ShowConfirm($"슬롯 {idx + 1}에 저장하시겠습니까?"); // 수정: 저장 확인 메시지
-        }
+        AllMenuFalse();
+        MainMenu.SetActive(false);
+        BackToMenuDialog.SetActive(true);
     }
 
-    private void HandleLoadSlot(int idx)
+    private void OnClickExitOk()
     {
-        if (FileSystem.Instance == null) return;
-        var infos = FileSystem.Instance.GetAllSlotInfo();
-        if (!infos[idx].isEmpty)
-        {
-            currentConfirmType = ConfirmType.LoadGame;
-            ShowConfirm(
-                $"슬롯 {idx + 1}의 데이터를 불러오시겠습니까?\n\n{infos[idx].saveName}\n{GetFormattedDate(infos[idx].saveDate)}");
-        }
-        else
-        {
-            currentConfirmType = ConfirmType.Alert;
-            ShowAlert($"슬롯 {idx + 1}에 저장된 데이터가 없습니다.");
-        }
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
     }
 
-    private void OnSlotDeleteClicked(int idx)
+    private void OnClickExitBack()
     {
-        if (FileSystem.Instance == null) return;
-        var infos = FileSystem.Instance.GetAllSlotInfo();
-        if (!infos[idx].isEmpty)
-        {
-            slotIndexToDelete = idx;
-            _selectedSlotIndex = idx;
-            currentConfirmType = ConfirmType.DeleteSlot;
-            ShowConfirm($"슬롯 {idx + 1}의 저장 데이터를 삭제하시겠습니까?\n\n{infos[idx].saveName}");
-        }
-        else
-        {
-            currentConfirmType = ConfirmType.Alert;
-            ShowAlert($"슬롯 {idx + 1}에 삭제할 데이터가 없습니다.");
-        }
-    }
-
-    private void SaveToSlot(int idx)
-    {
-        string saveName = $"저장 데이터 {idx + 1}";
-        if (FileSystem.Instance != null && FileSystem.Instance.SaveGame(idx, saveName))
-        {
-            UpdateSlotDisplay();
-            currentConfirmType = ConfirmType.Alert;
-            ShowAlert($"슬롯 {idx + 1}에 저장되었습니다.");
-        }
-        else
-        {
-            currentConfirmType = ConfirmType.Alert;
-            ShowAlert("저장에 실패했습니다.");
-        }
-    }
-
-    private void LoadFromSlot(int idx)
-    {
-        if (FileSystem.Instance == null) return;
-        try
-        {
-            bool success = FileSystem.Instance.LoadGame(idx);
-            if (success)
-            {
-                // 메뉴 닫기
-                SlotPanel.SetActive(false);
-                MainMenu.SetActive(false);
-                ConfirmDialog.SetActive(false);
-
-                // 게임 재개
-                if (GameSystem.Instance != null)
-                {
-                    GameSystem.Instance.Resume();
-                }
-
-                // 씬 로드는 FileSystem에서 처리됨
-                Debug.Log($"슬롯 {idx + 1} 로드 성공");
-            }
-            else
-            {
-                currentConfirmType = ConfirmType.Alert;
-                ShowAlert($"슬롯 {idx + 1} 로드에 실패했습니다.\n저장 파일이 없거나 손상되었습니다.");
-            }
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"로드 중 오류: {e.Message}");
-            currentConfirmType = ConfirmType.Alert;
-            ShowAlert("로드 중 오류가 발생했습니다.");
-        }
-    }
-
-    private void UpdateSlotDisplay()
-    {
-        if (FileSystem.Instance == null) return;
-        var infos = FileSystem.Instance.GetAllSlotInfo();
-        for (int i = 0; i < 5; i++)
-        {
-            if (_slotButtons[i] == null || _slotTexts[i] == null) continue;
-            var info = infos[i];
-            if (info.isEmpty)
-            {
-                _slotTexts[i].text = $"슬롯 {i + 1}\n비어있음";
-                _slotButtons[i].interactable = _isSaveMode;
-            }
-            else
-            {
-                string dateDisplay = GetFormattedDate(info.saveDate);
-                string text =
-                    $"슬롯 {i + 1}\n{info.saveName}\n{dateDisplay}\nDay {info.currentDay} | {FormatPlayTime(info.totalPlayTime)}";
-                _slotTexts[i].text = text;
-                _slotButtons[i].interactable = true;
-            }
-
-            _slotTexts[i].fontSize = 4.85f;
-            _slotTexts[i].alignment = TMPro.TextAlignmentOptions.Left;
-            _slotTexts[i].enableWordWrapping = true;
-        }
-    }
-
-    private string GetFormattedDate(string dateString)
-    {
-        if (!string.IsNullOrEmpty(dateString))
-            if (DateTime.TryParse(dateString, out DateTime d)) return d.ToString("MM/dd HH:mm");
-            else return dateString;
-        return "날짜 오류";
-    }
-
-    private string FormatPlayTime(float totalSeconds)
-    {
-        int hours = Mathf.FloorToInt(totalSeconds / 3600f);
-        int minutes = Mathf.FloorToInt((totalSeconds % 3600f) / 60f);
-        return (hours > 0) ? $"{hours}시간 {minutes}분" : $"{minutes}분";
-    }
-
-    private void OnSlotBackButtonClick()
-    {
-        ReturnToMainMenu();
-    }
-
-    private void ReturnToMainMenu()
-    {
-        SlotPanel.SetActive(false);
+        AllMenuFalse();
         MainMenu.SetActive(true);
-        // 현재 씬이 타이틀이 아니면 일시정지, 타이틀이면 LOGO로 설정
-        string currentScene = GetCurrentSceneName();
-        SetMenuTitle(IsTitleScene(currentScene) ? _gameName : "일시정지");
-        Debug.Log($"메인메뉴로 돌아감 - 씬: {currentScene}, 타이틀: {(IsTitleScene(currentScene) ? _gameName : "일시정지")}");
+        ExitMenu.SetActive(false);
     }
 
-    // 컨펌/알림
-    private void ShowConfirm(string msg)
+    private void AllMenuFalse()
     {
-        if (_confirmText != null) _confirmText.text = msg;
-        _confirmYesButton?.gameObject.SetActive(true);
-        var yesText = _confirmYesButton?.GetComponentInChildren<TextMeshProUGUI>();
-        if (yesText != null) yesText.text = "예";
-        _confirmNoButton?.gameObject.SetActive(true);
-        ConfirmDialog.SetActive(true);
+        NewGameDialog.SetActive(false);
+        ExitMenu.SetActive(false);
+        ContinueDialog.SetActive(false);
+        CreatorsDialog.SetActive(false);
+        WarningDialog.SetActive(false);
+        PauseMenu.SetActive(false);
+        SettingMenu.SetActive(false);
+        BackToMenuDialog.SetActive(false);
     }
 
-    private void ShowAlert(string msg)
+    private void OnClickNewGameOk()
     {
-        if (_confirmText != null) _confirmText.text = msg;
-        _confirmYesButton?.gameObject.SetActive(true);
-        var yesText = _confirmYesButton?.GetComponentInChildren<TextMeshProUGUI>();
-        if (yesText != null) yesText.text = "확인";
-        _confirmNoButton?.gameObject.SetActive(false);
-        ConfirmDialog.SetActive(true);
-    }
-
-    private void HideConfirmDialog()
-    {
-        ConfirmDialog.SetActive(false);
-        currentConfirmType = ConfirmType.None;
-    }
-
-    private void OnConfirmYes()
-    {
-        ConfirmType typeToProcess = currentConfirmType;
-        int slotToProcess = _selectedSlotIndex;
-        int slotToDelete = slotIndexToDelete;
-
-        HideConfirmDialog();
-
-        switch (typeToProcess)
+        if (StatusSystem.Instance != null)
         {
-            case ConfirmType.LoadGame:
-                LoadFromSlot(slotToProcess);
-                break;
-            case ConfirmType.DeleteSlot:
-                if (FileSystem.Instance != null && FileSystem.Instance.DeleteSaveSlot(slotToDelete))
-                {
-                    UpdateSlotDisplay();
-                    ShowAlert($"슬롯 {slotToDelete + 1}이 삭제되었습니다.");
-                }
-                else
-                {
-                    ShowAlert("삭제에 실패했습니다.");
-                }
+            StatusSystem.Instance.SetCurrentDay(1);
+            StatusSystem.Instance.SetOxygen(100f);
+            StatusSystem.Instance.SetEnergy(300f);
+            StatusSystem.Instance.SetDurability(100f);
+            StatusSystem.Instance.SetIsToDay(false);
+            Debug.Log("StatusSystem 기본값으로 초기화 완료");
+        }
+        
+        AudioSystem.Instance.StopBGM();
+        SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
+        MainMenu.SetActive(false);
+        AllMenuFalse();
+    }
+    private void OnClickNewGameBack()
+    {
+        AllMenuFalse();
+        NewGameDialog.SetActive(false);
+    }
 
-                slotIndexToDelete = -1;
-                break;
-            case ConfirmType.OverwriteSave:
-            case ConfirmType.SaveConfirm:
-                SaveToSlot(slotToProcess);
-                break;
-            case ConfirmType.Alert:
-                // 아무것도 하지 않음
-                break;
+    private void OnClickContinueOk()
+    {
+        // gamedata.json 불러오기
+        GameData data = FileSystem.Instance.LoadGameData();
+
+        if (data != null)
+        {
+            // StatusSystem에 값 적용
+            FileSystem.Instance.ApplyGameData(data);
+            Debug.Log("게임 데이터 불러오기 및 적용 완료");
+
+            // 이어하기 씬 전환
+            SceneSystem.Instance.LoadSceneWithDelay(SceneSystem.Instance.GetShelterSceneName());
+        }
+        else
+        {
+            Debug.LogWarning("게임 데이터가 존재하지 않음. 기본값 또는 경고 처리 필요");
         }
 
-        _selectedSlotIndex = -1;
+        ContinueDialog.SetActive(false); // 이어하기 팝업 닫기
+    }
+    
+    private void OnClickContinueBack()
+    {
+        AllMenuFalse();
+        MainMenu.SetActive(true);
     }
 
-    private void OnConfirmNo()
+    private void OnClickCreatorsYes()
     {
-        HideConfirmDialog();
-        slotIndexToDelete = -1;
-        _selectedSlotIndex = -1;
+        AllMenuFalse();
+        MainMenu.SetActive(true);
     }
 
-    private string GetCurrentSceneName()
+    private void OnClickWarningYes()
     {
-        return SceneSystem.Instance?.GetCurrentSceneName() ??
-               UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        Debug.Log("경고 확인");
     }
 
-    private bool IsTitleScene(string sceneName)
+    private void OnClickBackToMenuYes()
     {
-        string[] startScenes = { "StartScene", "TitleScene", "MainMenuScene", "MenuScene", "MainMenu", "Title" };
-        foreach (string s in startScenes)
-            if (sceneName.Equals(s, StringComparison.OrdinalIgnoreCase))
-                return true;
-        return false;
+        SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
+        {
+            // 씬이 전환된 후 1~2 프레임 기다린 뒤 수행
+            StartCoroutine(SetupVideoAfterSceneLoad());
+        });
+
+        AllMenuFalse();
+    } 
+    
+    private IEnumerator SetupVideoAfterSceneLoad()
+    {
+        // 씬 오브젝트들이 완전히 로드될 때까지 기다림
+        yield return null;
+        yield return new WaitForEndOfFrame();
+
+        // MenuSystem 인스턴스에서 직접 접근 (Find 말고 싱글톤 활용 권장)
+        var menuSystem = MenuSystem.Instance;
+        if (menuSystem != null && menuSystem.MainMenu != null)
+        {
+            var videoPlayer = menuSystem.MainMenu.GetComponent<VideoPlayer>();
+            if (videoPlayer != null)
+            {
+                videoPlayer.renderMode = VideoRenderMode.CameraNearPlane;
+
+                if (videoPlayer.targetCamera == null && Camera.main != null)
+                {
+                    videoPlayer.targetCamera = Camera.main;
+                    Debug.Log("Main Camera 재연결 완료");
+                }
+
+                videoPlayer.Prepare();
+                videoPlayer.prepareCompleted += vp =>
+                {
+                    vp.Play();
+                    Debug.Log("VideoPlayer 재생 시작");
+                };
+            }
+
+            menuSystem.MainMenu.SetActive(true); // 혹시 꺼져 있으면 다시 켜기
+        }
+        else
+        {
+            Debug.LogError("MenuSystem.Instance 또는 MainMenu를 찾을 수 없음");
+        }
+    }
+
+    
+    private void OnClickBackToMenuNo()
+    {
+        AllMenuFalse();
+        PauseMenu.SetActive(true);
+    }
+
+    public void ShowGameoverView()
+    {
+        GameOverDialog.SetActive(true);
+    }
+    
+    private void OnClickGameOverYes()
+    {
+        SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
+        {
+            // 씬이 전환된 후 1~2 프레임 기다린 뒤 수행
+            StartCoroutine(SetupVideoAfterSceneLoad());
+        });
+
+        AllMenuFalse();
+        GameOverDialog.SetActive(false);
+        MainMenu.SetActive(true);
+    }
+
+    // 공개 메서드
+    public float GetBGMVolume() => _currentBGM;
+    public float GetSFXVolume() => _currentSFX;
+
+    // 슬라이더 디버깅용 메서드
+    [ContextMenu("Debug Sliders")]
+    public void DebugSliders()
+    {
+        Debug.Log("=== 슬라이더 디버깅 ===");
+        
+        if (_bgmSlider != null)
+        {
+            Debug.Log($"BGM Slider - Interactable: {_bgmSlider.interactable}, HandleRect: {_bgmSlider.handleRect != null}, FillRect: {_bgmSlider.fillRect != null}, Value: {_bgmSlider.value}");
+            Debug.Log($"BGM Slider - Min: {_bgmSlider.minValue}, Max: {_bgmSlider.maxValue}, Direction: {_bgmSlider.direction}");
+        }
+        else
+        {
+            Debug.LogError("BGM Slider가 null입니다!");
+        }
+        
+        if (_sfxSlider != null)
+        {
+            Debug.Log($"SFX Slider - Interactable: {_sfxSlider.interactable}, HandleRect: {_sfxSlider.handleRect != null}, FillRect: {_sfxSlider.fillRect != null}, Value: {_sfxSlider.value}");
+            Debug.Log($"SFX Slider - Min: {_sfxSlider.minValue}, Max: {_sfxSlider.maxValue}, Direction: {_sfxSlider.direction}");
+        }
+        else
+        {
+            Debug.LogError("SFX Slider가 null입니다!");
+        }
+
+        Debug.Log($"AudioSystem Instance: {AudioSystem.Instance != null}");
+        if (AudioSystem.Instance != null)
+        {
+            Debug.Log($"AudioSystem BGM Volume: {AudioSystem.Instance.BGMVolume}");
+            Debug.Log($"AudioSystem SFX Volume: {AudioSystem.Instance.SFXVolume}");
+        }
+    }
+
+    // 강제로 슬라이더 테스트
+    [ContextMenu("Test Slider Values")]
+    public void TestSliderValues()
+    {
+        if (_bgmSlider != null)
+        {
+            Debug.Log("BGM 슬라이더 테스트 시작");
+            _bgmSlider.value = 0.5f;
+            Debug.Log($"BGM 슬라이더 값을 0.5로 설정: 실제값 = {_bgmSlider.value}");
+        }
+
+        if (_sfxSlider != null)
+        {
+            Debug.Log("SFX 슬라이더 테스트 시작");
+            _sfxSlider.value = 0.7f;
+            Debug.Log($"SFX 슬라이더 값을 0.7로 설정: 실제값 = {_sfxSlider.value}");
+        }
     }
 }

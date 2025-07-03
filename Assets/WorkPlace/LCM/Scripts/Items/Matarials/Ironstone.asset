@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Ironstone
   description: A basic item.
-  icon: {fileID: -166262616, guid: 383aef37898fa624db3efdbee6c0df52, type: 3}
-  itemTag: 0
+  icon: {fileID: 21300000, guid: 640aa1e416c6fe54181624e8a0cf21ec, type: 3}
   WorldPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  HandleItem: {fileID: 8680699254563988124, guid: e926a7ece7e03c647ae73ad9c4e21712,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 1

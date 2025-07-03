@@ -2,537 +2,1175 @@ using UnityEngine;
 using System;
 using System.IO;
 using System.Collections.Generic;
+using DesignPattern;
+
 
 // ========== 데이터 클래스들 ==========
-
 [System.Serializable]
-public class GameSaveData
+public class GameData
 {
-    public string saveName = "새 게임";
-    public string saveDate;
-    public string currentSceneName;
-    public float totalPlayTime;
-    public PlayerStatusData playerStatus;
-    public GameSettingsData gameSettings;
-
-    public GameSaveData()
-    {
-        playerStatus = new PlayerStatusData();
-        gameSettings = new GameSettingsData();
-        saveDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-    }
-    public DateTime GetSaveDateTime()
-    {
-        if (DateTime.TryParse(saveDate, out DateTime result)) return result;
-        return DateTime.Now;
-    }
-}
-
-[System.Serializable]
-public class PlayerStatusData
-{
-    public int currentDay = 1;
-    public double oxygenRemaining = 100.0;
-    public double electricalEnergy = 100.0;
-    public double shelterDurability = 100.0;
-    public bool isToDay = true;
-    public Vector3 playerPosition = Vector3.zero;
-    public Vector3 playerRotation = Vector3.zero;
-
-    public PlayerStatusData()
-    {
-        if (StatusSystem.Instance != null)
-        {
-            currentDay = StatusSystem.Instance.GetCurrentDay();
-            oxygenRemaining = StatusSystem.Instance.GetOxygen();
-            electricalEnergy = StatusSystem.Instance.GetEnergy();
-            shelterDurability = StatusSystem.Instance.GetDurability();
-            isToDay = StatusSystem.Instance.GetIsToDay();
-        }
-    }
-}
-
-[System.Serializable]
-public class GameSettingsData
-{
-    public int qualityLevel = 2;
-    public bool fullScreen = true;
-    public int resolutionWidth = 1920;
-    public int resolutionHeight = 1080;
-    public float mouseSensitivity = 1.0f;
-    public bool autoSave = true;
-}
-
-[System.Serializable]
-public class SaveSlotInfo
-{
-    public bool isEmpty;
-    public string saveName;
-    public string saveDate;
     public int currentDay;
-    public float totalPlayTime;
-    public string currentSceneName;
+    public double oxygenRemaining;
+    public double electricalEnergy;
+    public double shelterDurability;
+    public bool isToDay;
 }
 
-// ========== 파일 시스템 ==========
-
-public class FileSystem : MonoBehaviour
+[System.Serializable]
+public class InventoryItemData
 {
-    private static FileSystem _instance;
-    public static FileSystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<FileSystem>();
-                if (_instance == null)
-                {
-                    GameObject go = new GameObject("FileSystem");
-                    _instance = go.AddComponent<FileSystem>();
-                    DontDestroyOnLoad(go);
-                }
-            }
-            return _instance;
-        }
-    }
+    public string itemName;
+    public int quantity;
+    public int slotIndex;
+}
 
-    [Header("저장 설정")]
-    [SerializeField] private int maxSaveSlots = 5;
-    [SerializeField] private bool enableAutoSave = true;
-    [SerializeField] private float autoSaveInterval = 300f;
-    [SerializeField] private bool enableEncryption = false;
+[System.Serializable]
+public class InventoryData
+{
+    public List<InventoryItemData> inventoryItems = new List<InventoryItemData>();
+    public List<InventoryItemData> hotbarItems = new List<InventoryItemData>();
+    public int currentHotbarSlotIndex = 0;
+}
 
-    private string saveDirectory;
-    private string autoSaveFileName = "autosave.json";
-    private string settingsFileName = "settings.json";
-    private string encryptionKey = "YourGameSecretKey2024";
+[System.Serializable]
+public class StorageData
+{
+    public List<InventoryItemData> storageItems = new List<InventoryItemData>();
+}
 
-    private float lastAutoSaveTime;
-    private float gameStartTime;
+[System.Serializable]
+public class ItemData
+{
+    public InventoryData inventoryData;
+    public StorageData storageData;
+}
 
+public class FileSystem : Singleton<FileSystem>
+{
+    private string settingPath;
+    private string gameDataPath;
+    private string itemDataPath;
+    private ItemData pendingItemData;
+    private bool shouldLoadItemsOnStart = false;
+    
+      private bool isInitialized = false;
+      
     void Awake()
     {
-        if (_instance != null && _instance != this)
+     if (Instance != null && Instance != this)
         {
+            Debug.Log("FileSystem 인스턴스가 이미 존재합니다. 중복 제거.");
             Destroy(gameObject);
             return;
         }
+        SingletonInit();
         
-        _instance = this;
         
-        if (transform.parent != null)
+        // 플랫폼별 최적 경로 설정
+        string dataDirectory = GetPlatformDataDirectory();
+        
+        // 데이터 디렉토리 생성
+        if (EnsureDirectoryExists(dataDirectory))
         {
-            transform.SetParent(null);
+            // 파일 경로 설정
+            settingPath = Path.Combine(dataDirectory, "setting.json");
+            gameDataPath = Path.Combine(dataDirectory, "gamedata.json");
+            itemDataPath = Path.Combine(dataDirectory, "item.json");
+            
+            // 🔥 핵심 수정 3: 초기화 성공 표시
+            isInitialized = true;
+            
+            // 디버그 정보 출력
+            LogPlatformInfo(dataDirectory);
+        }
+        else
+        {
+            Debug.LogError("FileSystem 초기화 실패!");
+            isInitialized = false;
         }
         
         DontDestroyOnLoad(gameObject);
     }
-
+    
+    
     void Start()
     {
-        gameStartTime = Time.time;
-        lastAutoSaveTime = Time.time;
-        LoadGameSettings();
-    }
-
-    void Update()
-    {
-        if (enableAutoSave && Time.time - lastAutoSaveTime >= autoSaveInterval)
+        if (shouldLoadItemsOnStart)
         {
-            AutoSave();
-            lastAutoSaveTime = Time.time;
+            shouldLoadItemsOnStart = false;
+            LoadAndApplyItemData();
         }
+        
+        StartCoroutine(CheckForInstancesAndApplyPendingData());
     }
-
-    void InitializeFileSystem()
+    
+    // ========== 플랫폼별 경로 설정 ==========
+    private string GetPlatformDataDirectory()
     {
-        saveDirectory = Path.Combine(Application.persistentDataPath, "SaveData");
-        if (!Directory.Exists(saveDirectory))
-            Directory.CreateDirectory(saveDirectory);
-    }
+        // 플랫폼과 관계없이 일관된 경로 사용
+        string baseDirectory = Application.persistentDataPath;
 
-    public bool SaveGame(int slotIndex, string saveName = "")
+        return baseDirectory;
+    }
+    
+    private bool EnsureDirectoryExists(string directoryPath)
     {
         try
         {
-            string path = GetSaveFilePath(slotIndex);
-            SaveData saveData = new SaveData
+            if (!Directory.Exists(directoryPath))
             {
-                saveName = saveName,
-                saveDate = DateTime.Now.ToString(),
-                currentDay = StatusSystem.Instance.GetCurrentDay(),
-                totalPlayTime = Time.realtimeSinceStartup,
-                
-                oxygen = StatusSystem.Instance.GetOxygen(),
-                energy = StatusSystem.Instance.GetEnergy(),
-                durability = StatusSystem.Instance.GetDurability(),
-                isToDay = StatusSystem.Instance.GetIsToDay(),
-                currentSceneName = SceneSystem.Instance.GetCurrentSceneName()
-            };
-
-            string jsonData = JsonUtility.ToJson(saveData, true);
-            File.WriteAllText(path, jsonData);
+                Directory.CreateDirectory(directoryPath);
+                Debug.Log($"데이터 디렉토리 생성: {directoryPath}");
+            }
             
-            Debug.Log($"게임 저장 완료 - 슬롯: {slotIndex}, 경로: {path}");
-            return true;
+            // 쓰기 권한 테스트
+            return TestDirectoryPermissions(directoryPath);
         }
         catch (Exception e)
         {
-            Debug.LogError($"저장 실패: {e.Message}");
+            Debug.LogError($"디렉토리 생성/확인 실패: {e.Message}");
+            Debug.LogError($"경로: {directoryPath}");
+            
+            // 플랫폼별 권한 안내
+            ShowPlatformPermissionGuide();
             return false;
         }
     }
     
-    [Serializable]
-    public class SaveData
-    {
-        public string saveName;
-        public string saveDate;
-        public int currentDay;
-        public float totalPlayTime;
-    
-        public double oxygen;
-        public double energy;
-        public double durability;
-        public bool isToDay;
-        public string currentSceneName;
-    }
-
-    public bool LoadGame(int slotIndex)
+    private bool TestDirectoryPermissions(string directoryPath)
     {
         try
         {
-            string path = GetSaveFilePath(slotIndex);
-            if (!File.Exists(path))
-            {
-                Debug.LogWarning($"저장 파일이 없음: {path}");
-                return false;
-            }
-
-            string jsonData = File.ReadAllText(path);
-            SaveData saveData = JsonUtility.FromJson<SaveData>(jsonData);
-
-            StatusSystem.Instance.SetMinusOxygen(100 - saveData.oxygen);
-            StatusSystem.Instance.SetMinusEnergy(100 - saveData.energy);
-            StatusSystem.Instance.SetMinusDurability(100 - saveData.durability);
-            StatusSystem.Instance.SetIsToDay(saveData.isToDay);
+            string testFile = Path.Combine(directoryPath, "permission_test.tmp");
+            File.WriteAllText(testFile, "permission test");
             
-            SceneSystem.Instance.LoadScene(saveData.currentSceneName);
-            
-            Debug.Log($"게임 로드 완료 - 슬롯: {slotIndex}");
-            return true;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"로드 실패: {e.Message}");
-            return false;
-        }
-    }
-
-    public void AutoSave()
-    {
-        if (ShouldSkipAutoSave()) return;
-        GameSaveData saveData = CreateSaveData("자동 저장");
-        SaveToFile(saveData, autoSaveFileName);
-    }
-
-    public bool LoadAutoSave()
-    {
-        GameSaveData loadedData = LoadFromFile<GameSaveData>(autoSaveFileName);
-        if (loadedData != null)
-        {
-            ApplyLoadedData(loadedData);
-            return true;
-        }
-        return false;
-    }
-
-    private GameSaveData CreateSaveData(string saveName)
-    {
-        GameSaveData saveData = new GameSaveData();
-        saveData.saveName = string.IsNullOrEmpty(saveName) ? "게임 저장" : saveName;
-        saveData.saveDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        if (gameStartTime <= 0) gameStartTime = Time.time;
-        saveData.totalPlayTime = Time.time - gameStartTime;
-        saveData.currentSceneName = GetCurrentSceneName();
-        SavePlayerData(saveData);
-        SaveGameSettingsToData(saveData.gameSettings);
-        return saveData;
-    }
-
-    private void SavePlayerData(GameSaveData saveData)
-    {
-        if (StatusSystem.Instance != null)
-        {
-            saveData.playerStatus.currentDay = StatusSystem.Instance.GetCurrentDay();
-            saveData.playerStatus.oxygenRemaining = StatusSystem.Instance.GetOxygen();
-            saveData.playerStatus.electricalEnergy = StatusSystem.Instance.GetEnergy();
-            saveData.playerStatus.shelterDurability = StatusSystem.Instance.GetDurability();
-            saveData.playerStatus.isToDay = StatusSystem.Instance.GetIsToDay();
-        }
-        GameObject player = FindPlayerObject();
-        if (player != null)
-        {
-            saveData.playerStatus.playerPosition = player.transform.position;
-            saveData.playerStatus.playerRotation = player.transform.eulerAngles;
-        }
-    }
-
-    private void ApplyLoadedData(GameSaveData loadedData)
-    {
-        RestorePlayerData(loadedData);
-        if (loadedData.gameSettings != null)
-            ApplyGameSettings(loadedData.gameSettings);
-    }
-
-    private void RestorePlayerData(GameSaveData loadedData)
-    {
-        if (loadedData.playerStatus == null) return;
-        if (StatusSystem.Instance != null)
-        {
-            RestoreStatusValue("Oxygen", StatusSystem.Instance.GetOxygen(), loadedData.playerStatus.oxygenRemaining);
-            RestoreStatusValue("Energy", StatusSystem.Instance.GetEnergy(), loadedData.playerStatus.electricalEnergy);
-            RestoreStatusValue("Durability", StatusSystem.Instance.GetDurability(), loadedData.playerStatus.shelterDurability);
-            StatusSystem.Instance.SetIsToDay(loadedData.playerStatus.isToDay);
-        }
-        GameObject player = FindPlayerObject();
-        if (player != null)
-        {
-            player.transform.position = loadedData.playerStatus.playerPosition;
-            player.transform.eulerAngles = loadedData.playerStatus.playerRotation;
-        }
-    }
-
-    private void RestoreStatusValue(string statusType, double currentValue, double targetValue)
-    {
-        double difference = targetValue - currentValue;
-        if (Math.Abs(difference) < 0.01 || StatusSystem.Instance == null) return;
-        switch (statusType)
-        {
-            case "Oxygen":
-                if (difference > 0) StatusSystem.Instance.SetPlusOxygen(difference);
-                else StatusSystem.Instance.SetMinusOxygen(-difference);
-                break;
-            case "Energy":
-                if (difference > 0) StatusSystem.Instance.SetPlusEnergy(difference);
-                else StatusSystem.Instance.SetMinusEnergy(-difference);
-                break;
-            case "Durability":
-                if (difference > 0) StatusSystem.Instance.SetPlusDurability(difference);
-                else StatusSystem.Instance.SetMinusDurability(-difference);
-                break;
-        }
-    }
-
-    private bool SaveToFile<T>(T data, string fileName)
-    {
-        try
-        {
-            if (string.IsNullOrEmpty(saveDirectory)) return false;
-            string filePath = Path.Combine(saveDirectory, fileName);
-            string directory = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
-            string json = JsonUtility.ToJson(data, true);
-            if (string.IsNullOrEmpty(json)) return false;
-            if (enableEncryption) json = EncryptString(json, encryptionKey);
-            File.WriteAllText(filePath, json);
-            return true;
-        }
-        catch { return false; }
-    }
-
-    private T LoadFromFile<T>(string fileName) where T : class
-    {
-        try
-        {
-            string filePath = Path.Combine(saveDirectory, fileName);
-            if (!File.Exists(filePath)) return null;
-            string json = File.ReadAllText(filePath);
-            if (enableEncryption) json = DecryptString(json, encryptionKey);
-            T result = JsonUtility.FromJson<T>(json);
-            return result;
-        }
-        catch { return null; }
-    }
-
-    private void SaveSlotInfo(int slotIndex, GameSaveData saveData)
-    {
-        SaveSlotInfo slotInfo = new SaveSlotInfo
-        {
-            isEmpty = false,
-            saveName = saveData.saveName,
-            saveDate = saveData.saveDate,
-            currentDay = saveData.playerStatus.currentDay,
-            currentSceneName = saveData.currentSceneName,
-            totalPlayTime = saveData.totalPlayTime
-        };
-        SaveToFile(slotInfo, $"slot_info_{slotIndex}.json");
-    }
-
-    public SaveSlotInfo[] GetAllSlotInfo()
-    {
-        SaveSlotInfo[] infos = new SaveSlotInfo[5];
-        
-        for (int i = 0; i < 5; i++)
-        {
-            string path = GetSaveFilePath(i);
-            infos[i] = new SaveSlotInfo();
-            
-            if (File.Exists(path))
+            if (File.Exists(testFile))
             {
-                try
-                {
-                    string jsonData = File.ReadAllText(path);
-                    SaveData saveData = JsonUtility.FromJson<SaveData>(jsonData);
-                    
-                    infos[i].isEmpty = false;
-                    infos[i].saveName = saveData.saveName;
-                    infos[i].saveDate = saveData.saveDate;
-                    infos[i].currentDay = saveData.currentDay;
-                    infos[i].totalPlayTime = saveData.totalPlayTime;
-                }
-                catch
-                {
-                    infos[i].isEmpty = true;
-                }
-            }
-            else
-            {
-                infos[i].isEmpty = true;
-            }
-        }
-        
-        return infos;
-    }
-    
-    private string GetSaveFilePath(int slotIndex)
-    {
-        return Path.Combine(Application.persistentDataPath, $"savedata_{slotIndex}.json");
-    }
-
-    public bool DeleteSaveSlot(int slotIndex)
-    {
-        if (slotIndex < 0 || slotIndex >= maxSaveSlots) return false;
-        try
-        {
-            string path = GetSaveFilePath(slotIndex);
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-                Debug.Log($"저장 파일 삭제 완료: {path}");
+                File.Delete(testFile);
+                Debug.Log($"디렉토리 쓰기 권한 확인 완료: {directoryPath}");
                 return true;
             }
             return false;
         }
         catch (Exception e)
         {
-            Debug.LogError($"삭제 실패: {e.Message}");
+            Debug.LogError($"디렉토리 쓰기 권한 없음: {e.Message}");
+            ShowPlatformPermissionGuide();
             return false;
         }
     }
-
-    public void SaveGameSettings()
+    
+    private void ShowPlatformPermissionGuide()
     {
-        GameSettingsData settings = new GameSettingsData();
-        SaveGameSettingsToData(settings);
-        SaveToFile(settings, settingsFileName);
-    }
-
-    public void LoadGameSettings()
-    {
-        GameSettingsData settings = LoadFromFile<GameSettingsData>(settingsFileName);
-        if (settings != null)
-            ApplyGameSettings(settings);
-    }
-
-    private void SaveGameSettingsToData(GameSettingsData settings)
-    {
-        settings.qualityLevel = QualitySettings.GetQualityLevel();
-        settings.fullScreen = Screen.fullScreen;
-        settings.resolutionWidth = Screen.currentResolution.width;
-        settings.resolutionHeight = Screen.currentResolution.height;
-    }
-
-    private void ApplyGameSettings(GameSettingsData settings)
-    {
-        QualitySettings.SetQualityLevel(settings.qualityLevel);
-        Screen.fullScreen = settings.fullScreen;
-    }
-
-    private GameObject FindPlayerObject()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        return player ?? GameObject.Find("Player");
-    }
-
-    private string GetCurrentSceneName()
-    {
-        return SceneSystem.Instance?.GetCurrentSceneName() ?? UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-    }
-
-    private bool ShouldSkipAutoSave()
-    {
-        string currentScene = GetCurrentSceneName();
-        if (IsStartScene(currentScene)) return true;
-        if (GameSystem.Instance != null && GameSystem.Instance.IsPaused()) return true;
-        return false;
-    }
-
-    private bool IsStartScene(string sceneName)
-    {
-        string[] startScenes = {
-            "StartScene", "TitleScene", "MainMenuScene", "MenuScene",
-            "Intro", "MainMenu"
-        };
-        foreach (string startScene in startScenes)
+        switch (Application.platform)
         {
-            if (sceneName.Equals(startScene, StringComparison.OrdinalIgnoreCase)) return true;
+            case RuntimePlatform.OSXPlayer:
+                Debug.LogWarning("=== macOS 권한 설정 가이드 ===");
+                Debug.LogWarning("1. 시스템 환경설정 > 보안 및 개인 정보 보호");
+                Debug.LogWarning("2. 개인 정보 보호 탭 > 전체 디스크 접근 권한");
+                Debug.LogWarning("3. 게임 실행 파일 추가");
+                Debug.LogWarning("또는 터미널에서: chmod +x [게임경로]");
+                break;
+                
+            case RuntimePlatform.WindowsPlayer:
+                Debug.LogWarning("=== Windows 권한 설정 가이드 ===");
+                Debug.LogWarning("1. 게임을 관리자 권한으로 실행");
+                Debug.LogWarning("2. 바이러스 백신에서 게임 폴더 예외 처리");
+                Debug.LogWarning("3. Windows Defender에서 폴더 접근 제어 확인");
+                break;
+                
+            case RuntimePlatform.LinuxPlayer:
+                Debug.LogWarning("=== Linux 권한 설정 가이드 ===");
+                Debug.LogWarning("터미널에서: chmod +x [게임경로]");
+                Debug.LogWarning("또는: sudo chown -R $USER:$USER ~/.local/share/");
+                break;
         }
-        return false;
     }
-
-    private void DeleteFileIfExists(string fileName)
+    
+    private void LogPlatformInfo(string dataDirectory)
     {
-        string filePath = Path.Combine(saveDirectory, fileName);
-        if (File.Exists(filePath)) File.Delete(filePath);
+        Debug.Log($"=== 플랫폼 정보 ===");
+        Debug.Log($"현재 플랫폼: {Application.platform}");
+        Debug.Log($"데이터 저장 디렉토리: {dataDirectory}");
+        Debug.Log($"설정 파일 경로: {settingPath}");
+        Debug.Log($"게임 데이터 경로: {gameDataPath}");
+        Debug.Log($"아이템 데이터 경로: {itemDataPath}");
+        Debug.Log($"==================");
     }
-
-    private string EncryptString(string text, string key)
+    
+    // ========== 설정 파일 관리 ==========
+    public void SaveSetting(SettingData data)
     {
-        string result = "";
-        for (int i = 0; i < text.Length; i++)
-            result += (char)(text[i] ^ key[i % key.Length]);
-        return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(result));
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return;
+        }
+        
+        try
+        {
+            string json = JsonUtility.ToJson(data, true);
+            
+            string tempPath = settingPath + ".tmp";
+            File.WriteAllText(tempPath, json);
+            
+            if (File.Exists(settingPath))
+            {
+                File.Delete(settingPath);
+            }
+            File.Move(tempPath, settingPath);
+            
+            Debug.Log($"설정 저장 완료: {settingPath}");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"설정 저장 실패: {e.Message}");
+        }
     }
 
-    private string DecryptString(string encryptedText, string key)
+    public SettingData LoadSetting()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return GetDefaultSetting();
+        }
+        
+        try
+        {
+            if (File.Exists(settingPath))
+            {
+                string json = File.ReadAllText(settingPath);
+                
+                if (string.IsNullOrEmpty(json))
+                {
+                    Debug.LogWarning("설정 파일이 비어있음, 기본값 반환");
+                    return GetDefaultSetting();
+                }
+                
+                SettingData data = JsonUtility.FromJson<SettingData>(json);
+                Debug.Log($"설정 불러오기 완료: {settingPath}");
+                return data ?? GetDefaultSetting();
+            }
+            else
+            {
+                Debug.Log("설정 파일 없음, 기본값 반환");
+                return GetDefaultSetting();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"설정 불러오기 실패: {e.Message}");
+            return GetDefaultSetting();
+        }
+    }
+
+    private SettingData GetDefaultSetting()
+    {
+        return new SettingData
+        {
+            fullscreen = false,
+            quality = 1,
+            bgmVolume = 1f,
+            sfxVolume = 1f
+        };
+    }
+    
+    // ========== 게임 데이터 관리 ==========
+    public void SaveGameData(GameData data)
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return;
+        }
+        
+        try
+        {
+            string json = JsonUtility.ToJson(data, true);
+            
+            string tempPath = gameDataPath + ".tmp";
+            File.WriteAllText(tempPath, json);
+            
+            if (File.Exists(gameDataPath))
+            {
+                File.Delete(gameDataPath);
+            }
+            File.Move(tempPath, gameDataPath);
+            
+            Debug.Log($"게임 데이터 저장 완료: {gameDataPath}");
+            
+            // 아이템 데이터도 함께 저장
+            SaveItemData();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"게임 데이터 저장 실패: {e.Message}");
+        }
+    }
+
+    public GameData LoadGameData()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return GetDefaultGameData();
+        }
+        
+        try
+        {
+            if (File.Exists(gameDataPath))
+            {
+                string json = File.ReadAllText(gameDataPath);
+                
+                if (string.IsNullOrEmpty(json))
+                {
+                    Debug.LogWarning("게임 데이터 파일이 비어있음, 기본값 반환");
+                    return GetDefaultGameData();
+                }
+                
+                GameData data = JsonUtility.FromJson<GameData>(json);
+                Debug.Log($"게임 데이터 불러오기 완료: {gameDataPath}");
+                return data ?? GetDefaultGameData();
+            }
+            else
+            {
+                Debug.Log("게임 데이터 파일 없음, 기본값 반환");
+                return GetDefaultGameData();
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"게임 데이터 불러오기 실패: {e.Message}");
+            return GetDefaultGameData();
+        }
+    }
+
+    private GameData GetDefaultGameData()
+    {
+        return new GameData
+        {
+            currentDay = 1,
+            oxygenRemaining = 100f,
+            electricalEnergy = 100f,
+            shelterDurability = 100f,
+            isToDay = true
+        };
+    }
+    
+    public void ApplyGameData(GameData data)
+    {
+        Debug.Log("게임 데이터 적용 시작");
+        
+        StartCoroutine(WaitForStatusSystemAndApply(data));
+    }
+    
+    private System.Collections.IEnumerator WaitForStatusSystemAndApply(GameData data)
+    {
+        float waitTime = 0f;
+        float maxWaitTime = 15f;
+        
+        while (StatusSystem.Instance == null && waitTime < maxWaitTime)
+        {
+            Debug.Log($"StatusSystem 인스턴스 대기 중... ({waitTime:F1}초)");
+            yield return new UnityEngine.WaitForSeconds(0.5f);
+            waitTime += 0.5f;
+        }
+        
+        if (StatusSystem.Instance == null)
+        {
+            Debug.LogError("StatusSystem 인스턴스를 찾을 수 없습니다!");
+            yield break;
+        }
+        
+        try
+        {
+            StatusSystem.Instance.SetCurrentDay(data.currentDay);
+            StatusSystem.Instance.SetOxygen(data.oxygenRemaining);
+            StatusSystem.Instance.SetEnergy(data.electricalEnergy);
+            StatusSystem.Instance.SetDurability(data.shelterDurability);
+            StatusSystem.Instance.SetIsToDay(data.isToDay);
+            
+            Debug.Log("StatusSystem 데이터 적용 완료");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"StatusSystem 데이터 적용 실패: {e.Message}");
+        }
+        
+        LoadAndApplyItemData();
+        
+        if (MenuSystem.Instance != null && MenuSystem.Instance.MainMenu != null)
+        {
+            MenuSystem.Instance.MainMenu.SetActive(false);
+        }
+    }
+    
+    public void LoadGame()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return;
+        }
+        
+        Debug.Log("게임 로드 시작");
+        
+        try
+        {
+            InputManager inputManager = FindObjectOfType<InputManager>();
+            if (inputManager != null)
+            {
+                inputManager.enabled = false;
+                Debug.Log("InputManager 임시 비활성화");
+            }
+            
+            GameData gameData = LoadGameData();
+            
+            bool hasItemData = File.Exists(itemDataPath);
+            Debug.Log($"아이템 데이터 파일 존재: {hasItemData}");
+            
+            if (hasItemData)
+            {
+                shouldLoadItemsOnStart = true;
+            }
+            
+            // 🔥 핵심 수정 10: 안전한 게임 데이터 적용
+            ApplyGameData(gameData);
+            
+            Debug.Log("게임 로드 완료");
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"게임 로드 실패: {e.Message}");
+        }
+    }
+    
+    // ========== 아이템 데이터 관리 ==========
+    public void SaveItemData()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return;
+        }
+        
+        try
+        {
+            ItemData itemData = new ItemData
+            {
+                inventoryData = CollectInventoryData(),
+                storageData = CollectStorageData()
+            };
+            
+            string json = JsonUtility.ToJson(itemData, true);
+            
+            string tempPath = itemDataPath + ".tmp";
+            File.WriteAllText(tempPath, json);
+            
+            if (File.Exists(itemDataPath))
+            {
+                File.Delete(itemDataPath);
+            }
+            File.Move(tempPath, itemDataPath);
+            
+            // 저장 검증
+            if (File.Exists(itemDataPath))
+            {
+                FileInfo fileInfo = new FileInfo(itemDataPath);
+                Debug.Log($"아이템 데이터 저장 완료: {itemDataPath} (크기: {fileInfo.Length} bytes)");
+                
+                // 내용 검증
+                string savedContent = File.ReadAllText(itemDataPath);
+                if (savedContent.Length > 0)
+                {
+                    Debug.Log("아이템 데이터 검증 성공");
+                }
+                else
+                {
+                    Debug.LogError("저장된 아이템 데이터가 비어있습니다!");
+                }
+            }
+            else
+            {
+                Debug.LogError("아이템 데이터 파일이 생성되지 않았습니다!");
+            }
+            
+            DebugSavedItemData(itemData);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"아이템 데이터 저장 실패: {e.Message}");
+            Debug.LogError($"경로: {itemDataPath}");
+        }
+    }
+    
+    public void LoadAndApplyItemData()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return;
+        }
+        
+        try
+        {
+            Debug.Log($"아이템 데이터 파일 확인: {itemDataPath}");
+            Debug.Log($"파일 존재 여부: {File.Exists(itemDataPath)}");
+            
+            if (File.Exists(itemDataPath))
+            {
+                FileInfo fileInfo = new FileInfo(itemDataPath);
+                Debug.Log($"파일 크기: {fileInfo.Length} bytes");
+                Debug.Log($"파일 생성 시간: {fileInfo.CreationTime}");
+                Debug.Log($"파일 수정 시간: {fileInfo.LastWriteTime}");
+                
+                string json = File.ReadAllText(itemDataPath);
+                Debug.Log($"읽어온 JSON 길이: {json.Length}");
+                
+                if (string.IsNullOrEmpty(json))
+                {
+                    Debug.LogWarning("아이템 데이터 파일이 비어있습니다!");
+                    return;
+                }
+                
+                ItemData data = JsonUtility.FromJson<ItemData>(json);
+                if (data == null)
+                {
+                    Debug.LogError("JSON 파싱 실패!");
+                    return;
+                }
+                
+                Debug.Log($"아이템 데이터 불러오기 완료: {itemDataPath}");
+                DebugLoadedItemData(data);
+                
+                StartCoroutine(WaitForInstancesAndRestoreItems(data));
+            }
+            else
+            {
+                Debug.Log($"아이템 데이터 파일 없음: {itemDataPath}");
+                
+                string directory = Path.GetDirectoryName(itemDataPath);
+                Debug.Log($"디렉토리 존재 여부: {Directory.Exists(directory)}");
+                
+                if (Directory.Exists(directory))
+                {
+                    string[] files = Directory.GetFiles(directory, "*.json");
+                    Debug.Log($"같은 디렉토리의 JSON 파일들: {string.Join(", ", files)}");
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"아이템 데이터 불러오기 실패: {e.Message}");
+        }
+    }
+    
+    public void SaveItemDataOnly()
+    {
+        SaveItemData();
+    }
+    
+    public void LoadItemDataOnly()
+    {
+        LoadAndApplyItemData();
+    }
+    
+    public void OnSceneLoaded()
+    {
+        Debug.Log("씬 로드 완료, 아이템 데이터 적용 준비");
+        
+        // 🔥 핵심 수정 12: InputManager 재활성화 개선
+        StartCoroutine(ReenableInputManagerDelayed());
+        
+        if (shouldLoadItemsOnStart)
+        {
+            shouldLoadItemsOnStart = false;
+            StartCoroutine(DelayedItemLoad());
+        }
+    }
+    
+    private System.Collections.IEnumerator ReenableInputManagerDelayed()
+    {
+        yield return new UnityEngine.WaitForSeconds(1f);
+        
+        InputManager inputManager = FindObjectOfType<InputManager>();
+        if (inputManager != null)
+        {
+            inputManager.enabled = true;
+            Debug.Log("InputManager 다시 활성화");
+        }
+    }
+    
+    private System.Collections.IEnumerator DelayedItemLoad()
+    {
+        yield return new UnityEngine.WaitForSeconds(2f);
+        Debug.Log("지연된 아이템 로드 시작");
+        LoadAndApplyItemData();
+    }
+    
+    // ========== 파일 존재 확인 메서드들 ==========
+    public bool HasSaveData()
+    {
+        return isInitialized && File.Exists(gameDataPath);
+    }
+    
+    public bool HasItemData()
+    {
+        return isInitialized && File.Exists(itemDataPath);
+    }
+    
+    public bool HasSettingData()
+    {
+        return isInitialized && File.Exists(settingPath);
+    }
+    
+    public void DeleteAllSaveData()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return;
+        }
+        
+        try
+        {
+            if (File.Exists(gameDataPath))
+            {
+                File.Delete(gameDataPath);
+                Debug.Log("게임 데이터 삭제 완료");
+            }
+            
+            if (File.Exists(itemDataPath))
+            {
+                File.Delete(itemDataPath);
+                Debug.Log("아이템 데이터 삭제 완료");
+            }
+            
+            if (File.Exists(settingPath))
+            {
+                File.Delete(settingPath);
+                Debug.Log("설정 데이터 삭제 완료");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"저장 데이터 삭제 실패: {e.Message}");
+        }
+    }
+    
+    // ========== 내부 메서드들 (기존과 동일) ==========
+    private System.Collections.IEnumerator WaitForInstancesAndRestoreItems(ItemData data)
+    {
+        Debug.Log("인스턴스 대기 시작");
+        
+        float waitTime = 0f;
+        float maxWaitTime = 20f;
+        
+        while ((Inventory.Instance == null || Storage.Instance == null) && waitTime < maxWaitTime)
+        {
+            Inventory[] allInventories = FindObjectsOfType<Inventory>();
+            Storage[] allStorages = FindObjectsOfType<Storage>();
+            
+            if (waitTime % 1f < 0.1f)
+            {
+                Debug.Log($"인스턴스 대기 중... Inventory: {(Inventory.Instance != null ? "OK" : "NULL")}, Storage: {(Storage.Instance != null ? "OK" : "NULL")} ({waitTime:F1}초)");
+                Debug.Log($"발견된 객체 수 - Inventory: {allInventories.Length}, Storage: {allStorages.Length}");
+            }
+            
+            yield return new UnityEngine.WaitForSeconds(0.1f);
+            waitTime += 0.1f;
+        }
+        
+        if (Inventory.Instance == null || Storage.Instance == null)
+        {
+            Debug.LogWarning($"인스턴스 대기 시간 초과! Inventory: {(Inventory.Instance != null ? "OK" : "NULL")}, Storage: {(Storage.Instance != null ? "OK" : "NULL")}");
+            SavePendingItemData(data);
+            Debug.Log("아이템 데이터를 임시 저장했습니다. 인스턴스가 준비되면 자동으로 적용됩니다.");
+            yield break;
+        }
+        
+        Debug.Log("인스턴스 준비 완료, 아이템 복원 시작");
+        
+        yield return new UnityEngine.WaitForSeconds(1f);
+        yield return new UnityEngine.WaitForEndOfFrame();
+        
+        if (data.inventoryData != null && Inventory.Instance != null)
+        {
+            Debug.Log($"인벤토리 아이템 복원 시작 - 아이템 수: {data.inventoryData.inventoryItems.Count}, 핫바 아이템 수: {data.inventoryData.hotbarItems.Count}");
+            
+            ClearAllInventorySlots();
+            yield return null;
+            
+            foreach (var itemData in data.inventoryData.inventoryItems)
+            {
+                Item item = LoadItemByName(itemData.itemName);
+                if (item != null)
+                {
+                    Debug.Log($"인벤토리 아이템 복원: {itemData.itemName} x{itemData.quantity} -> 슬롯 {itemData.slotIndex}");
+                    RestoreItemToInventorySlot(item, itemData.quantity, itemData.slotIndex, false);
+                }
+                else
+                {
+                    Debug.LogWarning($"아이템을 찾을 수 없음: {itemData.itemName}");
+                }
+                yield return null;
+            }
+            
+            foreach (var itemData in data.inventoryData.hotbarItems)
+            {
+                Item item = LoadItemByName(itemData.itemName);
+                if (item != null)
+                {
+                    Debug.Log($"핫바 아이템 복원: {itemData.itemName} x{itemData.quantity} -> 슬롯 {itemData.slotIndex}");
+                    RestoreItemToInventorySlot(item, itemData.quantity, itemData.slotIndex, true);
+                }
+                else
+                {
+                    Debug.LogWarning($"아이템을 찾을 수 없음: {itemData.itemName}");
+                }
+                yield return null;
+            }
+            
+            yield return null;
+            Inventory.Instance.SelectHotbarSlot(data.inventoryData.currentHotbarSlotIndex);
+            Debug.Log("인벤토리 아이템 복원 완료");
+        }
+        
+        if (data.storageData != null && Storage.Instance != null)
+        {
+            Debug.Log($"창고 아이템 복원 시작 - 아이템 수: {data.storageData.storageItems.Count}");
+            
+            ClearAllStorageSlots();
+            yield return null;
+            
+            foreach (var itemData in data.storageData.storageItems)
+            {
+                Item item = LoadItemByName(itemData.itemName);
+                if (item != null)
+                {
+                    Debug.Log($"창고 아이템 복원: {itemData.itemName} x{itemData.quantity} -> 슬롯 {itemData.slotIndex}");
+                    RestoreItemToStorageSlot(item, itemData.quantity, itemData.slotIndex);
+                }
+                else
+                {
+                    Debug.LogWarning($"아이템을 찾을 수 없음: {itemData.itemName}");
+                }
+                yield return null;
+            }
+            
+            Debug.Log("창고 아이템 복원 완료");
+        }
+        
+        Debug.Log("모든 아이템 복원 작업 완료");
+    }
+    
+    private InventoryData CollectInventoryData()
+    {
+        InventoryData inventoryData = new InventoryData();
+        
+        if (Inventory.Instance == null)
+        {
+            Debug.LogWarning("Inventory.Instance가 null입니다. 빈 인벤토리 데이터를 반환합니다.");
+            return inventoryData;
+        }
+        
+        var inventorySlots = GetInventorySlots();
+        if (inventorySlots != null)
+        {
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                if (inventorySlots[i].myItemData != null)
+                {
+                    int quantity = inventorySlots[i].myItemUI != null ? inventorySlots[i].myItemUI.CurrentQuantity : 1;
+                    inventoryData.inventoryItems.Add(new InventoryItemData
+                    {
+                        itemName = inventorySlots[i].myItemData.itemName,
+                        quantity = quantity,
+                        slotIndex = i
+                    });
+                }
+            }
+        }
+
+        var hotbarSlots = GetHotbarSlots();
+        if (hotbarSlots != null)
+        {
+            for (int i = 0; i < hotbarSlots.Length; i++)
+            {
+                if (hotbarSlots[i].myItemData != null)
+                {
+                    int quantity = hotbarSlots[i].myItemUI != null ? hotbarSlots[i].myItemUI.CurrentQuantity : 1;
+                    inventoryData.hotbarItems.Add(new InventoryItemData
+                    {
+                        itemName = hotbarSlots[i].myItemData.itemName,
+                        quantity = quantity,
+                        slotIndex = i
+                    });
+                }
+            }
+        }
+        
+        inventoryData.currentHotbarSlotIndex = Inventory.Instance._currentHotbarSlotIndex;
+        return inventoryData;
+    }
+    
+    private StorageData CollectStorageData()
+    {
+        StorageData storageData = new StorageData();
+        
+        if (Storage.Instance == null)
+        {
+            Debug.LogWarning("Storage.Instance가 null입니다. 빈 창고 데이터를 반환합니다.");
+            return storageData;
+        }
+        
+        var storageSlots = GetStorageSlots();
+        if (storageSlots != null)
+        {
+            for (int i = 0; i < storageSlots.Length; i++)
+            {
+                if (storageSlots[i].myItemData != null)
+                {
+                    int quantity = storageSlots[i].myItemUI != null ? storageSlots[i].myItemUI.CurrentQuantity : 1;
+                    storageData.storageItems.Add(new InventoryItemData
+                    {
+                        itemName = storageSlots[i].myItemData.itemName,
+                        quantity = quantity,
+                        slotIndex = i
+                    });
+                }
+            }
+        }
+        
+        return storageData;
+    }
+
+    private InventorySlot[] GetInventorySlots()
     {
         try
         {
-            byte[] data = Convert.FromBase64String(encryptedText);
-            string text = System.Text.Encoding.UTF8.GetString(data);
-            string result = "";
-            for (int i = 0; i < text.Length; i++)
-                result += (char)(text[i] ^ key[i % key.Length]);
-            return result;
+            var field = typeof(Inventory).GetField("inventorySlots", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return (InventorySlot[])field?.GetValue(Inventory.Instance);
         }
-        catch
+        catch (Exception e)
         {
-            return "";
+            Debug.LogError($"인벤토리 슬롯 가져오기 실패: {e.Message}");
+            return null;
         }
     }
-
-    void OnApplicationPause(bool pauseStatus)
+    
+    private InventorySlot[] GetHotbarSlots()
     {
-        if (pauseStatus && enableAutoSave) AutoSave();
+        try
+        {
+            var field = typeof(Inventory).GetField("hotbarSlots", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return (InventorySlot[])field?.GetValue(Inventory.Instance);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"핫바 슬롯 가져오기 실패: {e.Message}");
+            return null;
+        }
     }
-    void OnApplicationFocus(bool hasFocus)
+    
+    private InventorySlot[] GetStorageSlots()
     {
-        if (!hasFocus && enableAutoSave) AutoSave();
+        try
+        {
+            var field = typeof(Storage).GetField("storageSlots", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return (InventorySlot[])field?.GetValue(Storage.Instance);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"창고 슬롯 가져오기 실패: {e.Message}");
+            return null;
+        }
     }
-    void OnDestroy()
+    
+    private Item LoadItemByName(string itemName)
     {
-        SaveGameSettings();
+        try
+        {
+            Item[] allItems = Resources.LoadAll<Item>("Items");
+            foreach (Item item in allItems)
+            {
+                if (item.name == itemName)
+                {
+                    return item;
+                }
+            }
+            
+            Item directLoad = Resources.Load<Item>($"Items/{itemName}");
+            if (directLoad != null)
+            {
+                return directLoad;
+            }
+            
+            Debug.LogWarning($"아이템을 찾을 수 없습니다: {itemName}");
+            return null;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"아이템 로드 중 오류: {e.Message}");
+            return null;
+        }
+    }
+    
+    private void RestoreItemToInventorySlot(Item item, int quantity, int slotIndex, bool isHotbar)
+    {
+        try
+        {
+            InventorySlot[] slots = isHotbar ? GetHotbarSlots() : GetInventorySlots();
+            
+            if (slots != null && slotIndex >= 0 && slotIndex < slots.Length)
+            {
+                var itemPrefab = GetItemPrefab();
+                if (itemPrefab != null)
+                {
+                    var newItemUI = UnityEngine.Object.Instantiate(itemPrefab, slots[slotIndex].transform);
+                    newItemUI.Initialize(item, slots[slotIndex]);
+                    newItemUI.CurrentQuantity = quantity;
+                    
+                    if (isHotbar)
+                    {
+                        Inventory.Instance.CheckAndSyncSlotIfHotbar(slots[slotIndex]);
+                    }
+                }
+                else
+                {
+                    slots[slotIndex].SetItemData(item);
+                    slots[slotIndex].SetItemQuantity(quantity);
+                    slots[slotIndex].UpdateSlotUI();
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"잘못된 슬롯 인덱스: {slotIndex}, 슬롯 배열 길이: {slots?.Length}");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"인벤토리 아이템 복원 실패: {e.Message}");
+        }
+    }
+    
+    private void RestoreItemToStorageSlot(Item item, int quantity, int slotIndex)
+    {
+        try
+        {
+            InventorySlot[] storageSlots = GetStorageSlots();
+            
+            if (storageSlots != null && slotIndex >= 0 && slotIndex < storageSlots.Length)
+            {
+                storageSlots[slotIndex].SetItemData(item);
+                storageSlots[slotIndex].SetItemQuantity(quantity);
+                storageSlots[slotIndex].UpdateSlotUI();
+            }
+            else
+            {
+                Debug.LogWarning($"잘못된 창고 슬롯 인덱스: {slotIndex}, 슬롯 배열 길이: {storageSlots?.Length}");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"창고 아이템 복원 실패: {e.Message}");
+        }
+    }
+    
+    private InventoryItem GetItemPrefab()
+    {
+        try
+        {
+            var field = typeof(Inventory).GetField("itemPrefab", 
+                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return (InventoryItem)field?.GetValue(Inventory.Instance);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"아이템 프리팹 가져오기 실패: {e.Message}");
+            return null;
+        }
+    }
+    
+    private void ClearAllInventorySlots()
+    {
+        try
+        {
+            InventorySlot[] inventorySlots = GetInventorySlots();
+            InventorySlot[] hotbarSlots = GetHotbarSlots();
+            
+            if (inventorySlots != null)
+            {
+                foreach (var slot in inventorySlots)
+                {
+                    slot.ClearSlot();
+                }
+            }
+            
+            if (hotbarSlots != null)
+            {
+                foreach (var slot in hotbarSlots)
+                {
+                    slot.ClearSlot();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"인벤토리 슬롯 초기화 실패: {e.Message}");
+        }
+    }
+    
+    private void ClearAllStorageSlots()
+    {
+        try
+        {
+            InventorySlot[] storageSlots = GetStorageSlots();
+            
+            if (storageSlots != null)
+            {
+                foreach (var slot in storageSlots)
+                {
+                    slot.ClearSlot();
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"창고 슬롯 초기화 실패: {e.Message}");
+        }
+    }
+    
+    // ========== 디버그 메서드들 ==========
+    private void DebugSavedItemData(ItemData data)
+    {
+        if (data.inventoryData != null)
+        {
+            Debug.Log($"저장된 인벤토리 아이템 수: {data.inventoryData.inventoryItems.Count}");
+            Debug.Log($"저장된 핫바 아이템 수: {data.inventoryData.hotbarItems.Count}");
+        }
+        
+        if (data.storageData != null)
+        {
+            Debug.Log($"저장된 창고 아이템 수: {data.storageData.storageItems.Count}");
+        }
+    }
+    
+    private void DebugLoadedItemData(ItemData data)
+    {
+        if (data.inventoryData != null)
+        {
+            Debug.Log($"불러온 인벤토리 아이템 수: {data.inventoryData.inventoryItems.Count}");
+            foreach (var item in data.inventoryData.inventoryItems)
+            {
+                Debug.Log($"인벤토리 아이템: {item.itemName} x{item.quantity} @ 슬롯 {item.slotIndex}");
+            }
+            
+            Debug.Log($"불러온 핫바 아이템 수: {data.inventoryData.hotbarItems.Count}");
+            foreach (var item in data.inventoryData.hotbarItems)
+            {
+                Debug.Log($"핫바 아이템: {item.itemName} x{item.quantity} @ 슬롯 {item.slotIndex}");
+            }
+        }
+        
+        if (data.storageData != null)
+        {
+            Debug.Log($"불러온 창고 아이템 수: {data.storageData.storageItems.Count}");
+            foreach (var item in data.storageData.storageItems)
+            {
+                Debug.Log($"창고 아이템: {item.itemName} x{item.quantity} @ 슬롯 {item.slotIndex}");
+            }
+        }
+    }
+    
+    // ========== 임시 데이터 처리 메서드들 ==========
+    private void SavePendingItemData(ItemData data)
+    {
+        pendingItemData = data;
+        Debug.Log("아이템 데이터를 임시 저장했습니다.");
+    }
+    
+    private System.Collections.IEnumerator CheckForInstancesAndApplyPendingData()
+    {
+        while (pendingItemData != null)
+        {
+            yield return new UnityEngine.WaitForSeconds(1f);
+            
+            if (Inventory.Instance != null && Storage.Instance != null)
+            {
+                Debug.Log("인스턴스가 준비되었습니다! 임시 저장된 아이템 데이터를 적용합니다.");
+                yield return StartCoroutine(ApplyPendingItemData());
+                break;
+            }
+            
+            Debug.Log("인스턴스 대기 중... (임시 아이템 데이터 있음)");
+        }
+    }
+    
+    private System.Collections.IEnumerator ApplyPendingItemData()
+    {
+        if (pendingItemData == null) yield break;
+        
+        ItemData data = pendingItemData;
+        pendingItemData = null;
+        
+        if (data.inventoryData != null && Inventory.Instance != null)
+        {
+            Debug.Log($"임시 데이터에서 인벤토리 아이템 복원 - 아이템 수: {data.inventoryData.inventoryItems.Count}, 핫바 아이템 수: {data.inventoryData.hotbarItems.Count}");
+            
+            ClearAllInventorySlots();
+            yield return null;
+            
+            foreach (var itemData in data.inventoryData.inventoryItems)
+            {
+                Item item = LoadItemByName(itemData.itemName);
+                if (item != null)
+                {
+                    RestoreItemToInventorySlot(item, itemData.quantity, itemData.slotIndex, false);
+                }
+            }
+            
+            foreach (var itemData in data.inventoryData.hotbarItems)
+            {
+                Item item = LoadItemByName(itemData.itemName);
+                if (item != null)
+                {
+                    RestoreItemToInventorySlot(item, itemData.quantity, itemData.slotIndex, true);
+                }
+            }
+            
+            Inventory.Instance.SelectHotbarSlot(data.inventoryData.currentHotbarSlotIndex);
+        }
+        
+        if (data.storageData != null && Storage.Instance != null)
+        {
+            Debug.Log($"임시 데이터에서 창고 아이템 복원 - 아이템 수: {data.storageData.storageItems.Count}");
+            
+            ClearAllStorageSlots();
+            yield return null;
+            
+            foreach (var itemData in data.storageData.storageItems)
+            {
+                Item item = LoadItemByName(itemData.itemName);
+                if (item != null)
+                {
+                    RestoreItemToStorageSlot(item, itemData.quantity, itemData.slotIndex);
+                }
+            }
+        }
+        
+        Debug.Log("임시 아이템 데이터 적용 완료!");
+    }
+    
+    public void OnInventoryStorageReady()
+    {
+        if (pendingItemData != null)
+        {
+            StartCoroutine(ApplyPendingItemData());
+        }
     }
 }

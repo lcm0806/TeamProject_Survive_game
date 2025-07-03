@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Titanium
   description: A basic item.
-  icon: {fileID: 0}
-  itemTag: 0
+  icon: {fileID: 21300000, guid: ac95252b53ab5eb4380f21aa0882c35c, type: 3}
   WorldPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  HandleItem: {fileID: 1644994281815225958, guid: 637ce3db8aab8904681692413b10f3f9,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 1

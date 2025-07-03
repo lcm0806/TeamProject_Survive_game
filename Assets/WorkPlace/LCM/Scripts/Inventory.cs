@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DesignPattern;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Inventory : Singleton<Inventory>
 {
@@ -20,28 +21,28 @@ public class Inventory : Singleton<Inventory>
     public Transform draggablesTransform;
     [SerializeField] InventoryItem itemPrefab;
 
-    [Header("Item List")]
-    [SerializeField] Item[] items;
-
     //[Header("Debug")]
     //[SerializeField] Button giveItemBtn;
 
     [Header("UI Management")]
-    [SerializeField] private GameObject _inventoryUIRootPanel; // ÀÎº¥Åä¸® UIÀÇ ÃÖ»óÀ§ GameObject (Panel µî)
+    [SerializeField] private GameObject _inventoryUIRootPanel; // ì¸ë²¤í† ë¦¬ UIì˜ ìµœìƒìœ„ GameObject (Panel ë“±)
+    [SerializeField] private Canvas _gameCanvas; // ê²Œì„ì˜ ë©”ì¸ Canvas (ìˆ˜ë™ìœ¼ë¡œ í• ë‹¹í•˜ê±°ë‚˜ ìë™ìœ¼ë¡œ ì°¾ê¸°)
 
     [Header("Hotbar Management")]
-    [SerializeField] public int _currentHotbarSlotIndex = 0; // ÇöÀç ¼±ÅÃµÈ ÇÖ¹Ù ½½·Ô ÀÎµ¦½º (±âº»°ª 0)
+    [SerializeField] public int _currentHotbarSlotIndex = 0; // í˜„ì¬ ì„ íƒëœ í•«ë°” ìŠ¬ë¡¯ ì¸ë±ìŠ¤ (ê¸°ë³¸ê°’ 0)
 
     [Header("Item Dropping")]
-    [SerializeField] private float _dropDistance = 1.5f; // ÇÃ·¹ÀÌ¾î·ÎºÎÅÍ ¾ÆÀÌÅÛÀÌ ¶³¾îÁú °Å¸®
-    [SerializeField] private LayerMask _groundLayer; // ¹Ù´Ú ·¹ÀÌ¾î
+    [SerializeField] private float _dropDistance = 1.5f; // í”Œë ˆì´ì–´ë¡œë¶€í„° ì•„ì´í…œì´ ë–¨ì–´ì§ˆ ê±°ë¦¬
+    [SerializeField] private LayerMask _groundLayer; // ë°”ë‹¥ ë ˆì´ì–´
     [SerializeField] private float _scatterForce = 2f;
 
-    // ÇÖ¹Ù ½½·Ô º¯°æÀ» ¿ÜºÎ¿¡ ¾Ë¸®´Â ÀÌº¥Æ® (UI ¾÷µ¥ÀÌÆ® µî¿¡ »ç¿ë)
+    // í•«ë°” ìŠ¬ë¡¯ ë³€ê²½ì„ ì™¸ë¶€ì— ì•Œë¦¬ëŠ” ì´ë²¤íŠ¸ (UI ì—…ë°ì´íŠ¸ ë“±ì— ì‚¬ìš©)
     public event Action<int> OnHotbarSlotChanged;
 
-    //// Ãß°¡: ÇÖ¹Ù ½½·ÔµéÀÇ ¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ µ¿±âÈ­ÇÏ±â À§ÇÑ ÀÌº¥Æ® (ÇÊ¿äÇÏ´Ù¸é)
+    //// ì¶”ê°€: í•«ë°” ìŠ¬ë¡¯ë“¤ì˜ ì•„ì´í…œ ë°ì´í„°ë¥¼ ë™ê¸°í™”í•˜ê¸° ìœ„í•œ ì´ë²¤íŠ¸ (í•„ìš”í•˜ë‹¤ë©´)
     public event Action<int, Item, int> OnHotbarSlotItemUpdated;
+
+    private const string MAIN_CANVAS_TAG = "MainUICanvas";
 
 
 
@@ -49,22 +50,159 @@ public class Inventory : Singleton<Inventory>
     {
         SingletonInit();
 
-        // ÀÎº¥Åä¸® UI ÆĞ³Î ÃÊ±â »óÅÂ ¼³Á¤ (½ÃÀÛ ½Ã ºñÈ°¼ºÈ­)
+        // Canvasë¥¼ ì°¾ê±°ë‚˜ ì„¤ì •
+        //SetupCanvas();
+
+        
+
+
+        // _gameCanvasê°€ ì—ë””í„°ì—ì„œ ì§ì ‘ í• ë‹¹ë˜ì§€ ì•Šì•˜ë‹¤ë©´ íƒœê·¸ë¡œ ì°¾ê¸°
+        if (_gameCanvas == null)
+        {
+            GameObject canvasGO = GameObject.FindWithTag(MAIN_CANVAS_TAG);
+            if (canvasGO != null)
+            {
+                _gameCanvas = canvasGO.GetComponent<Canvas>();
+            }
+
+            if (_gameCanvas == null)
+            {
+                Debug.LogError($"'{MAIN_CANVAS_TAG}' íƒœê·¸ë¥¼ ê°€ì§„ Canvasë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì”¬ì— Canvasê°€ ìˆëŠ”ì§€, íƒœê·¸ê°€ ì˜¬ë°”ë¥¸ì§€ í™•ì¸í•´ì£¼ì„¸ìš”.");
+                return;
+            }
+        }
+
+        // _gameCanvasê°€ DDOL ì”¬ì— ìˆëŠ”ì§€ í™•ì¸ (ìµœì´ˆ 1íšŒë§Œ ì„¤ì •)
+        if (_gameCanvas.gameObject.scene.buildIndex != -1)
+        {
+            DontDestroyOnLoad(_gameCanvas.gameObject);
+            Debug.Log($"Inventory: '{MAIN_CANVAS_TAG}' íƒœê·¸ë¥¼ ê°€ì§„ _gameCanvasë¥¼ DontDestroyOnLoadë¡œ ì„¤ì •í–ˆìŠµë‹ˆë‹¤.");
+        }
+        else
+        {
+            Debug.Log($"Inventory: '{MAIN_CANVAS_TAG}' íƒœê·¸ë¥¼ ê°€ì§„ _gameCanvasê°€ ì´ë¯¸ DontDestroyOnLoad ì”¬ì— ìˆìŠµë‹ˆë‹¤.");
+
+        }
+
+        if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)
+        {
+            _inventoryUIRootPanel.transform.SetParent(_gameCanvas.transform, false);
+            // UI ìœ„ì¹˜ ë° í¬ê¸° ì¡°ì • (í•„ìš”ì‹œ)
+            RectTransform rectTransform = _inventoryUIRootPanel.GetComponent<RectTransform>();
+            if (rectTransform != null)
+            {
+                rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+                rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+                rectTransform.anchoredPosition = Vector2.zero;
+            }
+            Debug.Log("ì¸ë²¤í† ë¦¬ UI íŒ¨ë„ì´ Canvas ì•„ë˜ë¡œ ì´ë™ë˜ì—ˆìŠµë‹ˆë‹¤.");
+        }
+        
+
+        
+        
+        // ì¸ë²¤í† ë¦¬ UI íŒ¨ë„ ì´ˆê¸° ìƒíƒœ ì„¤ì • (ì²˜ìŒì—” ë¹„í™œì„±í™”)
         if (_inventoryUIRootPanel != null)
         {
             _inventoryUIRootPanel.SetActive(false);
         }
         else
         {
-            Debug.LogWarning("Inventory: Inventory UI Root PanelÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù. UI Åä±ÛÀÌ ÀÛµ¿ÇÏÁö ¾ÊÀ» ¼ö ÀÖ½À´Ï´Ù.");
+            Debug.LogWarning("Inventory: Inventory UI Root Panelì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. UI í† ê¸€ì´ ì‘ë™í•˜ì§€ ì•Šì„ ìˆ˜ ìˆìŠµë‹ˆë‹¤.");
+        }
+        
+
+    }
+    private void Start()
+    {
+        if (draggablesTransform == null)
+        {
+            GameObject draggablesGO = new GameObject("DraggableItems");
+            draggablesTransform = draggablesGO.transform;
+            draggablesTransform.SetParent(_gameCanvas.transform, false);
+            // ìµœìƒìœ„ ë ˆì´ì–´ì— í‘œì‹œë˜ë„ë¡ ì„¤ì •
+            RectTransform dragRect = draggablesGO.AddComponent<RectTransform>();
+            dragRect.anchorMin = Vector2.zero;
+            dragRect.anchorMax = Vector2.one;
+            dragRect.offsetMin = Vector2.zero;
+            dragRect.offsetMax = Vector2.zero;
+            draggablesTransform.SetAsLastSibling();
+            Debug.Log("DraggableItems ì»¨í…Œì´ë„ˆê°€ ìƒì„±ë˜ê³  Canvas ì•„ë˜ì— ë°°ì¹˜ë˜ì—ˆìŠµë‹ˆë‹¤.");
+        }
+        else if (draggablesTransform.parent != _gameCanvas.transform)
+        {
+            draggablesTransform.SetParent(_gameCanvas.transform, false);
+            draggablesTransform.SetAsLastSibling();
         }
 
-        // ÃÊ±â ÇÖ¹Ù ½½·Ô ¼±ÅÃÀ» ¾Ë¸²
+        draggablesTransform.SetAsLastSibling();
+        Debug.Log("DraggableItems ì»¨í…Œì´ë„ˆê°€ Canvasì˜ ìµœìƒìœ„ í˜•ì œë¡œ ì„¤ì •ë˜ì—ˆìŠµë‹ˆë‹¤.");
+
+        // ì´ˆê¸° í•«ë°” ìŠ¬ë¡¯ ì„ íƒì„ ì•Œë¦¼ (ê¸°ì¡´ Awakeì— ìˆì—ˆë‹¤ë©´ Startë¡œ ì´ë™)
         OnHotbarSlotChanged?.Invoke(_currentHotbarSlotIndex);
 
-        // »ó½Ã ÇÖ¹Ù ½½·Ô ¹è¿­ ÃÊ±âÈ­ ¹× µ¿±âÈ­ (Awake ¶Ç´Â Start¿¡¼­ ÇÑ ¹ø¸¸ È£Ãâ)
+        // ìƒì‹œ í•«ë°” ìŠ¬ë¡¯ ë°°ì—´ ì´ˆê¸°í™” ë° ë™ê¸°í™” (ê¸°ì¡´ Awakeì— ìˆì—ˆë‹¤ë©´ Startë¡œ ì´ë™)
         InitializePersistentHotbarSlots();
     }
+
+
+
+
+    //void SetupCanvas()
+    //{
+    //    // Canvasê°€ ìˆ˜ë™ìœ¼ë¡œ í• ë‹¹ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ìë™ìœ¼ë¡œ ì°¾ê¸°
+    //    if (_gameCanvas == null)
+    //    {
+    //        _gameCanvas = FindObjectOfType<Canvas>();
+    //        if (_gameCanvas == null)
+    //        {
+    //            Debug.LogError("Canvasë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. Canvasë¥¼ ìƒì„±í•˜ê±°ë‚˜ _gameCanvas í•„ë“œì— í• ë‹¹í•´ì£¼ì„¸ìš”.");
+    //            return;
+    //        }
+    //    }
+
+    //    // ì¸ë²¤í† ë¦¬ UI íŒ¨ë„ì´ Canvasì˜ ìì‹ì´ ì•„ë‹ˆë¼ë©´ Canvas ì•„ë˜ë¡œ ì´ë™
+    //    if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)
+    //    {
+    //        _inventoryUIRootPanel.transform.SetParent(_gameCanvas.transform, false);
+
+    //        // UI ìœ„ì¹˜ ë° í¬ê¸° ì¡°ì • (í•„ìš”ì‹œ)
+    //        RectTransform rectTransform = _inventoryUIRootPanel.GetComponent<RectTransform>();
+    //        if (rectTransform != null)
+    //        {
+    //            // ì¤‘ì•™ì— ë°°ì¹˜í•˜ê³  ì ì ˆí•œ í¬ê¸°ë¡œ ì„¤ì •
+    //            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
+    //            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
+    //            rectTransform.anchoredPosition = Vector2.zero;
+
+    //            // í•„ìš”í•˜ë‹¤ë©´ í¬ê¸°ë„ ì„¤ì •
+    //            // rectTransform.sizeDelta = new Vector2(800, 600);
+    //        }
+
+    //        Debug.Log("ì¸ë²¤í† ë¦¬ UI íŒ¨ë„ì´ Canvas ì•„ë˜ë¡œ ì´ë™ë˜ì—ˆìŠµë‹ˆë‹¤.");
+    //    }
+
+    //    // draggablesTransformë„ Canvas ì•„ë˜ì— ì„¤ì • (ì•„ì´í…œ ë“œë˜ê·¸ìš©)
+    //    if (draggablesTransform == null)
+    //    {
+    //        GameObject draggablesGO = new GameObject("DraggableItems");
+    //        draggablesTransform = draggablesGO.transform;
+    //        draggablesTransform.SetParent(_gameCanvas.transform, false);
+
+    //        // ìµœìƒìœ„ ë ˆì´ì–´ì— í‘œì‹œë˜ë„ë¡ ì„¤ì •
+    //        RectTransform dragRect = draggablesGO.AddComponent<RectTransform>();
+    //        dragRect.anchorMin = Vector2.zero;
+    //        dragRect.anchorMax = Vector2.one;
+    //        dragRect.offsetMin = Vector2.zero;
+    //        dragRect.offsetMax = Vector2.zero;
+
+    //        Debug.Log("DraggableItems ì»¨í…Œì´ë„ˆê°€ ìƒì„±ë˜ê³  Canvas ì•„ë˜ì— ë°°ì¹˜ë˜ì—ˆìŠµë‹ˆë‹¤.");
+    //    }
+    //    else if (draggablesTransform.parent != _gameCanvas.transform)
+    //    {
+    //        draggablesTransform.SetParent(_gameCanvas.transform, false);
+    //    }
+    //}
 
     void Update()
     {
@@ -78,13 +216,13 @@ public class Inventory : Singleton<Inventory>
         if (index >= 0 && index < hotbarSlots.Length)
         {
             _currentHotbarSlotIndex = index;
-            // ÇÖ¹Ù ¼±ÅÃÀÌ º¯°æµÇ¾úÀ½À» ¿ÜºÎ¿¡ ¾Ë¸³´Ï´Ù.
+            // í•«ë°” ì„ íƒì´ ë³€ê²½ë˜ì—ˆìŒì„ ì™¸ë¶€ì— ì•Œë¦½ë‹ˆë‹¤.
             OnHotbarSlotChanged?.Invoke(_currentHotbarSlotIndex);
-            Debug.Log($"ÇÖ¹Ù ½½·Ô {index + 1}¹øÀÌ ¼±ÅÃµÇ¾ú½À´Ï´Ù.");
+            Debug.Log($"í•«ë°” ìŠ¬ë¡¯ {index + 1}ë²ˆì´ ì„ íƒë˜ì—ˆìŠµë‹ˆë‹¤.");
         }
         else
         {
-            Debug.LogWarning($"À¯È¿ÇÏÁö ¾ÊÀº ÇÖ¹Ù ½½·Ô ÀÎµ¦½º: {index}. ÇÖ¹Ù ½½·Ô ¹üÀ§´Â 0¿¡¼­ {hotbarSlots.Length - 1}ÀÔ´Ï´Ù.");
+            Debug.LogWarning($"ìœ íš¨í•˜ì§€ ì•Šì€ í•«ë°” ìŠ¬ë¡¯ ì¸ë±ìŠ¤: {index}. í•«ë°” ìŠ¬ë¡¯ ë²”ìœ„ëŠ” 0ì—ì„œ {hotbarSlots.Length - 1}ì…ë‹ˆë‹¤.");
         }
     }
 
@@ -118,61 +256,62 @@ public class Inventory : Singleton<Inventory>
 
     public void SpawnInventoryItem(Item item)
     {
-        // ½ºÅÃ °¡´ÉÇÑ ¾ÆÀÌÅÛÀÎ °æ¿ì, ¸ÕÀú ±âÁ¸ ½½·ÔÀ» È®ÀÎ
+        Debug.Log($"[Inventory] SpawnInventoryItem í˜¸ì¶œë¨. ì¶”ê°€ ì‹œë„ ì•„ì´í…œ: {item.itemName}");
+        // ìŠ¤íƒ ê°€ëŠ¥í•œ ì•„ì´í…œì¸ ê²½ìš°, ë¨¼ì € ê¸°ì¡´ ìŠ¬ë¡¯ì„ í™•ì¸
         if (item.isStackable)
         {
             for (int i = 0; i < hotbarSlots.Length; i++)
             {
                 if (hotbarSlots[i].myItemData == item && hotbarSlots[i].myItemUI != null && hotbarSlots[i].myItemUI.CurrentQuantity < item.maxStackSize)
                 {
-                    hotbarSlots[i].myItemUI.CurrentQuantity++; // ¼ö·® Áõ°¡
-                    SyncHotbarSlotUI(i); // ÇÖ¹Ù µ¿±âÈ­ (ÀÌ ³»ºÎ¿¡¼­ SetItemInternalÀ» ÅëÇØ UI ¾÷µ¥ÀÌÆ®)
+                    hotbarSlots[i].myItemUI.CurrentQuantity++; // ìˆ˜ëŸ‰ ì¦ê°€
+                    SyncHotbarSlotUI(i); // í•«ë°” ë™ê¸°í™” (ì´ ë‚´ë¶€ì—ì„œ SetItemInternalì„ í†µí•´ UI ì—…ë°ì´íŠ¸)
                     Debug.Log($"SUCCESS: '{item.itemName}' stacked in hotbar slot {i}. New Qty: {hotbarSlots[i].myItemUI.CurrentQuantity}");
                     return;
                 }
             }
-            // === ÀÎº¥Åä¸® ½½·Ô È®ÀÎ (½ºÅÃ ·ÎÁ÷) ===
+            // === ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ í™•ì¸ (ìŠ¤íƒ ë¡œì§) ===
             foreach (var slot in inventorySlots)
             {
                 if (slot.myItemData == item && slot.myItemUI != null && slot.myItemUI.CurrentQuantity < item.maxStackSize)
                 {
-                    slot.myItemUI.CurrentQuantity++; // ¼ö·® Áõ°¡
+                    slot.myItemUI.CurrentQuantity++; // ìˆ˜ëŸ‰ ì¦ê°€
                     Debug.Log($"SUCCESS: '{item.itemName}' stacked in inventory slot {slot.name}. New Qty: {slot.myItemUI.CurrentQuantity}");
-                    return; // ¾ÆÀÌÅÛ Ãß°¡ ¿Ï·á
+                    return; // ì•„ì´í…œ ì¶”ê°€ ì™„ë£Œ
                 }
             }
         }
 
-        // ½ºÅÃ ºÒ°¡´ÉÇÏ°Å³ª ²Ë Ã¡À» °æ¿ì, ºó ½½·Ô¿¡ »ı¼º
-        // ¸ÕÀú ÇÖ¹ÙÀÇ ºó ½½·Ô È®ÀÎ (µÎ ¹è¿­ ¸ğµÎ)
+        // ìŠ¤íƒ ë¶ˆê°€ëŠ¥í•˜ê±°ë‚˜ ê½‰ ì°¼ì„ ê²½ìš°, ë¹ˆ ìŠ¬ë¡¯ì— ìƒì„±
+        //ë¨¼ì € í•«ë°”ì˜ ë¹ˆ ìŠ¬ë¡¯ í™•ì¸(ë‘ ë°°ì—´ ëª¨ë‘)
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
-            if (hotbarSlots[i].myItemUI == null) // ºó ÇÖ¹Ù ½½·ÔÀ» Ã£À½
+            if (hotbarSlots[i].myItemUI == null) // ë¹ˆ í•«ë°” ìŠ¬ë¡¯ì„ ì°¾ìŒ
             {
                 var newItemUI = Instantiate(itemPrefab, hotbarSlots[i].transform);
-                newItemUI.Initialize(item, hotbarSlots[i]); // ÀÎº¥Åä¸® ÇÖ¹Ù¿¡ UI »ı¼º
-                // ÃÊ±â ¼ö·®ÀÌ 1ÀÌ ¾Æ´Ï¶ó¸é ¿©±â¼­ ¼³Á¤
-                newItemUI.CurrentQuantity = 1; // ±âº»ÀûÀ¸·Î 1ÀÌ¹Ç·Î »ı·« °¡´É
-                SyncHotbarSlotUI(i); // ÇÖ¹Ù µ¿±âÈ­
-                Debug.Log($"»õ ÇÖ¹Ù ½½·Ô {i}¿¡ '{item.itemName}' Ãß°¡.");
+                newItemUI.Initialize(item, hotbarSlots[i]); // ì¸ë²¤í† ë¦¬ í•«ë°”ì— UI ìƒì„±
+                // ì´ˆê¸° ìˆ˜ëŸ‰ì´ 1ì´ ì•„ë‹ˆë¼ë©´ ì—¬ê¸°ì„œ ì„¤ì •
+                newItemUI.CurrentQuantity = 1; // ê¸°ë³¸ì ìœ¼ë¡œ 1ì´ë¯€ë¡œ ìƒëµ ê°€ëŠ¥
+                SyncHotbarSlotUI(i); // í•«ë°” ë™ê¸°í™”
+                Debug.Log($"ìƒˆ í•«ë°” ìŠ¬ë¡¯ {i}ì— '{item.itemName}' ì¶”ê°€.");
                 return;
             }
         }
 
-        // ½ºÅÃÇÒ ¼ö ¾ø°Å³ª, ½ºÅÃ °¡´ÉÇÑ ¾ÆÀÌÅÛÀÌÁö¸¸ ¸ğµç ±âÁ¸ ½½·ÔÀÌ ²Ë Ã¡À» °æ¿ì
-        // ºñ¾îÀÖ´Â »õ ½½·Ô¿¡ ¾ÆÀÌÅÛÀ» »ı¼º
+        // ìŠ¤íƒí•  ìˆ˜ ì—†ê±°ë‚˜, ìŠ¤íƒ ê°€ëŠ¥í•œ ì•„ì´í…œì´ì§€ë§Œ ëª¨ë“  ê¸°ì¡´ ìŠ¬ë¡¯ì´ ê½‰ ì°¼ì„ ê²½ìš°
+        // ë¹„ì–´ìˆëŠ” ìƒˆ ìŠ¬ë¡¯ì— ì•„ì´í…œì„ ìƒì„±
         for (int i = 0; i < inventorySlots.Length; i++)
         {
-            if (inventorySlots[i].myItemUI == null) // ºñ¾îÀÖ´Â ½½·ÔÀ» Ã£À½
+            if (inventorySlots[i].myItemUI == null) // ë¹„ì–´ìˆëŠ” ìŠ¬ë¡¯ì„ ì°¾ìŒ
             {
                 var newItemUI = Instantiate(itemPrefab, inventorySlots[i].transform);
-                newItemUI.Initialize(item, inventorySlots[i]); // Initialize È£Ãâ
-                Debug.Log($"»õ ½½·Ô¿¡ '{item.itemName}' Ãß°¡.");
-                return; // ¾ÆÀÌÅÛ Ãß°¡ ¿Ï·á
+                newItemUI.Initialize(item, inventorySlots[i]); // Initialize í˜¸ì¶œ
+                Debug.Log($"ìƒˆ ìŠ¬ë¡¯ì— '{item.itemName}' ì¶”ê°€.");
+                return; // ì•„ì´í…œ ì¶”ê°€ ì™„ë£Œ
             }
         }
 
-        Debug.LogWarning($"ÀÎº¥Åä¸®°¡ °¡µæ Ã¡½À´Ï´Ù. '{item.itemName}'À»(¸¦) Ãß°¡ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+        Debug.LogWarning($"ì¸ë²¤í† ë¦¬ê°€ ê°€ë“ ì°¼ìŠµë‹ˆë‹¤. '{item.itemName}'ì„(ë¥¼) ì¶”ê°€í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
 
 
     }
@@ -180,25 +319,25 @@ public class Inventory : Singleton<Inventory>
     {
         if (itemToDropUI == null || itemToDropUI.myItem == null)
         {
-            Debug.LogWarning("À¯È¿ÇÏÁö ¾ÊÀº ¾ÆÀÌÅÛÀ» ¹ö¸®·Á°í ½ÃµµÇß½À´Ï´Ù.");
-            CarriedItem = null; // È¤½Ã ¸ğ¸¦ »óÈ² ´ëºñ
+            Debug.LogWarning("ìœ íš¨í•˜ì§€ ì•Šì€ ì•„ì´í…œì„ ë²„ë¦¬ë ¤ê³  ì‹œë„í–ˆìŠµë‹ˆë‹¤.");
+            CarriedItem = null; // í˜¹ì‹œ ëª¨ë¥¼ ìƒí™© ëŒ€ë¹„
             return;
         }
 
         GameObject itemWorldPrefab = itemToDropUI.myItem.WorldPrefab;
         if (itemWorldPrefab == null)
         {
-            Debug.LogWarning($"¾ÆÀÌÅÛ '{itemToDropUI.myItem.itemName}'¿¡ ¿¬°áµÈ 3D ¿ùµå ÇÁ¸®ÆÕÀÌ ¾ø½À´Ï´Ù. ¹ö¸± ¼ö ¾ø½À´Ï´Ù.", itemToDropUI.myItem);
-            // ¾ÆÀÌÅÛ ÇÁ¸®ÆÕÀÌ ¾ø¾îµµ ÀÎº¥Åä¸®¿¡¼­´Â Áö¿ö¾ß ÇÏ¹Ç·Î ¾Æ·¡ ClearSlot() ·ÎÁ÷Àº ÁøÇàÇÕ´Ï´Ù.
+            Debug.LogWarning($"ì•„ì´í…œ '{itemToDropUI.myItem.itemName}'ì— ì—°ê²°ëœ 3D ì›”ë“œ í”„ë¦¬íŒ¹ì´ ì—†ìŠµë‹ˆë‹¤. ë²„ë¦´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.", itemToDropUI.myItem);
+            // ì•„ì´í…œ í”„ë¦¬íŒ¹ì´ ì—†ì–´ë„ ì¸ë²¤í† ë¦¬ì—ì„œëŠ” ì§€ì›Œì•¼ í•˜ë¯€ë¡œ ì•„ë˜ ClearSlot() ë¡œì§ì€ ì§„í–‰í•©ë‹ˆë‹¤.
         }
         else
         {
-            //µå·ÓÇÒ ¾ÆÀÌÅÛÀÇ ¼ö·®
+            //ë“œë¡­í•  ì•„ì´í…œì˜ ìˆ˜ëŸ‰
             int quantityToDrop = itemToDropUI.CurrentQuantity;
             Item droppedItemData = itemToDropUI.myItem;
 
-            //¾ÆÀÌÅÛÀÌ ¶³¾îÁú À§Ä¡¸¦ °è»ê (ÇÃ·¹ÀÌ¾î Àü¹æ)
-            Transform playerTransform = SamplePlayerManager.Instance.Player.transform; // PlayerControllerÀÇ transform
+            //ì•„ì´í…œì´ ë–¨ì–´ì§ˆ ìœ„ì¹˜ë¥¼ ê³„ì‚° (í”Œë ˆì´ì–´ ì „ë°©)
+            Transform playerTransform = PlayerManager.Instance.Player.transform; // PlayerControllerì˜ transform
             Vector3 playerForward = playerTransform.forward;
             Vector3 dropPosition = playerTransform.position + playerTransform.forward * _dropDistance;
             dropPosition.y += 0.5f;
@@ -209,25 +348,25 @@ public class Inventory : Singleton<Inventory>
                 dropPosition.y = hit.point.y + 0.1f;
             }
 
-            // ¼ö·®¸¸Å­ ¿ùµå ¾ÆÀÌÅÛ °³º° »ı¼º
+            // ìˆ˜ëŸ‰ë§Œí¼ ì›”ë“œ ì•„ì´í…œ ê°œë³„ ìƒì„±
             for (int i = 0; i < quantityToDrop; i++)
             {
-                // ¾ÆÀÌÅÛÀÌ ¶³¾îÁú À§Ä¡¸¦ Á¶±İ¾¿ ´Ù¸£°Ô ÇÏ¿© °ãÄ¡Áö ¾Ê°Ô ÇÔ
+                // ì•„ì´í…œì´ ë–¨ì–´ì§ˆ ìœ„ì¹˜ë¥¼ ì¡°ê¸ˆì”© ë‹¤ë¥´ê²Œ í•˜ì—¬ ê²¹ì¹˜ì§€ ì•Šê²Œ í•¨
                 Vector3 scatteredPosition = dropPosition;
-                // ·£´ıÇÑ ¼öÆò ¹æÇâÀ¸·Î »ìÂ¦ ÆÛÁö°Ô ÇÔ
+                // ëœë¤í•œ ìˆ˜í‰ ë°©í–¥ìœ¼ë¡œ ì‚´ì§ í¼ì§€ê²Œ í•¨
                 scatteredPosition.x += UnityEngine.Random.Range(-0.5f, 0.5f);
                 scatteredPosition.z += UnityEngine.Random.Range(-0.5f, 0.5f);
-                scatteredPosition.y += UnityEngine.Random.Range(0f, 0.2f); // ³ôÀÌµµ »ìÂ¦ ´Ù¸£°Ô
+                scatteredPosition.y += UnityEngine.Random.Range(0f, 0.2f); // ë†’ì´ë„ ì‚´ì§ ë‹¤ë¥´ê²Œ
 
                 GameObject worldItemGO = Instantiate(itemWorldPrefab, scatteredPosition, Quaternion.identity);
                 WorldItem worldItemScript = worldItemGO.GetComponent<WorldItem>();
 
                 if (worldItemScript != null)
                 {
-                    // WorldItemÀÇ Initialize ¸Ş¼­µå¸¦ È£ÃâÇÏ¿© ¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¸ Àü´Ş (¼ö·®Àº 1°³·Î °¡Á¤)
+                    // WorldItemì˜ Initialize ë©”ì„œë“œë¥¼ í˜¸ì¶œí•˜ì—¬ ì•„ì´í…œ ë°ì´í„°ë§Œ ì „ë‹¬ (ìˆ˜ëŸ‰ì€ 1ê°œë¡œ ê°€ì •)
                     worldItemScript.Initialize(droppedItemData);
 
-                    // Rigidbody°¡ ÀÖ´Ù¸é ÈûÀ» °¡ÇØ¼­ Á» ´õ ÀÚ¿¬½º·´°Ô ÆÛÁö°Ô ÇÒ ¼ö ÀÖÀ½
+                    // Rigidbodyê°€ ìˆë‹¤ë©´ í˜ì„ ê°€í•´ì„œ ì¢€ ë” ìì—°ìŠ¤ëŸ½ê²Œ í¼ì§€ê²Œ í•  ìˆ˜ ìˆìŒ
                     Rigidbody rb = worldItemGO.GetComponent<Rigidbody>();
                     if (rb != null)
                     {
@@ -237,27 +376,27 @@ public class Inventory : Singleton<Inventory>
                 }
                 else
                 {
-                    Debug.LogError($"µå·ÓµÈ ¿ùµå ÇÁ¸®ÆÕ '{itemWorldPrefab.name}'¿¡ WorldItem ½ºÅ©¸³Æ®°¡ ¾ø½À´Ï´Ù!");
+                    Debug.LogError($"ë“œë¡­ëœ ì›”ë“œ í”„ë¦¬íŒ¹ '{itemWorldPrefab.name}'ì— WorldItem ìŠ¤í¬ë¦½íŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤!");
                 }
             }
-            // ÀÎº¥Åä¸® ½½·Ô¿¡¼­ ¾ÆÀÌÅÛÀ» Á¦°ÅÇÏ°í UI ÀÎ½ºÅÏ½º ÆÄ±«
+            // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ì—ì„œ ì•„ì´í…œì„ ì œê±°í•˜ê³  UI ì¸ìŠ¤í„´ìŠ¤ íŒŒê´´
             bool wasHotbarItem = false;
             for (int i = 0; i < hotbarSlots.Length; i++)
             {
                 if (hotbarSlots[i] == itemToDropUI.activeSlot)
                 {
                     hotbarSlots[i].ClearSlot(); 
-                    SyncHotbarSlotUI(i); // ÇÖ¹Ù µ¿±âÈ­
+                    SyncHotbarSlotUI(i); // í•«ë°” ë™ê¸°í™”
                     wasHotbarItem = true;
                     break;
                 }
             }
 
-            if (!wasHotbarItem && itemToDropUI.activeSlot != null) // ÀÏ¹İ ÀÎº¥Åä¸® ½½·Ô¿¡¼­ ¹ö·ÁÁø °æ¿ì
+            if (!wasHotbarItem && itemToDropUI.activeSlot != null) // ì¼ë°˜ ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ì—ì„œ ë²„ë ¤ì§„ ê²½ìš°
             {
                 itemToDropUI.activeSlot.ClearSlot();
             }
-            else if (itemToDropUI.activeSlot == null) // ½½·Ô¿¡ ¾ø´ø ¾ÆÀÌÅÛÀÌ ¹ö·ÁÁø °æ¿ì (¿¹: µå·¡±× Áß ¿ùµå ¹ÛÀ¸·Î ¹ö¸²)
+            else if (itemToDropUI.activeSlot == null) // ìŠ¬ë¡¯ì— ì—†ë˜ ì•„ì´í…œì´ ë²„ë ¤ì§„ ê²½ìš° (ì˜ˆ: ë“œë˜ê·¸ ì¤‘ ì›”ë“œ ë°–ìœ¼ë¡œ ë²„ë¦¼)
             {
                 Destroy(itemToDropUI.gameObject);
             }
@@ -265,19 +404,19 @@ public class Inventory : Singleton<Inventory>
             CarriedItem = null;
         }
 
-        //ÀÎº¥Åä¸® ½½·Ô¿¡¼­ ¾ÆÀÌÅÛÀ» Á¦°ÅÇÏ°í UI ÀÎ½ºÅÏ½º ÆÄ±«
+        //ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ì—ì„œ ì•„ì´í…œì„ ì œê±°í•˜ê³  UI ì¸ìŠ¤í„´ìŠ¤ íŒŒê´´
         if (itemToDropUI.activeSlot != null)
         {
-            itemToDropUI.activeSlot.ClearSlot(); // ÇØ´ç ½½·ÔÀ» ºñ¿ò (µ¥ÀÌÅÍ ¹× UI ÂüÁ¶ Á¦°Å)
-            Debug.Log($"¾ÆÀÌÅÛ '{itemToDropUI.myItem.itemName}'ÀÌ(°¡) ½½·Ô¿¡¼­ ¹ö·ÁÁ³½À´Ï´Ù.");
+            itemToDropUI.activeSlot.ClearSlot(); // í•´ë‹¹ ìŠ¬ë¡¯ì„ ë¹„ì›€ (ë°ì´í„° ë° UI ì°¸ì¡° ì œê±°)
+            Debug.Log($"ì•„ì´í…œ '{itemToDropUI.myItem.itemName}'ì´(ê°€) ìŠ¬ë¡¯ì—ì„œ ë²„ë ¤ì¡ŒìŠµë‹ˆë‹¤.");
         }
         else
         {
-            // ½½·Ô¿¡ ÇÒ´çµÇÁö ¾ÊÀº ¾ÆÀÌÅÛ(¿¹: µå·¡±× µµÁß »ı¼ºµÈ ¾ÆÀÌÅÛÀÌ ¹ö·ÁÁø °æ¿ì)
+            // ìŠ¬ë¡¯ì— í• ë‹¹ë˜ì§€ ì•Šì€ ì•„ì´í…œ(ì˜ˆ: ë“œë˜ê·¸ ë„ì¤‘ ìƒì„±ëœ ì•„ì´í…œì´ ë²„ë ¤ì§„ ê²½ìš°)
             Destroy(itemToDropUI.gameObject);
         }
 
-        // CarriedItemÀ» ºñ¿ó´Ï´Ù.
+        // CarriedItemì„ ë¹„ì›ë‹ˆë‹¤.
         CarriedItem = null;
     }
 
@@ -287,15 +426,15 @@ public class Inventory : Singleton<Inventory>
         foreach(var slot in inventorySlots)
         {
             if(slot.myItemData == item) 
-            { 
-                count++; 
+            {
+                count += slot.myItemUI.CurrentQuantity; 
             }
         }
         foreach(var slot in hotbarSlots)
         {
             if(slot.myItemData == item)
             {
-                count++;
+                count += slot.myItemUI.CurrentQuantity;
             }
         }
 
@@ -306,19 +445,19 @@ public class Inventory : Singleton<Inventory>
     {
         int removedCount = 0;
 
-        // ÇÖ¹Ù ½½·Ô¿¡¼­ Á¦°Å
+        // í•«ë°” ìŠ¬ë¡¯ì—ì„œ ì œê±°
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i].myItemData == itemToRemove)
             {
-                // ½ºÅÃ °¡´ÉÇÑ ¾ÆÀÌÅÛÀÌ°í, ³²Àº ¼ö·®ÀÌ Á¦°ÅÇÒ ¼ö·®º¸´Ù ¸¹À¸¸é ¼ö·®¸¸ °¨¼Ò
+                // ìŠ¤íƒ ê°€ëŠ¥í•œ ì•„ì´í…œì´ê³ , ë‚¨ì€ ìˆ˜ëŸ‰ì´ ì œê±°í•  ìˆ˜ëŸ‰ë³´ë‹¤ ë§ìœ¼ë©´ ìˆ˜ëŸ‰ë§Œ ê°ì†Œ
                 if (itemToRemove.isStackable && hotbarSlots[i].myItemUI.CurrentQuantity > amount - removedCount)
                 {
                     hotbarSlots[i].myItemUI.CurrentQuantity -= (amount - removedCount);
-                    removedCount = amount; // ¸ğµÎ Á¦°ÅµÈ °ÍÀ¸·Î °£ÁÖ
+                    removedCount = amount; // ëª¨ë‘ ì œê±°ëœ ê²ƒìœ¼ë¡œ ê°„ì£¼
                     break;
                 }
-                else // ½ºÅÃ ºÒ°¡´ÉÇÏ°Å³ª, ³²Àº ¼ö·®ÀÌ Á¦°ÅÇÒ ¼ö·® ÀÌÇÏÀÌ¸é ½½·Ô ºñ¿ò
+                else // ìŠ¤íƒ ë¶ˆê°€ëŠ¥í•˜ê±°ë‚˜, ë‚¨ì€ ìˆ˜ëŸ‰ì´ ì œê±°í•  ìˆ˜ëŸ‰ ì´í•˜ì´ë©´ ìŠ¬ë¡¯ ë¹„ì›€
                 {
                     int currentStack = hotbarSlots[i].myItemUI.CurrentQuantity;
                     hotbarSlots[i].ClearSlot();
@@ -329,21 +468,21 @@ public class Inventory : Singleton<Inventory>
             }
         }
 
-        // ÀÎº¥Åä¸® ½½·Ô¿¡¼­ Á¦°Å (ÇÖ¹Ù¿¡¼­ ÀüºÎ Á¦°ÅµÇÁö ¾ÊÀº °æ¿ì)
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ì—ì„œ ì œê±° (í•«ë°”ì—ì„œ ì „ë¶€ ì œê±°ë˜ì§€ ì•Šì€ ê²½ìš°)
         if (removedCount < amount)
         {
             for (int i = 0; i < inventorySlots.Length; i++)
             {
                 if (inventorySlots[i].myItemData == itemToRemove)
                 {
-                    // ½ºÅÃ °¡´ÉÇÑ ¾ÆÀÌÅÛÀÌ°í, ³²Àº ¼ö·®ÀÌ Á¦°ÅÇÒ ¼ö·®º¸´Ù ¸¹À¸¸é ¼ö·®¸¸ °¨¼Ò
+                    // ìŠ¤íƒ ê°€ëŠ¥í•œ ì•„ì´í…œì´ê³ , ë‚¨ì€ ìˆ˜ëŸ‰ì´ ì œê±°í•  ìˆ˜ëŸ‰ë³´ë‹¤ ë§ìœ¼ë©´ ìˆ˜ëŸ‰ë§Œ ê°ì†Œ
                     if (itemToRemove.isStackable && inventorySlots[i].myItemUI.CurrentQuantity > amount - removedCount)
                     {
                         inventorySlots[i].myItemUI.CurrentQuantity -= (amount - removedCount);
                         removedCount = amount;
                         break;
                     }
-                    else // ½ºÅÃ ºÒ°¡´ÉÇÏ°Å³ª, ³²Àº ¼ö·®ÀÌ Á¦°ÅÇÒ ¼ö·® ÀÌÇÏÀÌ¸é ½½·Ô ºñ¿ò
+                    else // ìŠ¤íƒ ë¶ˆê°€ëŠ¥í•˜ê±°ë‚˜, ë‚¨ì€ ìˆ˜ëŸ‰ì´ ì œê±°í•  ìˆ˜ëŸ‰ ì´í•˜ì´ë©´ ìŠ¬ë¡¯ ë¹„ì›€
                     {
                         int currentStack = inventorySlots[i].myItemUI.CurrentQuantity;
                         inventorySlots[i].ClearSlot();
@@ -354,14 +493,14 @@ public class Inventory : Singleton<Inventory>
             }
         }
 
-        Debug.Log($"{itemToRemove.name} {removedCount}°³¸¦ ÀÎº¥Åä¸®¿¡¼­ Á¦°ÅÇß½À´Ï´Ù.");
+        Debug.Log($"{itemToRemove.name} {removedCount}ê°œë¥¼ ì¸ë²¤í† ë¦¬ì—ì„œ ì œê±°í–ˆìŠµë‹ˆë‹¤.");
         if (removedCount < amount)
         {
-            Debug.LogWarning($"¿äÃ»ÇÑ {amount}°³ Áß {amount - removedCount}°³¸¦ Á¦°ÅÇÏÁö ¸øÇß½À´Ï´Ù. ¾ÆÀÌÅÛ ºÎÁ·.");
+            Debug.LogWarning($"ìš”ì²­í•œ {amount}ê°œ ì¤‘ {amount - removedCount}ê°œë¥¼ ì œê±°í•˜ì§€ ëª»í–ˆìŠµë‹ˆë‹¤. ì•„ì´í…œ ë¶€ì¡±.");
         }
     }
 
-    // »õ·Ó°Ô Ãß°¡µÈ ¸Ş¼­µå: »ó½Ã ÇÖ¹Ù ½½·Ô ÃÊ±âÈ­ ¹× µ¿±âÈ­
+    // ìƒˆë¡­ê²Œ ì¶”ê°€ëœ ë©”ì„œë“œ: ìƒì‹œ í•«ë°” ìŠ¬ë¡¯ ì´ˆê¸°í™” ë° ë™ê¸°í™”
     private void InitializePersistentHotbarSlots()
     {
         if (hotbarSlots == null || persistentHotbarSlots == null)
@@ -372,36 +511,69 @@ public class Inventory : Singleton<Inventory>
 
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
-            // ÀÎº¥Åä¸® ³» ÇÖ¹Ù ½½·Ô¿¡ ¾ÆÀÌÅÛ UI°¡ Á¸ÀçÇÏ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+            // persistentHotbarSlots[i] ìŠ¬ë¡¯ ìì²´ì˜ InventoryItem UIë¥¼ ê°€ì ¸ì˜¤ê±°ë‚˜, ì—†ë‹¤ë©´ ìƒì„±
+            // ì´ ì˜ˆì‹œì—ì„œëŠ” persistentHotbarSlots[i] ë°‘ì— InventoryItem ì»´í¬ë„ŒíŠ¸ê°€ ìˆë‹¤ê³  ê°€ì •í•©ë‹ˆë‹¤.
+            // ë§Œì•½ ì—†ë‹¤ë©´, ì—¬ê¸°ì— ë¯¸ë¦¬ í• ë‹¹ëœ InventoryItem GameObjectë¥¼ í™œì„±í™”/ë¹„í™œì„±í™”í•˜ëŠ” ë¡œì§ì´ í•„ìš”í•©ë‹ˆë‹¤.
+
+            InventoryItem persistentItemUI = persistentHotbarSlots[i].GetComponentInChildren<InventoryItem>(true); // ë¹„í™œì„±í™”ëœ ìì‹ë„ ì°¾ê¸°
+            if (persistentItemUI == null)
+            {
+                // ë§Œì•½ persistentItemUIê°€ ë¯¸ë¦¬ í• ë‹¹ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ì—¬ê¸°ì„œ ìƒì„± (í•œë²ˆë§Œ)
+                // ì´ ë¶€ë¶„ì€ InitializePersistentHotbarSlots()ê°€ ì•„ë‹ˆë¼, ì”¬ ë¡œë“œ ì‹œ persistentHotbarSlots ìì²´ë¥¼ êµ¬ì„±í•  ë•Œ í•˜ëŠ” ê²ƒì´ ì¢‹ìŠµë‹ˆë‹¤.
+                // ì´ ì˜ˆì‹œì—ì„œëŠ” ìŠ¬ë¡¯ì— ì´ë¯¸ InventoryItemì´ ìˆë‹¤ê³  ê°€ì •í•©ë‹ˆë‹¤.
+                // ë˜ëŠ” persistentHotbarSlots[i]ì˜ ìì‹ìœ¼ë¡œ InventoryItem í”„ë¦¬íŒ¹ì„ Instantiateí•˜ê³ ,
+                // ê·¸ InventoryItemì„ persistentItemUIë¡œ í• ë‹¹í•˜ëŠ” ë°©ì‹ìœ¼ë¡œ êµ¬í˜„í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
+                Debug.LogWarning($"Persistent Hotbar Slot {i}ì— InventoryItemì´ ì—†ìŠµë‹ˆë‹¤. í”„ë¦¬íŒ¹ ì„¤ì • í™•ì¸.");
+                if (hotbarSlots[i].myItemUI != null)
+                {
+                    // ë§Œì•½ persistentItemUIê°€ ì—†ë‹¤ë©´ ìƒˆë¡œ ìƒì„±í•´ì•¼ í•©ë‹ˆë‹¤.
+                    // ì´ ë¡œì§ì€ í•œë²ˆë§Œ ì‹¤í–‰ë˜ë„ë¡ (ì˜ˆ: ì”¬ ë¡œë“œ ì‹œ) ì£¼ì˜í•´ì•¼ í•©ë‹ˆë‹¤.
+                    persistentItemUI = Instantiate(itemPrefab, persistentHotbarSlots[i].transform);
+                }
+                else
+                {
+                    persistentHotbarSlots[i].ClearSlot();
+                    if (persistentItemUI != null) Destroy(persistentItemUI.gameObject); // ë¹„ì–´ìˆëŠ”ë° UIê°€ ë‚¨ì•„ìˆìœ¼ë©´ íŒŒê´´
+                    continue;
+                }
+            }
+
             if (hotbarSlots[i].myItemUI != null)
             {
-                var newItemUI = Instantiate(itemPrefab, persistentHotbarSlots[i].transform);
-                newItemUI.Initialize(hotbarSlots[i].myItemUI.myItem, persistentHotbarSlots[i]);
-                newItemUI.CurrentQuantity = hotbarSlots[i].myItemUI.CurrentQuantity;
-                persistentHotbarSlots[i].SetItem(newItemUI);
+                // ì›ë³¸ í•«ë°” ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ë°ì´í„°ë¥¼ ìƒì‹œ í•«ë°” ìŠ¬ë¡¯ì˜ UIë¡œ ì—…ë°ì´íŠ¸
+                persistentItemUI.Initialize(hotbarSlots[i].myItemUI.myItem, persistentHotbarSlots[i]);
+                persistentItemUI.CurrentQuantity = hotbarSlots[i].myItemUI.CurrentQuantity;
+                persistentItemUI.gameObject.SetActive(true); // í™œì„±í™”
+                persistentHotbarSlots[i].SetItem(persistentItemUI); // ìŠ¬ë¡¯ ë°ì´í„°ë„ ì—…ë°ì´íŠ¸
             }
-            else // ÀÎº¥Åä¸® ³» ÇÖ¹Ù ½½·ÔÀÌ ºñ¾îÀÖ´Â °æ¿ì
+            else
             {
+                // ì›ë³¸ í•«ë°” ìŠ¬ë¡¯ì´ ë¹„ì–´ìˆë‹¤ë©´, persistent í•«ë°” ìŠ¬ë¡¯ì„ ë¹„ì›€
                 persistentHotbarSlots[i].ClearSlot();
+                if (persistentItemUI != null)
+                {
+                    persistentItemUI.gameObject.SetActive(false); // ë¹„í™œì„±í™”
+                                                                  // persistentItemUI.ClearData(); // í•„ìš”í•˜ë‹¤ë©´ ë‚´ë¶€ ë°ì´í„°ë„ ì´ˆê¸°í™”í•˜ëŠ” ë©”ì„œë“œ í˜¸ì¶œ
+                }
             }
         }
     }
 
-    // »õ·Ó°Ô Ãß°¡µÈ ¸Ş¼­µå: ÇÖ¹Ù ½½·Ô º¯°æ ½Ã µ¿±âÈ­
+    // ìƒˆë¡­ê²Œ ì¶”ê°€ëœ ë©”ì„œë“œ: í•«ë°” ìŠ¬ë¡¯ ë³€ê²½ ì‹œ ë™ê¸°í™”
     private void SyncHotbarSlotUI(int index)
     {
         if (index < 0 || index >= hotbarSlots.Length || index >= persistentHotbarSlots.Length) return;
 
         
 
-        // UI ÀÎ½ºÅÏ½º µ¿±âÈ­ (±âÁ¸ UI ÆÄ±« ÈÄ »õ·Î »ı¼º ¶Ç´Â ¾÷µ¥ÀÌÆ®)
+        // UI ì¸ìŠ¤í„´ìŠ¤ ë™ê¸°í™” (ê¸°ì¡´ UI íŒŒê´´ í›„ ìƒˆë¡œ ìƒì„± ë˜ëŠ” ì—…ë°ì´íŠ¸)
         if (persistentHotbarSlots[index].myItemUI != null)
         {
             Destroy(persistentHotbarSlots[index].myItemUI.gameObject);
             persistentHotbarSlots[index].myItemUI = null;
         }
 
-        // ¿øº» ÇÖ¹Ù ½½·ÔÀÇ ¾ÆÀÌÅÛ µ¥ÀÌÅÍ¸¦ »ó½Ã ÇÖ¹Ù ½½·ÔÀ¸·Î º¹»ç
+        // ì›ë³¸ í•«ë°” ìŠ¬ë¡¯ì˜ ì•„ì´í…œ ë°ì´í„°ë¥¼ ìƒì‹œ í•«ë°” ìŠ¬ë¡¯ìœ¼ë¡œ ë³µì‚¬
         persistentHotbarSlots[index].myItemData = hotbarSlots[index].myItemData;
 
         if (hotbarSlots[index].myItemUI != null)
@@ -422,36 +594,36 @@ public class Inventory : Singleton<Inventory>
             return;
         }
 
-        // Case 2: ¾ÆÀÌÅÛÀ» µé°í ÀÖ°í, ºó ½½·Ô¿¡ µå·ÓÇÏ´Â °æ¿ì (Å¬¸¯Àº ¾Æ´Ô)
+        // Case 2: ì•„ì´í…œì„ ë“¤ê³  ìˆê³ , ë¹ˆ ìŠ¬ë¡¯ì— ë“œë¡­í•˜ëŠ” ê²½ìš° (í´ë¦­ì€ ì•„ë‹˜)
         // (CarriedItem != null && targetSlot.myItemUI == null)
         else if (targetSlot.myItemUI == null)
         {
-            Debug.Log("HangleItem: ºó ½½·Ô¿¡ ³»·Á³õ±â (µå·Ó)");
+            Debug.Log("HangleItem: ë¹ˆ ìŠ¬ë¡¯ì— ë‚´ë ¤ë†“ê¸° (ë“œë¡­)");
             InventorySlot originalSlot = CarriedItem.activeSlot;
 
             targetSlot.SetItem(CarriedItem);
 
 
-            //ÀÌÀü ½½·Ô Áö¿ì±â
+            //ì´ì „ ìŠ¬ë¡¯ ì§€ìš°ê¸°
             if (originalSlot != null)
             {
-                //originalSlot.ClearSlot(); // <-- ÀÌ ¶óÀÎÀ» ÁÖ¼® Ã³¸®ÇÏ°Å³ª Á¦°ÅÇØ¾ß ÇÕ´Ï´Ù!
-                originalSlot.myItemData = null; // ¿øº» ½½·ÔÀÇ µ¥ÀÌÅÍ¸¸ ºñ¿ó´Ï´Ù.
-                originalSlot.myItemUI = null;   // ¿øº» ½½·ÔÀÇ UI ÂüÁ¶¸¸ ºñ¿ó´Ï´Ù.
+                //originalSlot.ClearSlot(); // <-- ì´ ë¼ì¸ì„ ì£¼ì„ ì²˜ë¦¬í•˜ê±°ë‚˜ ì œê±°í•´ì•¼ í•©ë‹ˆë‹¤!
+                originalSlot.myItemData = null; // ì›ë³¸ ìŠ¬ë¡¯ì˜ ë°ì´í„°ë§Œ ë¹„ì›ë‹ˆë‹¤.
+                originalSlot.myItemUI = null;   // ì›ë³¸ ìŠ¬ë¡¯ì˜ UI ì°¸ì¡°ë§Œ ë¹„ì›ë‹ˆë‹¤.
 
 
-                CheckAndSyncSlotIfHotbar(originalSlot); // ÇÖ¹Ù¶ó¸é µ¿±âÈ­
+                CheckAndSyncSlotIfHotbar(originalSlot); // í•«ë°”ë¼ë©´ ë™ê¸°í™”
             }
 
-            // ÇÖ¹Ù¶ó¸é µ¿±âÈ­
+            // í•«ë°”ë¼ë©´ ë™ê¸°í™”
             CheckAndSyncSlotIfHotbar(targetSlot);
-            CarriedItem = null; // µé°í ÀÖ´Â ¾ÆÀÌÅÛ ÇØÁ¦
+            CarriedItem = null; // ë“¤ê³  ìˆëŠ” ì•„ì´í…œ í•´ì œ
         }
-        // Case 3: ¾ÆÀÌÅÛÀ» µé°í ÀÖ°í, ¾ÆÀÌÅÛÀÌ ÀÖ´Â ½½·Ô¿¡ µå·ÓÇÏ´Â °æ¿ì (Å¬¸¯Àº ¾Æ´Ô)
+        // Case 3: ì•„ì´í…œì„ ë“¤ê³  ìˆê³ , ì•„ì´í…œì´ ìˆëŠ” ìŠ¬ë¡¯ì— ë“œë¡­í•˜ëŠ” ê²½ìš° (í´ë¦­ì€ ì•„ë‹˜)
         // (CarriedItem != null && targetSlot.myItemUI != null)
         else // (CarriedItem != null && targetSlot.myItemUI != null)
         {
-            // °°Àº ¾ÆÀÌÅÛÀÌ°í ½ºÅÃ °¡´ÉÇÏ´Ù¸é ½ºÅÃ ½Ãµµ
+            // ê°™ì€ ì•„ì´í…œì´ê³  ìŠ¤íƒ ê°€ëŠ¥í•˜ë‹¤ë©´ ìŠ¤íƒ ì‹œë„
             if (CarriedItem.myItem == targetSlot.myItemData && CarriedItem.myItem.isStackable)
             {
                 int transferAmount = Mathf.Min(
@@ -464,70 +636,167 @@ public class Inventory : Singleton<Inventory>
                     targetSlot.myItemUI.CurrentQuantity += transferAmount;
                     CarriedItem.CurrentQuantity -= transferAmount;
 
-                    // µ¿±âÈ­
+                    // ë™ê¸°í™”
                     CheckAndSyncSlotIfHotbar(targetSlot);
-                    if (CarriedItem.CurrentQuantity <= 0) // µé°í ÀÖ´ø ¾ÆÀÌÅÛÀÌ ¸ğµÎ ½ºÅÃµÇ¾úÀ¸¸é
+                    if (CarriedItem.CurrentQuantity <= 0) // ë“¤ê³  ìˆë˜ ì•„ì´í…œì´ ëª¨ë‘ ìŠ¤íƒë˜ì—ˆìœ¼ë©´
                     {
-                        if (CarriedItem.activeSlot != null) // ¿ø·¡ ½½·ÔÀÌ ÀÖ¾ú´Ù¸é
+                        if (CarriedItem.activeSlot != null) // ì›ë˜ ìŠ¬ë¡¯ì´ ìˆì—ˆë‹¤ë©´
                         {
-                            //CarriedItem.activeSlot.ClearSlot(); // ¿ø·¡ ½½·Ô ºñ¿ò
-                            CheckAndSyncSlotIfHotbar(CarriedItem.activeSlot); // ÇÖ¹Ù¶ó¸é µ¿±âÈ­
+                            //CarriedItem.activeSlot.ClearSlot(); // ì›ë˜ ìŠ¬ë¡¯ ë¹„ì›€
+                            CheckAndSyncSlotIfHotbar(CarriedItem.activeSlot); // í•«ë°”ë¼ë©´ ë™ê¸°í™”
                         }
-                        Destroy(CarriedItem.gameObject); // µé°í ÀÖ´ø ¾ÆÀÌÅÛ UI ÆÄ±«
-                        CarriedItem = null; // µé°í ÀÖ´ø ¾ÆÀÌÅÛ ÇØÁ¦
+                        Destroy(CarriedItem.gameObject); // ë“¤ê³  ìˆë˜ ì•„ì´í…œ UI íŒŒê´´
+                        CarriedItem = null; // ë“¤ê³  ìˆë˜ ì•„ì´í…œ í•´ì œ
                     }
-                    // else: µé°í ÀÖ´ø ¾ÆÀÌÅÛÀÌ ³²¾ÆÀÖÀ¸¸é, CarriedItemÀº °è¼Ó ¸¶¿ì½º¿¡ ºÙ¾îÀÖÀ¸¹Ç·Î º°µµ Ã³¸® ºÒÇÊ¿ä.
-                    return; // ½ºÅÃ ¿Ï·á ÈÄ ÇÔ¼ö Á¾·á
+                    // else: ë“¤ê³  ìˆë˜ ì•„ì´í…œì´ ë‚¨ì•„ìˆìœ¼ë©´, CarriedItemì€ ê³„ì† ë§ˆìš°ìŠ¤ì— ë¶™ì–´ìˆìœ¼ë¯€ë¡œ ë³„ë„ ì²˜ë¦¬ ë¶ˆí•„ìš”.
+                    return; // ìŠ¤íƒ ì™„ë£Œ í›„ í•¨ìˆ˜ ì¢…ë£Œ
                 }
             }
 
-            // ½ºÅÃ ºÒ°¡´ÉÇÏ°Å³ª ½ºÅÃ °ø°£ÀÌ ¾øÀ¸¸é ¾ÆÀÌÅÛ ±³È¯
-            Debug.Log("HangleItem: ¾ÆÀÌÅÛ ±³È¯");
+            // ìŠ¤íƒ ë¶ˆê°€ëŠ¥í•˜ê±°ë‚˜ ìŠ¤íƒ ê³µê°„ì´ ì—†ìœ¼ë©´ ì•„ì´í…œ êµí™˜
+            Debug.Log("HangleItem: ì•„ì´í…œ êµí™˜");
             InventoryItem tempCarriedItem = CarriedItem;
             InventoryItem tempTargetItem = targetSlot.myItemUI;
 
-            // ¿øº» ½½·Ô¿¡ ´ë»ó ¾ÆÀÌÅÛÀ» ³õ±â
+            // ì›ë³¸ ìŠ¬ë¡¯ì— ëŒ€ìƒ ì•„ì´í…œì„ ë†“ê¸°
             if (tempCarriedItem.activeSlot != null)
             {
-                //tempCarriedItem.activeSlot.ClearSlot(); // ÀÌÀü ½½·Ô ºñ¿ò
+                //tempCarriedItem.activeSlot.ClearSlot(); // ì´ì „ ìŠ¬ë¡¯ ë¹„ì›€
                 CheckAndSyncSlotIfHotbar(tempCarriedItem.activeSlot);
 
-                tempCarriedItem.activeSlot.SetItem(tempTargetItem); // ÀÌÀü ½½·Ô¿¡ ´ë»ó ¾ÆÀÌÅÛ ³õ±â
+                tempCarriedItem.activeSlot.SetItem(tempTargetItem); // ì´ì „ ìŠ¬ë¡¯ì— ëŒ€ìƒ ì•„ì´í…œ ë†“ê¸°
                 CheckAndSyncSlotIfHotbar(tempCarriedItem.activeSlot);
             }
-            else // µå·¡±× ÁßÀÌ´ø ¾ÆÀÌÅÛÀÌ ¿øº» ½½·ÔÀÌ ¾ø¾úÀ» °æ¿ì (¿¹: »õ·Î »ı¼ºµÈ ¾ÆÀÌÅÛÀÌ ¹Ù·Î µå·¡±×µÈ °æ¿ì)
+            else // ë“œë˜ê·¸ ì¤‘ì´ë˜ ì•„ì´í…œì´ ì›ë³¸ ìŠ¬ë¡¯ì´ ì—†ì—ˆì„ ê²½ìš° (ì˜ˆ: ìƒˆë¡œ ìƒì„±ëœ ì•„ì´í…œì´ ë°”ë¡œ ë“œë˜ê·¸ëœ ê²½ìš°)
             {
-                // ¿ø·¡ ÀÖ´ø ¾ÆÀÌÅÛ UI¸¦ ÆÄ±«
-                targetSlot.ClearSlot(); // ´ë»ó ½½·ÔÀ» ºñ¿ò (tempTargetItem UI´Â ÆÄ±«µÊ)
-                                        // tempTargetItem.activeSlotÀº ÀÌ¹Ì targetSlotÀÌ¹Ç·Î Áßº¹ Clear ºÒÇÊ¿ä
+                // ì›ë˜ ìˆë˜ ì•„ì´í…œ UIë¥¼ íŒŒê´´
+                targetSlot.ClearSlot(); // ëŒ€ìƒ ìŠ¬ë¡¯ì„ ë¹„ì›€ (tempTargetItem UIëŠ” íŒŒê´´ë¨)
+                                        // tempTargetItem.activeSlotì€ ì´ë¯¸ targetSlotì´ë¯€ë¡œ ì¤‘ë³µ Clear ë¶ˆí•„ìš”
             }
 
-            // ´ë»ó ½½·Ô¿¡ µé°í ÀÖ´ø ¾ÆÀÌÅÛÀ» ³õÀ½
+            // ëŒ€ìƒ ìŠ¬ë¡¯ì— ë“¤ê³  ìˆë˜ ì•„ì´í…œì„ ë†“ìŒ
             targetSlot.SetItem(tempCarriedItem);
             CheckAndSyncSlotIfHotbar(targetSlot);
 
-            CarriedItem = null; // µé°í ÀÖ´Â ¾ÆÀÌÅÛ ÇØÁ¦
+            CarriedItem = null; // ë“¤ê³  ìˆëŠ” ì•„ì´í…œ í•´ì œ
         }
     }
 
-    // ÁÖ¾îÁø ½½·ÔÀÌ ÇÖ¹Ù ½½·Ô Áß ÇÏ³ªÀÎÁö È®ÀÎÇÏ°í, ±×·¸´Ù¸é SyncHotbarSlotUI¸¦ È£Ãâ
+    // ì£¼ì–´ì§„ ìŠ¬ë¡¯ì´ í•«ë°” ìŠ¬ë¡¯ ì¤‘ í•˜ë‚˜ì¸ì§€ í™•ì¸í•˜ê³ , ê·¸ë ‡ë‹¤ë©´ SyncHotbarSlotUIë¥¼ í˜¸ì¶œ
     public void CheckAndSyncSlotIfHotbar(InventorySlot slot)
     {
-        Debug.Log("ÇÖ¹Ù½½·ÔÀÎÁö Ã¼Å©");
+        Debug.Log("í•«ë°”ìŠ¬ë¡¯ì¸ì§€ ì²´í¬");
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i] == slot)
             {
-                Debug.Log("ÇÖ¹Ù½½·ÔÀÌ ¸Âµ¥À¯");
+                Debug.Log("í•«ë°”ìŠ¬ë¡¯ì´ ë§ë°ìœ ");
                 SyncHotbarSlotUI(i);
                 return;
             }
         }
     }
 
-    //Item PickRandomItem()
-    //{
-    //    int random = Random.Range(0, items.Length);
-    //    return items[random];
-    //}
+    void OnEnable()
+    {
+        // ì”¬ ë¡œë“œ ì´ë²¤íŠ¸ë¥¼ êµ¬ë…í•©ë‹ˆë‹¤.
+        // ì´ ì´ë²¤íŠ¸ëŠ” ìƒˆ ì”¬ì´ ë¡œë“œëœ í›„ì— í˜¸ì¶œë©ë‹ˆë‹¤.
+        Debug.Log("Inventory: OnEnable í˜¸ì¶œë¨. SceneManager.sceneLoaded ì´ë²¤íŠ¸ êµ¬ë….");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        // ìŠ¤í¬ë¦½íŠ¸ê°€ ë¹„í™œì„±í™”ë  ë•Œ ì´ë²¤íŠ¸ êµ¬ë…ì„ í•´ì œí•©ë‹ˆë‹¤. (ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€)
+        Debug.Log("Inventory: OnDisable í˜¸ì¶œë¨. SceneManager.sceneLoaded ì´ë²¤íŠ¸ êµ¬ë… í•´ì œ.");
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // ìƒˆë¡œìš´ ì”¬ì´ ë¡œë“œë  ë•Œë§ˆë‹¤ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œë©ë‹ˆë‹¤.
+        Debug.Log($"Inventory: ìƒˆë¡œìš´ ì”¬ì´ ë¡œë“œë˜ì—ˆìŠµë‹ˆë‹¤: {scene.name}");
+
+        if (Storage.Instance == null)
+        {
+            // ì´ ë¡œê·¸ê°€ ëœ¬ë‹¤ë©´, Storageê°€ Inventoryë³´ë‹¤ ëŠ¦ê²Œ ì´ˆê¸°í™”ëœ ê²ƒì…ë‹ˆë‹¤.
+            Debug.LogError("Inventory: Storage.Instanceê°€ OnSceneLoaded ì‹œì ì— ì•„ì§ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤! ì•„ì´í…œ ì´ë™ ë¶ˆê°€.");
+            // ì—¬ê¸°ì„œ returní•˜ë©´ MoveAllInventoryItemsToStorage()ëŠ” í˜¸ì¶œë˜ì§€ ì•ŠìŠµë‹ˆë‹¤.
+            // Script Execution Orderë¥¼ ì¡°ì •í•˜ì—¬ Storageê°€ ë¨¼ì € ì´ˆê¸°í™”ë˜ë„ë¡ í•´ì•¼ í•©ë‹ˆë‹¤.
+            return;
+        }
+
+        Debug.Log("Inventory: Storage.Instanceê°€ ì¤€ë¹„ë˜ì—ˆìŠµë‹ˆë‹¤. MoveAllInventoryItemsToStorage() í˜¸ì¶œ ì‹œë„.");
+        // ì—¬ê¸°ì— ì”¬ ì „í™˜ ì‹œ ì•„ì´í…œì„ Storageë¡œ ë³´ë‚´ëŠ” ë¡œì§ì„ í˜¸ì¶œí•©ë‹ˆë‹¤.
+        // ë‹¨, Storageê°€ ë¨¼ì € ì´ˆê¸°í™”ë˜ì–´ Instanceë¥¼ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ”ì§€ í™•ì¸í•´ì•¼ í•©ë‹ˆë‹¤.
+        // Start()ë‚˜ Awake()ì—ì„œ Storage.Instanceì— ì ‘ê·¼í•˜ë©´ ì•ˆì „í•©ë‹ˆë‹¤.
+        MoveAllInventoryItemsToStorage();
+
+        // ì¸ë²¤í† ë¦¬ UIë¥¼ ë‹«ì•„ì¤ë‹ˆë‹¤ (ì„ íƒ ì‚¬í•­).
+        if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.activeSelf)
+        {
+            _inventoryUIRootPanel.SetActive(false);
+        }
+    }
+
+
+    // ì¸ë²¤í† ë¦¬ì˜ ëª¨ë“  ì•„ì´í…œì„ Storageë¡œ ë³´ë‚´ëŠ” ë©”ì„œë“œ
+    public void MoveAllInventoryItemsToStorage()
+    {
+        Debug.Log("Inventory: MoveAllInventoryItemsToStorage() ì‹œì‘.");
+
+        if (Storage.Instance == null)
+        {
+            Debug.LogError("Storage.Instanceê°€ ì•„ì§ ì´ˆê¸°í™”ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ì¸ë²¤í† ë¦¬ ì•„ì´í…œì„ ë³´ë‚¼ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
+            return;
+        }
+
+        // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ì˜ ì•„ì´í…œë“¤ì„ Storageë¡œ ë³´ëƒ…ë‹ˆë‹¤.
+        // hotbarSlots, persistentHotbarSlots, inventorySlots ëª¨ë‘ ìˆœíšŒí•©ë‹ˆë‹¤.
+
+        // 1. Hotbar ìŠ¬ë¡¯ ì²˜ë¦¬
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            if (hotbarSlots[i].myItemData != null && hotbarSlots[i].myItemUI != null)
+            {
+                Item itemData = hotbarSlots[i].myItemData;
+                int quantity = hotbarSlots[i].myItemUI.CurrentQuantity;
+                Debug.Log($"Inventory: í•«ë°” ìŠ¬ë¡¯ {i}ì˜ '{hotbarSlots[i].myItemData.itemName}' ({hotbarSlots[i].myItemUI.CurrentQuantity}ê°œ) ì°½ê³ ë¡œ ì´ë™ ì‹œë„.");
+                Storage.Instance.AddItemToStorage(itemData, quantity);
+                hotbarSlots[i].ClearSlot(); // ì¸ë²¤í† ë¦¬ í•«ë°” ìŠ¬ë¡¯ ë¹„ìš°ê¸°
+                SyncHotbarSlotUI(i); // í•«ë°” UIë„ ë™ê¸°í™”
+                Debug.Log($"í•«ë°” ìŠ¬ë¡¯ {i}ì˜ '{itemData.itemName}' {quantity}ê°œë¥¼ ì°½ê³ ë¡œ ë³´ëƒˆìŠµë‹ˆë‹¤.");
+            }
+            else
+            {
+                Debug.Log($"Inventory: í•«ë°” ìŠ¬ë¡¯ {i}ëŠ” ë¹„ì–´ìˆìŠµë‹ˆë‹¤. (ë°ì´í„°: {hotbarSlots[i].myItemData != null}, UI: {hotbarSlots[i].myItemUI != null})");
+            }
+        }
+
+
+        // 3. Main Inventory ìŠ¬ë¡¯ ì²˜ë¦¬
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].myItemData != null && inventorySlots[i].myItemUI != null)
+            {
+                Item itemData = inventorySlots[i].myItemData;
+                int quantity = inventorySlots[i].myItemUI.CurrentQuantity;
+
+                Debug.Log($"Inventory: ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ {i}ì˜ '{inventorySlots[i].myItemData.itemName}' ({inventorySlots[i].myItemUI.CurrentQuantity}ê°œ) ì°½ê³ ë¡œ ì´ë™ ì‹œë„.");
+                Storage.Instance.AddItemToStorage(itemData, quantity);
+                inventorySlots[i].ClearSlot(); // ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ ë¹„ìš°ê¸°
+                Debug.Log($"ì¸ë²¤í† ë¦¬ ìŠ¬ë¡¯ {i}ì˜ '{itemData.itemName}' {quantity}ê°œë¥¼ ì°½ê³ ë¡œ ë³´ëƒˆìŠµë‹ˆë‹¤.");
+            }
+        }
+
+        // í˜¹ì‹œ ë“œë˜ê·¸ ì¤‘ì¸ ì•„ì´í…œì´ ìˆë‹¤ë©´ íŒŒê´´í•©ë‹ˆë‹¤.
+        if (CarriedItem != null)
+        {
+            Destroy(CarriedItem.gameObject);
+            CarriedItem = null;
+            Debug.Log("ë“œë˜ê·¸ ì¤‘ì¸ ì•„ì´í…œì„ íŒŒê´´í–ˆìŠµë‹ˆë‹¤.");
+        }
+
+        Debug.Log("ì¸ë²¤í† ë¦¬ì˜ ëª¨ë“  ì•„ì´í…œì„ ì°½ê³ ë¡œ ì´ë™ ì™„ë£Œí–ˆìŠµë‹ˆë‹¤.");
+    }
 }

@@ -145,65 +145,6 @@ public class Inventory : Singleton<Inventory>
         InitializePersistentHotbarSlots();
     }
 
-
-
-
-    //void SetupCanvas()
-    //{
-    //    // Canvas가 수동으로 할당되지 않았다면 자동으로 찾기
-    //    if (_gameCanvas == null)
-    //    {
-    //        _gameCanvas = FindObjectOfType<Canvas>();
-    //        if (_gameCanvas == null)
-    //        {
-    //            Debug.LogError("Canvas를 찾을 수 없습니다. Canvas를 생성하거나 _gameCanvas 필드에 할당해주세요.");
-    //            return;
-    //        }
-    //    }
-
-    //    // 인벤토리 UI 패널이 Canvas의 자식이 아니라면 Canvas 아래로 이동
-    //    if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.transform.parent != _gameCanvas.transform)
-    //    {
-    //        _inventoryUIRootPanel.transform.SetParent(_gameCanvas.transform, false);
-
-    //        // UI 위치 및 크기 조정 (필요시)
-    //        RectTransform rectTransform = _inventoryUIRootPanel.GetComponent<RectTransform>();
-    //        if (rectTransform != null)
-    //        {
-    //            // 중앙에 배치하고 적절한 크기로 설정
-    //            rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
-    //            rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
-    //            rectTransform.anchoredPosition = Vector2.zero;
-
-    //            // 필요하다면 크기도 설정
-    //            // rectTransform.sizeDelta = new Vector2(800, 600);
-    //        }
-
-    //        Debug.Log("인벤토리 UI 패널이 Canvas 아래로 이동되었습니다.");
-    //    }
-
-    //    // draggablesTransform도 Canvas 아래에 설정 (아이템 드래그용)
-    //    if (draggablesTransform == null)
-    //    {
-    //        GameObject draggablesGO = new GameObject("DraggableItems");
-    //        draggablesTransform = draggablesGO.transform;
-    //        draggablesTransform.SetParent(_gameCanvas.transform, false);
-
-    //        // 최상위 레이어에 표시되도록 설정
-    //        RectTransform dragRect = draggablesGO.AddComponent<RectTransform>();
-    //        dragRect.anchorMin = Vector2.zero;
-    //        dragRect.anchorMax = Vector2.one;
-    //        dragRect.offsetMin = Vector2.zero;
-    //        dragRect.offsetMax = Vector2.zero;
-
-    //        Debug.Log("DraggableItems 컨테이너가 생성되고 Canvas 아래에 배치되었습니다.");
-    //    }
-    //    else if (draggablesTransform.parent != _gameCanvas.transform)
-    //    {
-    //        draggablesTransform.SetParent(_gameCanvas.transform, false);
-    //    }
-    //}
-
     void Update()
     {
         if(CarriedItem == null) return;
@@ -594,7 +535,7 @@ public class Inventory : Singleton<Inventory>
             return;
         }
 
-        // Case 2: 아이템을 들고 있고, 빈 슬롯에 드롭하는 경우 (클릭은 아님)
+        // 아이템을 들고 있고, 빈 슬롯에 드롭하는 경우 (클릭은 아님)
         // (CarriedItem != null && targetSlot.myItemUI == null)
         else if (targetSlot.myItemUI == null)
         {
@@ -619,8 +560,7 @@ public class Inventory : Singleton<Inventory>
             CheckAndSyncSlotIfHotbar(targetSlot);
             CarriedItem = null; // 들고 있는 아이템 해제
         }
-        // Case 3: 아이템을 들고 있고, 아이템이 있는 슬롯에 드롭하는 경우 (클릭은 아님)
-        // (CarriedItem != null && targetSlot.myItemUI != null)
+        // 아이템을 들고 있고, 아이템이 있는 슬롯에 드롭하는 경우 (클릭은 아님)
         else // (CarriedItem != null && targetSlot.myItemUI != null)
         {
             // 같은 아이템이고 스택 가능하다면 스택 시도
@@ -754,18 +694,58 @@ public class Inventory : Singleton<Inventory>
         // 인벤토리 슬롯의 아이템들을 Storage로 보냅니다.
         // hotbarSlots, persistentHotbarSlots, inventorySlots 모두 순회합니다.
 
-        // 1. Hotbar 슬롯 처리
+        //Hotbar 슬롯 처리
         for (int i = 0; i < hotbarSlots.Length; i++)
         {
             if (hotbarSlots[i].myItemData != null && hotbarSlots[i].myItemUI != null)
             {
                 Item itemData = hotbarSlots[i].myItemData;
+                InventoryItem itemUI = hotbarSlots[i].myItemUI;
                 int quantity = hotbarSlots[i].myItemUI.CurrentQuantity;
-                Debug.Log($"Inventory: 핫바 슬롯 {i}의 '{hotbarSlots[i].myItemData.itemName}' ({hotbarSlots[i].myItemUI.CurrentQuantity}개) 창고로 이동 시도.");
-                Storage.Instance.AddItemToStorage(itemData, quantity);
-                hotbarSlots[i].ClearSlot(); // 인벤토리 핫바 슬롯 비우기
-                SyncHotbarSlotUI(i); // 핫바 UI도 동기화
-                Debug.Log($"핫바 슬롯 {i}의 '{itemData.itemName}' {quantity}개를 창고로 보냈습니다.");
+                switch (itemData) // itemData의 타입에 따라 분기
+                {
+                    case AirTankItem airTank:
+                        Debug.Log($"Inventory: 핫바 슬롯 {i}의 '{airTank.itemName}' ({quantity}개) 공기 회복 후 파괴 시도.");
+                        for (int k = 0; k < quantity; k++)
+                        {
+                            //airTank.Use(PlayerManager.Instance.Player); // AirTankItem 사용
+                            Debug.Log("에어탱크사용");
+                        }
+                        hotbarSlots[i].ClearSlot();
+                        SyncHotbarSlotUI(i);
+                        Destroy(itemUI.gameObject);
+                        Debug.Log($"핫바 슬롯 {i}의 '{airTank.itemName}' {quantity}개가 사용 및 파괴되었습니다.");
+                        break; // case 문 종료
+
+                    case BatteryPackItem batteryPack: // BatteryPackItem 추가
+                        Debug.Log($"Inventory: 핫바 슬롯 {i}의 '{batteryPack.itemName}' ({quantity}개) 배터리 충전 후 파괴 시도.");
+                        for (int k = 0; k < quantity; k++)
+                        {
+                            // batteryPack.Use(PlayerManager.Instance.Player); // 실제 BatteryPackItem 사용 로직 호출
+                            Debug.Log("배터리팩 사용 (핫바)"); // 임시 로그
+                        }
+                        hotbarSlots[i].ClearSlot();
+                        SyncHotbarSlotUI(i);
+                        Destroy(itemUI.gameObject);
+                        Debug.Log($"핫바 슬롯 {i}의 '{batteryPack.itemName}' {quantity}개가 사용 및 파괴되었습니다.");
+                        break; // case 문 종료
+
+                    case ToolItem toolItem:
+                        Debug.Log($"Inventory: 핫바 슬롯 {i}의 '{toolItem.itemName}' ({quantity}개) 창고로 이동 대신 파괴 시도.");
+                        hotbarSlots[i].ClearSlot();
+                        SyncHotbarSlotUI(i);
+                        Destroy(itemUI.gameObject);
+                        Debug.Log($"핫바 슬롯 {i}의 '{toolItem.itemName}' {quantity}개가 파괴되었습니다.");
+                        break; // case 문 종료
+
+                    default: // 위에 해당하는 타입이 없을 경우 (기존 else와 동일)
+                        Debug.Log($"Inventory: 핫바 슬롯 {i}의 '{itemData.itemName}' ({quantity}개) 창고로 이동 시도.");
+                        Storage.Instance.AddItemToStorage(itemData, quantity);
+                        hotbarSlots[i].ClearSlot();
+                        SyncHotbarSlotUI(i);
+                        Debug.Log($"핫바 슬롯 {i}의 '{itemData.itemName}' {quantity}개를 창고로 보냈습니다.");
+                        break; // default 문 종료
+                }
             }
             else
             {
@@ -780,12 +760,48 @@ public class Inventory : Singleton<Inventory>
             if (inventorySlots[i].myItemData != null && inventorySlots[i].myItemUI != null)
             {
                 Item itemData = inventorySlots[i].myItemData;
+                InventoryItem itemUI = inventorySlots[i].myItemUI;
                 int quantity = inventorySlots[i].myItemUI.CurrentQuantity;
+                switch (itemData) // itemData의 타입에 따라 분기합니다.
+                {
+                    case AirTankItem airTank:
+                        Debug.Log($"Inventory: 인벤토리 슬롯 {i}의 '{airTank.itemName}' ({quantity}개) 공기 회복 후 파괴 시도.");
+                        for (int k = 0; k < quantity; k++)
+                        {
+                            //airTank.Use(PlayerManager.Instance.Player); // AirTankItem 사용
+                            Debug.Log("에어탱크사용");
+                        }
+                        inventorySlots[i].ClearSlot(); // 인벤토리 슬롯을 비웁니다.
+                        Destroy(itemUI.gameObject); // UI 인스턴스를 파괴합니다.
+                        Debug.Log($"인벤토리 슬롯 {i}의 '{airTank.itemName}' {quantity}개가 사용 및 파괴되었습니다.");
+                        break; // case 문 종료
 
-                Debug.Log($"Inventory: 인벤토리 슬롯 {i}의 '{inventorySlots[i].myItemData.itemName}' ({inventorySlots[i].myItemUI.CurrentQuantity}개) 창고로 이동 시도.");
-                Storage.Instance.AddItemToStorage(itemData, quantity);
-                inventorySlots[i].ClearSlot(); // 인벤토리 슬롯 비우기
-                Debug.Log($"인벤토리 슬롯 {i}의 '{itemData.itemName}' {quantity}개를 창고로 보냈습니다.");
+                    case BatteryPackItem batteryPack: // BatteryPackItem 추가
+                        Debug.Log($"Inventory: 인벤토리 슬롯 {i}의 '{batteryPack.itemName}' ({quantity}개) 배터리 충전 후 파괴 시도.");
+                        for (int k = 0; k < quantity; k++)
+                        {
+                            // batteryPack.Use(PlayerManager.Instance.Player); // 실제 BatteryPackItem 사용 로직 호출
+                            Debug.Log("배터리팩 사용 (인벤토리)"); // 임시 로그
+                        }
+                        inventorySlots[i].ClearSlot();
+                        Destroy(itemUI.gameObject);
+                        Debug.Log($"인벤토리 슬롯 {i}의 '{batteryPack.itemName}' {quantity}개가 사용 및 파괴되었습니다.");
+                        break;
+
+                    case ToolItem toolItem:
+                        Debug.Log($"Inventory: 인벤토리 슬롯 {i}의 '{toolItem.itemName}' ({quantity}개) 창고로 이동 대신 파괴 시도.");
+                        inventorySlots[i].ClearSlot(); // 인벤토리 슬롯을 비웁니다.
+                        Destroy(itemUI.gameObject); // UI 인스턴스를 파괴합니다.
+                        Debug.Log($"인벤토리 슬롯 {i}의 '{toolItem.itemName}' {quantity}개가 파괴되었습니다.");
+                        break; // case 문 종료
+
+                    default: // 위에 해당하는 타입이 없을 경우 (기존 else와 동일)
+                        Debug.Log($"Inventory: 인벤토리 슬롯 {i}의 '{itemData.itemName}' ({quantity}개) 창고로 이동 시도.");
+                        Storage.Instance.AddItemToStorage(itemData, quantity);
+                        inventorySlots[i].ClearSlot(); // 인벤토리 슬롯 비우기
+                        Debug.Log($"인벤토리 슬롯 {i}의 '{itemData.itemName}' {quantity}개를 창고로 보냈습니다.");
+                        break; // default 문 종료
+                }
             }
         }
 

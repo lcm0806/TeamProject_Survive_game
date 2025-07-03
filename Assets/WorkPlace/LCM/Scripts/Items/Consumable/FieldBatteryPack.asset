@@ -10,16 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 85879ff987a41cc4c83d735bd223cc1e, type: 3}
-  m_Name: BatteryKit
+  m_Name: FieldBatteryPack
   m_EditorClassIdentifier: 
-  itemName: BatteryRepairKit
-  description: A basic item.
+  itemName: BatteryPack
+  description: FeildBatteryPack
   icon: {fileID: 21300000, guid: 035c8247be0bb794db9b51b18ad647ce, type: 3}
-  WorldPrefab: {fileID: 3834548869729833458, guid: 7a3a21fdb573dd24d852ae955c979ed7,
-    type: 3}
-  HandleItem: {fileID: 3834548869729833458, guid: 79c0b527b367e6a47a08dd12b876db5b,
-    type: 3}
+  WorldPrefab: {fileID: 0}
+  HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}
-  isStackable: 1
+  isStackable: 0
   maxStackSize: 99
   ElectricRestoreAmount: 0

@@ -20,3 +20,4 @@ MonoBehaviour:
   - materialItem: {fileID: 11400000, guid: 27bfcdbf8961b834c8f8670c1e25fcec, type: 2}
     quantity: 1
   description: GlassPlate
+  energyCost: 4

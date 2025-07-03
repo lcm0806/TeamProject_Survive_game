@@ -114,4 +114,6 @@ public class PickupItem : Structure
             Debug.LogWarning("UIManager가 씬에 없습니다.");
         }
     }
+
+    
 }

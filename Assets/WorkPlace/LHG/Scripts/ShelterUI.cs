@@ -31,6 +31,8 @@ public class ShelterUI : MonoBehaviour
     {
         DisplayIndicators(0);
         //시스템캔버스 false로 일단 
+
+        GetComponent<GameObject>().transform.Find("Renpy");
     }
     
     public void DisplayIndicators(int indicatorsID)

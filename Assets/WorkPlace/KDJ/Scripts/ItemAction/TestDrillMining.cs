@@ -16,11 +16,8 @@ public class TestDrillMining : ToolAction
         // 광물 체굴 로직
         int count = Physics.OverlapSphereNonAlloc(miningPos, 3f, _colls, _layerMask);
 
-        Debug.Log("현재 검출 레이어" + _layerMask.value);
-        
         if (count > 0)
         {
-            Debug.Log($"주변 광물 개수: {count}");
             _isMining = true;
             for (int i = 0; i < count; i++)
             {
@@ -43,7 +40,6 @@ public class TestDrillMining : ToolAction
         }
         else
         {
-            Debug.Log("주변에 광물이 없습니다.");
             _isMining = false;
         }
     }

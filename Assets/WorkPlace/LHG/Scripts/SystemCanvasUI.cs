@@ -84,6 +84,11 @@ public class SystemCanvasUI : MonoBehaviour
         StatusSystem.Instance.NextCurrentDay();
         // 탐색 여부
         StatusSystem.Instance.SetIsToDay(false);
+        
+        
+        // 이벤트 - 부정 효과
+        
+        
         // 씬이동 및 저장
         SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
         LoadingSceneBG[0].SetActive(false);

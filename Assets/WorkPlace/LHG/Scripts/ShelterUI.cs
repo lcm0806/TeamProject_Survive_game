@@ -27,24 +27,25 @@ public class ShelterUI : MonoBehaviour
     [SerializeField] private double testOxygen;
 
     
-
-
     private void Start()
     {
         DisplayIndicators(0);
         //시스템캔버스 false로 일단 
+
+        GetComponent<GameObject>().transform.Find("Renpy");
     }
+    
     public void DisplayIndicators(int indicatorsID)
     {
         //[패널상단] 0:날짜 1:산소 / [패널]-[맵]-[쉘터]-[subUI] 2:산소, 3:전력(Energy/Electricity 용어통일필요?), 4:내구도
-        Indicators[0].SetText($"Day : {StatusSystem.GetCurrentDay()}");
-        Indicators[1].SetText($"Oxygen : {StatusSystem.GetOxygen()}");
-        Indicators[2].SetText($"Oxygen : {StatusSystem.GetOxygen()}");
-        Indicators[3].SetText($"Energy : {StatusSystem.GetEnergy()}");
-        Indicators[4].SetText($"Durability : {StatusSystem.GetDurability()}");
-        Indicators[5].SetText($"Oxygen : {StatusSystem.GetOxygen()}");
-        Indicators[6].SetText($"Energy : {StatusSystem.GetEnergy()}");
-        Indicators[7].SetText($"Durability : {StatusSystem.GetDurability()}");
+        Indicators[0].SetText($"Day : {StatusSystem.Instance.GetCurrentDay()}");
+        Indicators[1].SetText($"Oxygen : {StatusSystem.Instance.GetOxygen()}");
+        Indicators[2].SetText($"Oxygen : {StatusSystem.Instance.GetOxygen()}");
+        Indicators[3].SetText($"Energy : {StatusSystem.Instance.GetEnergy()}");
+        Indicators[4].SetText($"Durability : {StatusSystem.Instance.GetDurability()}");
+        Indicators[5].SetText($"Oxygen : {StatusSystem.Instance.GetOxygen()}");
+        Indicators[6].SetText($"Energy : {StatusSystem.Instance.GetEnergy()}");
+        Indicators[7].SetText($"Durability : {StatusSystem.Instance.GetDurability()}");
     }
 
     public void ActiveUI(int ShelterMenuID)
@@ -118,13 +119,13 @@ public class ShelterUI : MonoBehaviour
 
     }
 
-   
-    
+
+
     public void ExitShelter()
     {
         //시스템캔버스를 active해줘야함
         Debug.Log("출구 버튼눌림");
-        if(SystemCanvas.activeSelf == false) //activeSelf이부분살펴보기
+        if (SystemCanvas.activeSelf == false) //activeSelf이부분살펴보기
         {
             SystemCanvas.SetActive(true);
             Debug.Log("시스템캔버스 액티브");
@@ -132,18 +133,21 @@ public class ShelterUI : MonoBehaviour
             //ID 0:100이넘는경우ui창, 1:100미만인경우ui창, 2:오늘이미탐색한경우ui창
             //오늘 탐색여부를 확인
             //false라면
-            if (StatusSystem.GetIsToDay() == false)
+            if (StatusSystem.Instance.GetIsToDay() == false)
             {
+
                 Debug.Log("오늘 탐색가능");
                 // 산소보유량이 100이 넘는 경우
-                if (StatusSystem.GetOxygen() >= 100)
+                if (StatusSystem.Instance.GetOxygen() >= 100)
                 {
+
                     Debug.Log("보유산소 100이상");
                     foreach (GameObject go in ExitShelterCases)
                     {
                         Debug.Log("기존ui비활성");
                         go.SetActive(false);
                     }
+
                     ExitShelterCases[0].SetActive(true);
                     //확인ui을 띄움
                     //실행클릭시 산소를 100소모하고 씬전환
@@ -158,6 +162,7 @@ public class ShelterUI : MonoBehaviour
                     {
                         go.SetActive(false);
                     }
+
                     ExitShelterCases[1].SetActive(true);
                     //확인ui을 띄우고
                     //실행클릭시 남은 모든 산소를 소모하고 씬전환
@@ -174,11 +179,12 @@ public class ShelterUI : MonoBehaviour
                 {
                     go.SetActive(false);
                 }
+
                 ExitShelterCases[2].SetActive(true);
             }
         }
     }
-    
+
 
     public void EventCompleteBtnSwitcher(EventState state)
     {
@@ -251,7 +257,7 @@ public class ShelterUI : MonoBehaviour
                 go.SetActive(false);
             }
             ExitShelterCases[3].SetActive(true);
-            SystemCanvasUI.BedRoomProceedConfirmTextDisplay();
+            // SystemCanvasUI.BedRoomProceedConfirmTextDisplay();
         }
     }
 }

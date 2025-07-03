@@ -12,30 +12,11 @@ public class GameSystem : Singleton<GameSystem>
     // 디버깅용 플래그
     private bool enableDebugLogs = true;
 
-    void Awake()
+      protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
     }
     
-    /// <summary>
-    /// 게임 일시정지
-    /// </summary>
-    public void Pause()
-    {
-        Time.timeScale = 0f;  // 게임 시간 정지
-        isPaused = true;
-        
-        if (enableDebugLogs)
-            Debug.Log("[GameSystem] 게임 일시정지");
-        
-        // 파밍 씬에서 일시 정지 시 마우스 잠김 문제
-        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-    }
-
     /// <summary>
     /// 게임 재개
     /// </summary>
@@ -84,75 +65,6 @@ public class GameSystem : Singleton<GameSystem>
             Debug.Log($"[GameSystem] 커서 설정 완료 - Visible: {Cursor.visible}, LockState: {Cursor.lockState}");
     }
     
-    /// <summary>
-    /// 환경설정 메뉴 진입 시 호출
-    /// </summary>
-    public void OnEnterSettingsMenu()
-    {
-        if (enableDebugLogs)
-            Debug.Log("[GameSystem] 환경설정 메뉴 진입");
-        
-        // 게임이 실행 중이면 일시정지
-        if (!isPaused)
-        {
-            Pause();
-        }
-        
-        // 커서 상태 강제 설정
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-    
-    /// <summary>
-    /// 환경설정 메뉴 종료 시 호출
-    /// </summary>
-    public void OnExitSettingsMenu()
-    {
-        if (enableDebugLogs)
-            Debug.Log("[GameSystem] 환경설정 메뉴 종료");
-        
-        // 게임 상태 강제 검증 및 복원
-        ValidateAndRestoreGameState();
-        
-        // 약간의 딜레이 후 상태 재검증
-        StartCoroutine(DelayedStateValidation());
-    }
-    
-    /// <summary>
-    /// 딜레이된 상태 검증 (환경설정 종료 후 안정화를 위해)
-    /// </summary>
-    private IEnumerator DelayedStateValidation()
-    {
-        yield return new WaitForEndOfFrame();
-        yield return new WaitForSeconds(0.1f);
-        
-        ValidateAndRestoreGameState();
-        
-        if (enableDebugLogs)
-            Debug.Log("[GameSystem] 딜레이된 상태 검증 완료");
-    }
-    
-    /// <summary>
-    /// 강제 게임 재개 (안전장치)
-    /// </summary>
-    public void ForceResume()
-    {
-        if (enableDebugLogs)
-            Debug.Log("[GameSystem] 강제 게임 재개 시작");
-        
-        // Time.timeScale 강제 복원
-        Time.timeScale = 1f;
-        isPaused = false;
-        
-        // 스택 초기화
-        activeMenuStack.Clear();
-        
-        // 현재 씬에 맞는 커서 상태 설정
-        SetCursorStateForCurrentScene();
-        
-        if (enableDebugLogs)
-            Debug.Log($"[GameSystem] 강제 게임 재개 완료 - Time.timeScale: {Time.timeScale}");
-    }
     
     /// <summary>
     /// 게임 상태 검증 및 복원
@@ -264,7 +176,7 @@ public class GameSystem : Singleton<GameSystem>
     /// <summary>
     /// 게임 오버 씬
     /// </summary>
-    private void CheckGameOver()
+    public void CheckGameOver()
     {
         if (StatusSystem.Instance == null) return;
         

@@ -191,7 +191,6 @@ public class EventManager : MonoBehaviour
             StatusSystem.Instance.SetMinusOxygenGainMultiplier(data.MinusOxygenEfficiency);
             StatusSystem.Instance.SetMinusEnergyGainMultiplier(data.MinusEnergyEfficiency);
         }
-
     }
 
     public void EventClear(GameEventData data, int eventIndex)

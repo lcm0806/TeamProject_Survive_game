@@ -105,9 +105,9 @@ public class CraftingPanelUI : MonoBehaviour
 
     public void OpenStorage()
     {
-        if (storageManager != null)
+        if (StorageManager.Instance != null)
         {
-            storageManager.OpenStorageUI();
+            StorageManager.Instance.OpenStorageUI();
         }
         else
         {
@@ -117,9 +117,9 @@ public class CraftingPanelUI : MonoBehaviour
 
     public void CloseStorage()
     {
-        if (storageManager != null)
+        if (StorageManager.Instance != null)
         {
-            storageManager.CloseStorageUI();
+            StorageManager.Instance.CloseStorageUI();
         }
         else
         {

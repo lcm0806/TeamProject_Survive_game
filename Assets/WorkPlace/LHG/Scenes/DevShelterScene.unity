@@ -1238,6 +1238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   storageSlots: []
   _storageUIRootPanel: {fileID: 1482989837}
+  _itemPrefab: {fileID: 8527893814601168996, guid: 1028cb616073445408e5c9f2550546dc,
+    type: 3}
 --- !u!4 &94834924
 Transform:
   m_ObjectHideFlags: 0
@@ -3852,9 +3854,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StorageManager, Assembly-CSharp
-        m_MethodName: OpenStorageUI
+      - m_Target: {fileID: 1826653269}
+        m_TargetAssemblyTypeName: CraftingPanelUI, Assembly-CSharp
+        m_MethodName: OpenStorage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

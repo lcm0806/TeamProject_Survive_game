@@ -972,6 +972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _titleSceneName: TitleScene
+  _plologSceneName: PlologScene
   _shelterSceneName: DevShelterScene
   _farmingSceneName: MapTest
   _dayTransitionSceneName: DevShelterScene

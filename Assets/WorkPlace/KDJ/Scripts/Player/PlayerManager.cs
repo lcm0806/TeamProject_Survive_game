@@ -64,7 +64,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
 
 
-        GameObject player = Instantiate(_playerPrefab, new Vector3(237.29f, 10.225f, -110.03f), Quaternion.identity);
+        GameObject player = Instantiate(_playerPrefab, new Vector3(255.087f, 10.225f, -123.6639f), Quaternion.identity);
 
         Player = player.GetComponent<PlayerController>();
 

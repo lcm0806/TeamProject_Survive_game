@@ -14,11 +14,8 @@ public class Akimbo : ToolAction
         int count = Physics.OverlapSphereNonAlloc(PlayerManager.Instance.InHandItem.transform.position
             + PlayerManager.Instance.Player.transform.forward * 1.5f, 3f, _colls, _layerMask);
 
-        Debug.Log("현재 검출 레이어" + _layerMask.value);
-
         if (count > 0)
         {
-            Debug.Log($"주변 광물 개수: {count}");
             _isMining = true;
             for (int i = 0; i < count; i++)
             {
@@ -41,7 +38,6 @@ public class Akimbo : ToolAction
         }
         else
         {
-            Debug.Log("주변에 광물이 없습니다.");
             _isMining = false;
         }
     }

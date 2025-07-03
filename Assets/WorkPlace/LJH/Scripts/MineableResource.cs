@@ -1,47 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MineableResource : MonoBehaviour
 {
-    [Header("±¤¹° ¼³Á¤")]
+    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     [SerializeField]public int maxHealth;
-    private float currentHealth;        //float ·Î! (¿¬¼Ó µ¥¹ÌÁö¿ë)
+    private float currentHealth;        //float ï¿½ï¿½! (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 
-    [Header("µå·Ó ¼³Á¤")]
+    [Header("ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½")]
     public GameObject lootPrefab;
     public float lootLaunchForce = 5f;
 
-    [Header("ÆÄ±« ¿¬Ãâ")]
+    [Header("ï¿½Ä±ï¿½ ï¿½ï¿½ï¿½ï¿½")]
     public float shrinkDuration = 2f;
 
     private bool isBeingMined = false;
-    private int lastWholeHp;            //Ã¼·ÂÀÇ 'Á¤¼ö ºÎºÐ'À» ÀúÀå
+    private int lastWholeHp;            //Ã¼ï¿½ï¿½ï¿½ï¿½ 'ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½'ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     /* -------------------- Unity -------------------- */
     private void Start()
     {
         currentHealth = maxHealth;
-        lastWholeHp = maxHealth;      // Ã³À½¿£ µÑÀÌ °°À½
+        lastWholeHp = maxHealth;      // Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     }
 
     //private void Update()
     //{
     //    if (!isBeingMined || currentHealth <= 0f) return;
 
-    //    //ÃÊ´ç 1¾¿ µ¥¹ÌÁö
+    //    //ï¿½Ê´ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //    currentHealth -= 1f * Time.deltaTime;
-    //    currentHealth = Mathf.Max(currentHealth, 0f);   // À½¼ö ¹æÁö
+    //    currentHealth = Mathf.Max(currentHealth, 0f);   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    //    //Ã¼·ÂÀÌ 1 ±ð¿´´ÂÁö È®ÀÎ
+    //    //Ã¼ï¿½ï¿½ï¿½ï¿½ 1 ï¿½ð¿´´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
     //    int currentWholeHp = Mathf.FloorToInt(currentHealth);
-    //    if (currentWholeHp < lastWholeHp)        // ÇÑ Ä­ ³»·Á°¬À¸¸é
+    //    if (currentWholeHp < lastWholeHp)        // ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     //    {
-    //        SpawnLoot();                         // µå·Ó 1°³
-    //        lastWholeHp = currentWholeHp;        // ±âÁØ °»½Å
+    //        SpawnLoot();                         // ï¿½ï¿½ï¿? 1ï¿½ï¿½
+    //        lastWholeHp = currentWholeHp;        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //    }
 
-    //    //0ÀÌ µÇ¾úÀ¸¸é ÆÄ±« ¿¬Ãâ
+    //    //0ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä±ï¿½ ï¿½ï¿½ï¿½ï¿½
     //    if (currentHealth <= 0f)
     //        StartCoroutine(FadeOutAndDestroy());
     //}
@@ -54,18 +52,16 @@ public class MineableResource : MonoBehaviour
 
         UpdateEmissionColor();
 
-        Debug.Log($"{gameObject.name}ÀÌ {miningDamage}¸¸Å­ µ¥¹ÌÁö¸¦ ¹Þ¾Ò½À´Ï´Ù");
-        Debug.Log($"{gameObject.name}ÀÇ ÇöÀç Ã¼·ÂÀº {currentHealth}ÀÔ´Ï´Ù");
         int currentWholeHp = Mathf.FloorToInt(currentHealth);
-        if (currentWholeHp < lastWholeHp) // ÇÑ Ä­ ³»·Á°¬À¸¸é
+        if (currentWholeHp < lastWholeHp) // ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
-            SpawnLoot(); // µå·Ó 1°³
-            lastWholeHp = currentWholeHp; // ±âÁØ °»½Å
+            SpawnLoot(); // ï¿½ï¿½ï¿? 1ï¿½ï¿½
+            lastWholeHp = currentWholeHp; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         }
 
         if (currentHealth <= 0f)
         {
-            Debug.Log($"{gameObject.name} Ã¤±¼ ¿Ï·á!");
+            Debug.Log($"{gameObject.name} Ã¤ï¿½ï¿½ ï¿½Ï·ï¿½!");
             //StartCoroutine(FadeOutAndDestroy());
         }
     }
@@ -86,23 +82,23 @@ public class MineableResource : MonoBehaviour
 
         // 1) »ý¼º À§Ä¡: À§·Î 1.2m + ¼öÆò ¡¾0.5m ·£´ý
         Vector3 spread = Random.insideUnitSphere * 1.0f;
-        spread.y = Mathf.Abs(spread.y);          // ¾Æ·¡·Î ¶³¾îÁöÁö ¾Ê°Ô
+        spread.y = Mathf.Abs(spread.y);          // ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½
         Vector3 spawnPos = transform.position + Vector3.up * 1.2f + spread;
 
         GameObject loot = Instantiate(lootPrefab, spawnPos, Quaternion.identity);
 
-        // 2) ±¤¹° º»Ã¼¿Í Ãæµ¹ ¹«½Ã
+        // 2) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
         if (TryGetComponent<Collider>(out var parentCol) &&
             loot.TryGetComponent<Collider>(out var lootCol))
         {
             Physics.IgnoreCollision(parentCol, lootCol);
         }
 
-        // 3) À§ÂÊ °¡ÁßÄ¡ Èû Àû¿ë
+        // 3) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (loot.TryGetComponent<Rigidbody>(out var rb))
         {
             Vector3 dir = (Vector3.up * 0.8f + Random.insideUnitSphere * 0.2f).normalized;
-            dir.y = Mathf.Max(dir.y, 0.5f);            // ÃÖ¼Ò À§·Î 0.5 ÀÌ»ó
+            dir.y = Mathf.Max(dir.y, 0.5f);            // ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ 0.5 ï¿½Ì»ï¿½
             rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
         }
     }
@@ -115,14 +111,14 @@ public class MineableResource : MonoBehaviour
     //    MeshRenderer renderer = GetComponent<MeshRenderer>();
     //    if (renderer == null)
     //    {
-    //        Debug.LogWarning("MeshRenderer°¡ ¾ø½À´Ï´Ù.");
+    //        Debug.LogWarning("MeshRendererï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
     //        Destroy(gameObject);
     //        yield break;
     //    }
 
-    //    Material[] materials = renderer.materials; // ¸ÞÅ×¸®¾ó ÀÎ½ºÅÏ½º ¹è¿­
+    //    Material[] materials = renderer.materials; // ï¿½ï¿½ï¿½×¸ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½è¿­
 
-    //    // °¢ ¸ÞÅ×¸®¾óÀÇ ÃÊ±â »ö»ó ÀúÀå
+    //    // ï¿½ï¿½ ï¿½ï¿½ï¿½×¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //    Color[] startColors = new Color[materials.Length];
     //    for (int i = 0; i < materials.Length; i++)
     //    {
@@ -166,7 +162,7 @@ public class MineableResource : MonoBehaviour
             if (mat.HasProperty("_EmissionColor"))
             {
                 mat.SetColor("_EmissionColor", emitColor);
-                mat.EnableKeyword("_EMISSION"); // Emission È°¼ºÈ­ ÇÊ¿ä!
+                mat.EnableKeyword("_EMISSION"); // Emission È°ï¿½ï¿½È­ ï¿½Ê¿ï¿½!
             }
         }
     }

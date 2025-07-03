@@ -58,6 +58,14 @@ public class StorageManager : Singleton<StorageManager>
     void Start()
     {
         GenerateInventorySlots(numberOfSlotsToCreate);
+        if (Storage.Instance != null)
+        {
+            Storage.Instance.SetStorageSlots(generatedStorageSlots.ToArray());
+        }
+        else
+        {
+            Debug.LogError("Storage 인스턴스를 찾을 수 없습니다. Storage 스크립트가 씬에 있는지 확인하세요.");
+        }
         CloseStorageUI();
         if (StorageUIPanel != null && StorageUIPanel.transform.parent != _gameCanvas.transform)
         {

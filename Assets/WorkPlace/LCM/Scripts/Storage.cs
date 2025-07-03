@@ -72,7 +72,23 @@ public class Storage : Singleton<Storage>
                 if (slot.myItemUI == null) // 빈 슬롯을 찾음
                 {
                     InventoryItem newItemUI = Instantiate(_itemPrefab, slot.transform);
-                    //newItemUI.Initialize(itemData, slot);
+                    newItemUI.Initialize(itemData, slot);
+                    RectTransform itemRectTransform = newItemUI.GetComponent<RectTransform>();
+                    if (itemRectTransform != null)
+                    {
+                        // 예시: 슬롯 크기에 꽉 채우거나 약간 작게 만듭니다.
+                        // Anchor Presets을 이용하는 방식
+                        //itemRectTransform.anchorMin = Vector2.zero;   // 왼쪽 아래
+                        //itemRectTransform.anchorMax = Vector2.one;    // 오른쪽 위
+                        //itemRectTransform.sizeDelta = new Vector2(0, 0); // 부모 크기에 꽉 채움
+
+                        // 또는 고정된 크기로 설정 (부모 크기와 무관)
+                        itemRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 80); // 너비 80
+                        itemRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 80);   // 높이 80
+
+                        // 약간의 패딩을 주려면 (sizeDelta를 음수로 설정)
+                        itemRectTransform.sizeDelta = new Vector2(-10, -10); // 좌우상하 5씩 패딩
+                    }
                     slot.SetItem(newItemUI);
                     int addedQuantity = Mathf.Min(quantity, itemData.maxStackSize);
                     newItemUI.CurrentQuantity = addedQuantity;

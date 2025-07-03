@@ -47,5 +47,7 @@ MonoBehaviour:
   _playerPrefab: {fileID: 1740776367879092956, guid: 6ef50ad4c1ae20f4dba59e524c78a4c1,
     type: 3}
   _baseSpeed: 5
+  SunGlasses: {fileID: 5811206296836798172, guid: e47ac6c242ab9854e95948bb3f3361af,
+    type: 3}
   Speed: 0
   IsInIntercation: 0

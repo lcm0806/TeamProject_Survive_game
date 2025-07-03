@@ -27,13 +27,14 @@ public class PlayerManager : Singleton<PlayerManager>
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
     public PlayerController Player { get; private set; }
+    public RaycastHit HitInfo { get; set; }
     public float InteractDelay { get; set; }
     public float ItemDelay { get; set; }
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
         Init();
     }
 
@@ -44,7 +45,7 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void Update()
     {
-        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName() && Player == null)
+        if (SceneSystem.Instance?.GetCurrentSceneName() == SceneSystem.Instance?.GetFarmingSceneName() && Player == null)
         {
             PlayerInit();
         }
@@ -63,7 +64,7 @@ public class PlayerManager : Singleton<PlayerManager>
     {
 
 
-        GameObject player = Instantiate(_playerPrefab, new Vector3(237.29f, 10.225f, -110.03f), Quaternion.identity);
+        GameObject player = Instantiate(_playerPrefab, new Vector3(255.087f, 10.225f, -123.6639f), Quaternion.identity);
 
         Player = player.GetComponent<PlayerController>();
 

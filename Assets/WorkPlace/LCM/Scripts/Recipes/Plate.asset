@@ -20,3 +20,4 @@ MonoBehaviour:
   - materialItem: {fileID: 11400000, guid: 2e8ad88021d9c3446aa895c9854fef94, type: 2}
     quantity: 6
   description: Plate
+  energyCost: 7

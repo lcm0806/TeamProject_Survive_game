@@ -8,14 +8,14 @@ public class CraftingManager : MonoBehaviour
 
     [Header("All Crafting Recipes")]
     [SerializeField]
-    private List<Recipe> _allCraftingRecipes; // ¸ğµç Á¦ÀÛ ·¹½ÃÇÇ ¸ñ·Ï
+    private List<Recipe> _allCraftingRecipes; // ëª¨ë“  ì œì‘ ë ˆì‹œí”¼ ëª©ë¡
 
-    //·¹½ÃÇÇ ¸ñ·Ï Á¢±Ù ÇÁ·ÎÆÛÆ¼
+    //ë ˆì‹œí”¼ ëª©ë¡ ì ‘ê·¼ í”„ë¡œí¼í‹°
     public List<Recipe> AllCraftingRecipes => _allCraftingRecipes;
 
-    // ¼±ÅÃµÈ ·¹½ÃÇÇ°¡ º¯°æµÉ ¶§ È£ÃâµÉ ÀÌº¥Æ® (UI ¾÷µ¥ÀÌÆ®¿ë)
+    // ì„ íƒëœ ë ˆì‹œí”¼ê°€ ë³€ê²½ë  ë•Œ í˜¸ì¶œë  ì´ë²¤íŠ¸ (UI ì—…ë°ì´íŠ¸ìš©)
     public event Action<Recipe> OnRecipeSelected;
-    // Á¦ÀÛÀÌ ¿Ï·áµÇ¾úÀ» ¶§ È£ÃâµÉ ÀÌº¥Æ® (UI ¾÷µ¥ÀÌÆ®¿ë)
+    // ì œì‘ì´ ì™„ë£Œë˜ì—ˆì„ ë•Œ í˜¸ì¶œë  ì´ë²¤íŠ¸ (UI ì—…ë°ì´íŠ¸ìš©)
     public event Action OnCraftingCompleted;
 
 
@@ -23,7 +23,7 @@ public class CraftingManager : MonoBehaviour
     {
         if (Storage.Instance == null)
         {
-            Debug.LogError("CraftingManager: Storage.Instance¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù. Storage ½ºÅ©¸³Æ®°¡ ¾À¿¡ ÀÖ´ÂÁö È®ÀÎÇØÁÖ¼¼¿ä!", this);
+            Debug.LogError("CraftingManager: Storage.Instanceë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. Storage ìŠ¤í¬ë¦½íŠ¸ê°€ ì”¬ì— ìˆëŠ”ì§€ í™•ì¸í•´ì£¼ì„¸ìš”!", this);
         }
     }
     
@@ -38,18 +38,30 @@ public class CraftingManager : MonoBehaviour
         {
             if (material.materialItem == null)
             {
-                Debug.LogWarning($"·¹½ÃÇÇ '{recipe.name}'¿¡ Àç·á ¾ÆÀÌÅÛÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù. Á¦ÀÛ ºÒ°¡.");
+                Debug.LogWarning($"ë ˆì‹œí”¼ '{recipe.name}'ì— ì¬ë£Œ ì•„ì´í…œì´ í• ë‹¹ë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤. ì œì‘ ë¶ˆê°€.");
                 return false;
             }
 
             int playerHasAmount = Storage.Instance.GetItemCount(material.materialItem);
             if (playerHasAmount < material.quantity)
             {
-                // µğ¹ö±×´Â ÀÚÁÖ ¶ß¹Ç·Î, ÇÊ¿äÇÒ ¶§¸¸ Ãâ·ÂÇÏµµ·Ï ÁÖ¼® Ã³¸®ÇÏ°Å³ª Á¶°ÇºÎ·Î »ç¿ë
-                // Debug.Log($"Àç·á ºÎÁ·: {material.materialItem.name} (º¸À¯: {playerHasAmount} / ÇÊ¿ä: {material.quantity})");
+                // ë””ë²„ê·¸ëŠ” ìì£¼ ëœ¨ë¯€ë¡œ, í•„ìš”í•  ë•Œë§Œ ì¶œë ¥í•˜ë„ë¡ ì£¼ì„ ì²˜ë¦¬í•˜ê±°ë‚˜ ì¡°ê±´ë¶€ë¡œ ì‚¬ìš©
+                // Debug.Log($"ì¬ë£Œ ë¶€ì¡±: {material.materialItem.name} (ë³´ìœ : {playerHasAmount} / í•„ìš”: {material.quantity})");
                 return false;
             }
         }
+
+        if (StatusSystem.Instance == null)
+        {
+            Debug.LogError("StatusSystem.Instanceë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì „ë ¥ í™•ì¸ ë¶ˆê°€.");
+            return false;
+        }
+        if (StatusSystem.Instance.GetEnergy() < recipe.energyCost)
+        {
+            Debug.Log($"ì „ë ¥ ë¶€ì¡±: {recipe.name} ì œì‘ì— í•„ìš”í•œ ì „ë ¥ {recipe.energyCost} / í˜„ì¬ ì „ë ¥ {StatusSystem.Instance.GetEnergy()}");
+            return false;
+        }
+
         return true;
     }
 
@@ -58,23 +70,28 @@ public class CraftingManager : MonoBehaviour
 
         if (!CanCraft(recipe))
         {
-            Debug.LogWarning($"·¹½ÃÇÇ '{recipe.name}'À» Á¦ÀÛ ÇÒ¼ö ¾ø½À´Ï´Ù. Àç·á¸¦ È®ÀÎÇØ ÁÖ¼¼¿ä");
+            Debug.LogWarning($"ë ˆì‹œí”¼ '{recipe.name}'ì„ ì œì‘ í• ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ì¬ë£Œë¥¼ í™•ì¸í•´ ì£¼ì„¸ìš”");
             return;
         }
-        //Àç·á ¼Ò¸ğ
-        foreach(var material in recipe.requiredMaterials)
+
+        // --- ì¶”ê°€ë  ë¶€ë¶„: ì „ë ¥ ì†Œëª¨ ---
+        StatusSystem.Instance.SetMinusEnergy(recipe.energyCost);
+        Debug.Log($"ì „ë ¥ {recipe.energyCost} ì†Œëª¨. ë‚¨ì€ ì „ë ¥: {StatusSystem.Instance.GetEnergy()}");
+
+        //ì¬ë£Œ ì†Œëª¨
+        foreach (var material in recipe.requiredMaterials)
         {
             Storage.Instance.RemoveItem(material.materialItem, material.quantity);
         }
-        //¾ÆÀÌÅÛ Á¦ÀÛ ¹× ÀÎº¥Åä¸® Ãß°¡
+        //ì•„ì´í…œ ì œì‘ ë° ì¸ë²¤í† ë¦¬ ì¶”ê°€
         for(int i = 0; i < recipe.craftedAmount; i++)
         {
             Storage.Instance.AddItemToStorage(recipe.craftedItem, recipe.craftedAmount);
         }
 
-        Debug.Log($"'{recipe.craftedItem.name}' (x{recipe.craftedAmount}) Á¦ÀÛ ¿Ï·á!");
-        OnCraftingCompleted?.Invoke(); // Á¦ÀÛ ¿Ï·á ÀÌº¥Æ® ¹ß»ı
-        OnRecipeSelected?.Invoke(recipe); // Á¦ÀÛ ÈÄ Àç·á °»½ÅÀ» À§ÇØ ¼±ÅÃµÈ ·¹½ÃÇÇ Á¤º¸ ´Ù½Ã Àü´Ş (¼±ÅÃ »óÅÂ À¯Áö)
+        Debug.Log($"'{recipe.craftedItem.name}' (x{recipe.craftedAmount}) ì œì‘ ì™„ë£Œ!");
+        OnCraftingCompleted?.Invoke(); // ì œì‘ ì™„ë£Œ ì´ë²¤íŠ¸ ë°œìƒ
+        OnRecipeSelected?.Invoke(recipe); // ì œì‘ í›„ ì¬ë£Œ ê°±ì‹ ì„ ìœ„í•´ ì„ íƒëœ ë ˆì‹œí”¼ ì •ë³´ ë‹¤ì‹œ ì „ë‹¬ (ì„ íƒ ìƒíƒœ ìœ ì§€)
     }
 
     public void SelectRecipe(Recipe recipe)

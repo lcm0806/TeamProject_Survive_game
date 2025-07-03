@@ -22,3 +22,4 @@ MonoBehaviour:
   - materialItem: {fileID: 11400000, guid: 9a5c5334c1d5f104481f4f0f1960fcc6, type: 2}
     quantity: 2
   description: RoofPiece
+  energyCost: 4

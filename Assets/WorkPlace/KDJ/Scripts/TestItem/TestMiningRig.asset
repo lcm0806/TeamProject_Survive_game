@@ -15,15 +15,17 @@ MonoBehaviour:
   itemName: New Item
   description: MiningRig
   icon: {fileID: 21300000, guid: fe489cbfbf7ddb24d85d2047b053261c, type: 3}
-  WorldPrefab: {fileID: 6651048383708780705, guid: 710f37ce8ff878640ac631fa8c69c28a,
+  WorldPrefab: {fileID: 4549532238603850017, guid: 80440e67eb041f5409c2e9b6db64f016,
     type: 3}
-  HandleItem: {fileID: 5982130906327627485, guid: 00d76ec476cc96f43848ab76b7ce2536,
+  HandleItem: {fileID: 4549532238603850017, guid: 2da122c52696a824781c6e1acd4d1495,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 0
   maxStackSize: 99
   miningPower: 1
   toolType: 0
+  toolPrefab: {fileID: 4549532238603850017, guid: 2da122c52696a824781c6e1acd4d1495,
+    type: 3}
   toolObject: {fileID: 0}
-  toolAction: {fileID: 291173148126400138, guid: 00d76ec476cc96f43848ab76b7ce2536,
+  toolAction: {fileID: 1312037018546528630, guid: 2da122c52696a824781c6e1acd4d1495,
     type: 3}

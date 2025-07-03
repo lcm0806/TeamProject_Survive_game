@@ -20,7 +20,7 @@ public class InputManager : Singleton<InputManager>
     private void Update()
     {
         // 타이틀부터 플레이하는 경우
-        if (SceneSystem.Instance?.GetCurrentSceneName() == SceneSystem.Instance?.GetFarmingSceneName())
+        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
         {
             PlayerInput(); // 플레이어 입력 처리
             return;
@@ -120,10 +120,9 @@ public class InputManager : Singleton<InputManager>
             PlayerManager.Instance.SelectItem = null; // 현재 핫바에 아이템이 없으면 선택 아이템을 null로 설정
             if (PlayerManager.Instance.InHandItem != null)
             {
-                PlayerManager.Instance.AkimboReset();
+                // 테스트용 마인건이 있다면 비활성화
+                // _testHandItem.SetActive(false);
                 Destroy(PlayerManager.Instance.InHandItem); // 오브젝트 제거
-                Destroy(PlayerManager.Instance.InHandItem2);
-                Destroy(PlayerManager.Instance.InHeadItem);
             }
             // _testHandItem = null; // 테스트용 마인건도 null로 설정
         }
@@ -133,9 +132,9 @@ public class InputManager : Singleton<InputManager>
 
             if (PlayerManager.Instance.InHandItem == null)
             {
-                if (_itemCo == null)
+                if(_itemCo == null)
                 {
-                    // 아이템이 없다면 생성 코루틴 실행
+                    // 아이템 핸들러가 없다면 생성 코루틴 실행
                     _itemCo = StartCoroutine(ItemInstantiate());
                 }
             }
@@ -186,18 +185,16 @@ public class InputManager : Singleton<InputManager>
         #endregion
 
         // 제트팩은 공중에서만 사용
-        if (PlayerManager.Instance.Player != null)
-            if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded &&
+        if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded &&
             PlayerManager.Instance.IsUpgraded[0] && PlayerManager.Instance.AirGauge.Value > 0)
-            {
-                PlayerManager.Instance.Player.IsUsingJetPack = true;
-                MoveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화
-            }
-        if (PlayerManager.Instance.Player != null)
-            if (Input.GetKeyUp(KeyCode.LeftShift) && PlayerManager.Instance.Player.IsUsingJetPack || PlayerManager.Instance.Player.Controller.isGrounded)
-            {
-                PlayerManager.Instance.Player.IsUsingJetPack = false;
-            }
+        {
+            PlayerManager.Instance.Player.IsUsingJetPack = true;
+            MoveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift) && PlayerManager.Instance.Player.IsUsingJetPack || PlayerManager.Instance.Player.Controller.isGrounded)
+        {
+            PlayerManager.Instance.Player.IsUsingJetPack = false;
+        }
 
         if (!CanMove) return; // 움직일 수 없다면 이동은 생략
 

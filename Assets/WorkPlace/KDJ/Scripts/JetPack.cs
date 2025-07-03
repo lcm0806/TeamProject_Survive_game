@@ -2,16 +2,12 @@ using UnityEngine;
 
 public class JetPack : MonoBehaviour
 {
-    [SerializeField] private GameObject _jetPackObject;
-    // [SerializeField] Material _noJetPack;
-    // [SerializeField] Material _jetPack;
-    [SerializeField] private bool _isJetPackOn;
-    [SerializeField] private GameObject _smokeEffect1;
-    [SerializeField] private GameObject _smokeEffect2;
+    [SerializeField] GameObject _jetPackObject;
+    [SerializeField] Material _noJetPack;
+    [SerializeField] Material _jetPack;
+    [SerializeField] bool _isJetPackOn;
 
     private float _airUsage = 0;
-    private GameObject _smokeEffectInstance1;
-    private GameObject _smokeEffectInstance2;
 
     private void Awake()
     {
@@ -19,25 +15,11 @@ public class JetPack : MonoBehaviour
 
         if (PlayerManager.Instance.IsUpgraded[0])
         {
-            _jetPackObject.SetActive(true);
+            _jetPackObject.GetComponent<Renderer>().material = _jetPack;
         }
         else
         {
-            _jetPackObject.SetActive(false);
-        }
-    }
-
-    private void Update()
-    {
-        if (PlayerManager.Instance.Player.IsUsingJetPack)
-        {
-            _smokeEffect1.SetActive(true);
-            _smokeEffect2.SetActive(true);
-        }
-        else
-        {
-            _smokeEffect1.SetActive(false);
-            _smokeEffect2.SetActive(false);
+            _jetPackObject.GetComponent<Renderer>().material = _noJetPack;
         }
     }
 

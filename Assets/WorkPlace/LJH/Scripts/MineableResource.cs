@@ -15,9 +15,6 @@ public class MineableResource : MonoBehaviour
     [Header("파괴 연출")]
     public float shrinkDuration = 2f;
 
-    public float dropCheckCooldown = 1f; // 1초에 한 번만 드롭 체크
-    private float dropTimer = 0f;
-
     /* -------------------- Unity -------------------- */
     private void Start()
     {
@@ -42,26 +39,10 @@ public class MineableResource : MonoBehaviour
 
         currentHealth -= miningDamage;
         currentHealth = Mathf.Max(currentHealth, 0f);
-        //Debug.Log($"{gameObject.name}이 {miningDamage}만큼 데미지를 받았습니다");
-        //Debug.Log($"{gameObject.name}의 현재 체력은 {currentHealth}입니다");
-
-        dropTimer -= Time.deltaTime;
-
-        if (dropTimer <= 0f)
-        {
-            float r = Random.value;
-            Debug.Log($"Random.value = {r}");
-            Debug.Log($"렌덤값 {r}");
-            if (r < 0.1f)
-            {
-                Debug.Log(">> 드롭 발생!");
-                SpawnLoot();
-                UpdateEmissionColor();
-            }
-
-            dropTimer = dropCheckCooldown; // 쿨타임 초기화
-        }
-
+        
+        SpawnLoot();
+        UpdateEmissionColor();
+        
         if (currentHealth <= 0f)
         {
             UpdateEmissionColor();
@@ -72,11 +53,11 @@ public class MineableResource : MonoBehaviour
     /* -------------------- Loot Spawn -------------------- */
     private void SpawnLoot()
     {
-        //if (lootPrefab == null) return;
+        if (lootPrefab == null) return;
 
-        //float chance = Random.value; // 0.0 ~ 1.0
+        float chance = Random.value; // 0.0 ~ 1.0
 
-        //if (chance > 0.1f) return; // 10% 확률만 통과
+        if (chance > 0.1f) return; // 10% 확률만 통과
 
         // 1) 생성 위치: 위로 1.2m + 수평 ±0.5m 랜덤
         Vector3 spread = Random.insideUnitSphere * 1.0f;

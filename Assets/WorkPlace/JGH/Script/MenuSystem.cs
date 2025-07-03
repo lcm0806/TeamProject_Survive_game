@@ -119,9 +119,6 @@ public class MenuSystem : Singleton<MenuSystem>
         InitializeSettingMenu();
         InitializeOtherMenus();
         LoadAndApplySettings();
-        
-        AudioSystem.Instance.PlayBGMByName("MainBGM");
-        
     }
 
     void Update()
@@ -648,9 +645,10 @@ public class MenuSystem : Singleton<MenuSystem>
             Debug.Log("StatusSystem 기본값으로 초기화 완료");
         }
         
-        AudioSystem.Instance.StopBGM();
-        SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
+        SceneSystem.Instance.LoadSceneWithDelay(SceneSystem.Instance.GetPlologSceneName());
+        
         MainMenu.SetActive(false);
+        
         AllMenuFalse();
     }
     private void OnClickNewGameBack()

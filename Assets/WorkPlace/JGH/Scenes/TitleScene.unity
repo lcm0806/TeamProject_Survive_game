@@ -600,10 +600,18 @@ MonoBehaviour:
   _audioMixer: {fileID: 0}
   _bgmClips:
   - name: MainBGM
-    audioClip: {fileID: 8300000, guid: 0474cc7c79daa7943bbaf693acbbfac7, type: 3}
+    audioClip: {fileID: 8300000, guid: d0895db416ab24dd495145a82eee2d6f, type: 3}
   _sfxClips:
   - name: MainSFX
     audioClip: {fileID: 8300000, guid: c98fd4048e222944d8a2a1c5f5d65dde, type: 3}
+  - name: Sfx_Electric
+    audioClip: {fileID: 8300000, guid: 24a454af1b4324774b5bc069bc228b33, type: 3}
+  - name: Sfx_Explode
+    audioClip: {fileID: 8300000, guid: 0ac6db11d54b64e0d9eb0804e1fb2d3f, type: 3}
+  - name: Sfx_Parachute
+    audioClip: {fileID: 8300000, guid: 99420105a41b247d6a1d86fbe710f525, type: 3}
+  - name: Sfx_SpaceShipDoor
+    audioClip: {fileID: 8300000, guid: 9c569df2ed9584dd0a93a2e142d972f3, type: 3}
   BGMVolume: 0.5
   SFXVolume: 0.5
 --- !u!4 &1050666140

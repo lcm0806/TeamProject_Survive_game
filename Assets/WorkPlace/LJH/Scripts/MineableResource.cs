@@ -1,150 +1,105 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MineableResource : MonoBehaviour
 {
-    [Header("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")]
-    [SerializeField]public int maxHealth;
-    private float currentHealth;        //float ï¿½ï¿½! (ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
+    [Header("±¤¹° ¼³Á¤")]
+    public int maxHealth;
+    private float currentHealth;        //float ·Î! (¿¬¼Ó µ¥¹ÌÁö¿ë)
 
-    [Header("ï¿½ï¿½ï¿? ï¿½ï¿½ï¿½ï¿½")]
+    [Header("µå·Ó ¼³Á¤")]
     public GameObject lootPrefab;
     public float lootLaunchForce = 5f;
 
-    [Header("ï¿½Ä±ï¿½ ï¿½ï¿½ï¿½ï¿½")]
+    [Header("ÆÄ±« ¿¬Ãâ")]
     public float shrinkDuration = 2f;
 
-    private bool isBeingMined = false;
-    private int lastWholeHp;            //Ã¼ï¿½ï¿½ï¿½ï¿½ 'ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½'ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    public float dropCheckCooldown = 1f; // 1ÃÊ¿¡ ÇÑ ¹ø¸¸ µå·Ó Ã¼Å©
+    private float dropTimer = 0f;
 
     /* -------------------- Unity -------------------- */
     private void Start()
     {
-        currentHealth = maxHealth;
-        lastWholeHp = maxHealth;      // Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // HpCount ÄÄÆ÷³ÍÆ® ÂüÁ¶
+        HpCount hpCount = GetComponent<HpCount>();
+
+        if (hpCount != null)
+        {
+            maxHealth = hpCount.InitialHp;       // ÃÖ´ë Ã¼·Â ¼³Á¤
+            currentHealth = maxHealth;           // ÇöÀç Ã¼·Â ÃÊ±âÈ­
+        }
+        else
+        {
+            Debug.LogWarning($"{gameObject.name}¿¡ HpCount ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù. µðÆúÆ® maxHealth({maxHealth}) »ç¿ë.");
+            currentHealth = maxHealth;
+        }
     }
 
-    //private void Update()
-    //{
-    //    if (!isBeingMined || currentHealth <= 0f) return;
-
-    //    //ï¿½Ê´ï¿½ 1ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    //    currentHealth -= 1f * Time.deltaTime;
-    //    currentHealth = Mathf.Max(currentHealth, 0f);   // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-
-    //    //Ã¼ï¿½ï¿½ï¿½ï¿½ 1 ï¿½ð¿´´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
-    //    int currentWholeHp = Mathf.FloorToInt(currentHealth);
-    //    if (currentWholeHp < lastWholeHp)        // ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-    //    {
-    //        SpawnLoot();                         // ï¿½ï¿½ï¿? 1ï¿½ï¿½
-    //        lastWholeHp = currentWholeHp;        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    //    }
-
-    //    //0ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ä±ï¿½ ï¿½ï¿½ï¿½ï¿½
-    //    if (currentHealth <= 0f)
-    //        StartCoroutine(FadeOutAndDestroy());
-    //}
     public void TakeMiningDamage(float miningDamage)
     {
         if (currentHealth <= 0f) return;
 
         currentHealth -= miningDamage;
         currentHealth = Mathf.Max(currentHealth, 0f);
+        //Debug.Log($"{gameObject.name}ÀÌ {miningDamage}¸¸Å­ µ¥¹ÌÁö¸¦ ¹Þ¾Ò½À´Ï´Ù");
+        //Debug.Log($"{gameObject.name}ÀÇ ÇöÀç Ã¼·ÂÀº {currentHealth}ÀÔ´Ï´Ù");
 
-        UpdateEmissionColor();
+        dropTimer -= Time.deltaTime;
 
-        int currentWholeHp = Mathf.FloorToInt(currentHealth);
-        if (currentWholeHp < lastWholeHp) // ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        if (dropTimer <= 0f)
         {
-            SpawnLoot(); // ï¿½ï¿½ï¿? 1ï¿½ï¿½
-            lastWholeHp = currentWholeHp; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            float r = Random.value;
+            Debug.Log($"Random.value = {r}");
+            Debug.Log($"·»´ý°ª {r}");
+            if (r < 0.1f)
+            {
+                Debug.Log(">> µå·Ó ¹ß»ý!");
+                SpawnLoot();
+                UpdateEmissionColor();
+            }
+
+            dropTimer = dropCheckCooldown; // ÄðÅ¸ÀÓ ÃÊ±âÈ­
         }
 
         if (currentHealth <= 0f)
         {
-            Debug.Log($"{gameObject.name} Ã¤ï¿½ï¿½ ï¿½Ï·ï¿½!");
-            //StartCoroutine(FadeOutAndDestroy());
+            UpdateEmissionColor();
+            Debug.Log($"{gameObject.name} Ã¤±¼ ¿Ï·á!");
         }
     }
-
-
-    /* -------------------- Mining Control -------------------- */
-    public void StartMining() => isBeingMined = true;
-    public void StopMining() => isBeingMined = false;
 
     /* -------------------- Loot Spawn -------------------- */
     private void SpawnLoot()
     {
-        if (lootPrefab == null) return;
+        //if (lootPrefab == null) return;
 
-        float chance = Random.value; // 0.0 ~ 1.0
+        //float chance = Random.value; // 0.0 ~ 1.0
 
-        if (chance > 0.1f) return; // 10% È®·ü¸¸ Åë°ú
+        //if (chance > 0.1f) return; // 10% È®·ü¸¸ Åë°ú
 
         // 1) »ý¼º À§Ä¡: À§·Î 1.2m + ¼öÆò ¡¾0.5m ·£´ý
         Vector3 spread = Random.insideUnitSphere * 1.0f;
-        spread.y = Mathf.Abs(spread.y);          // ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½
+        spread.y = Mathf.Abs(spread.y);          // ¾Æ·¡·Î ¶³¾îÁöÁö ¾Ê°Ô
         Vector3 spawnPos = transform.position + Vector3.up * 1.2f + spread;
 
         GameObject loot = Instantiate(lootPrefab, spawnPos, Quaternion.identity);
 
-        // 2) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
+        // 2) ±¤¹° º»Ã¼¿Í Ãæµ¹ ¹«½Ã
         if (TryGetComponent<Collider>(out var parentCol) &&
             loot.TryGetComponent<Collider>(out var lootCol))
         {
             Physics.IgnoreCollision(parentCol, lootCol);
         }
 
-        // 3) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ä¡ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        // 3) À§ÂÊ °¡ÁßÄ¡ Èû Àû¿ë
         if (loot.TryGetComponent<Rigidbody>(out var rb))
         {
             Vector3 dir = (Vector3.up * 0.8f + Random.insideUnitSphere * 0.2f).normalized;
-            dir.y = Mathf.Max(dir.y, 0.5f);            // ï¿½Ö¼ï¿½ ï¿½ï¿½ï¿½ï¿½ 0.5 ï¿½Ì»ï¿½
+            dir.y = Mathf.Max(dir.y, 0.5f);            // ÃÖ¼Ò À§·Î 0.5 ÀÌ»ó
             rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
         }
     }
-
-    /* -------------------- Fade & Destroy -------------------- */
-    //private IEnumerator FadeOutAndDestroy()
-    //{
-    //    isBeingMined = false;
-
-    //    MeshRenderer renderer = GetComponent<MeshRenderer>();
-    //    if (renderer == null)
-    //    {
-    //        Debug.LogWarning("MeshRendererï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
-    //        Destroy(gameObject);
-    //        yield break;
-    //    }
-
-    //    Material[] materials = renderer.materials; // ï¿½ï¿½ï¿½×¸ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½è¿­
-
-    //    // ï¿½ï¿½ ï¿½ï¿½ï¿½×¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-    //    Color[] startColors = new Color[materials.Length];
-    //    for (int i = 0; i < materials.Length; i++)
-    //    {
-    //        startColors[i] = materials[i].color;
-    //    }
-
-    //    float timer = 0f;
-
-    //    while (timer < shrinkDuration)
-    //    {
-    //        float t = timer / shrinkDuration;
-    //        float fade = Mathf.SmoothStep(1f, 0f, t);
-
-    //        for (int i = 0; i < materials.Length; i++)
-    //        {
-    //            Color newColor = startColors[i];
-    //            newColor.a = fade;
-    //            materials[i].color = newColor;
-    //        }
-
-    //        timer += Time.deltaTime;
-    //        yield return null;
-    //    }
-
-    //    Destroy(gameObject);
-    //}
 
     private void UpdateEmissionColor()
     {
@@ -157,12 +112,21 @@ public class MineableResource : MonoBehaviour
         Material[] materials = renderer.materials;
         Color emitColor = hpCount.GetEmitColor(Mathf.RoundToInt(currentHealth));
 
-        foreach (var mat in materials)
+        // Á¦¿ÜÇÒ ¸ÓÆ¼¸®¾ó ÀÌ¸§µé (Á¤È®È÷ ÀÏÄ¡ÇÏ´Â ÀÌ¸§)
+        string[] excludeMaterialNames = { "rockTrack (Instance)", "rock (Instance)", "Gold Bady (Instance)" };
+
+        for (int i = 0; i < materials.Length; i++)
         {
-            if (mat.HasProperty("_EmissionColor"))
+            Material mat = materials[i];
+            string matName = mat.name;
+
+            // Á¤È®È÷ ÀÏÄ¡ÇÏ´Â ÀÌ¸§ÀÌ¸é Á¦¿Ü
+            bool isExcluded = System.Array.Exists(excludeMaterialNames, name => name == matName);
+
+            if (!isExcluded && mat.HasProperty("_EmissionColor"))
             {
                 mat.SetColor("_EmissionColor", emitColor);
-                mat.EnableKeyword("_EMISSION"); // Emission È°ï¿½ï¿½È­ ï¿½Ê¿ï¿½!
+                mat.EnableKeyword("_EMISSION");             
             }
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DesignPattern;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Inventory : Singleton<Inventory>
 {
@@ -696,9 +697,106 @@ public class Inventory : Singleton<Inventory>
         }
     }
 
-    //Item PickRandomItem()
-    //{
-    //    int random = Random.Range(0, items.Length);
-    //    return items[random];
-    //}
+    void OnEnable()
+    {
+        // 씬 로드 이벤트를 구독합니다.
+        // 이 이벤트는 새 씬이 로드된 후에 호출됩니다.
+        Debug.Log("Inventory: OnEnable 호출됨. SceneManager.sceneLoaded 이벤트 구독.");
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        // 스크립트가 비활성화될 때 이벤트 구독을 해제합니다. (메모리 누수 방지)
+        Debug.Log("Inventory: OnDisable 호출됨. SceneManager.sceneLoaded 이벤트 구독 해제.");
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // 새로운 씬이 로드될 때마다 이 함수가 호출됩니다.
+        Debug.Log($"Inventory: 새로운 씬이 로드되었습니다: {scene.name}");
+
+        if (Storage.Instance == null)
+        {
+            // 이 로그가 뜬다면, Storage가 Inventory보다 늦게 초기화된 것입니다.
+            Debug.LogError("Inventory: Storage.Instance가 OnSceneLoaded 시점에 아직 초기화되지 않았습니다! 아이템 이동 불가.");
+            // 여기서 return하면 MoveAllInventoryItemsToStorage()는 호출되지 않습니다.
+            // Script Execution Order를 조정하여 Storage가 먼저 초기화되도록 해야 합니다.
+            return;
+        }
+
+        Debug.Log("Inventory: Storage.Instance가 준비되었습니다. MoveAllInventoryItemsToStorage() 호출 시도.");
+        // 여기에 씬 전환 시 아이템을 Storage로 보내는 로직을 호출합니다.
+        // 단, Storage가 먼저 초기화되어 Instance를 사용할 수 있는지 확인해야 합니다.
+        // Start()나 Awake()에서 Storage.Instance에 접근하면 안전합니다.
+        MoveAllInventoryItemsToStorage();
+
+        // 인벤토리 UI를 닫아줍니다 (선택 사항).
+        if (_inventoryUIRootPanel != null && _inventoryUIRootPanel.activeSelf)
+        {
+            _inventoryUIRootPanel.SetActive(false);
+        }
+    }
+
+
+    // 인벤토리의 모든 아이템을 Storage로 보내는 메서드
+    public void MoveAllInventoryItemsToStorage()
+    {
+        Debug.Log("Inventory: MoveAllInventoryItemsToStorage() 시작.");
+
+        if (Storage.Instance == null)
+        {
+            Debug.LogError("Storage.Instance가 아직 초기화되지 않았습니다. 인벤토리 아이템을 보낼 수 없습니다.");
+            return;
+        }
+
+        // 인벤토리 슬롯의 아이템들을 Storage로 보냅니다.
+        // hotbarSlots, persistentHotbarSlots, inventorySlots 모두 순회합니다.
+
+        // 1. Hotbar 슬롯 처리
+        for (int i = 0; i < hotbarSlots.Length; i++)
+        {
+            if (hotbarSlots[i].myItemData != null && hotbarSlots[i].myItemUI != null)
+            {
+                Item itemData = hotbarSlots[i].myItemData;
+                int quantity = hotbarSlots[i].myItemUI.CurrentQuantity;
+                Debug.Log($"Inventory: 핫바 슬롯 {i}의 '{hotbarSlots[i].myItemData.itemName}' ({hotbarSlots[i].myItemUI.CurrentQuantity}개) 창고로 이동 시도.");
+                Storage.Instance.AddItemToStorage(itemData, quantity);
+                hotbarSlots[i].ClearSlot(); // 인벤토리 핫바 슬롯 비우기
+                SyncHotbarSlotUI(i); // 핫바 UI도 동기화
+                Debug.Log($"핫바 슬롯 {i}의 '{itemData.itemName}' {quantity}개를 창고로 보냈습니다.");
+            }
+            else
+            {
+                Debug.Log($"Inventory: 핫바 슬롯 {i}는 비어있습니다. (데이터: {hotbarSlots[i].myItemData != null}, UI: {hotbarSlots[i].myItemUI != null})");
+            }
+        }
+
+
+        // 3. Main Inventory 슬롯 처리
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].myItemData != null && inventorySlots[i].myItemUI != null)
+            {
+                Item itemData = inventorySlots[i].myItemData;
+                int quantity = inventorySlots[i].myItemUI.CurrentQuantity;
+
+                Debug.Log($"Inventory: 인벤토리 슬롯 {i}의 '{inventorySlots[i].myItemData.itemName}' ({inventorySlots[i].myItemUI.CurrentQuantity}개) 창고로 이동 시도.");
+                Storage.Instance.AddItemToStorage(itemData, quantity);
+                inventorySlots[i].ClearSlot(); // 인벤토리 슬롯 비우기
+                Debug.Log($"인벤토리 슬롯 {i}의 '{itemData.itemName}' {quantity}개를 창고로 보냈습니다.");
+            }
+        }
+
+        // 혹시 드래그 중인 아이템이 있다면 파괴합니다.
+        if (CarriedItem != null)
+        {
+            Destroy(CarriedItem.gameObject);
+            CarriedItem = null;
+            Debug.Log("드래그 중인 아이템을 파괴했습니다.");
+        }
+
+        Debug.Log("인벤토리의 모든 아이템을 창고로 이동 완료했습니다.");
+    }
 }

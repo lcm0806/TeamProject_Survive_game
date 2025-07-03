@@ -64,7 +64,6 @@ public class SystemCanvasUI : MonoBehaviour
             Invoke(nameof(DelayedSceneTransition), 2f);
         }
 
-
         //TODO 게임오버 확인(산소,전력,내구도) - 기훈님께 확인필요(처리 완료)
         // 게임오버
         GameSystem.Instance.CheckGameOver();

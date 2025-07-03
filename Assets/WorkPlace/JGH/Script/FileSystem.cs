@@ -326,8 +326,8 @@ public class FileSystem : Singleton<FileSystem>
                 
                 if (string.IsNullOrEmpty(json))
                 {
-                    Debug.LogWarning("게임 데이터 파일이 비어있음, 기본값 반환");
-                    return GetDefaultGameData();
+                    Debug.LogWarning("게임 데이터 파일이 비어있음");
+                    return null;
                 }
                 
                 GameData data = JsonUtility.FromJson<GameData>(json);
@@ -336,14 +336,14 @@ public class FileSystem : Singleton<FileSystem>
             }
             else
             {
-                Debug.Log("게임 데이터 파일 없음, 기본값 반환");
-                return GetDefaultGameData();
+                Debug.Log("게임 데이터 파일 없음");
+                return null;
             }
         }
         catch (Exception e)
         {
             Debug.LogError($"게임 데이터 불러오기 실패: {e.Message}");
-            return GetDefaultGameData();
+            return null;
         }
     }
 

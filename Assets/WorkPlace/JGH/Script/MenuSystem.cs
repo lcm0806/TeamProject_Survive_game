@@ -661,6 +661,12 @@ public class MenuSystem : Singleton<MenuSystem>
 
     private void OnClickContinueOk()
     {
+        if (!FileSystem.Instance.HasSaveData())
+        {
+            ContinueDialog.SetActive(false);
+            WarningDialog.SetActive(true);
+        }
+        
         // gamedata.json 불러오기
         GameData data = FileSystem.Instance.LoadGameData();
 
@@ -672,13 +678,17 @@ public class MenuSystem : Singleton<MenuSystem>
 
             // 이어하기 씬 전환
             SceneSystem.Instance.LoadSceneWithDelay(SceneSystem.Instance.GetShelterSceneName());
+            
+            ContinueDialog.SetActive(false);
+            AllMenuFalse();
         }
         else
         {
             Debug.LogWarning("게임 데이터가 존재하지 않음. 기본값 또는 경고 처리 필요");
+            ContinueDialog.SetActive(false); // 이어하기 팝업 닫기
+            WarningDialog.SetActive(true); // 이어하기 팝업 닫기
         }
 
-        ContinueDialog.SetActive(false); // 이어하기 팝업 닫기
     }
     
     private void OnClickContinueBack()
@@ -695,7 +705,7 @@ public class MenuSystem : Singleton<MenuSystem>
 
     private void OnClickWarningYes()
     {
-        Debug.Log("경고 확인");
+        WarningDialog.SetActive(false);
     }
 
     private void OnClickBackToMenuYes()

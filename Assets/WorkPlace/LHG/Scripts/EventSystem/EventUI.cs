@@ -17,22 +17,38 @@ public class EventUI : MonoBehaviour
     public TMP_Text mainUIEventTitle;
     public TMP_Text mainUIEventDesc;
     public TMP_Text mainUIEventEffectName; //두가지 이상인경우?
-    public TMP_Text mainUIEventEffectAmount;
     public TMP_Text mainUIEEventRequireItemName; //두가지 이상인경우?
-    public TMP_Text mainUIEEventRequireItemAmount;
 
     [Header("subUI 스크롤뷰의 content")]
     public GameObject[] EventListContent;
 
     [Header("subUI 이벤트 리스트의 제목")]
-    public TMP_Text[] subUIEventListTitle; 
+    public TMP_Text[] subUIEventListTitle;
 
-    public void SetEventListTitleText()
+    private int eventIndex;
+
+    public void SetEventListTitleText(GameEventData data, int _eventIndex)
     {
-        //subUIEventListTitle[0].SetText(GameEventData.)
+        CanCompleteBtns.onClick.RemoveAllListeners();
+        mainUIEventTitle.text = data.title;
+        mainUIEventDesc.text = data.description;
+        EventClearDetermine(data);
+        CanCompleteBtns.onClick.AddListener(() => EventClearOnUI(data));
+        eventIndex = _eventIndex;
+    }
+
+    public void EventClearDetermine(GameEventData data)
+    {
+        CanCompleteBtns.gameObject.SetActive(EventManager.Instance.DetermineEventComplete(data));
+        CanNotCompleteBtns.gameObject.SetActive(!EventManager.Instance.DetermineEventComplete(data));
     }
 
 
-
+    public void EventClearOnUI(GameEventData data)
+    {
+        Completed.gameObject.SetActive(true);
+        data.isComplete = true;
+        EventManager.Instance.EventClear(data, eventIndex);
+    }
 
 }

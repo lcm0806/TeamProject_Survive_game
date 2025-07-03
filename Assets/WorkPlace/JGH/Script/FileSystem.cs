@@ -626,6 +626,34 @@ public class FileSystem : Singleton<FileSystem>
         return isInitialized && File.Exists(settingPath);
     }
     
+    public void DeleteGameSaveData()
+    {
+        if (!isInitialized)
+        {
+            Debug.LogError("FileSystem이 초기화되지 않았습니다!");
+            return;
+        }
+        
+        try
+        {
+            if (File.Exists(gameDataPath))
+            {
+                File.Delete(gameDataPath);
+                Debug.Log("게임 데이터 삭제 완료");
+            }
+            
+            if (File.Exists(itemDataPath))
+            {
+                File.Delete(itemDataPath);
+                Debug.Log("아이템 데이터 삭제 완료");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"저장 데이터 삭제 실패: {e.Message}");
+        }
+    } 
+    
     public void DeleteAllSaveData()
     {
         if (!isInitialized)

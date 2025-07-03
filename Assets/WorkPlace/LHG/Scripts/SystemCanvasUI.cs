@@ -86,8 +86,10 @@ public class SystemCanvasUI : MonoBehaviour
         StatusSystem.Instance.SetIsToDay(false);
         
         
-        // 이벤트 - 부정 효과
-        
+
+        // TODO: 이벤트 - 부정 효과
+        // EventManager.Instance.EventEffect(dddd());
+
         
         // 씬이동 및 저장
         SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());

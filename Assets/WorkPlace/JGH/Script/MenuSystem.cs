@@ -119,9 +119,6 @@ public class MenuSystem : Singleton<MenuSystem>
         InitializeSettingMenu();
         InitializeOtherMenus();
         LoadAndApplySettings();
-        
-        AudioSystem.Instance.PlayBGMByName("MainBGM");
-        
     }
 
     void Update()
@@ -647,10 +644,12 @@ public class MenuSystem : Singleton<MenuSystem>
             StatusSystem.Instance.SetIsToDay(false);
             Debug.Log("StatusSystem 기본값으로 초기화 완료");
         }
+
+        FileSystem.Instance.DeleteGameSaveData();
+        SceneSystem.Instance.LoadSceneWithDelay(SceneSystem.Instance.GetPlologSceneName());
         
-        AudioSystem.Instance.StopBGM();
-        SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
         MainMenu.SetActive(false);
+        
         AllMenuFalse();
     }
     private void OnClickNewGameBack()
@@ -710,6 +709,8 @@ public class MenuSystem : Singleton<MenuSystem>
 
     private void OnClickBackToMenuYes()
     {
+        AudioSystem.Instance.StopBGM();
+        
         SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
         {
             // 씬이 전환된 후 1~2 프레임 기다린 뒤 수행

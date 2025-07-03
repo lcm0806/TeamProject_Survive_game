@@ -9,6 +9,7 @@ public class SceneSystem : Singleton<SceneSystem>
 {
     [Header("Scene Names - 빌드 설정에서 추가된 씬 이름들")] 
     [SerializeField] private string _titleSceneName;
+    [SerializeField] private string _plologSceneName;
     [SerializeField] private string _shelterSceneName;
     [SerializeField] private string _farmingSceneName;
     [SerializeField] private string _dayTransitionSceneName;
@@ -30,6 +31,15 @@ public class SceneSystem : Singleton<SceneSystem>
     public string GetShelterSceneName()
     {
         return _shelterSceneName;
+    }
+    
+    /// <summary>
+    /// 프롤로그 씬 이름을 반환합니다.
+    /// </summary>
+    /// <returns>쉘터 씬 이름</returns>
+    public string GetPlologSceneName()
+    {
+        return _plologSceneName;
     }
 
     /// <summary>
@@ -113,6 +123,15 @@ public class SceneSystem : Singleton<SceneSystem>
     {
         // 씬 로드 후 저장하도록 변경
         LoadSceneWithDelay(_shelterSceneName);
+    }
+    
+    /// <summary>
+    /// 프롤로그 씬으로 이동
+    /// </summary>
+    public void LoadPlologScene()
+    {
+        // 씬 로드 후 저장하도록 변경
+        LoadSceneWithDelay(_plologSceneName);
     }
     
     /// <summary>

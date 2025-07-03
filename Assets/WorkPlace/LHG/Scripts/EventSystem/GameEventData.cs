@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//¸ğµç °ÔÀÓ ÀÌº¥Æ®µéÀÇ µ¥ÀÌÅÍ
+//ëª¨ë“  ê²Œì„ ì´ë²¤íŠ¸ë“¤ì˜ ë°ì´í„°
 
 
 [CreateAssetMenu(fileName = "GameEventData", menuName = "Event System/Game Event")]
@@ -16,7 +16,6 @@ public class GameEventData : ScriptableObject
     private int maxDura = 20;
 
 
-
     public void GenerateRandomDuraValue()
     {
         RandomMinusDuraValue = Random.Range(minDura, maxDura + 1);
@@ -24,7 +23,7 @@ public class GameEventData : ScriptableObject
 
     public bool isComplete;
 
-    [Header("ÀÌº¥Æ® È¿°ú(¹ã¸¶´Ù ¹ßµ¿µÇ´Â ºÒÀÌÀÍ)")]
+    [Header("ì´ë²¤íŠ¸ íš¨ê³¼(ë°¤ë§ˆë‹¤ ë°œë™ë˜ëŠ” ë¶ˆì´ìµ)")]
     public double RandomMinusDuraValue;
     public double PlusDurability;
     public double MinusDurability;
@@ -35,33 +34,33 @@ public class GameEventData : ScriptableObject
     public float PlusOxygenEfficiency;
     public float MinusOxygenEfficiency;
 
-    [Header("Á¾·á Á¶°Ç(ÇÊ¿ä ¾ÆÀÌÅÛ µî)")]
+    [Header("ì¢…ë£Œ ì¡°ê±´(í•„ìš” ì•„ì´í…œ ë“±)")]
     public Item requiredItemA;
     public int requiredAmountA;
     public Item requiredItemB;
     public int requiredAmountB;
 
-    [Header("Ã¹³¯ + ¸ÅÀÏ ±âº»ÀûÀ¸·Î Àç»ı¼ºµÇ´Â ÀÌº¥Æ®")]
+    [Header("ì²«ë‚  + ë§¤ì¼ ê¸°ë³¸ì ìœ¼ë¡œ ì¬ìƒì„±ë˜ëŠ” ì´ë²¤íŠ¸")]
     public bool reactiveAfterEnd;
 
-    [Header("¹Ì¿Ï·á»óÅÂ·Î ³¯Â¥ÀüÈ¯½Ã Ãâ·Â ´ë»ç")]
+    [Header("ë¯¸ì™„ë£Œìƒíƒœë¡œ ë‚ ì§œì „í™˜ì‹œ ì¶œë ¥ ëŒ€ì‚¬")]
     [TextArea] public string dialogue;
 
     
     public enum EventState
     {
-        //»óÅÂ º¯¼ö¸í ³ªÁß¿¡ ´Ù½Ã ÅëÀÏ
+        //ìƒíƒœ ë³€ìˆ˜ëª… ë‚˜ì¤‘ì— ë‹¤ì‹œ í†µì¼
         CanNotComplete,
         CanComplete,
         AlreadyComplted
     }
 
-    public enum EventIsActivated //¹öÆ°? ÀÌº¥Æ®?
+    public enum EventIsActivated //ë²„íŠ¼? ì´ë²¤íŠ¸?
     {
         NotExist,
         Activated,
         Disabled
     }
 
-    public EventIsActivated isActivated;//ÀÌº¥Æ®È°¼ºÈ­¿©ºÎ?
+    public EventIsActivated isActivated;//ì´ë²¤íŠ¸í™œì„±í™”ì—¬ë¶€?
 }

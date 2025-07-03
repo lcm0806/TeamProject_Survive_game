@@ -20,7 +20,7 @@ public class InputManager : Singleton<InputManager>
     private void Update()
     {
         // 타이틀부터 플레이하는 경우
-        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+        if (SceneSystem.Instance?.GetCurrentSceneName() == SceneSystem.Instance?.GetFarmingSceneName())
         {
             PlayerInput(); // 플레이어 입력 처리
             return;

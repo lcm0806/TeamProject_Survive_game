@@ -17,5 +17,7 @@ public class Recipe : ScriptableObject
 
     public List<Material> requiredMaterials; // 필요한 재료 목록
     public string description; // 제작 아이템에 대한 설명
+
+    public double energyCost = 0; // 제작 시 소모될 전력량 (새로운 필드)
 }
 

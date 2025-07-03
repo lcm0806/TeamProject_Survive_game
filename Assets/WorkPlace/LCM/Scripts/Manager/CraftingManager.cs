@@ -50,6 +50,17 @@ public class CraftingManager : MonoBehaviour
                 return false;
             }
         }
+
+        if (StatusSystem.Instance == null)
+        {
+            Debug.LogError("StatusSystem.Instance를 찾을 수 없습니다. 전력 확인 불가.");
+            return false;
+        }
+        if (StatusSystem.Instance.GetEnergy() < recipe.energyCost)
+        {
+            Debug.Log($"전력 부족: {recipe.name} 제작에 필요한 전력 {recipe.energyCost} / 현재 전력 {StatusSystem.Instance.GetEnergy()}");
+            return false;
+        }
         return true;
     }
 
@@ -61,8 +72,12 @@ public class CraftingManager : MonoBehaviour
             Debug.LogWarning($"레시피 '{recipe.name}'을 제작 할수 없습니다. 재료를 확인해 주세요");
             return;
         }
+
+        StatusSystem.Instance.SetMinusEnergy(recipe.energyCost);
+        Debug.Log($"전력 {recipe.energyCost} 소모. 남은 전력: {StatusSystem.Instance.GetEnergy()}");
+
         //재료 소모
-        foreach(var material in recipe.requiredMaterials)
+        foreach (var material in recipe.requiredMaterials)
         {
             Storage.Instance.RemoveItem(material.materialItem, material.quantity);
         }

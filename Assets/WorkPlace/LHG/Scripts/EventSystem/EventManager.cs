@@ -13,10 +13,11 @@ public class EventManager : MonoBehaviour
     private Dictionary<int, GameEventData> eventDict = new();
     private int _curGameDay;
     private GameEventData _curEventData;
+    public GameEventData CurEventData { get { return _curEventData; } } //무슨용도?
 
-    public List<GameEventData> CurEvents = new(); //10001등 오늘 랜덤발생한 id의 이벤트
-    public List<Button> CurEventButtons = new();
-    public List<Button> FinishedButtons = new();
+    public List<GameEventData> CurEvents = new(); 
+    public List<Button> CurEventButtons = new(); 
+    public List<Button> FinishedButtons = new(); 
     [SerializeField] private Transform eventContents;
     [SerializeField] private Button eventButtonPrefab;
     [SerializeField] private EventUI eventUI;
@@ -119,6 +120,10 @@ public class EventManager : MonoBehaviour
     {
         CurEventButtons.Add(Instantiate(eventButtonPrefab));
         CurEventButtons[eventIndex].transform.SetParent(eventContents);
+        eventUI.SetEventSubUIBtnTitle(CurEventButtons[eventIndex].gameObject, eventIndex); //추가한부분**서브타이틀용**
+
+
+
         CurEventButtons[eventIndex].onClick
             .AddListener(() => eventUI.SetEventListTitleText(CurEvents[eventIndex], eventIndex));
     }

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 64c30005ee49f1b45b0d519f6d9d4111, type: 3}
-  m_Name: 10009_
+  m_Name: 10009_PrepareMeteor
   m_EditorClassIdentifier: 
   id: 10009
   title: "\uC6B4\uC11D \uB300\uBE44\uD558\uAE30"

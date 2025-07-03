@@ -22,9 +22,6 @@ public class EventUI : MonoBehaviour
     [Header("subUI 스크롤뷰의 content")]
     public GameObject[] EventListContent;
 
-    [Header("subUI 이벤트 리스트의 제목")]
-    public TMP_Text[] subUIEventListTitle;
-
     private int eventIndex;
 
     public void SetEventListTitleText(GameEventData data, int _eventIndex)
@@ -37,6 +34,15 @@ public class EventUI : MonoBehaviour
         eventIndex = _eventIndex;
     }
 
+
+    public void SetEventSubUIBtnTitle(GameObject go, int eventIndex) //서브ui타이틀리스트연결용
+    {
+        CanCompleteBtns.onClick.RemoveAllListeners();
+        TMP_Text text = go.GetComponentInChildren<TMP_Text>();
+        text.SetText(EventManager.Instance.CurEvents[eventIndex].title);
+        //go.GetComponent<Button>().interactable = false; 이벤트의 스테이트에서 완료된경우
+            //컬러틴트로 하이라이트와 디스에이블드 색상을 다르게 해줘야함
+    }
     public void EventClearDetermine(GameEventData data)
     {
         CanCompleteBtns.gameObject.SetActive(EventManager.Instance.DetermineEventComplete(data));
@@ -51,4 +57,5 @@ public class EventUI : MonoBehaviour
         EventManager.Instance.EventClear(data, eventIndex);
     }
 
+    
 }

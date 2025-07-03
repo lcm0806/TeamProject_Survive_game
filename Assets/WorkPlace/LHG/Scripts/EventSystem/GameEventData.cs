@@ -12,9 +12,10 @@ public class GameEventData : ScriptableObject
     public int id;
     public string title;
     [TextArea] public string description;
-
     private int minDura = 10;
     private int maxDura = 20;
+
+
 
     public void GenerateRandomDuraValue()
     {
@@ -45,4 +46,22 @@ public class GameEventData : ScriptableObject
 
     [Header("미완료상태로 날짜전환시 출력 대사")]
     [TextArea] public string dialogue;
+
+    
+    public enum EventState
+    {
+        //상태 변수명 나중에 다시 통일
+        CanNotComplete,
+        CanComplete,
+        AlreadyComplted
+    }
+
+    public enum EventIsActivated //버튼? 이벤트?
+    {
+        NotExist,
+        Activated,
+        Disabled
+    }
+
+    public EventIsActivated isActivated;//이벤트활성화여부?
 }

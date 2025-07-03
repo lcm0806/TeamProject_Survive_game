@@ -12,9 +12,9 @@ public class InputManager : Singleton<InputManager>
 
     private Coroutine _itemCo;
 
-    private void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
     }
 
     private void Update()

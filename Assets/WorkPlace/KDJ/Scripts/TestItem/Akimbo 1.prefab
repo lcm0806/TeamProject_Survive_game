@@ -96,3 +96,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1550040b0bfc1c348b87b16c91b76c05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _miningEffect: {fileID: 763799897560185588, guid: 0bc852a39fd1e034d81f76510159c246,
+    type: 3}

@@ -3,6 +3,7 @@ using UnityEngine;
 public class ElectromagnetGun : ToolAction
 {
     [SerializeField] private GameObject _electroEffect;
+    [SerializeField] private GameObject _miningEffect;
 
     private Collider[] _colls = new Collider[10];
     private LayerMask _layerMask = 1 << 10;
@@ -43,6 +44,11 @@ public class ElectromagnetGun : ToolAction
                     continue;
                 }
                 ore.TakeMiningDamage(power);
+
+                Ray ray = new Ray(PlayerManager.Instance.InHandItem.transform.position, (_colls[i].transform.position - PlayerManager.Instance.InHandItem.transform.position).normalized);
+                bool rc = Physics.Raycast(ray, out RaycastHit hit, 4.5f, _layerMask);
+                GameObject effect = Instantiate(_miningEffect, hit.point, Quaternion.identity);
+                effect.transform.LookAt(PlayerManager.Instance.InHandItem.transform.position);
             }
         }
         else

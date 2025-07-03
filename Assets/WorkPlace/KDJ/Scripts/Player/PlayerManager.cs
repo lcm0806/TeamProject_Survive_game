@@ -31,9 +31,9 @@ public class PlayerManager : Singleton<PlayerManager>
     public float ItemDelay { get; set; }
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
         Init();
     }
 

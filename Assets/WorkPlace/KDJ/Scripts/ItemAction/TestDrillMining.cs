@@ -25,13 +25,17 @@ public class TestDrillMining : ToolAction
             for (int i = 0; i < count; i++)
             {
                 bool s = _colls[i].TryGetComponent<MineableResource>(out MineableResource ore);
+
                 if (!s)
                 {
                     continue;
                 }
+                
                 ore.TakeMiningDamage(power);
-                Vector3 closestPos = _colls[i].ClosestPoint(PlayerManager.Instance.InHandItem.transform.position);
-                GameObject effect = Instantiate(_miningEffect, closestPos, Quaternion.identity);
+
+                Ray ray = new Ray(PlayerManager.Instance.InHandItem.transform.position, (_colls[i].transform.position - PlayerManager.Instance.InHandItem.transform.position).normalized);
+                bool rc = Physics.Raycast(ray, out RaycastHit hit, 4.5f, _layerMask);
+                GameObject effect = Instantiate(_miningEffect, hit.point, Quaternion.identity);
                 effect.transform.LookAt(PlayerManager.Instance.InHandItem.transform.position);
             }
         }

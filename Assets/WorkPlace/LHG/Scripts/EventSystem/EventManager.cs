@@ -73,7 +73,7 @@ public class EventManager : MonoBehaviour
 
     public void GenerateDailyEvent() //게임시작 + 아침시점에 호출되어야 함
     {
-        _curEventData = eventDict[10001];
+        //_curEventData = eventDict[10001];
         Debug.Log("내구도 수리 이벤트 발생(매일)");
     }
 
@@ -96,7 +96,7 @@ public class EventManager : MonoBehaviour
             Debug.Log("7일차~ 이벤트 발생");
         }
 
-        _curEventData = eventDict[eventID];
+        //_curEventData = eventDict[eventID];
         //1~3일차에 id 10002~10004 중 1개
 
         //4~6일차에 id10002~10006 중 2개

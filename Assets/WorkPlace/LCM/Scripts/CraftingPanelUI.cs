@@ -26,7 +26,9 @@ public class CraftingPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _craftedItemCurrentAmountText;
     [SerializeField] private Transform _materialListContainer; // 재료 목록이 들어갈 부모
     [SerializeField] private GameObject _materialItemUIPrefab; // 재료 항목 UI 프리팹
+    [SerializeField] private TextMeshProUGUI _energyCostText;
     [SerializeField] private Button _craftButton;
+
 
     private Recipe _currentSelectedRecipe; // 현재 선택된 레시피
 
@@ -191,6 +193,20 @@ public class CraftingPanelUI : MonoBehaviour
             Color quantityColor = (playerHasAmount < material.quantity) ? Color.red : Color.white;
 
             uiSlot.SetUI(icon, name, quantityText, quantityColor);
+        }
+
+        if (_energyCostText != null)
+        {
+            string energyStatus = $"전력 소모: {recipe.energyCost}";
+            if (StatusSystem.Instance != null && StatusSystem.Instance.GetEnergy() < recipe.energyCost)
+            {
+                _energyCostText.color = Color.red; // 전력이 부족하면 빨간색으로 표시
+            }
+            else
+            {
+                _energyCostText.color = Color.white; // 충분하면 흰색
+            }
+            _energyCostText.text = energyStatus;
         }
 
         _craftButton.interactable = _craftingManager.CanCraft(recipe);

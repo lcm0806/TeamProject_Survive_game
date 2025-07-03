@@ -22,3 +22,4 @@ MonoBehaviour:
   - materialItem: {fileID: 11400000, guid: 4ecea7ed59c25604abee38b3d917a93a, type: 2}
     quantity: 4
   description: RepairKit
+  energyCost: 5

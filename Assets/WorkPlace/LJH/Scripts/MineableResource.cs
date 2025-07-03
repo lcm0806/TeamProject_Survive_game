@@ -52,7 +52,12 @@ public class MineableResource : MonoBehaviour
 
         UpdateEmissionColor();
 
+<<<<<<< HEAD
         Debug.Log($"{gameObject.name}ï¿½ï¿½ {miningDamage}ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Ò½ï¿½ï¿½Ï´ï¿½");
+=======
+        Debug.Log($"{gameObject.name}ÀÌ {miningDamage}¸¸Å­ µ¥¹ÌÁö¸¦ ¹Þ¾Ò½À´Ï´Ù");
+        Debug.Log($"{gameObject.name}ÀÇ ÇöÀç Ã¼·ÂÀº {currentHealth}ÀÔ´Ï´Ù");
+>>>>>>> 376d144eb436886f4322a97e12843dfe1ac96646
         int currentWholeHp = Mathf.FloorToInt(currentHealth);
         if (currentWholeHp < lastWholeHp) // ï¿½ï¿½ Ä­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
@@ -77,7 +82,15 @@ public class MineableResource : MonoBehaviour
     {
         if (lootPrefab == null) return;
 
+<<<<<<< HEAD
         // 1) ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡: ï¿½ï¿½ï¿½ï¿½ 1.2m + ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½0.5m ï¿½ï¿½ï¿½ï¿½
+=======
+        float chance = Random.value; // 0.0 ~ 1.0
+
+        if (chance > 0.1f) return; // 10% È®·ü¸¸ Åë°ú
+
+        // 1) »ý¼º À§Ä¡: À§·Î 1.2m + ¼öÆò ¡¾0.5m ·£´ý
+>>>>>>> 376d144eb436886f4322a97e12843dfe1ac96646
         Vector3 spread = Random.insideUnitSphere * 1.0f;
         spread.y = Mathf.Abs(spread.y);          // ï¿½Æ·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½
         Vector3 spawnPos = transform.position + Vector3.up * 1.2f + spread;

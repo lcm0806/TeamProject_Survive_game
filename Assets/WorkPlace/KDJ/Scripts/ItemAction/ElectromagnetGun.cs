@@ -5,7 +5,7 @@ public class ElectromagnetGun : ToolAction
     [SerializeField] private GameObject _electroEffect;
 
     private Collider[] _colls = new Collider[10];
-    private LayerMask _layerMask = 1 << 8;
+    private LayerMask _layerMask = 1 << 10;
     private bool _isMining = false;
     private GameObject _electroEffectInstance;
 
@@ -13,7 +13,7 @@ public class ElectromagnetGun : ToolAction
     {
         if (InputManager.Instance.IsUsingTool && _electroEffectInstance == null)
         {
-            _electroEffectInstance = Instantiate(_electroEffect, PlayerManager.Instance.InHandItem.transform.position, Quaternion.identity);
+            _electroEffectInstance = Instantiate(_electroEffect, PlayerManager.Instance.InHandItem.transform.position + Vector3.up * 0.3f, Quaternion.identity);
         }
         else if(!InputManager.Instance.IsUsingTool && _electroEffectInstance != null)
         {
@@ -22,7 +22,7 @@ public class ElectromagnetGun : ToolAction
 
         if (_electroEffectInstance != null)
         {
-            _electroEffectInstance.transform.position = PlayerManager.Instance.InHandItem.transform.position;
+            _electroEffectInstance.transform.position = PlayerManager.Instance.InHandItem.transform.position + Vector3.up * 0.3f;
         }
     }
 

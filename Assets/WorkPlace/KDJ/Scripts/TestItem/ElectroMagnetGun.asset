@@ -15,9 +15,9 @@ MonoBehaviour:
   itemName: ElectromagnetGun
   description: Collect items while mining.
   icon: {fileID: 21300000, guid: 75b9992ee03fad749aef16536d227780, type: 3}
-  WorldPrefab: {fileID: 647771201655278971, guid: 3e4979f544bff7d4ea91125b775abdbe,
+  WorldPrefab: {fileID: 5908831798058297219, guid: a80b0918dff5dbf449d038c62dcb0264,
     type: 3}
-  HandleItem: {fileID: 8969298297885552616, guid: a168851e2628113409393c05d15f1ee9,
+  HandleItem: {fileID: 5908831798058297219, guid: 297a47447daf78c4d8fc43c9daa765e2,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 0

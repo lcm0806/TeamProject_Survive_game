@@ -15,11 +15,12 @@ public class GameEventData : ScriptableObject
 
     private int minDura = 10;
     private int maxDura = 20;
-    
-    private void OnEnable()
+
+    public void GenerateRandomDuraValue()
     {
         RandomMinusDuraValue = Random.Range(minDura, maxDura+1);
     }
+    
 
     [Header("이벤트 효과(밤마다 발동되는 불이익)")]
     public double RandomMinusDuraValue;

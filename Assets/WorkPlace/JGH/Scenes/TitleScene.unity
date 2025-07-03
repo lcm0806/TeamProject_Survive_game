@@ -1511,6 +1511,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -88.46103
       objectReference: {fileID: 0}
+    - target: {fileID: 2919966037201972422, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2919966037201972422, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_TargetCamera
+      value: 
+      objectReference: {fileID: 330585545}
     - target: {fileID: 7943621318217555284, guid: f26923c3529f9401181b8409823a3f41,
         type: 3}
       propertyPath: m_Name

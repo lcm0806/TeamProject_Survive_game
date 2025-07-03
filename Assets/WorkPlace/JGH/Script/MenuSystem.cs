@@ -642,7 +642,7 @@ public class MenuSystem : Singleton<MenuSystem>
         {
             StatusSystem.Instance.SetCurrentDay(1);
             StatusSystem.Instance.SetOxygen(100f);
-            StatusSystem.Instance.SetEnergy(100f);
+            StatusSystem.Instance.SetEnergy(300f);
             StatusSystem.Instance.SetDurability(100f);
             StatusSystem.Instance.SetIsToDay(false);
             Debug.Log("StatusSystem 기본값으로 초기화 완료");

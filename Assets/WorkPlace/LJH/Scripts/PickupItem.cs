@@ -3,7 +3,7 @@ using System.Collections.Generic;
 // using UnityEditor.VersionControl;
 using UnityEngine;
 
-public class PickupItem : MonoBehaviour, IInteractable
+public class PickupItem : Structure
 {
     
     public GameObject batteryPrefab;
@@ -15,9 +15,9 @@ public class PickupItem : MonoBehaviour, IInteractable
 
     private bool _used = false;
 
-
-    public void Interact()
+    public override void Interact()
     {
+        {
         if (_used) return;
         _used = true;
         float roll = Random.value;
@@ -114,4 +114,6 @@ public class PickupItem : MonoBehaviour, IInteractable
             Debug.LogWarning("UIManager가 씬에 없습니다.");
         }
     }
+
+    
 }

@@ -20,7 +20,7 @@ public class InputManager : Singleton<InputManager>
     private void Update()
     {
         // 타이틀부터 플레이하는 경우
-        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+        if (SceneSystem.Instance?.GetCurrentSceneName() == SceneSystem.Instance?.GetFarmingSceneName())
         {
             PlayerInput(); // 플레이어 입력 처리
             return;
@@ -81,36 +81,39 @@ public class InputManager : Singleton<InputManager>
         }
 
         #region 핫바 선택
-
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        // 아이템이 사용 중이 아닐때만 교체
+        if (!IsUsingTool)
         {
-            PlayerManager.Instance.SelectItem = null;
-            PlayerManager.Instance.AkimboReset();
-            Destroy(PlayerManager.Instance.InHandItem);
-            Destroy(PlayerManager.Instance.InHandItem2); // 아킴보 상태일 때 두번째 아이템 제거
-            Destroy(PlayerManager.Instance.InHeadItem); // 머리에 착용한 아이템 제거
-            // 인벤토리 핫바 1번 선택
-            Inventory.Instance.SelectHotbarSlot(0);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            PlayerManager.Instance.SelectItem = null;
-            PlayerManager.Instance.AkimboReset();
-            Destroy(PlayerManager.Instance.InHandItem);
-            Destroy(PlayerManager.Instance.InHandItem2);
-            Destroy(PlayerManager.Instance.InHeadItem);
-            // 인벤토리 핫바 2번 선택
-            Inventory.Instance.SelectHotbarSlot(1);
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            PlayerManager.Instance.SelectItem = null;
-            PlayerManager.Instance.AkimboReset();
-            Destroy(PlayerManager.Instance.InHandItem);
-            Destroy(PlayerManager.Instance.InHandItem2);
-            Destroy(PlayerManager.Instance.InHeadItem);
-            // 인벤토리 핫바 3번 선택
-            Inventory.Instance.SelectHotbarSlot(2);
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                PlayerManager.Instance.SelectItem = null;
+                PlayerManager.Instance.AkimboReset();
+                Destroy(PlayerManager.Instance.InHandItem);
+                Destroy(PlayerManager.Instance.InHandItem2); // 아킴보 상태일 때 두번째 아이템 제거
+                Destroy(PlayerManager.Instance.InHeadItem); // 머리에 착용한 아이템 제거
+                                                            // 인벤토리 핫바 1번 선택
+                Inventory.Instance.SelectHotbarSlot(0);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                PlayerManager.Instance.SelectItem = null;
+                PlayerManager.Instance.AkimboReset();
+                Destroy(PlayerManager.Instance.InHandItem);
+                Destroy(PlayerManager.Instance.InHandItem2);
+                Destroy(PlayerManager.Instance.InHeadItem);
+                // 인벤토리 핫바 2번 선택
+                Inventory.Instance.SelectHotbarSlot(1);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                PlayerManager.Instance.SelectItem = null;
+                PlayerManager.Instance.AkimboReset();
+                Destroy(PlayerManager.Instance.InHandItem);
+                Destroy(PlayerManager.Instance.InHandItem2);
+                Destroy(PlayerManager.Instance.InHeadItem);
+                // 인벤토리 핫바 3번 선택
+                Inventory.Instance.SelectHotbarSlot(2);
+            }
         }
 
         Item curItem = Inventory.Instance.GetCurrentHotbarItem();
@@ -120,11 +123,26 @@ public class InputManager : Singleton<InputManager>
             PlayerManager.Instance.SelectItem = null; // 현재 핫바에 아이템이 없으면 선택 아이템을 null로 설정
             if (PlayerManager.Instance.InHandItem != null)
             {
-                // 테스트용 마인건이 있다면 비활성화
-                // _testHandItem.SetActive(false);
+                PlayerManager.Instance.AkimboReset();
                 Destroy(PlayerManager.Instance.InHandItem); // 오브젝트 제거
+                Destroy(PlayerManager.Instance.InHandItem2);
+                Destroy(PlayerManager.Instance.InHeadItem);
             }
             // _testHandItem = null; // 테스트용 마인건도 null로 설정
+        }
+        else if (PlayerManager.Instance.SelectItem != curItem)
+        {
+            PlayerManager.Instance.SelectItem = curItem; // 현재 핫바에 아이템이 있으면 선택 아이템으로 설정
+
+            if (_itemCo == null)
+            {
+                PlayerManager.Instance.AkimboReset();
+                Destroy(PlayerManager.Instance.InHandItem); // 오브젝트 제거
+                Destroy(PlayerManager.Instance.InHandItem2);
+                Destroy(PlayerManager.Instance.InHeadItem);
+                // 아이템이 없다면 생성 코루틴 실행
+                _itemCo = StartCoroutine(ItemInstantiate());
+            }
         }
         else
         {
@@ -132,9 +150,9 @@ public class InputManager : Singleton<InputManager>
 
             if (PlayerManager.Instance.InHandItem == null)
             {
-                if(_itemCo == null)
+                if (_itemCo == null)
                 {
-                    // 아이템 핸들러가 없다면 생성 코루틴 실행
+                    // 아이템이 없다면 생성 코루틴 실행
                     _itemCo = StartCoroutine(ItemInstantiate());
                 }
             }
@@ -163,7 +181,7 @@ public class InputManager : Singleton<InputManager>
             if (PlayerManager.Instance.ItemDelay >= itemUseRate)
             {
                 Debug.Log("아이템 사용!");
-                PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.SelectItem?.Use(this.gameObject);
                 PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
             }
         }
@@ -185,16 +203,18 @@ public class InputManager : Singleton<InputManager>
         #endregion
 
         // 제트팩은 공중에서만 사용
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded &&
+        if (PlayerManager.Instance.Player != null)
+            if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded &&
             PlayerManager.Instance.IsUpgraded[0] && PlayerManager.Instance.AirGauge.Value > 0)
-        {
-            PlayerManager.Instance.Player.IsUsingJetPack = true;
-            MoveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift) && PlayerManager.Instance.Player.IsUsingJetPack || PlayerManager.Instance.Player.Controller.isGrounded)
-        {
-            PlayerManager.Instance.Player.IsUsingJetPack = false;
-        }
+            {
+                PlayerManager.Instance.Player.IsUsingJetPack = true;
+                MoveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화
+            }
+        if (PlayerManager.Instance.Player != null)
+            if (Input.GetKeyUp(KeyCode.LeftShift) && PlayerManager.Instance.Player.IsUsingJetPack || PlayerManager.Instance.Player.Controller.isGrounded)
+            {
+                PlayerManager.Instance.Player.IsUsingJetPack = false;
+            }
 
         if (!CanMove) return; // 움직일 수 없다면 이동은 생략
 

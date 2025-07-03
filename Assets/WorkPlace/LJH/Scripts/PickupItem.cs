@@ -3,7 +3,7 @@ using System.Collections.Generic;
 // using UnityEditor.VersionControl;
 using UnityEngine;
 
-public class PickupItem : MonoBehaviour, IInteractable
+public class PickupItem : Structure
 {
     
     public GameObject batteryPrefab;
@@ -16,7 +16,7 @@ public class PickupItem : MonoBehaviour, IInteractable
     private bool _used = false;
 
 
-    public void Interact()
+    public override void Interact()
     {
         if (_used) return;
         _used = true;
@@ -26,11 +26,12 @@ public class PickupItem : MonoBehaviour, IInteractable
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
         else ShowMessage("보급상자가 비어있다...");
 
-        var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
-        if (dissolve != null)
-        {
-            dissolve.StartDissolve(2f);
-        }
+        // TODO: 오류나서 임시 주석
+        // var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
+        // if (dissolve != null)
+        // {
+            // dissolve.StartDissolve(2f);
+        // }
 
         Destroy(gameObject, 2.5f);
     }
@@ -114,4 +115,6 @@ public class PickupItem : MonoBehaviour, IInteractable
             Debug.LogWarning("UIManager가 씬에 없습니다.");
         }
     }
+
+    
 }

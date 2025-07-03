@@ -69,7 +69,13 @@ public class SystemCanvasUI : MonoBehaviour
     
     private void DelayedSceneTransition()
     {
-        SceneSystem.Instance.LoadDayTransitionScene();
+        // 250702 추가
+        // 날짜 + 1
+        StatusSystem.Instance.NextCurrentDay();
+        // 탐색 여부
+        StatusSystem.Instance.SetIsToDay(false);
+        // 씬이동 및 저장
+        SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
         LoadingSceneBG[0].SetActive(false);
     }
 

@@ -5,19 +5,20 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Recipe", menuName = "Crafting/Recipe")]
 public class Recipe : ScriptableObject
 {
-    public Item craftedItem; // Á¦ÀÛµÉ ¾ÆÀÌÅÛ (Item ScriptableObject)
-    public int craftedAmount = 1; // Á¦ÀÛµÉ ¾ÆÀÌÅÛÀÇ ¼ö·®
+    public Item craftedItem; // ì œì‘ë  ì•„ì´í…œ (Item ScriptableObject)
+    public int craftedAmount = 1; // ì œì‘ë  ì•„ì´í…œì˜ ìˆ˜ëŸ‰
 
     [System.Serializable]
     public class Material
     {
-        public Item materialItem; // Àç·á ¾ÆÀÌÅÛ
-        public int quantity; // ÇÊ¿äÇÑ ¼ö·®
+        public Item materialItem; // ì¬ë£Œ ì•„ì´í…œ
+        public int quantity; // í•„ìš”í•œ ìˆ˜ëŸ‰
     }
 
-    public List<Material> requiredMaterials; // ÇÊ¿äÇÑ Àç·á ¸ñ·Ï
-    public string description; // Á¦ÀÛ ¾ÆÀÌÅÛ¿¡ ´ëÇÑ ¼³¸í
+    public List<Material> requiredMaterials; // í•„ìš”í•œ ì¬ë£Œ ëª©ë¡
+    public string description; // ì œì‘ ì•„ì´í…œì— ëŒ€í•œ ì„¤ëª…
 
-    public double energyCost = 0; // Á¦ÀÛ ½Ã ¼Ò¸ğµÉ Àü·Â·®
+    public double energyCost = 0; // ì œì‘ ì‹œ ì†Œëª¨ë  ì „ë ¥ëŸ‰
+
 }
 

@@ -917,3 +917,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _electroEffect: {fileID: 9027514048236820045, guid: 501addb92f647eb49bbf75d6b42ff89e,
     type: 3}
+  _miningEffect: {fileID: 763799897560185588, guid: 0bc852a39fd1e034d81f76510159c246,
+    type: 3}

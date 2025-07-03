@@ -25,11 +25,12 @@ public class PickupItem : Structure
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
         else ShowMessage("보급상자가 비어있다...");
 
-        var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
-        if (dissolve != null)
-        {
-            dissolve.StartDissolve(2f);
-        }
+        // TODO: 오류나서 임시 주석
+        // var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
+        // if (dissolve != null)
+        // {
+            // dissolve.StartDissolve(2f);
+        // }
 
         Destroy(gameObject, 2.5f);
     }

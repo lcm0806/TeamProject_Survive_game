@@ -113,7 +113,7 @@ public class MineableResource : MonoBehaviour
         Color emitColor = hpCount.GetEmitColor(Mathf.RoundToInt(currentHealth));
 
         // 제외할 머티리얼 이름들 (정확히 일치하는 이름)
-        string[] excludeMaterialNames = { "rockTrack (Instance)", "rock (Instance)" };
+        string[] excludeMaterialNames = { "rockTrack (Instance)", "rock (Instance)", "Gold Bady (Instance)" };
 
         for (int i = 0; i < materials.Length; i++)
         {

@@ -16,8 +16,7 @@ public class PickupItem : Structure
     private bool _used = false;
 
     public override void Interact()
-    {
-        {
+    {   
         if (_used) return;
         _used = true;
         float roll = Random.value;

@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DesignPattern;
 
-public class StorageManager : MonoBehaviour
+public class StorageManager : Singleton<StorageManager>
 {
+
     public GameObject inventorySlotPrefab; // 인벤토리 슬롯 프리팹
     public Transform contentParent;         // Scroll Rect의 Content 오브젝트
 
@@ -17,9 +19,14 @@ public class StorageManager : MonoBehaviour
     [SerializeField] private Canvas _gameCanvas;
     private const string MAIN_CANVAS_TAG = "StorageUICanvas";
 
+    private List<InventorySlot> generatedStorageSlots = new List<InventorySlot>();
+
 
     private void Awake()
     {
+        SingletonInit();
+
+
         if (_gameCanvas == null)
         {
             GameObject canvasGO = GameObject.FindWithTag(MAIN_CANVAS_TAG);
@@ -51,6 +58,14 @@ public class StorageManager : MonoBehaviour
     void Start()
     {
         GenerateInventorySlots(numberOfSlotsToCreate);
+        if (Storage.Instance != null)
+        {
+            Storage.Instance.SetStorageSlots(generatedStorageSlots.ToArray());
+        }
+        else
+        {
+            Debug.LogError("Storage 인스턴스를 찾을 수 없습니다. Storage 스크립트가 씬에 있는지 확인하세요.");
+        }
         CloseStorageUI();
         if (StorageUIPanel != null && StorageUIPanel.transform.parent != _gameCanvas.transform)
         {
@@ -99,21 +114,25 @@ public class StorageManager : MonoBehaviour
 
     public void GenerateInventorySlots(int count)
     {
-        // 기존 슬롯 제거 (옵션)
         foreach (Transform child in contentParent)
         {
             Destroy(child.gameObject);
         }
+        generatedStorageSlots.Clear(); // 리스트도 비워줍니다.
 
         // 새로운 슬롯 생성
         for (int i = 0; i < count; i++)
         {
-            GameObject slot = Instantiate(inventorySlotPrefab, contentParent);
-            // 여기에 필요하다면 슬롯에 데이터(예: 아이템 정보)를 설정하는 로직 추가
-            // 예: slot.GetComponent<InventorySlotUI>().SetItem(inventoryItems[i]);
+            GameObject slotGO = Instantiate(inventorySlotPrefab, contentParent);
+            InventorySlot slotComponent = slotGO.GetComponent<InventorySlot>();
+            if (slotComponent != null)
+            {
+                generatedStorageSlots.Add(slotComponent); // 생성된 InventorySlot 컴포넌트 저장
+            }
+            else
+            {
+                Debug.LogError("인스턴스화된 슬롯 프리팹에 InventorySlot 컴포넌트가 없습니다!");
+            }
         }
-
-        // ContentSizeFitter가 즉시 업데이트되지 않을 수 있으므로 RebuildLayoutGroup 호출
-        // LayoutRebuilder.ForceRebuildLayoutImmediate(contentParent.GetComponent<RectTransform>());
     }
 }

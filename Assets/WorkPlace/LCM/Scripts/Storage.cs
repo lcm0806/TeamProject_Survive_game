@@ -13,12 +13,13 @@ public class Storage : Singleton<Storage>
     [SerializeField]
     private GameObject _storageUIRootPanel;
 
+    [SerializeField] private InventoryItem _itemPrefab;
+
     // 창고 아이템 데이터 변경을 알리는 이벤트 (UI 업데이트용)
     public event Action<int, Item, int> OnStorageSlotItemUpdated;
 
     private void Awake()
     {
-        Debug.Log("스토리지 생성");
         SingletonInit();
         if (_storageUIRootPanel != null)
         {
@@ -28,8 +29,23 @@ public class Storage : Singleton<Storage>
 
     }
 
+    public void SetStorageSlots(InventorySlot[] slots)
+    {
+        this.storageSlots = slots;
+        Debug.Log($"Storage: {slots.Length}개의 슬롯이 Storage 인스턴스에 설정되었습니다.");
+    }
+
     public void AddItemToStorage(Item itemData, int quantity)
     {
+        if (itemData == null || quantity <= 0) return;
+
+        // itemPrefab이 할당되었는지 확인
+        if (_itemPrefab == null)
+        {
+            Debug.LogError("Storage: InventoryItem Prefab이 할당되지 않았습니다. Inspector를 확인하세요!");
+            return;
+        }
+
         if (itemData.isStackable)
         {
             foreach (var slot in storageSlots)
@@ -41,7 +57,7 @@ public class Storage : Singleton<Storage>
                     slot.myItemUI.CurrentQuantity += actualAdd;
                     quantity -= actualAdd;
 
-                    slot.UpdateSlotUI();
+                    //slot.UpdateSlotUI();
                     OnStorageSlotItemUpdated?.Invoke(Array.IndexOf(storageSlots, slot), itemData, slot.myItemUI.CurrentQuantity); // 이벤트 발생
 
                     if (quantity <= 0) return; // 모두 추가됨
@@ -55,15 +71,32 @@ public class Storage : Singleton<Storage>
             {
                 if (slot.myItemUI == null) // 빈 슬롯을 찾음
                 {
-                    slot.SetItemData(itemData); // 슬롯에 아이템 데이터만 설정하는 새로운 메서드가 필요할 수 있음
+                    InventoryItem newItemUI = Instantiate(_itemPrefab, slot.transform);
+                    newItemUI.Initialize(itemData, slot);
+                    RectTransform itemRectTransform = newItemUI.GetComponent<RectTransform>();
+                    if (itemRectTransform != null)
+                    {
+                        // 예시: 슬롯 크기에 꽉 채우거나 약간 작게 만듭니다.
+                        // Anchor Presets을 이용하는 방식
+                        //itemRectTransform.anchorMin = Vector2.zero;   // 왼쪽 아래
+                        //itemRectTransform.anchorMax = Vector2.one;    // 오른쪽 위
+                        //itemRectTransform.sizeDelta = new Vector2(0, 0); // 부모 크기에 꽉 채움
+
+                        // 또는 고정된 크기로 설정 (부모 크기와 무관)
+                        itemRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 80); // 너비 80
+                        itemRectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 80);   // 높이 80
+
+                        // 약간의 패딩을 주려면 (sizeDelta를 음수로 설정)
+                        itemRectTransform.sizeDelta = new Vector2(-10, -10); // 좌우상하 5씩 패딩
+                    }
+                    slot.SetItem(newItemUI);
                     int addedQuantity = Mathf.Min(quantity, itemData.maxStackSize);
-                    slot.SetItemQuantity(Mathf.Min(quantity, itemData.maxStackSize)); // 수량 설정
-                    quantity -= Mathf.Min(quantity, itemData.maxStackSize);
+                    newItemUI.CurrentQuantity = addedQuantity;
+
+                    quantity -= addedQuantity;
 
                     slot.UpdateSlotUI(); // UI 업데이트를 위해 추가
                     OnStorageSlotItemUpdated?.Invoke(Array.IndexOf(storageSlots, slot), itemData, slot.myItemUI.CurrentQuantity); // 이벤트 발생
-
-                    quantity -= addedQuantity;
 
                     Debug.Log($"창고에 '{itemData.itemName}' {slot.myItemUI.CurrentQuantity}개 추가됨.");
                     break; // 다음 아이템 또는 남은 수량 처리

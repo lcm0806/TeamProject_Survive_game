@@ -721,7 +721,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -548.30914, y: 177.2901}
+  m_AnchoredPosition: {x: -549, y: 177.2901}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &67412301
@@ -1238,6 +1238,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   storageSlots: []
   _storageUIRootPanel: {fileID: 1482989837}
+  _itemPrefab: {fileID: 8527893814601168996, guid: 1028cb616073445408e5c9f2550546dc,
+    type: 3}
 --- !u!4 &94834924
 Transform:
   m_ObjectHideFlags: 0
@@ -1558,7 +1560,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 296.18637, y: -89.1073}
-  m_SizeDelta: {x: 1919.8427, y: 1073.8524}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &114468506
 MonoBehaviour:
@@ -3852,9 +3854,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: StorageManager, Assembly-CSharp
-        m_MethodName: OpenStorageUI
+      - m_Target: {fileID: 1826653269}
+        m_TargetAssemblyTypeName: CraftingPanelUI, Assembly-CSharp
+        m_MethodName: OpenStorage
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9325,7 +9327,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 68.69086, y: 23.2901}
+  m_AnchoredPosition: {x: 755, y: -163}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1047685038
@@ -11532,8 +11534,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -32.975037, y: 221.30232}
-  m_SizeDelta: {x: 2006.3303, y: 1077.3679}
+  m_AnchoredPosition: {x: -51, y: 187}
+  m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1296339388
 MonoBehaviour:
@@ -13185,12 +13187,12 @@ PrefabInstance:
     - target: {fileID: 1080031413479747586, guid: a0eee75762c05aa4cada9e222cc8d4f7,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1080031413479747586, guid: a0eee75762c05aa4cada9e222cc8d4f7,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2829196701181352316, guid: a0eee75762c05aa4cada9e222cc8d4f7,
         type: 3}
@@ -13311,12 +13313,12 @@ PrefabInstance:
     - target: {fileID: 7591662803329607802, guid: a0eee75762c05aa4cada9e222cc8d4f7,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: -3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7591662803329607802, guid: a0eee75762c05aa4cada9e222cc8d4f7,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 60
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8132896701983147723, guid: a0eee75762c05aa4cada9e222cc8d4f7,
         type: 3}
@@ -16974,7 +16976,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -229.80914, y: 331.2901}
+  m_AnchoredPosition: {x: -877, y: 137}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1775211780
@@ -17948,7 +17950,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1903160399
 RectTransform:
   m_ObjectHideFlags: 0

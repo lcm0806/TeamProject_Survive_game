@@ -27,13 +27,14 @@ public class PlayerManager : Singleton<PlayerManager>
     public ObseravableProperty<float> AirGauge = new();
     public ObseravableProperty<float> ElecticGauge = new();
     public PlayerController Player { get; private set; }
+    public RaycastHit HitInfo { get; set; }
     public float InteractDelay { get; set; }
     public float ItemDelay { get; set; }
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
         Init();
     }
 

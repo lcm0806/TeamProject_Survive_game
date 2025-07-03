@@ -12,9 +12,9 @@ public class GameSystem : Singleton<GameSystem>
     // 디버깅용 플래그
     private bool enableDebugLogs = true;
 
-    void Awake()
+      protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
     }
     
     /// <summary>

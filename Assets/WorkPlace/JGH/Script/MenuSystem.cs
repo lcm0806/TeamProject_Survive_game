@@ -108,9 +108,9 @@ public class MenuSystem : Singleton<MenuSystem>
     private float _currentSFX;
     
 
-    void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
     }
 
     void Start()

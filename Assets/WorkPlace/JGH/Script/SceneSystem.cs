@@ -51,10 +51,10 @@ public class SceneSystem : Singleton<SceneSystem>
     }
     
     
-    private void Awake()
+    protected override void Awake()
     {
-        // Singleton 초기화 먼저 호출
-        SingletonInit();
+        base.Awake();
+    
         
         ValidateSceneNames();
         

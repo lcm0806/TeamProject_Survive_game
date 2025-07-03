@@ -55,15 +55,16 @@ public class FileSystem : Singleton<FileSystem>
     
       private bool isInitialized = false;
       
-    void Awake()
-    {
+      protected override void Awake()
+      {
      if (Instance != null && Instance != this)
         {
             Debug.Log("FileSystem 인스턴스가 이미 존재합니다. 중복 제거.");
             Destroy(gameObject);
             return;
         }
-        SingletonInit();
+     
+          base.Awake(); // 싱글톤 인스턴스 초기화
         
         
         // 플랫폼별 최적 경로 설정

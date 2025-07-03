@@ -40,9 +40,9 @@ public class AudioSystem : Singleton<AudioSystem>
     public float BGMVolume = 0.5f;
     public float SFXVolume = 0.5f;
 
-    void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake(); // 싱글톤 인스턴스 초기화
         
         // AudioSource 컴포넌트 생성
         _bgmAudioSource = gameObject.AddComponent<AudioSource>();

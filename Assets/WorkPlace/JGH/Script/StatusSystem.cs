@@ -14,9 +14,9 @@ public class StatusSystem : Singleton<StatusSystem>
     private double _oxygenGainMultiplier = 1.0;
     private double _energyGainMultiplier = 1.0;
 
-    void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
     }
 
     public void SetCurrentDay(int day)

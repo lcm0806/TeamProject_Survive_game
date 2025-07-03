@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,20 +19,25 @@ public class SystemCanvasUI : MonoBehaviour
     public float typingSpeed = 0.1f;
     private int currentIndex;
 
-    public void ExitWithNotEnoughOxygenTextDisplay()
-    {
-        ExitWithNotEnoughOxygenText[0].SetText($"(This choice will use {StatusSystem.GetOxygen()} oxygen to leave the Shelter and go out to explore.\r\nExploration is limited to 'Once' per day.\r\nAre you sure to proceed this decision?");
-    }
+    // 사용안하는 함수 주석처리
+    // public void ExitWithEnoughOxygenTextDisplay()
+    // {
+        // ExitWithEnoughOxygenText[0].SetText("탐색을 시작하겠습니까?\r\n하루에 한번만 탐색이 가능합니다.\n산소를 100 소모합니다.");
+        // ExitWithEnoughOxygenText[0].SetText($"탐색을 시작하겠습니까?{System.Environment.NewLine}하루에 한번만 탐색이 가능합니다.{System.Environment.NewLine}산소를 100 소모합니다.");
+    // }
 
     public void ExitWithEnoughOxygenYes()
     {
         //산소를 -100하고
-        StatusSystem.SetMinusOxygen(-100);
-
+        StatusSystem.Instance.SetMinusOxygen(-100);
+        
+        // 탐색한걸로 세팅 
+        StatusSystem.Instance.SetIsToDay(true);
+        
         // Singleton null 체크 추가
         if (SceneSystem.Instance != null)
         {
-            SceneSystem.Instance.LoadFarmingScene();
+            SceneSystem.Instance.LoadSceneWithDelay(SceneSystem.Instance.GetFarmingSceneName());
         }
         else
         {
@@ -39,19 +45,21 @@ public class SystemCanvasUI : MonoBehaviour
         }
     }
 
-    
+
     public void DeActivateExitConfirmPanel(int systemCanvas)
     {
-        SystemCanvas[systemCanvas].SetActive(false);
+        // 250703 배열 값 벗어나서 오류남
+        // SystemCanvas[systemCanvas].SetActive(false);
+        SystemCanvas[SystemCanvas.Length - 1].SetActive(false);
+
     }
 
-
-
-    public void BedRoomProceedConfirmTextDisplay()
-    {
-        Debug.Log("잠자기 확인창 텍스트 출력");
-        BedRoomProceedConfirmText[0].SetText($"Tonight {"event.name"} will occur. \r\n Once you go to bed, it can't be reversed.\r\n Are you ready to go to sleep after all the preparations?");
-    }
+    // public void BedRoomProceedConfirmTextDisplay()
+    // {
+    //     Debug.Log("잠자기 확인창 텍스트 출력");
+    //     // 수정
+    //     BedRoomProceedConfirmText[0].SetText("침대를 이용하시겠습니까");
+    // }
 
     //침실-수면실행시 yes버튼
     public void SleepAndNextDay()

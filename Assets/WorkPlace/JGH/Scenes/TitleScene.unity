@@ -1684,6 +1684,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WarningDialog
       objectReference: {fileID: 0}
+    - target: {fileID: 9022284819048513278, guid: 6593425d209bc4687ab90891daa39cc0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2327,6 +2332,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ContinueGameDialog
+      objectReference: {fileID: 0}
+    - target: {fileID: 8173081159992709745, guid: a464ed6df541b4fc0be671ab74f0f096,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -55,6 +55,7 @@ public class MineableResource : MonoBehaviour
         UpdateEmissionColor();
 
         Debug.Log($"{gameObject.name}이 {miningDamage}만큼 데미지를 받았습니다");
+        Debug.Log($"{gameObject.name}의 현재 체력은 {currentHealth}입니다");
         int currentWholeHp = Mathf.FloorToInt(currentHealth);
         if (currentWholeHp < lastWholeHp) // 한 칸 내려갔으면
         {
@@ -78,6 +79,10 @@ public class MineableResource : MonoBehaviour
     private void SpawnLoot()
     {
         if (lootPrefab == null) return;
+
+        float chance = Random.value; // 0.0 ~ 1.0
+
+        if (chance > 0.1f) return; // 10% 확률만 통과
 
         // 1) 생성 위치: 위로 1.2m + 수평 ±0.5m 랜덤
         Vector3 spread = Random.insideUnitSphere * 1.0f;

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9af3b48003925ed4fa4ee0553cd55a7f, type: 3}
+  m_Name: Feild Air Tank Item
+  m_EditorClassIdentifier: 
+  itemName: AirTank
+  description: AirTank
+  icon: {fileID: 21300000, guid: 508d165ece597f34f9804422bd96709d, type: 3}
+  WorldPrefab: {fileID: 5276651184178949307, guid: 8dd880c959d102346b64abee9fd0a344,
+    type: 3}
+  HandleItem: {fileID: 5276651184178949307, guid: 7211f1060e203f241bd42d0fc8b3da20,
+    type: 3}
+  equipmentPrefab: {fileID: 0}
+  isStackable: 1
+  maxStackSize: 99
+  OxygenRestoreAmount: 0

@@ -12,14 +12,17 @@ public class GameEventData : ScriptableObject
     public int id;
     public string title;
     [TextArea] public string description;
-
     private int minDura = 10;
     private int maxDura = 20;
-    
-    private void OnEnable()
+
+
+
+    public void GenerateRandomDuraValue()
     {
-        RandomMinusDuraValue = Random.Range(minDura, maxDura+1);
+        RandomMinusDuraValue = Random.Range(minDura, maxDura + 1);
     }
+
+    public bool isComplete;
 
     [Header("이벤트 효과(밤마다 발동되는 불이익)")]
     public double RandomMinusDuraValue;
@@ -33,9 +36,9 @@ public class GameEventData : ScriptableObject
     public float MinusOxygenEfficiency;
 
     [Header("종료 조건(필요 아이템 등)")]
-    public string requiredItemA; 
+    public Item requiredItemA;
     public int requiredAmountA;
-    public string requiredItemB;
+    public Item requiredItemB;
     public int requiredAmountB;
 
     [Header("첫날 + 매일 기본적으로 재생성되는 이벤트")]
@@ -43,4 +46,22 @@ public class GameEventData : ScriptableObject
 
     [Header("미완료상태로 날짜전환시 출력 대사")]
     [TextArea] public string dialogue;
+
+    
+    public enum EventState
+    {
+        //상태 변수명 나중에 다시 통일
+        CanNotComplete,
+        CanComplete,
+        AlreadyComplted
+    }
+
+    public enum EventIsActivated //버튼? 이벤트?
+    {
+        NotExist,
+        Activated,
+        Disabled
+    }
+
+    public EventIsActivated isActivated;//이벤트활성화여부?
 }

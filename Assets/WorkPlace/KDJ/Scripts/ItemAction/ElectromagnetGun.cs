@@ -27,6 +27,14 @@ public class ElectromagnetGun : ToolAction
         }
     }
 
+    private void OnDestroy()
+    {
+        if (_electroEffectInstance != null)
+        {
+            Destroy(_electroEffectInstance);
+        }
+    }
+
     public override void Action(int power)
     {
         // ±¤¹° Ã¼±¼ ·ÎÁ÷

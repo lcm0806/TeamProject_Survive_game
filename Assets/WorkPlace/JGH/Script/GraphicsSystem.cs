@@ -37,9 +37,9 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
     
     private bool _isFullscreen = true;
     
-    void Awake()
+    protected override void Awake()
     {
-        SingletonInit();
+        base.Awake();
     }
         
 }

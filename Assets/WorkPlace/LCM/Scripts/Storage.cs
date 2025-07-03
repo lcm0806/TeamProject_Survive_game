@@ -20,7 +20,7 @@ public class Storage : Singleton<Storage>
 
     private void Awake()
     {
-        SingletonInit();
+        base.Awake();
         if (_storageUIRootPanel != null)
         {
             _storageUIRootPanel.SetActive(false); // ÃÊ±â¿¡´Â ¼û±è

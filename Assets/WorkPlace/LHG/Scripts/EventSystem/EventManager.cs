@@ -133,7 +133,7 @@ public class EventManager : MonoBehaviour
 
         if (isEventCompleted() == true)
         {
-            StatusSystem.Instance.SetPlusOxygen(data.PlusDurability);
+            StatusSystem.Instance.SetEfficiencyPlusOxygen(data.PlusDurability);
             StatusSystem.Instance.SetPlusOxygenGainMultiplier(data.PlusOxygenEfficiency);
             StatusSystem.Instance.SetPlusEnergyGainMultiplier(data.PlusEnergyEfficiency);
         }

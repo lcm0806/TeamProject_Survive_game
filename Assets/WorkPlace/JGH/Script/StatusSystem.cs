@@ -1,4 +1,3 @@
-using UnityEngine;
 using DesignPattern;
 
 public class StatusSystem : Singleton<StatusSystem>
@@ -48,6 +47,15 @@ public class StatusSystem : Singleton<StatusSystem>
     /// <param name="value"></param>
     public void SetPlusOxygen(double value)
     {
+        _oxygenRemaining += value;
+    }
+    
+    /// <summary>
+    /// 산소 플러스
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetEfficiencyPlusOxygen(double value)
+    {
         _oxygenRemaining += value * _oxygenGainMultiplier;
     }
     
@@ -84,6 +92,15 @@ public class StatusSystem : Singleton<StatusSystem>
     /// </summary>
     /// <param name="value"></param>
     public void SetPlusEnergy(double value)
+    {
+        _electricalEnergy += value;
+    }
+    
+    /// <summary>
+    ///  전력 올리기
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetEfficiencyPlusEnergy(double value)
     {
         _electricalEnergy += value * _energyGainMultiplier;
     }

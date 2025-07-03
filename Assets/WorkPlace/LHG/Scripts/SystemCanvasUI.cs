@@ -29,7 +29,7 @@ public class SystemCanvasUI : MonoBehaviour
     public void ExitWithEnoughOxygenYes()
     {
         //산소를 -100하고
-        StatusSystem.Instance.SetMinusOxygen(-100);
+        StatusSystem.Instance.SetMinusOxygen(100);
         
         // 탐색한걸로 세팅 
         StatusSystem.Instance.SetIsToDay(true);

@@ -13,33 +13,29 @@ public class PickupItem : MonoBehaviour, IInteractable
     
     public float fadeDuration = 2f;     
 
-    private bool _used = false;         
+    private bool _used = false;
 
-    
+
     public void Interact()
     {
         if (_used) return;
         _used = true;
-
         float roll = Random.value;
 
         if (roll < 0.3f) SpawnLoot(batteryPrefab);
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
         else ShowMessage("보급상자가 비어있다...");
 
-        //var dissolve = GetComponent<DissolveExample.DissolveChilds>();
-        //if (dissolve != null)
-        //{
-        //    dissolve.StartDissolve(2f); // 2초에 걸쳐 사라짐
-        //}
+        var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
+        if (dissolve != null)
+        {
+            dissolve.StartDissolve(2f);
+        }
 
-        // Destroy는 늦게
-        Destroy(gameObject, 2.5f); // 약간 여유를 둠
-
-        //StartCoroutine(FadeOutAndDestroy());
+        Destroy(gameObject, 2.5f);
     }
 
-    
+
     private void SpawnLoot(GameObject prefab)
     {
         if (prefab == null) return;

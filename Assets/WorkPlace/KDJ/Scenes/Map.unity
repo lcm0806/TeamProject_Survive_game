@@ -1150,6 +1150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -1861,6 +1862,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -2255,6 +2257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -3355,6 +3358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -4574,6 +4578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -5362,6 +5367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -6534,6 +6540,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6120535314770016005, guid: ccb22330b74cfea409a49aa0ef2f62b2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6467964794046154602, guid: ccb22330b74cfea409a49aa0ef2f62b2,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -311
       objectReference: {fileID: 0}
     - target: {fileID: 6970930913747381049, guid: ccb22330b74cfea409a49aa0ef2f62b2,
         type: 3}
@@ -8168,6 +8184,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -10378,6 +10395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -14819,6 +14837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -15659,6 +15678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae9664ba6cd7a940824b87ea440350d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: "\uC258\uD130 \uBB38"
 --- !u!1001 &523545197
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16250,6 +16270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -16637,6 +16658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -18771,6 +18793,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -20647,6 +20670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -21298,7 +21322,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 890, y: 385}
+  m_AnchoredPosition: {x: 913.4, y: 385}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &721955279
@@ -24636,6 +24660,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -27052,6 +27077,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -30927,6 +30953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -32989,6 +33016,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -33384,7 +33412,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 776.9, y: 385}
+  m_AnchoredPosition: {x: 800.3, y: 385}
   m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1173108182
@@ -34447,7 +34475,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 778, y: 273.1}
+  m_AnchoredPosition: {x: 801.4, y: 273.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1208046088
@@ -35877,7 +35905,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 670.8, y: 385}
+  m_AnchoredPosition: {x: 694.2, y: 385}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1287372107
@@ -36183,12 +36211,17 @@ PrefabInstance:
     - target: {fileID: 893856889324657035, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4105700045081867221, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019082599875235665, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000015259
+      objectReference: {fileID: 0}
+    - target: {fileID: 3019082599875235665, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 85
       objectReference: {fileID: 0}
     - target: {fileID: 4953865846048784282, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
@@ -36290,61 +36323,45 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7520610913868472168, guid: 23c47fe9f1a78d442a0326512acffccb,
+    - target: {fileID: 5304783066515777082, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
-      propertyPath: m_IsActive
-      value: 1
+      propertyPath: m_SizeDelta.x
+      value: 783.6261
+      objectReference: {fileID: 0}
+    - target: {fileID: 5304783066515777082, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000022888
+      objectReference: {fileID: 0}
+    - target: {fileID: 5304783066515777082, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.0000013113
       objectReference: {fileID: 0}
     - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: f0c0de8322f33469b8bcb92ba15733b9,
-        type: 2}
-    - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -9128841849589680303, guid: f0c0de8322f33469b8bcb92ba15733b9,
-        type: 2}
-    - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_hasFontAssetChanged
+      propertyPath: m_fontColor.b
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_fontColor.g
+      value: 0.8773585
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.034606293
       objectReference: {fileID: 0}
     - target: {fileID: 8483373416140118103, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
-      propertyPath: m_fontAsset
+      propertyPath: m_text
       value: 
-      objectReference: {fileID: 11400000, guid: f0c0de8322f33469b8bcb92ba15733b9,
-        type: 2}
-    - target: {fileID: 8483373416140118103, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -9128841849589680303, guid: f0c0de8322f33469b8bcb92ba15733b9,
-        type: 2}
-    - target: {fileID: 8483373416140118103, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8821599176779782269, guid: 23c47fe9f1a78d442a0326512acffccb,
+    - target: {fileID: 8483373416140118103, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
-      propertyPath: m_fontAsset
-      value: 
-      objectReference: {fileID: 11400000, guid: f0c0de8322f33469b8bcb92ba15733b9,
-        type: 2}
-    - target: {fileID: 8821599176779782269, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_sharedMaterial
-      value: 
-      objectReference: {fileID: -9128841849589680303, guid: f0c0de8322f33469b8bcb92ba15733b9,
-        type: 2}
-    - target: {fileID: 8821599176779782269, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_hasFontAssetChanged
-      value: 0
+      propertyPath: m_HorizontalAlignment
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -38226,6 +38243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -39942,6 +39960,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -40836,6 +40855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -45622,6 +45642,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -47582,6 +47603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -49538,7 +49560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 778, y: 495.7}
+  m_AnchoredPosition: {x: 801.4, y: 495.7}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1795712053
@@ -52471,6 +52493,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -55772,6 +55795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -58239,6 +58263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4bd3136605e64240a1af1bdb7b6a67a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,

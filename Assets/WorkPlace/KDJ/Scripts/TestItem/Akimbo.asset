@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fdafe40d65041a40a48aae8c5ad7410, type: 3}
   m_Name: Akimbo
   m_EditorClassIdentifier: 
-  itemName: New Item
-  description: A basic item.
+  itemName: "\uB450 \uAC1C\uC758 \uCC44\uAD74\uAE30"
+  description: "\uCC44\uAD74\uAE30 \uB450 \uAC1C\uC640 \uC120\uAE00\uB77C\uC2A4"
   icon: {fileID: 21300000, guid: dac859c53cb773e4b99b194baf563dbd, type: 3}
   WorldPrefab: {fileID: 4477834618670588494, guid: 6bde9563558eab540bea86a5df9197ee,
     type: 3}

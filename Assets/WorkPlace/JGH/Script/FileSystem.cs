@@ -78,7 +78,7 @@ public class FileSystem : Singleton<FileSystem>
             gameDataPath = Path.Combine(dataDirectory, "gamedata.json");
             itemDataPath = Path.Combine(dataDirectory, "item.json");
             
-            // 🔥 핵심 수정 3: 초기화 성공 표시
+            // 핵심 수정 3: 초기화 성공 표시
             isInitialized = true;
             
             // 디버그 정보 출력
@@ -436,7 +436,7 @@ public class FileSystem : Singleton<FileSystem>
                 shouldLoadItemsOnStart = true;
             }
             
-            // 🔥 핵심 수정 10: 안전한 게임 데이터 적용
+            // 핵심 수정 10: 안전한 게임 데이터 적용
             ApplyGameData(gameData);
             
             Debug.Log("게임 로드 완료");
@@ -581,7 +581,7 @@ public class FileSystem : Singleton<FileSystem>
     {
         Debug.Log("씬 로드 완료, 아이템 데이터 적용 준비");
         
-        // 🔥 핵심 수정 12: InputManager 재활성화 개선
+        // 핵심 수정 12: InputManager 재활성화 개선
         StartCoroutine(ReenableInputManagerDelayed());
         
         if (shouldLoadItemsOnStart)

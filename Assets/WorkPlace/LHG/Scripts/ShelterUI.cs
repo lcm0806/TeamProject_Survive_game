@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 
@@ -26,12 +22,10 @@ public class ShelterUI : MonoBehaviour
     private double prevEnergy;
     private double prevDurability;
 
-
-
-    public GameObject Renpy;
-
     private void Start()
     {
+        AudioSystem.Instance.StopBGM();
+        AudioSystem.Instance.PlayBGMByName("In the Science Lab");
         DisplayIndicators(0);
 
         // 초기 값 캐싱
@@ -207,6 +201,7 @@ public class ShelterUI : MonoBehaviour
                 else
                 {
                     Debug.Log("보유산소 100미만");
+                    SystemCanvasUI.ExitWithEnoughOxygenTextDisplay();
                     foreach (GameObject go in ExitShelterCases)
                     {
                         go.SetActive(false);

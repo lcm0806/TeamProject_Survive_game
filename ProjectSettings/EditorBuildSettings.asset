@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/WorkPlace/LHG/Scenes/DevShelterScene.unity
     guid: 02d3e279795ed134e9a38b465ccda70f
   - enabled: 1
-    path: Assets/WorkPlace/KDJ/Scenes/MapTest.unity
-    guid: 0403137c24113d944a217be4c137b122
+    path: Assets/WorkPlace/KDJ/Scenes/Map.unity
+    guid: 8508ac28dc244384b8a05aadc42c05a0
   m_configObjects: {}

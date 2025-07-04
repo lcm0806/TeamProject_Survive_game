@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,6 +12,12 @@ public class UIManager : MonoBehaviour
     [SerializeField] private float displayDuration = 2f;
 
     private Coroutine currentRoutine;
+
+    private void Start()
+    {
+        AudioSystem.Instance.StopBGM();
+        AudioSystem.Instance.PlayBGMByName("Lonely Martian");
+    }
 
     private void Awake()
     {
@@ -31,7 +38,7 @@ public class UIManager : MonoBehaviour
 
         yield return new WaitForSeconds(displayDuration);
 
-        // ¼­¼­È÷ »ç¶óÁö°Ô
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         float fadeTime = 0.5f;
         float t = 0f;
         while (t < fadeTime)

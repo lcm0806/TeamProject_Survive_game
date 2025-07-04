@@ -25,6 +25,7 @@ public class MineableResource : MonoBehaviour
         {
             maxHealth = hpCount.InitialHp;       // 최대 체력 설정
             currentHealth = maxHealth;           // 현재 체력 초기화
+            UpdateEmissionColor();
         }
         else
         {

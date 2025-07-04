@@ -8,6 +8,13 @@ public class PickupItem : Structure
     
     public GameObject batteryPrefab;
     public GameObject oxygenPrefab;
+    public GameObject AluminumPrefab;
+    public GameObject LithiumnPrefab;
+    public GameObject IronPrefab;
+    public GameObject QuartzPrefab;
+    public GameObject TitaniumPrefab;
+    public GameObject GoldPrefab;
+    public GameObject GrappleGunPrefab;
     public float lootLaunchForce = 5f;
 
     
@@ -21,17 +28,24 @@ public class PickupItem : Structure
         if (_used) return;
         _used = true;
         float roll = Random.value;
-
+        Debug.LogWarning($"{roll}");
         if (roll < 0.3f) SpawnLoot(batteryPrefab);
         else if (roll < 0.6f) SpawnLoot(oxygenPrefab);
-        else ShowMessage("보급상자가 비어있다...");
+        else if (roll < 0.65f) SpawnLoot(AluminumPrefab);
+        else if (roll < 0.7f) SpawnLoot(LithiumnPrefab);
+        else if (roll < 0.75f) SpawnLoot(IronPrefab);
+        else if (roll < 0.8f) SpawnLoot(QuartzPrefab);
+        else if (roll < 0.85f) SpawnLoot(TitaniumPrefab);
+        else if (roll < 0.95f) SpawnLoot(GoldPrefab);
+        else SpawnLoot(GrappleGunPrefab);
 
-        // TODO: 오류나서 임시 주석
-        // var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
-        // if (dissolve != null)
-        // {
-            // dissolve.StartDissolve(2f);
-        // }
+
+        // TODO: 오류나서 임시 주석(LJH폴더에 있는 디졸브 스크립트는 지우고 Import 안에 있는 디졸브 스크립트를 이용해야 합니다.)
+        var dissolve = GetComponentInChildren<DissolveExample.DissolveChilds>();
+        if (dissolve != null)
+        {
+            dissolve.StartDissolve(2f);
+        }
 
         Destroy(gameObject, 2.5f);
     }

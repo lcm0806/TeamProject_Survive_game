@@ -30,6 +30,8 @@ public class ShelterUI : MonoBehaviour
     
     private void Start()
     {
+        AudioSystem.Instance.StopBGM();
+        AudioSystem.Instance.PlayBGMByName("In the Science Lab");
         DisplayIndicators(0);
         //시스템캔버스 false로 일단 
 

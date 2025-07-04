@@ -115,6 +115,9 @@ public class MenuSystem : Singleton<MenuSystem>
 
     void Start()
     {
+        AudioSystem.Instance.StopBGM();
+        AudioSystem.Instance.PlayBGMByName("SwingJazzMarsMellow");
+        
         InitializeMainMenu();
         InitializeSettingMenu();
         InitializeOtherMenus();

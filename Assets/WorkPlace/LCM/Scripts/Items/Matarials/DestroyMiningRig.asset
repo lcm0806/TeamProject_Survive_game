@@ -15,9 +15,9 @@ MonoBehaviour:
   itemName: "\uACE0\uC7A5\uB09C\uCC44\uAD74\uAE30"
   description: "\uACE0\uC7A5\uB09C\uCC44\uAD74\uAE30\uC774\uB2E4. "
   icon: {fileID: 21300000, guid: fe489cbfbf7ddb24d85d2047b053261c, type: 3}
-  WorldPrefab: {fileID: 3752825578907025319, guid: b92a26f3684bc8242a96c99c8778b6bc,
+  WorldPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
-  HandleItem: {fileID: 3752825578907025319, guid: 86fa091089a84b3459516bc1392c17b3,
+  HandleItem: {fileID: 3752825578907025319, guid: 8865e846daffb92458b49aa1d359329a,
     type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 0

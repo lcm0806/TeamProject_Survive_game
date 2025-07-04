@@ -19,22 +19,45 @@ public class ShelterUI : MonoBehaviour
     [SerializeField] public TMP_Text[] Indicators, TonightEventText;
     public Image[] TabButtons, MapLocationsButtons;
     public Sprite InactiveTabBG, ActiveTabBG; // 활성 비활성 시각화를 백그라운드스프라이트로 처리할 때 필요
-    
-    //[SerializeField] private EventState testState; //TODO 이벤트마다 스테이트를 가져야함, 충족시 해당 이벤트의 스테이트를 변경해주도록 만들어야
 
-    // 250628 빌드 오류
-    // [SerializeField] private double testOxygen = StatusSystem.Instance.GetOxygen();
-    [SerializeField] private double testOxygen;
+
+    //0704 실시간으로 인디케이터에 수치를 반영하기 위한 변수
+    private double prevOxygen;
+    private double prevEnergy;
+    private double prevDurability;
+
+
 
     public GameObject Renpy;
     
     private void Start()
     {
         DisplayIndicators(0);
-        //시스템캔버스 false로 일단 
 
+        // 초기 값 캐싱
+        prevOxygen = StatusSystem.Instance.GetOxygen();
+        prevEnergy = StatusSystem.Instance.GetEnergy();
+        prevDurability = StatusSystem.Instance.GetDurability();
     }
-    
+
+    private void Update()
+    {
+        double curOxygen = StatusSystem.Instance.GetOxygen();
+        double curEnergy = StatusSystem.Instance.GetEnergy();
+        double curDurability = StatusSystem.Instance.GetDurability();
+
+        // 값이 변경되었을 때만 UI 갱신
+        if (!Mathf.Approximately((float)prevOxygen, (float)curOxygen) ||
+            !Mathf.Approximately((float)prevEnergy, (float)curEnergy) ||
+            !Mathf.Approximately((float)prevDurability, (float)curDurability))
+        {
+            DisplayIndicators(0);
+            prevOxygen = curOxygen;
+            prevEnergy = curEnergy;
+            prevDurability = curDurability;
+        }
+    }
+
     public void DisplayIndicators(int indicatorsID)
     {
         //[패널상단] 0:날짜 1:산소 / [패널]-[맵]-[쉘터]-[subUI] 2:산소, 3:전력(Energy/Electricity 용어통일필요?), 4:내구도

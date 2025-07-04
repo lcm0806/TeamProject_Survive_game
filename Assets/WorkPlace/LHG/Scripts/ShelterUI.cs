@@ -136,8 +136,8 @@ public class ShelterUI : MonoBehaviour
     public void SelectEventList(int EventContainerID)
     {
         foreach (GameObject go in EventContainer)
-        { 
-            go.SetActive(false); 
+        {
+            go.SetActive(false);
         }
         EventContainer[EventContainerID].SetActive(true);
     }
@@ -252,7 +252,7 @@ public class ShelterUI : MonoBehaviour
     //        //완료됨 버튼을 활성화
     //        CompleteBtn[2].SetActive(true);
     //    }
-        
+
     //    //TODO 이벤트매니저에 이벤트의 상태를 완료됨으로 변경.
     //    //TODO 이벤트 리스트 버튼을 회색처리해주고 정렬을 밑으로...
     //}
@@ -280,7 +280,7 @@ public class ShelterUI : MonoBehaviour
     public void GoToSleep()
     {
         Debug.Log("잠자기 버튼눌림");
-        if (SystemCanvas.activeSelf == false) 
+        if (SystemCanvas.activeSelf == false)
         {
             SystemCanvas.SetActive(true);
             Debug.Log("시스템캔버스 액티브");

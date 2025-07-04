@@ -15994,6 +15994,7 @@ MonoBehaviour:
   - {fileID: 1463208941}
   InactiveTabBG: {fileID: 21300000, guid: fd8878743e74b6e49b8b148d485f3566, type: 3}
   ActiveTabBG: {fileID: 21300000, guid: 37ea3d83eeaba3044b90ba681d1945b1, type: 3}
+  Renpy: {fileID: 0}
 --- !u!114 &1708774638
 MonoBehaviour:
   m_ObjectHideFlags: 0

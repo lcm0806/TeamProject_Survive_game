@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
+  m_Name: SunBarrier
+  m_EditorClassIdentifier: 
+  craftedItem: {fileID: 11400000, guid: 1ef04d9095b4b234f9ffe7153ea7df60, type: 2}
+  craftedAmount: 1
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: b69e1c68bbc5db9409c3041458924317, type: 2}
+    quantity: 6
+  - materialItem: {fileID: 11400000, guid: 2e8ad88021d9c3446aa895c9854fef94, type: 2}
+    quantity: 5
+  - materialItem: {fileID: 11400000, guid: 7fdc3ce51dcc7ef4686dac2e29d61f16, type: 2}
+    quantity: 1
+  description: SunBarrier
+  energyCost: 8

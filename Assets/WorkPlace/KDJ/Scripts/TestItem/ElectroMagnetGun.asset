@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fdafe40d65041a40a48aae8c5ad7410, type: 3}
   m_Name: ElectroMagnetGun
   m_EditorClassIdentifier: 
-  itemName: ElectromagnetGun
-  description: Collect items while mining.
+  itemName: "\uC804\uC790\uC11D \uCC44\uAD74\uAE30"
+  description: "\uB5A8\uC5B4\uC9C4 \uBB3C\uAC74\uC744 \uC790\uB3D9\uC73C\uB85C \uB04C\uC5B4\uC624\uB294
+    \uCC44\uAD74\uAE30"
   icon: {fileID: 21300000, guid: 75b9992ee03fad749aef16536d227780, type: 3}
   WorldPrefab: {fileID: 5908831798058297219, guid: a80b0918dff5dbf449d038c62dcb0264,
     type: 3}
@@ -25,5 +26,5 @@ MonoBehaviour:
   miningPower: 1
   toolType: 0
   toolObject: {fileID: 0}
-  toolAction: {fileID: 8215819011452811507, guid: a168851e2628113409393c05d15f1ee9,
+  toolAction: {fileID: 5069537747549054294, guid: 297a47447daf78c4d8fc43c9daa765e2,
     type: 3}

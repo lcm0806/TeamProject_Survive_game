@@ -53,13 +53,13 @@ public class JetPack : MonoBehaviour
         
         _airUsage += 2f * Time.deltaTime;
 
-        if (_airUsage >= 1f)
+        if (_airUsage >= 0.1f)
         {
-            PlayerManager.Instance.AirGauge.Value -= 1f;
+            PlayerManager.Instance.AirGauge.Value -= 0.1f;
             _airUsage = 0f;
         }
 
-        return camForward * 10f;
+        return camForward * 7.5f;
     }
      
 }

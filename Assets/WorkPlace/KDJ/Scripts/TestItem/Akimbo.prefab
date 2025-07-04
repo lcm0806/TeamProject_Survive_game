@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3977133233097568763}
   - component: {fileID: 5911491110708123976}
   - component: {fileID: 8774562157973509793}
-  - component: {fileID: 1811332016454506474}
+  - component: {fileID: 3036101535418043283}
   m_Layer: 6
   m_Name: Akimbo
   m_TagString: Untagged
@@ -129,8 +129,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &1811332016454506474
-SphereCollider:
+--- !u!65 &3036101535418043283
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -148,8 +148,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 6.5015492
-  m_Center: {x: -0.01731801, y: 1.2850304, z: 3.999909}
+  m_Size: {x: 12.034296, y: 9.854188, z: 13.003097}
+  m_Center: {x: 0.9998214, y: 1.2970196, z: 3.9999099}
 --- !u!1 &6128998701351150535
 GameObject:
   m_ObjectHideFlags: 0

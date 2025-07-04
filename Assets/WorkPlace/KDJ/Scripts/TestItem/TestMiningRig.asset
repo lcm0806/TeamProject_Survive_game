@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fdafe40d65041a40a48aae8c5ad7410, type: 3}
   m_Name: TestMiningRig
   m_EditorClassIdentifier: 
-  itemName: New Item
-  description: MiningRig
+  itemName: "\uCC44\uAD74\uAE30"
+  description: "\uAD11\uBB3C\uC744 \uCC44\uAD74\uD560 \uC218 \uC788\uB2E4"
   icon: {fileID: 21300000, guid: fe489cbfbf7ddb24d85d2047b053261c, type: 3}
   WorldPrefab: {fileID: 6651048383708780705, guid: 710f37ce8ff878640ac631fa8c69c28a,
     type: 3}

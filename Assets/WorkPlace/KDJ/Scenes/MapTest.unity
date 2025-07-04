@@ -1658,6 +1658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -2550,6 +2551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae9664ba6cd7a940824b87ea440350d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
 --- !u!1 &325781797
 GameObject:
   m_ObjectHideFlags: 0
@@ -3030,6 +3032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -6605,6 +6608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -10991,6 +10995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -11697,6 +11702,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -12452,6 +12458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -13351,26 +13358,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerUI
       objectReference: {fileID: 0}
-    - target: {fileID: 183642815793123724, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 893856889324657035, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1189797339695456502, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 756
-      objectReference: {fileID: 0}
-    - target: {fileID: 1189797339695456502, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -493.49
-      objectReference: {fileID: 0}
     - target: {fileID: 4953865846048784282, guid: 23c47fe9f1a78d442a0326512acffccb,
         type: 3}
       propertyPath: m_Pivot.x
@@ -13471,51 +13458,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5269056543581520025, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: draggablesTransform
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5269056543581520025, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: persistentHotbarSlots.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5269056543581520025, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: persistentHotbarSlots.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5269056543581520025, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: persistentHotbarSlots.Array.data[1]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5269056543581520025, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: persistentHotbarSlots.Array.data[2]
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 5304783066515777082, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 724.838
-      objectReference: {fileID: 0}
-    - target: {fileID: 5304783066515777082, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 55.82583
-      objectReference: {fileID: 0}
-    - target: {fileID: 5377667782641260782, guid: 23c47fe9f1a78d442a0326512acffccb,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -392
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 1103376625918387260, guid: 23c47fe9f1a78d442a0326512acffccb, type: 3}
-    - {fileID: 3393955920462440408, guid: 23c47fe9f1a78d442a0326512acffccb, type: 3}
-    - {fileID: 3097338687179779827, guid: 23c47fe9f1a78d442a0326512acffccb, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 23c47fe9f1a78d442a0326512acffccb, type: 3}
@@ -13731,6 +13675,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -16323,6 +16268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -17871,6 +17817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -19718,6 +19665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
@@ -21408,6 +21356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba62deab21e01e542b04e862d31716d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StructureName: New Structure
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,

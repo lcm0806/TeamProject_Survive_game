@@ -115,8 +115,7 @@ public class MenuSystem : Singleton<MenuSystem>
 
     void Start()
     {
-        AudioSystem.Instance.StopBGM();
-        AudioSystem.Instance.PlayBGMByName("SwingJazzMarsMellow");
+        TitleMusic();
         
         InitializeMainMenu();
         InitializeSettingMenu();
@@ -641,8 +640,8 @@ public class MenuSystem : Singleton<MenuSystem>
         if (StatusSystem.Instance != null)
         {
             StatusSystem.Instance.SetCurrentDay(1);
-            // StatusSystem.Instance.SetOxygen(100f);
-            StatusSystem.Instance.SetOxygen(90f);
+            StatusSystem.Instance.SetOxygen(100f);
+            // StatusSystem.Instance.SetOxygen(90f);
             StatusSystem.Instance.SetEnergy(300f);
             StatusSystem.Instance.SetDurability(100f);
             StatusSystem.Instance.SetIsToDay(false);
@@ -713,8 +712,7 @@ public class MenuSystem : Singleton<MenuSystem>
 
     private void OnClickBackToMenuYes()
     {
-        AudioSystem.Instance.StopBGM();
-        AudioSystem.Instance.PlayBGMByName("SwingJazzMarsMellow");
+        TitleMusic();
         
         SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
         {
@@ -776,15 +774,24 @@ public class MenuSystem : Singleton<MenuSystem>
     
     private void OnClickGameOverYes()
     {
+        
         SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
         {
             // 씬이 전환된 후 1~2 프레임 기다린 뒤 수행
             StartCoroutine(SetupVideoAfterSceneLoad());
         });
+        
+        TitleMusic();
 
         AllMenuFalse();
         GameOverDialog.SetActive(false);
         MainMenu.SetActive(true);
+    }
+
+    public void TitleMusic()
+    {
+        AudioSystem.Instance.StopBGM();
+        AudioSystem.Instance.PlayBGMByName("SwingJazzMarsMellow");
     }
 
     // 공개 메서드

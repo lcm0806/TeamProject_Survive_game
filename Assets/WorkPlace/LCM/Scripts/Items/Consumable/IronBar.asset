@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "\uAC15\uD654\uCCA0\uBD09"
   description: "\uAC15\uD654\uCCA0\uBD09\uC774\uB2E4"
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: b708b17472a12e8438f89ab281eecff0, type: 3}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}

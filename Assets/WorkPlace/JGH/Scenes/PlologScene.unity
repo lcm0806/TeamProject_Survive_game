@@ -612,6 +612,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 380252502098586556, guid: 977d34212d0044a8ca36680c3489159c,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: acd8743cf645a2b4ab5cab3ba548f33a,
+        type: 2}
+    - target: {fileID: 380252502098586556, guid: 977d34212d0044a8ca36680c3489159c,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 652263294499679421, guid: 977d34212d0044a8ca36680c3489159c,
         type: 3}
       propertyPath: m_Name
@@ -722,6 +733,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2320945612543410194, guid: 977d34212d0044a8ca36680c3489159c,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: acd8743cf645a2b4ab5cab3ba548f33a,
+        type: 2}
+    - target: {fileID: 2320945612543410194, guid: 977d34212d0044a8ca36680c3489159c,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2547051473820637909, guid: 977d34212d0044a8ca36680c3489159c,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -741,6 +763,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4553101068780120402, guid: 977d34212d0044a8ca36680c3489159c,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: acd8743cf645a2b4ab5cab3ba548f33a,
+        type: 2}
+    - target: {fileID: 4553101068780120402, guid: 977d34212d0044a8ca36680c3489159c,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4608337573562019794, guid: 977d34212d0044a8ca36680c3489159c,
         type: 3}

@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
+  m_Name: ElectricMiningRig
+  m_EditorClassIdentifier: 
+  craftedItem: {fileID: 11400000, guid: 51d01b70fdebb454895c16368cce6af1, type: 2}
+  craftedAmount: 1
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: c209bc2dad223f14e8a395ef791147ac, type: 2}
+    quantity: 1
+  - materialItem: {fileID: 11400000, guid: 5ff1842030674094eb996057dfa06efb, type: 2}
+    quantity: 1
+  - materialItem: {fileID: 11400000, guid: 4ecea7ed59c25604abee38b3d917a93a, type: 2}
+    quantity: 4
+  - materialItem: {fileID: 11400000, guid: 7fdc3ce51dcc7ef4686dac2e29d61f16, type: 2}
+    quantity: 2
+  description: ElectronicMiningRig
+  energyCost: 10

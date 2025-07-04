@@ -18,5 +18,5 @@ MonoBehaviour:
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}
-  isStackable: 0
+  isStackable: 1
   maxStackSize: 99

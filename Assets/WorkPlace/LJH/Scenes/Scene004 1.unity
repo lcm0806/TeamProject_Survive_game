@@ -1145,6 +1145,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1 &66774668 stripped
@@ -1856,6 +1870,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!4 &99055267 stripped
@@ -2244,6 +2272,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -3334,6 +3376,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -4471,6 +4527,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1001 &217095800
@@ -5231,6 +5301,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1001 &237105991
@@ -5646,7 +5730,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &259963685
 Material:
   serializedVersion: 8
@@ -6657,8 +6740,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284664983}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.24734934, y: -0.4246161, z: 0.121753216, w: 0.86237794}
-  m_LocalPosition: {x: 142.10678, y: 27.59932, z: -131.19226}
+  m_LocalRotation: {x: 0.27829337, y: -0.46148545, z: 0.15521929, w: 0.8279438}
+  m_LocalPosition: {x: 132.45842, y: 32.439648, z: 171.22318}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6987,6 +7070,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -7932,7 +8029,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &354370171 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -8018,7 +8114,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &367842514
 GameObject:
   m_ObjectHideFlags: 0
@@ -9166,6 +9261,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1001 &407412649
@@ -9616,6 +9725,12 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7915662861164680985, guid: 2e1a0b4440d48c14383b8003d576cf68,
     type: 3}
   m_PrefabInstance: {fileID: 1755404462}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &433846014 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d847bac9676ee5a478b10089bead9013,
+    type: 3}
+  m_PrefabInstance: {fileID: 894021055}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &434441156 stripped
 GameObject:
@@ -13324,7 +13439,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &489727556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13425,7 +13539,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &491007458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13575,6 +13688,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -14263,7 +14390,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &522379919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14364,7 +14490,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &522733631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2917595721573609287, guid: d58c996193d964a4bb39dd016929e21c,
@@ -14724,6 +14849,39 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 894021055}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &538023837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433846014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a1a88330fa450646aec76eaa614f035, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &538023838
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 433846014}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8249999, y: 0.99999994, z: 0.8249999}
+  m_Center: {x: -0.00000047683716, y: 0.4999995, z: 0}
 --- !u!1001 &539610487
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14966,6 +15124,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -15350,6 +15522,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1 &544707358 stripped
@@ -15723,7 +15909,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &572114137
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16133,7 +16318,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &611430490 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -17448,6 +17632,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1 &658257926 stripped
@@ -18369,7 +18567,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &690461850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19210,6 +19407,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -20143,7 +20354,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &731618209 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7429193946544912596, guid: 8ff5d0d93bd446a48bb4106e87a19afd,
@@ -20871,7 +21081,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &779523761
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21592,7 +21801,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &816705207
 Material:
   serializedVersion: 8
@@ -22521,7 +22729,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &856179558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22759,7 +22966,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &873046702
 GameObject:
   m_ObjectHideFlags: 0
@@ -23074,6 +23280,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1001 &889110906
@@ -23176,7 +23396,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &890820380
 Mesh:
   m_ObjectHideFlags: 0
@@ -23560,13 +23779,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d847bac9676ee5a478b10089bead9013,
         type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d847bac9676ee5a478b10089bead9013,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d847bac9676ee5a478b10089bead9013,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 538023837}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d847bac9676ee5a478b10089bead9013,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 538023838}
   m_SourcePrefab: {fileID: 100100000, guid: d847bac9676ee5a478b10089bead9013, type: 3}
 --- !u!1 &894203019 stripped
 GameObject:
@@ -23976,7 +24208,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &911407348
 Material:
   serializedVersion: 8
@@ -24440,7 +24671,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &933210957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24760,7 +24990,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &938236688 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -24784,7 +25013,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &939393383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25448,6 +25676,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -26483,7 +26725,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &987574123
 Material:
   serializedVersion: 8
@@ -27233,7 +27474,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1003896876
 Material:
   serializedVersion: 8
@@ -27772,7 +28012,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1017571295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28331,7 +28570,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1034149339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28986,7 +29224,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &1071219795 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd7da964b4a22d6459228c38693d1b3d,
@@ -29133,7 +29370,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1085438484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29288,6 +29524,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -29479,7 +29729,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1091173181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29586,7 +29835,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1095188161
 Mesh:
   m_ObjectHideFlags: 0
@@ -30646,7 +30894,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1131693081
 Material:
   serializedVersion: 8
@@ -31161,7 +31408,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1148000236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31312,6 +31558,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1001 &1153372153
@@ -31414,7 +31674,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1153949291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31658,7 +31917,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1185875694 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -32470,7 +32728,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1201705925 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -33173,7 +33430,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1237147175
 GameObject:
   m_ObjectHideFlags: 0
@@ -33801,7 +34057,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1272111179 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915662861164680985, guid: 2e1a0b4440d48c14383b8003d576cf68,
@@ -33825,7 +34080,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1274009747
 GameObject:
   m_ObjectHideFlags: 0
@@ -34031,7 +34285,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1286102753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -34704,7 +34957,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1317614901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -34993,7 +35245,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &1329380076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f32ec3f5cf942c542bd5ac219797a893,
@@ -35378,7 +35629,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1339276992 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -36213,6 +36463,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1 &1354869206
@@ -36982,7 +37246,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1390821834 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -37006,7 +37269,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1392167056
 GameObject:
   m_ObjectHideFlags: 0
@@ -37156,7 +37418,7 @@ Transform:
   m_GameObject: {fileID: 1392167056}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 210.893, y: 20.638, z: 7.167}
+  m_LocalPosition: {x: 107.89, y: 21.57, z: 215.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -37403,7 +37665,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1400856339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37587,7 +37848,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1409678739
 Material:
   serializedVersion: 8
@@ -37824,7 +38084,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1415348627 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -37848,7 +38107,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1419861033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38105,6 +38363,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1 &1432892516
@@ -38267,7 +38539,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1446222516
 Mesh:
   m_ObjectHideFlags: 0
@@ -38592,7 +38863,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1458731607
 Material:
   serializedVersion: 8
@@ -38982,7 +39252,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1464498949 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -39139,6 +39408,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1001 &1471595404
@@ -39241,7 +39524,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1472181100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39342,7 +39624,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1474982724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39468,7 +39749,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1486322470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39569,7 +39849,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1487779835
 GameObject:
   m_ObjectHideFlags: 0
@@ -40122,7 +40401,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1507641701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40266,7 +40544,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1512160421 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -40752,7 +41029,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1531737988
 GameObject:
   m_ObjectHideFlags: 0
@@ -40969,7 +41245,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1543698336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41070,7 +41345,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1543931624 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -41318,7 +41592,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1560525461 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915662861164680985, guid: 2e1a0b4440d48c14383b8003d576cf68,
@@ -41342,7 +41615,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1565571046 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: fba669f00be4ad7459408d467cdecd15,
@@ -41366,7 +41638,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1567722748
 Material:
   serializedVersion: 8
@@ -41609,7 +41880,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1573454157
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41798,7 +42068,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1579574104
 Material:
   serializedVersion: 8
@@ -42037,7 +42306,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1589823797
 Material:
   serializedVersion: 8
@@ -42538,7 +42806,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1621819274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42926,7 +43193,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1627075010
 GameObject:
   m_ObjectHideFlags: 0
@@ -43733,7 +43999,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1656181946
 GameObject:
   m_ObjectHideFlags: 0
@@ -43865,7 +44130,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1660302291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44015,6 +44279,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -44828,7 +45106,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1706202087
 Mesh:
   m_ObjectHideFlags: 0
@@ -45271,7 +45548,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1722046566 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -45295,7 +45571,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1723362024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45396,7 +45671,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1726675947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45502,7 +45776,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1736808772
 Material:
   serializedVersion: 8
@@ -45945,6 +46218,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1 &1748794999 stripped
@@ -45970,7 +46257,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1750677568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46470,7 +46756,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1758703220 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -46500,7 +46785,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1767165580 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -46524,7 +46808,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1770523635 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7429193946544912596, guid: 8ff5d0d93bd446a48bb4106e87a19afd,
@@ -46548,7 +46831,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &1772564370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3910193113576492537, guid: 9c6193993946cae4dae1b110b3e9e612,
@@ -46738,7 +47020,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1778276611 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -46762,7 +47043,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1778707283
 GameObject:
   m_ObjectHideFlags: 0
@@ -46902,7 +47182,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1785581980
 Mesh:
   m_ObjectHideFlags: 0
@@ -47168,7 +47447,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1789362292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47404,7 +47682,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1790446033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47972,7 +48249,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1797850090
 GameObject:
   m_ObjectHideFlags: 0
@@ -48430,7 +48706,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1824682470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48531,7 +48806,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1826151381 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -48555,7 +48829,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1827064421
 GameObject:
   m_ObjectHideFlags: 0
@@ -48704,7 +48977,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1838002052
 Mesh:
   m_ObjectHideFlags: 0
@@ -49123,7 +49395,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1858299210 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -49241,7 +49512,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1874764320
 Mesh:
   m_ObjectHideFlags: 0
@@ -49513,7 +49783,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1884795299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49614,7 +49883,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1891758162 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -49638,7 +49906,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1892790128
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49739,7 +50006,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1893232684 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8e6e54048569fa9409502fc9ef38155b,
@@ -49879,7 +50145,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1898386691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49980,7 +50245,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1899858955 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915662861164680985, guid: 67171c5a8fb98664ea38559b627ffc44,
@@ -50004,7 +50268,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1900714057 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -50028,7 +50291,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1901035105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50129,7 +50391,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1903470161 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -50153,7 +50414,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1903600762
 Material:
   serializedVersion: 8
@@ -50509,7 +50769,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1909730386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50664,6 +50923,20 @@ MonoBehaviour:
   batteryPrefab: {fileID: 6007330452488285151, guid: 938e40ff988c9174f9e29d04e48e7895,
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
+    type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
     type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
@@ -51129,7 +51402,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1933053497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51463,7 +51735,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1951875230
 Mesh:
   m_ObjectHideFlags: 0
@@ -51997,7 +52268,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1960403001
 Material:
   serializedVersion: 8
@@ -52159,7 +52429,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1967915913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 5ac332a553fc3454b8cb3204019799cd,
@@ -52183,7 +52452,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1969889064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52430,7 +52698,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1985375253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52531,7 +52798,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1988560532
 Material:
   serializedVersion: 8
@@ -52781,7 +53047,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &2001419358
 Material:
   serializedVersion: 8
@@ -52941,7 +53206,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2004197644 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -52965,7 +53229,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2005932773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -52989,7 +53252,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2010948924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53090,7 +53352,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &2013320050
 Mesh:
   m_ObjectHideFlags: 0
@@ -53526,7 +53787,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2034011896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53633,7 +53893,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2037800916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53784,6 +54043,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1 &2040508027 stripped
@@ -53809,7 +54082,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2044352116
 GameObject:
   m_ObjectHideFlags: 0
@@ -54029,7 +54301,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2058806455
 GameObject:
   m_ObjectHideFlags: 0
@@ -54479,7 +54750,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2070855301 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
@@ -54503,7 +54773,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &2072857380
 Mesh:
   m_ObjectHideFlags: 0
@@ -54972,7 +55241,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2086372427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55073,7 +55341,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2090851781 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
@@ -55097,7 +55364,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &2101505497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9f386c6e6d3f050448e452b97c38cf9f,
@@ -55127,7 +55393,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &2106131214
 Material:
   serializedVersion: 8
@@ -55366,7 +55631,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2115662855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55467,7 +55731,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &2119998174 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8570706122093123778, guid: 79468aa0728af0140b0b148ba9dfd55e,
@@ -55626,7 +55889,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2126918016 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -55650,7 +55912,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &2131218006
 Mesh:
   m_ObjectHideFlags: 0
@@ -56142,6 +56403,20 @@ MonoBehaviour:
     type: 3}
   oxygenPrefab: {fileID: 1051102776036287999, guid: f3fb21b98762853489dac276f94490db,
     type: 3}
+  AluminumPrefab: {fileID: 1368350908655571073, guid: 042512345f7b0b64fa34ff3c5cabedc3,
+    type: 3}
+  LithiumnPrefab: {fileID: 380808698533326205, guid: 83e7d47f0ca68494a9a2dc11ac77e0fe,
+    type: 3}
+  IronPrefab: {fileID: 8680699254563988124, guid: c2b91b3eb65a7d443959f60a04ddaa74,
+    type: 3}
+  QuartzPrefab: {fileID: 9125706204648540306, guid: c116181418c1be04da0e4bc94c046424,
+    type: 3}
+  TitaniumPrefab: {fileID: 1644994281815225958, guid: 523da8c48cb98864db2f0bf7fc76ff13,
+    type: 3}
+  GoldPrefab: {fileID: 8756736371672221449, guid: 07d2646e8306f1240a8655ca320347b1,
+    type: 3}
+  GrappleGunPrefab: {fileID: 3752825578907025319, guid: 02fe1cfd731780a49ab91d60076af209,
+    type: 3}
   lootLaunchForce: 5
   fadeDuration: 2
 --- !u!1001 &2138119277
@@ -56244,7 +56519,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2139590673
 GameObject:
   m_ObjectHideFlags: 0

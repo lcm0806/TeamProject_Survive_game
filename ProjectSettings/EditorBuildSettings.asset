@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/WorkPlace/JGH/Scenes/PlologScene.unity
     guid: dd2ba25bba4c14edf95269866335a516
   - enabled: 1
-    path: Assets/WorkPlace/JGH/Scenes/DevShelterScene.unity
-    guid: 8ddd7fcefc18c492cbcf92caea63f117
+    path: Assets/WorkPlace/LHG/Scenes/DevShelterScene.unity
+    guid: 02d3e279795ed134e9a38b465ccda70f
   - enabled: 1
     path: Assets/WorkPlace/KDJ/Scenes/MapTest.unity
     guid: 0403137c24113d944a217be4c137b122

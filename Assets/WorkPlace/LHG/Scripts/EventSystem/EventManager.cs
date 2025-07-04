@@ -22,8 +22,8 @@ public class EventManager : MonoBehaviour
     [SerializeField] private EventUI eventUI;
 
 
-    //참조연결 지붕조각 연결하기 **테스트용코드 반드시 삭제**
-    [SerializeField] Item testItem;
+    ////참조연결 지붕조각 연결하기 **테스트용코드 반드시 삭제**
+    //[SerializeField] Item testItem;
 
     private void Awake()
     {
@@ -45,17 +45,17 @@ public class EventManager : MonoBehaviour
         EventStart();
     }
 
-    private void Update()
-    {
-        //**테스트용 코드 반드시 삭제**
-        if (Input.GetKeyDown(KeyCode.H))
-        {
+    //private void Update()
+    //{
+    //    //**테스트용 코드 반드시 삭제**
+    //    if (Input.GetKeyDown(KeyCode.H))
+    //    {
 
-            Storage.Instance.AddItemToStorage(testItem, 1);
-            Debug.Log($"{testItem.name}창고에 추가됨");
-        }
-        //**테스트용 코드 반드시 삭제**
-    }
+    //        Storage.Instance.AddItemToStorage(testItem, 1);
+    //        Debug.Log($"{testItem.name}창고에 추가됨");
+    //    }
+    //    //**테스트용 코드 반드시 삭제**
+    //}
 
     private void InitializeCurrentDay()
     {

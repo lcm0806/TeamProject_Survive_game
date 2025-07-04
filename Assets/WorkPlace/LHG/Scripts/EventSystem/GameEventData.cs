@@ -12,6 +12,8 @@ public class GameEventData : ScriptableObject
     public int id;
     public string title;
     [TextArea] public string description;
+    public string eventEffectDesc; //이벤트의 (부정적)효과
+    public string eventRquirementDesc; //이벤트의 종료조건(필요물건)
     private int minDura = 10;
     private int maxDura = 20;
 

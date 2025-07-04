@@ -22,6 +22,10 @@ public class EventManager : MonoBehaviour
     [SerializeField] private Button eventButtonPrefab;
     [SerializeField] private EventUI eventUI;
 
+
+    //참조연결 지붕조각 연결하기
+    [SerializeField] Item testItem;
+
     private void Awake()
     {
         if (Instance != null)
@@ -40,6 +44,11 @@ public class EventManager : MonoBehaviour
     private void Start()
     {
         EventStart();
+
+        //**테스트용 코드 반드시 삭제**
+        Storage.Instance.AddItemToStorage(testItem, 1);
+        Debug.Log($"{testItem.name}창고에 추가됨");
+        //**테스트용 코드 반드시 삭제**
     }
 
     private void InitializeCurrentDay()
@@ -128,7 +137,7 @@ public class EventManager : MonoBehaviour
             .AddListener(() => eventUI.SetEventListTitleText(CurEvents[eventIndex], eventIndex));
     }
 
-    public void GenerateRandomEvent() // ******아침시점에 호출되어야함 씬변경관련시스템살펴보기, 1~3일차는 호출1번, 4~6일차에는 호출2번, 7일차~호출2번
+    public void GenerateRandomEvent() // ******아침시점에 호출되어야함 씬변경관련시스템살펴보기 
     {
         int eventID = 0;
         if (3 >= StatusSystem.Instance.GetCurrentDay())

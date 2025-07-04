@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
-  m_Name: RepairKit
+  m_Name: JetPack
   m_EditorClassIdentifier: 
-  itemName: RepairKit
-  description: A basic item.
-  icon: {fileID: 21300000, guid: 417eac46d9f95a741832efad3f0d4962, type: 3}
+  itemName: JetPack
+  description: "\uC81C\uD2B8\uD329\uC774\uB2E4"
+  icon: {fileID: 21300000, guid: cf2c247b2ae057c4fb8012c447c04d3c, type: 3}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}
-  isStackable: 1
+  isStackable: 0
   maxStackSize: 99

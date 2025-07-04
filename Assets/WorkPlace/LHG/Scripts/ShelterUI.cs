@@ -213,13 +213,6 @@ public class ShelterUI : MonoBehaviour
         //TODO 이벤트 리스트 버튼을 회색처리해주고 정렬을 밑으로...
     }
 
-    //이벤트 탭의 서브ui의 이벤트 목록을 정렬해줌
-    public void EventListSort()
-    {
-        //TODO이벤트매니저에서 자료를 가져와서 위에서부터 instantiate해주고, 나중에 추가된거를 제일 위에생성(버티컬레이아웃그룹 앵커나피벗 만지면될듯?)
-    }
-
-
     //완료,완료불가,완료됨 버튼의 상태 열거형
     public enum EventState
     {

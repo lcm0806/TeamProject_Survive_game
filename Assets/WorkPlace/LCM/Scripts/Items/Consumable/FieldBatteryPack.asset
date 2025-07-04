@@ -20,6 +20,6 @@ MonoBehaviour:
   HandleItem: {fileID: 3834548869729833458, guid: 79c0b527b367e6a47a08dd12b876db5b,
     type: 3}
   equipmentPrefab: {fileID: 0}
-  isStackable: 0
+  isStackable: 1
   maxStackSize: 99
   ElectricRestoreAmount: 0

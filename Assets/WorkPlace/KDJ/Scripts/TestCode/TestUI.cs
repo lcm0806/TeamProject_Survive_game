@@ -13,6 +13,8 @@ public class TestUI : MonoBehaviour
     [SerializeField] private Image _hotbar1;
     [SerializeField] private Image _hotbar2;
     [SerializeField] private Image _hotbar3;
+    [SerializeField] private GameObject _shift;
+    [SerializeField] private GameObject _space;
 
     private ObseravableProperty<bool> _isInInteract = new();
     private int _curhotbar;
@@ -27,32 +29,14 @@ public class TestUI : MonoBehaviour
 
     private void Update()
     {
-        _isInInteract.Value = PlayerManager.Instance.IsInIntercation;
-
-        if (PlayerManager.Instance.InteractableItem != null)
-        {
-            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableItem.name))
-            {
-                _itemName.text = PlayerManager.Instance.InteractableItem.itemData.itemName;
-            }
-        }
-        else if (PlayerManager.Instance.InteractableStructure != null)
-        {
-            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableStructure.name))
-            {
-                _itemName.text = PlayerManager.Instance.InteractableStructure.StructureName;
-            }
-        }
-        else if (PlayerManager.Instance.InteractableTestItem != null)
-        {
-            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableTestItem.itemData.name))
-            {
-                _itemName.text = PlayerManager.Instance.InteractableTestItem.itemData.name;
-            }
-        }
-
+        SetInteractText();
         SetHotbarHighlight();
         SetInteractDelay(PlayerManager.Instance.InteractDelay);
+    }
+
+    private void FixedUpdate()
+    {
+        ToggleKeyUI();
     }
 
     private void OnDestroy()
@@ -82,6 +66,55 @@ public class TestUI : MonoBehaviour
     private void SetInteractDelay(float value)
     {
         _interactDelay.fillAmount = value;
+    }
+
+    private void ToggleKeyUI()
+    {
+        if(PlayerManager.Instance.Player.CanJump)
+        {
+            _space.SetActive(true);
+        }
+        else
+        {
+            _space.SetActive(false);
+        }
+
+        if (!PlayerManager.Instance.Player.Controller.isGrounded &&
+            PlayerManager.Instance.IsUpgraded[0])
+        {
+            _shift.SetActive(true);
+        }
+        else
+        {
+            _shift.SetActive(false);
+        }
+    }
+
+    private void SetInteractText()
+    {
+        _isInInteract.Value = PlayerManager.Instance.IsInIntercation;
+
+        if (PlayerManager.Instance.InteractableItem != null)
+        {
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableItem.name))
+            {
+                _itemName.text = PlayerManager.Instance.InteractableItem.itemData.itemName;
+            }
+        }
+        else if (PlayerManager.Instance.InteractableStructure != null)
+        {
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableStructure.name))
+            {
+                _itemName.text = PlayerManager.Instance.InteractableStructure.StructureName;
+            }
+        }
+        else if (PlayerManager.Instance.InteractableTestItem != null)
+        {
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableTestItem.itemData.name))
+            {
+                _itemName.text = PlayerManager.Instance.InteractableTestItem.itemData.name;
+            }
+        }
     }
 
     private void SetHotbarHighlight()

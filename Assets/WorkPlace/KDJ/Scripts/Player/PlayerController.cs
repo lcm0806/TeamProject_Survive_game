@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public Transform PlayerHead => _playerHead; // 플레이어 머리 위치
     public bool IsUsingJetPack { get; set; } = false;
     public bool IsSlipping => _playerInteraction.GroundCos < _playerInteraction.SlopeCos && Controller.isGrounded; // 경사면에서 미끄러지는지 여부
+    public bool CanJump => Controller.isGrounded && !IsSlipping || _isStuck;
 
     private Vector3 _verVelocity;
     private LayerMask _ignoreMask = ~(1 << 3);
@@ -147,7 +148,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Controller.isGrounded && !IsSlipping || _isStuck)
+            if (CanJump)
             {
                 _isJumping = true; // 점프 상태로 변경
                 // 점프력

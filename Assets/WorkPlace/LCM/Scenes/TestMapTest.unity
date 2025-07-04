@@ -718,6 +718,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &29579959 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cf6cf20d6412b84e9eb5ea2ab0d8a36,
@@ -812,6 +813,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &37037908
 GameObject:
   m_ObjectHideFlags: 0
@@ -2121,6 +2123,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &270444793 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1603584570047324894, guid: 96b90d03eda807f4fbe7ca6773b77255,
@@ -2907,6 +2910,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &349106160
 GameObject:
   m_ObjectHideFlags: 0
@@ -4731,6 +4735,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &488846991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5040534232748166692, guid: 5ac332a553fc3454b8cb3204019799cd,
@@ -4754,6 +4759,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &491524836 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1259466759867157818, guid: 77d31de06455b4942a41f0637ae49e84,
@@ -4925,6 +4931,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &513461814 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1268488708153537999, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
@@ -4948,6 +4955,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &521601167 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 574304140747437414, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
@@ -5671,6 +5679,74 @@ PrefabInstance:
       insertIndex: 3
       addedObject: {fileID: 2141843839}
   m_SourcePrefab: {fileID: 100100000, guid: 96b90d03eda807f4fbe7ca6773b77255, type: 3}
+--- !u!1001 &577857047
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 238.78333
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.059989
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -99.61101
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3776549607549160347, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4549532238603850017, guid: 80440e67eb041f5409c2e9b6db64f016,
+        type: 3}
+      propertyPath: m_Name
+      value: TestGrappleGun
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 80440e67eb041f5409c2e9b6db64f016, type: 3}
 --- !u!1 &578670390
 GameObject:
   m_ObjectHideFlags: 0
@@ -5937,6 +6013,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &595984399
 GameObject:
   m_ObjectHideFlags: 0
@@ -6065,6 +6142,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &603775273 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7429193946544912596, guid: b33c68177b8ce1a458b4972bfc33417f,
@@ -6365,6 +6443,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &619112360 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1932399859032502133, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
@@ -6742,6 +6821,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &647601049
 GameObject:
   m_ObjectHideFlags: 0
@@ -6907,6 +6987,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &671684081 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c4191897a7100244f9ac348b13cb8797,
@@ -7274,6 +7355,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &701268205
 GameObject:
   m_ObjectHideFlags: 0
@@ -8040,6 +8122,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &774829481 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1887385328155301760, guid: 77d31de06455b4942a41f0637ae49e84,
@@ -8063,6 +8146,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &776029142 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 574304140747437414, guid: 2bbf9e6123ef0f544bc18dbea53a9803,
@@ -8086,6 +8170,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &777266250
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8221,6 +8306,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &809110341
 GameObject:
   m_ObjectHideFlags: 0
@@ -8869,6 +8955,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &854074129
 GameObject:
   m_ObjectHideFlags: 0
@@ -9250,6 +9337,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &870842224
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9375,6 +9463,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &873046702
 GameObject:
   m_ObjectHideFlags: 0
@@ -10840,6 +10929,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1006533346
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11118,6 +11208,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1025321107
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11513,6 +11604,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1062626783 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1701591272214432856, guid: 5c75ceeb4e67c96478a0336f1f608438,
@@ -11679,6 +11771,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1094852489 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2828521571367364524, guid: a9b6baf88a4a3564a99151a7d7156ffd,
@@ -12039,6 +12132,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1122031495
 GameObject:
   m_ObjectHideFlags: 0
@@ -12095,6 +12189,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1156293145
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12220,6 +12315,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &1158215463 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7568769238943893277, guid: a85577c5ffc24014ea991ec1b7d9fd20,
@@ -12520,6 +12616,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1189980709 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1268488708153537999, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
@@ -12543,6 +12640,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &1202333453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2078011640373008098, guid: 5c75ceeb4e67c96478a0336f1f608438,
@@ -12959,6 +13057,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &1254787008 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1887385328155301760, guid: 77d31de06455b4942a41f0637ae49e84,
@@ -12982,6 +13081,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1262995081 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 3cf6cf20d6412b84e9eb5ea2ab0d8a36,
@@ -13247,6 +13347,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1278041770 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1701591272214432856, guid: 5c75ceeb4e67c96478a0336f1f608438,
@@ -13270,6 +13371,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1301303900
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14014,6 +14116,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1381328033 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1701591272214432856, guid: 5c75ceeb4e67c96478a0336f1f608438,
@@ -14037,6 +14140,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1386089011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14461,6 +14565,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1414515568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15972,6 +16077,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1459764672
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16077,6 +16183,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1461878291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16216,6 +16323,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1470418686 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
@@ -16239,6 +16347,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1473761859
 GameObject:
   m_ObjectHideFlags: 0
@@ -16459,6 +16568,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1481359120
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16893,6 +17003,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1501927543
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17018,6 +17129,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1509985583
 GameObject:
   m_ObjectHideFlags: 0
@@ -17077,6 +17189,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1524302928
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17563,6 +17676,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &1538661705 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 425586148121426162, guid: af1e3b666db4c174487f47f257e7b82e,
@@ -17592,6 +17706,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1563319355
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17717,6 +17832,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1575001926 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2828521571367364524, guid: a9b6baf88a4a3564a99151a7d7156ffd,
@@ -17764,6 +17880,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1582961460 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7429193946544912596, guid: b33c68177b8ce1a458b4972bfc33417f,
@@ -17904,6 +18021,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1605506223
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18121,6 +18239,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &1618506195 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1932399859032502133, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
@@ -18144,6 +18263,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1622637698 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9606aedfa2656164abf9ae0599a7613d,
@@ -18331,6 +18451,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1630284013 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1259466759867157818, guid: 77d31de06455b4942a41f0637ae49e84,
@@ -18354,6 +18475,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1633845294
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18618,6 +18740,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1652436759
 GameObject:
   m_ObjectHideFlags: 0
@@ -18784,6 +18907,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1663260832
 GameObject:
   m_ObjectHideFlags: 0
@@ -19116,6 +19240,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1683890766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19611,6 +19736,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!114 &1728993479 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5008102595537187651, guid: 7c5a2ff154982424d8505c89c9190cf2,
@@ -19686,6 +19812,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &1772564370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3910193113576492537, guid: 9c6193993946cae4dae1b110b3e9e612,
@@ -19715,6 +19842,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1790446033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20263,6 +20391,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1834773319
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20388,6 +20517,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1840860513 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1268488708153537999, guid: 5ca236c1e84a84a46bff1ff65a06bf07,
@@ -20411,6 +20541,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1845630117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20536,6 +20667,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1859267587
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20671,6 +20803,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &1874688775 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5873253225835580196, guid: bd7cacb331dc9114989a6d24617dc540,
@@ -20694,6 +20827,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1880957810
 GameObject:
   m_ObjectHideFlags: 0
@@ -20919,6 +21053,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1887369051 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aa759850a0628aa44a04fcab29213a09,
@@ -21322,6 +21457,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1910810958 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2828521571367364524, guid: a9b6baf88a4a3564a99151a7d7156ffd,
@@ -21369,6 +21505,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1930140820 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 5ac332a553fc3454b8cb3204019799cd,
@@ -21392,6 +21529,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &1933053497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22320,6 +22458,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &1995962157 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6129122023895c54ea731f4f70045aea,
@@ -22485,6 +22624,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &2010365333 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: fba669f00be4ad7459408d467cdecd15,
@@ -22508,6 +22648,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &2014135711
 GameObject:
   m_ObjectHideFlags: 0
@@ -22636,6 +22777,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &2022624536
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22761,6 +22903,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &2030992305
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22886,6 +23029,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1 &2047047654 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4989465915869008994, guid: 0a510e24a58b1fd43b09612ad559e962,
@@ -22909,6 +23053,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &2063134848
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23338,6 +23483,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &2104256499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23463,6 +23609,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &2108135208
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23744,6 +23891,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &2114973605
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23869,6 +24017,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!4 &2119998174 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8570706122093123778, guid: 79468aa0728af0140b0b148ba9dfd55e,
@@ -24124,6 +24273,7 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
+  dropCheckCooldown: 1
 --- !u!1001 &2144232278
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25412,6 +25562,7 @@ SceneRoots:
   - {fileID: 2082122480}
   - {fileID: 1885662862}
   - {fileID: 3104558482517342614}
+  - {fileID: 577857047}
   - {fileID: 127561570}
   - {fileID: 4765427831975613052}
   - {fileID: 2018043316858719642}

@@ -20,4 +20,3 @@ MonoBehaviour:
   equipmentPrefab: {fileID: 0}
   isStackable: 0
   maxStackSize: 99
-  upgradeType: 1

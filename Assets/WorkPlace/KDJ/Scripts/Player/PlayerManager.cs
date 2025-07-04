@@ -14,7 +14,7 @@ public class PlayerManager : Singleton<PlayerManager>
     /// <summary>
     /// 플레이어 강화 상태를 표시하는 Bool 배열. 크기는 3. 0 = 제트팩, 1,2는 차후 추가 예정
     /// </summary>
-    [SerializeField] public bool[] IsUpgraded = new bool[3];
+    public bool[] IsUpgraded { get; set; } = new bool[3];
     public bool IsInIntercation = false;
     public bool IsAkimbo { get; set; } = false;
     public WorldItem InteractableItem { get; set; }

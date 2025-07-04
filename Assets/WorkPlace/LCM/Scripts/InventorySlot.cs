@@ -84,7 +84,6 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         }
         myItemData = null; // 데이터도 비움
         // UI를 시각적으로 초기화하는 로직 (예: 이미지 숨기기)
-        UpdateSlotUI();
     }
 
     public void SetItemData(Item item)

@@ -22,7 +22,6 @@ MonoBehaviour:
   equipmentPrefab: {fileID: 0}
   isStackable: 0
   maxStackSize: 99
-  upgradeType: 3
   miningPower: 1
   toolType: 0
   toolObject: {fileID: 0}

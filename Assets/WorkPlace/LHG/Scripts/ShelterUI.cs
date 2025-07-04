@@ -22,10 +22,6 @@ public class ShelterUI : MonoBehaviour
     private double prevEnergy;
     private double prevDurability;
 
-
-
-    public GameObject Renpy;
-    
     private void Start()
     {
         AudioSystem.Instance.StopBGM();

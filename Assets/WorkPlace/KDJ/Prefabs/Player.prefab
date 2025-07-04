@@ -360,7 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _jetPackObject: {fileID: 6407332282415374917}
-  _isJetPackOn: 1
+  _isJetPackOn: 0
   _smokeEffect1: {fileID: 740759036360303044}
   _smokeEffect2: {fileID: 7090561790895846213}
 --- !u!1 &1871056140452973887

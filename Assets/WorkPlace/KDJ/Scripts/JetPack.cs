@@ -15,7 +15,7 @@ public class JetPack : MonoBehaviour
 
     private void Awake()
     {
-        PlayerManager.Instance.IsUpgraded[0] = _isJetPackOn;
+        //PlayerManager.Instance.IsUpgraded[0] = _isJetPackOn;
 
         if (PlayerManager.Instance.IsUpgraded[0])
         {

@@ -599,7 +599,7 @@ MonoBehaviour:
   _backButton: {fileID: 4139674535377081763}
   _audioMixer: {fileID: 0}
   _bgmClips:
-  - name: MainBGM
+  - name: PlologBGM
     audioClip: {fileID: 8300000, guid: d0895db416ab24dd495145a82eee2d6f, type: 3}
   _sfxClips:
   - name: MainSFX

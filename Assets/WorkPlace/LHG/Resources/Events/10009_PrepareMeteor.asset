@@ -18,19 +18,23 @@ MonoBehaviour:
     \uC6B4\uC11D\uC774 \uADA4\uB3C4\uB97C \uD5A5\uD558\uACE0 \uC788\uB2E4. \uC9C1\uC811
     \uCDA9\uB3CC\uC740 \uC544\uB2C8\uB354\uB77C\uB3C4 \uD30C\uD3B8\uC5D0 \uB300\uBE44\uD574\uC57C
     \uD55C\uB2E4."
+  eventEffectDesc: "\uB9E4\uC77C \uBC24 \uB0B4\uAD6C\uB3C4 -50"
+  eventRquirementDesc: "\uAC15\uD654 \uD569\uD310 2\uAC1C, \uCC28\uB2E8\uB9C9 1\uAC1C"
+  isComplete: 0
   RandomMinusDuraValue: 0
   PlusDurability: 0
   MinusDurability: 50
   MinusOxygen: 0
   MinusEnergy: 0
-  PlusBatteryEfficiency: 0
-  MinusBatteryEfficiency: 0
+  PlusEnergyEfficiency: 0
+  MinusEnergyEfficiency: 0
   PlusOxygenEfficiency: 0
   MinusOxygenEfficiency: 0
-  requiredItemA: 
-  requiredAmountA: 0
-  requiredItemB: 
-  requiredAmountB: 0
+  requiredItemA: {fileID: 11400000, guid: d7abb8f3714d5924eaa92f25dddd677b, type: 2}
+  requiredAmountA: 2
+  requiredItemB: {fileID: 11400000, guid: 1ef04d9095b4b234f9ffe7153ea7df60, type: 2}
+  requiredAmountB: 1
   reactiveAfterEnd: 0
   dialogue: "\uC6B4\uC11D \uD30C\uD3B8\uC73C\uB85C \uC258\uD130\uAC00 \uD070 \uD0C0\uACA9\uC744
     \uBC1B\uC558\uB2E4..."
+  isActivated: 0

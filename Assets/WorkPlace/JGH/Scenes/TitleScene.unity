@@ -987,7 +987,7 @@ MonoBehaviour:
   _titleSceneName: TitleScene
   _plologSceneName: PlologScene
   _shelterSceneName: DevShelterScene
-  _farmingSceneName: MapTest
+  _farmingSceneName: Map
   _dayTransitionSceneName: DevShelterScene
 --- !u!1 &1764573421
 GameObject:

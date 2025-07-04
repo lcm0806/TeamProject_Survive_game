@@ -58,7 +58,7 @@ public class TestUI : MonoBehaviour
             _interactUI.SetActive(false);
         }
     }
-    private void SetTextUI(float value)
+    private void SetTextUI(double value)
     {
         _air.text = "»ê¼Ò : " + PlayerManager.Instance.AirGauge.Value.ToString("F1");
     }
@@ -79,8 +79,7 @@ public class TestUI : MonoBehaviour
             _space.SetActive(false);
         }
 
-        if (!PlayerManager.Instance.Player.Controller.isGrounded &&
-            PlayerManager.Instance.IsUpgraded[0])
+        if (!PlayerManager.Instance.Player.Controller.isGrounded)
         {
             _shift.SetActive(true);
         }

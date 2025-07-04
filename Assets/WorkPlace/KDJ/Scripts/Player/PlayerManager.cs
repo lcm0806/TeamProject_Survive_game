@@ -14,7 +14,6 @@ public class PlayerManager : Singleton<PlayerManager>
     /// <summary>
     /// 플레이어 강화 상태를 표시하는 Bool 배열. 크기는 3. 0 = 제트팩, 1,2는 차후 추가 예정
     /// </summary>
-    public bool[] IsUpgraded { get; set; } = new bool[3];
     public bool IsInIntercation = false;
     public bool IsAkimbo { get; set; } = false;
     public WorldItem InteractableItem { get; set; }
@@ -24,8 +23,8 @@ public class PlayerManager : Singleton<PlayerManager>
     public GameObject InHandItem2 { get; set; } 
     public GameObject InHeadItem { get; set; } // 헬멧, 선글라스 등 머리에 착용하는 아이템
     public Item SelectItem { get; set; }
-    public ObseravableProperty<float> AirGauge = new();
-    public ObseravableProperty<float> ElecticGauge = new();
+    public ObseravableProperty<double> AirGauge = new();
+    public ObseravableProperty<double> ElecticGauge = new();
     public PlayerController Player { get; private set; }
     public RaycastHit HitInfo { get; set; }
     public float InteractDelay { get; set; }

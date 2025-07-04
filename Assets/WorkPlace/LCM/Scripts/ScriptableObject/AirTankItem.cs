@@ -7,7 +7,7 @@ public class AirTankItem : ConsumableItem
 {
     [Header("Air Tank Specifics")]
     [Tooltip("이 아이템 사용 시 회복될 산소량입니다.")]
-    public float OxygenRestoreAmount;
+    public double OxygenRestoreAmount;
 
     public override void Use(GameObject user)
     {
@@ -16,7 +16,7 @@ public class AirTankItem : ConsumableItem
         Debug.Log($"{OxygenRestoreAmount}산소를 회복했습니다.");
         if (PlayerManager.Instance != null)
         {
-            PlayerManager.Instance.AirGauge.Value += OxygenRestoreAmount;
+            PlayerManager.Instance.AirGauge.Value += (OxygenRestoreAmount/2);
         }
         else
         {

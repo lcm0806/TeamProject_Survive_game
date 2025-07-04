@@ -18,6 +18,7 @@ public class PlayerAnimation : MonoBehaviour
         SwingAnim();
         MiningAnim();
         SetAkimbo();
+        SetInAir();
     }
 
     private void Awake()
@@ -48,6 +49,12 @@ public class PlayerAnimation : MonoBehaviour
     {
         _animator.SetBool("IsAkimbo", PlayerManager.Instance.IsAkimbo);
     }
+
+    private void SetInAir()
+    {
+        _animator.SetBool("InAir", !PlayerManager.Instance.Player.Controller.isGrounded);
+    }
+
 
     public void MiningAnim()
     {

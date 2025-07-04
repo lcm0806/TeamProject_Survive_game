@@ -5791,7 +5791,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &259963685
 Material:
   serializedVersion: 8
@@ -7525,17 +7524,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 283433558}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 461833652}
+  m_Father: {fileID: 1173108181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 776.9038, y: 383.65076}
-  m_SizeDelta: {x: 246.1925, y: 226.6984}
+  m_AnchoredPosition: {x: 0.00390625, y: -1.3492432}
+  m_SizeDelta: {x: 256, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &283433560
 MonoBehaviour:
@@ -7551,7 +7550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -7714,7 +7713,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 70.18617
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -7740,8 +7739,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 284664983}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.24734934, y: -0.4246161, z: 0.121753216, w: 0.86237794}
-  m_LocalPosition: {x: 142.10678, y: 27.59932, z: -131.19226}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6, y: 2, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9128,7 +9127,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &354370171 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -9214,7 +9212,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &367842514
 GameObject:
   m_ObjectHideFlags: 0
@@ -11425,7 +11422,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 283433559}
+  - {fileID: 1173108181}
   - {fileID: 27553503}
   - {fileID: 1795712052}
   - {fileID: 1208046087}
@@ -14571,7 +14568,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &489727556
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14677,7 +14673,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &491007458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15541,7 +15536,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &522379919
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15647,7 +15641,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &522733631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2917595721573609287, guid: d58c996193d964a4bb39dd016929e21c,
@@ -17021,7 +17014,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &566689060 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4086578952342438386, guid: a9b6baf88a4a3564a99151a7d7156ffd,
@@ -17453,7 +17445,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &611430490 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -19716,7 +19707,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &690461850
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19821,7 +19811,7 @@ PrefabInstance:
     - target: {fileID: 43889557569609162, guid: 6bde9563558eab540bea86a5df9197ee,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.934933
+      value: 11.093
       objectReference: {fileID: 0}
     - target: {fileID: 43889557569609162, guid: 6bde9563558eab540bea86a5df9197ee,
         type: 3}
@@ -20035,6 +20025,7 @@ GameObject:
   - component: {fileID: 695850419}
   - component: {fileID: 695850418}
   - component: {fileID: 695850417}
+  - component: {fileID: 695850421}
   m_Layer: 0
   m_Name: MinimapCam
   m_TagString: Untagged
@@ -20093,7 +20084,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 695850416}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1989f46025392e542b48f2ff232892d4, type: 3}
   m_Name: 
@@ -20140,7 +20131,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 119
+    m_Bits: 631
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: 955eeff6ff52acb4c901701f11c64e90, type: 2}
   m_TargetDisplay: 0
@@ -20167,6 +20158,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &695850421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695850416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f8a014d49e483142af8000425a74fa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &700499787 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4086578952342438386, guid: a9b6baf88a4a3564a99151a7d7156ffd,
@@ -21295,7 +21298,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 913, y: 385}
+  m_AnchoredPosition: {x: 890, y: 385}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &721955279
@@ -21600,7 +21603,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &731618209 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7429193946544912596, guid: 8ff5d0d93bd446a48bb4106e87a19afd,
@@ -22369,7 +22371,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &779523761
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23111,7 +23112,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &816705207
 Material:
   serializedVersion: 8
@@ -24052,7 +24052,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &856179558
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24327,7 +24326,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &873046702
 GameObject:
   m_ObjectHideFlags: 0
@@ -24749,7 +24747,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &890820380
 Mesh:
   m_ObjectHideFlags: 0
@@ -25559,7 +25556,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &911407348
 Material:
   serializedVersion: 8
@@ -26039,7 +26035,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &933210957
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26369,7 +26364,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &938236688 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -26393,7 +26387,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &939393383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28107,7 +28100,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &987574123
 Material:
   serializedVersion: 8
@@ -28857,7 +28849,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1003896876
 Material:
   serializedVersion: 8
@@ -29401,7 +29392,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1017571295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29970,7 +29960,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1034149339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30636,7 +30625,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &1071219795 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dd7da964b4a22d6459228c38693d1b3d,
@@ -30788,7 +30776,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1085438484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31134,7 +31121,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1091173181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31246,7 +31232,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1095188161
 Mesh:
   m_ObjectHideFlags: 0
@@ -32311,7 +32296,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1131693081
 Material:
   serializedVersion: 8
@@ -32859,7 +32843,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1148000236
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33117,7 +33100,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1153949291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33366,7 +33348,96 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
+--- !u!1 &1173108180
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1173108181}
+  - component: {fileID: 1173108184}
+  - component: {fileID: 1173108183}
+  - component: {fileID: 1173108182}
+  m_Layer: 5
+  m_Name: Curcle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1173108181
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173108180}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 283433559}
+  m_Father: {fileID: 461833652}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 776.9, y: 385}
+  m_SizeDelta: {x: 256, y: 256}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1173108182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173108180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ShowMaskGraphic: 1
+--- !u!114 &1173108183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173108180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: d957ae92270ec1f4fa5c7396f3c69d8c, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1173108184
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173108180}
+  m_CullTransparentMesh: 1
 --- !u!1 &1185875694 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -34188,7 +34259,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1201705925 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -34377,7 +34447,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 778, y: 254}
+  m_AnchoredPosition: {x: 778, y: 273.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1208046088
@@ -34896,7 +34966,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1237147175
 GameObject:
   m_ObjectHideFlags: 0
@@ -35535,7 +35604,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1272111179 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915662861164680985, guid: 2e1a0b4440d48c14383b8003d576cf68,
@@ -35559,7 +35627,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1274009747
 GameObject:
   m_ObjectHideFlags: 0
@@ -35770,7 +35837,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1286102753 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -35811,7 +35877,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 634, y: 385}
+  m_AnchoredPosition: {x: 670.8, y: 385}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1287372107
@@ -36224,6 +36290,62 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7520610913868472168, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f0c0de8322f33469b8bcb92ba15733b9,
+        type: 2}
+    - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -9128841849589680303, guid: f0c0de8322f33469b8bcb92ba15733b9,
+        type: 2}
+    - target: {fileID: 7532950252252441605, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8483373416140118103, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f0c0de8322f33469b8bcb92ba15733b9,
+        type: 2}
+    - target: {fileID: 8483373416140118103, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -9128841849589680303, guid: f0c0de8322f33469b8bcb92ba15733b9,
+        type: 2}
+    - target: {fileID: 8483373416140118103, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8821599176779782269, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: f0c0de8322f33469b8bcb92ba15733b9,
+        type: 2}
+    - target: {fileID: 8821599176779782269, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -9128841849589680303, guid: f0c0de8322f33469b8bcb92ba15733b9,
+        type: 2}
+    - target: {fileID: 8821599176779782269, guid: 23c47fe9f1a78d442a0326512acffccb,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -36577,7 +36699,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1317614901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36876,7 +36997,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &1329380076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f32ec3f5cf942c542bd5ac219797a893,
@@ -37266,7 +37386,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1339276992 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -38845,7 +38964,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1390821834 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -38869,7 +38987,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1392592575
 GameObject:
   m_ObjectHideFlags: 0
@@ -39116,7 +39233,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1400856339
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39310,7 +39426,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1409678739
 Material:
   serializedVersion: 8
@@ -39552,7 +39667,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1415348627 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -39576,7 +39690,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1419861033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -39858,7 +39971,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1446222516
 Mesh:
   m_ObjectHideFlags: 0
@@ -40183,7 +40295,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1458731607
 Material:
   serializedVersion: 8
@@ -40573,7 +40684,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1464498949 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -40837,7 +40947,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1472181100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40943,7 +41052,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1474982724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41069,7 +41177,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1486322470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41175,7 +41282,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1487779835
 GameObject:
   m_ObjectHideFlags: 0
@@ -41728,7 +41834,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1507641701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41877,7 +41982,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1512160421 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -42368,7 +42472,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1531737988
 GameObject:
   m_ObjectHideFlags: 0
@@ -42585,7 +42688,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1543698336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -42691,7 +42793,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1543931624 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -42944,7 +43045,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1560525461 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915662861164680985, guid: 2e1a0b4440d48c14383b8003d576cf68,
@@ -42968,7 +43068,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1565571046 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: fba669f00be4ad7459408d467cdecd15,
@@ -42992,7 +43091,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1567722748
 Material:
   serializedVersion: 8
@@ -43240,7 +43338,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1573454157
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43439,7 +43536,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1579574104
 Material:
   serializedVersion: 8
@@ -43683,7 +43779,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1589823797
 Material:
   serializedVersion: 8
@@ -44189,7 +44284,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1621819274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44582,7 +44676,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1629182969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45241,7 +45334,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1656181946
 GameObject:
   m_ObjectHideFlags: 0
@@ -45384,7 +45476,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1660302291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46368,7 +46459,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1706202087
 Mesh:
   m_ObjectHideFlags: 0
@@ -46816,7 +46906,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1722046566 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -46840,7 +46929,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1723362024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46946,7 +47034,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1726675947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47057,7 +47144,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1736808772
 Material:
   serializedVersion: 8
@@ -47525,7 +47611,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1750677568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48035,7 +48120,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1758703220 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -48071,7 +48155,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1767165580 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -48095,7 +48178,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1770523635 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7429193946544912596, guid: 8ff5d0d93bd446a48bb4106e87a19afd,
@@ -48119,7 +48201,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &1772564370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3910193113576492537, guid: 9c6193993946cae4dae1b110b3e9e612,
@@ -48319,7 +48400,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1778276611 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -48343,7 +48423,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1778707283
 GameObject:
   m_ObjectHideFlags: 0
@@ -48572,7 +48651,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1785581980
 Mesh:
   m_ObjectHideFlags: 0
@@ -48843,7 +48921,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1789362292
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49094,7 +49171,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1790446033
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49462,7 +49538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 778, y: 513}
+  m_AnchoredPosition: {x: 778, y: 495.7}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1795712053
@@ -49667,7 +49743,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1797850090
 GameObject:
   m_ObjectHideFlags: 0
@@ -50131,7 +50206,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1824682470
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50237,7 +50311,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1826151381 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -50261,7 +50334,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1827064421
 GameObject:
   m_ObjectHideFlags: 0
@@ -50415,7 +50487,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1838002052
 Mesh:
   m_ObjectHideFlags: 0
@@ -50834,7 +50905,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1858299210 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 25611030d92bf7345839d6a66b87fc88,
@@ -50952,7 +51022,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &1871721859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4086578952342438386, guid: a9b6baf88a4a3564a99151a7d7156ffd,
@@ -51235,7 +51304,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1884795299
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51341,7 +51409,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1891758162 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -51365,7 +51432,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1892790128
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51471,7 +51537,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1893232684 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8e6e54048569fa9409502fc9ef38155b,
@@ -51616,7 +51681,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1898386691
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51722,7 +51786,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1899858955 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7915662861164680985, guid: 67171c5a8fb98664ea38559b627ffc44,
@@ -51746,7 +51809,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1900714057 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6847961181995352760, guid: 31c3cc06513513a498068e48a3ad1c4c,
@@ -51770,7 +51832,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1901035105
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51876,7 +51937,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1903470161 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -51900,7 +51960,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1903600762
 Material:
   serializedVersion: 8
@@ -52261,7 +52320,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1909730386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -52605,7 +52663,7 @@ PrefabInstance:
     - target: {fileID: 6434433968019111225, guid: a80b0918dff5dbf449d038c62dcb0264,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.934933
+      value: 11.136
       objectReference: {fileID: 0}
     - target: {fileID: 6434433968019111225, guid: a80b0918dff5dbf449d038c62dcb0264,
         type: 3}
@@ -52949,7 +53007,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1933053497
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53288,7 +53345,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &1951875230
 Mesh:
   m_ObjectHideFlags: 0
@@ -53833,7 +53889,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1960403001
 Material:
   serializedVersion: 8
@@ -53995,7 +54050,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &1967915913 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5672357953606702238, guid: 5ac332a553fc3454b8cb3204019799cd,
@@ -54019,7 +54073,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1969889064
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54266,7 +54319,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &1985375253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54372,7 +54424,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &1988560532
 Material:
   serializedVersion: 8
@@ -54627,7 +54678,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &2001419358
 Material:
   serializedVersion: 8
@@ -54787,7 +54837,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2004197644 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6542089909416006046, guid: 9e496237b3d0d744ea8e5777cc54ed48,
@@ -54811,7 +54860,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2005932773 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -54835,7 +54883,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2010948924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54941,7 +54988,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &2013320050
 Mesh:
   m_ObjectHideFlags: 0
@@ -55469,7 +55515,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2034011896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55581,7 +55626,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2037800916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -55757,7 +55801,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2044352116
 GameObject:
   m_ObjectHideFlags: 0
@@ -55982,7 +56025,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2058806455
 GameObject:
   m_ObjectHideFlags: 0
@@ -56437,7 +56479,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2070855301 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
@@ -56461,7 +56502,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &2072857380
 Mesh:
   m_ObjectHideFlags: 0
@@ -56930,7 +56970,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2086372427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57036,7 +57075,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2090851781 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: 3ba761b3aed35e341b4716fcdf6c61c5,
@@ -57060,7 +57098,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &2101505497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9f386c6e6d3f050448e452b97c38cf9f,
@@ -57112,7 +57149,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!21 &2106131214
 Material:
   serializedVersion: 8
@@ -57356,7 +57392,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1001 &2115662855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57462,7 +57497,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!4 &2119998174 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8570706122093123778, guid: 79468aa0728af0140b0b148ba9dfd55e,
@@ -57485,7 +57519,7 @@ PrefabInstance:
     - target: {fileID: 1275332633859920882, guid: 710f37ce8ff878640ac631fa8c69c28a,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 10.934933
+      value: 11.176
       objectReference: {fileID: 0}
     - target: {fileID: 1275332633859920882, guid: 710f37ce8ff878640ac631fa8c69c28a,
         type: 3}
@@ -57689,7 +57723,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2126918016 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5242660895197999916, guid: b00dcc2b14aa75f49afb956b6e74a1da,
@@ -57713,7 +57746,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!43 &2131218006
 Mesh:
   m_ObjectHideFlags: 0
@@ -58318,7 +58350,6 @@ MonoBehaviour:
     type: 3}
   lootLaunchForce: 5
   shrinkDuration: 2
-  dropCheckCooldown: 1
 --- !u!1 &2139590673
 GameObject:
   m_ObjectHideFlags: 0

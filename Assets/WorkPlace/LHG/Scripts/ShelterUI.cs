@@ -74,10 +74,36 @@ public class ShelterUI : MonoBehaviour
     public void ActiveUI(int ShelterMenuID)
     {
         ShelterMenu[ShelterMenuID].SetActive(true);
-        Debug.Log($"{ShelterMenuID.ToString()} UI Active");
+        Debug.Log($"{ShelterMenuID} UI Active");
 
-        //EventCompleteBtnSwitcher(testState);
+        switch (ShelterMenuID)
+        {
+            case 0: // 모니터 → 이벤트 탭
+                SwitchToTab(0); // 탭 전환
+                AutoSelectFirstEvent(); // 제일 위 이벤트 자동 선택
+                break;
+            case 1: // 워크벤치 → 제작 탭
+                SwitchToTab(2); // 탭 전환
+                                // TODO: 제작 탭 초기화 코드 추가 예정
+                break;
+            case 2: // 맵 → 맵 탭 + 쉘터 자동 선택
+                SwitchToTab(1);
+                SelectMapList(1); // 쉘터 선택 (0:침실, 1:쉘터, 2:출구)
+                break;
+        }
     }
+
+    private void AutoSelectFirstEvent()
+    {
+        if (EventManager.Instance.CurEvents.Count > 0)
+        {
+            var firstEvent = EventManager.Instance.CurEvents[0];
+            var eventUI = FindObjectOfType<EventUI>(); // 참조 방식에 따라 수정
+            eventUI.SetEventListTitleText(firstEvent, 0); // 첫 번째 이벤트 출력
+        }
+    }
+
+
     public void DeactiveUI(int ShelterMenuID)
     {
         ShelterMenu[ShelterMenuID].SetActive(false);

@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public Transform PlayerHead => _playerHead; // 플레이어 머리 위치
     public bool IsUsingJetPack { get; set; } = false;
     public bool IsSlipping => _playerInteraction.GroundCos < _playerInteraction.SlopeCos && Controller.isGrounded; // 경사면에서 미끄러지는지 여부
+    public bool CanJump => Controller.isGrounded && !IsSlipping || _isStuck;
 
     private Vector3 _verVelocity;
     private LayerMask _ignoreMask = ~(1 << 3);
@@ -105,7 +106,7 @@ public class PlayerController : MonoBehaviour
         // 제트팩 사용
         if (IsUsingJetPack)
         {
-            _verVelocity.y += 3.5f * Time.deltaTime; // 제트팩 사용시 중력 약화
+            // _verVelocity.y += 3.5f * Time.deltaTime; // 제트팩 사용시 중력 약화
 
             // 제트팩이 너무 쳐지는걸 막기 위해 살짝 위쪽을 향하도록 vector3.up을 더함
             FixedDir = _jetPack.UseUpgrade(Camera.main.transform.forward) + Vector3.up;
@@ -147,7 +148,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (Controller.isGrounded && !IsSlipping || _isStuck)
+            if (CanJump)
             {
                 _isJumping = true; // 점프 상태로 변경
                 // 점프력

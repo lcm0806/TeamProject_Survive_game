@@ -34,6 +34,7 @@ public class EventUI : MonoBehaviour
         EventClearDetermine(data);
         CanCompleteBtns.onClick.AddListener(() => EventClearOnUI(data));
         eventIndex = _eventIndex;
+        Completed.gameObject.SetActive(false); //0704완료됨버튼관련 비활성화조치
     }
 
 
@@ -54,6 +55,7 @@ public class EventUI : MonoBehaviour
 
     public void EventClearOnUI(GameEventData data)
     {
+        CanCompleteBtns.gameObject.SetActive(false);//0704완료가능버튼관련 비활성화조치
         Completed.gameObject.SetActive(true);
         data.isComplete = true;
         EventManager.Instance.EventClear(data, eventIndex);

@@ -13,7 +13,6 @@ public class EventManager : MonoBehaviour
     private Dictionary<int, GameEventData> eventDict = new();
     private int _curGameDay;
     private GameEventData _curEventData;
-    public GameEventData CurEventData { get { return _curEventData; } } //무슨용도?
 
     public List<GameEventData> CurEvents = new(); 
     public List<Button> CurEventButtons = new(); 
@@ -23,8 +22,8 @@ public class EventManager : MonoBehaviour
     [SerializeField] private EventUI eventUI;
 
 
-    //참조연결 지붕조각 연결하기
-    [SerializeField] Item testItem;
+    ////참조연결 지붕조각 연결하기 **테스트용코드 반드시 삭제**
+    //[SerializeField] Item testItem;
 
     private void Awake()
     {
@@ -44,13 +43,19 @@ public class EventManager : MonoBehaviour
     private void Start()
     {
         EventStart();
-
-        //**테스트용 코드 반드시 삭제**
-        Storage.Instance.AddItemToStorage(testItem, 1);
-        // 250704 프롤로그 스킵시  오류나서 주석처리
-        // Debug.Log($"{testItem.name}창고에 추가됨");
-        //**테스트용 코드 반드시 삭제**
     }
+
+    //private void Update()
+    //{
+    //    //**테스트용 코드 반드시 삭제**
+    //    if (Input.GetKeyDown(KeyCode.H))
+    //    {
+
+    //        Storage.Instance.AddItemToStorage(testItem, 1);
+    //        Debug.Log($"{testItem.name}창고에 추가됨");
+    //    }
+    //    //**테스트용 코드 반드시 삭제**
+    //}
 
     private void InitializeCurrentDay()
     {
@@ -92,31 +97,38 @@ public class EventManager : MonoBehaviour
 
     public void EventStart() // 일자가 시작될때 호출.
     {
-        ButtonClear();
         GenerateDailyEvent();
         GenerateRandomEvent();
-        FinishedButtonInstantiate();
+        DettachButton();
+        AttachButton(CurEventButtons);
+        AttachButton(FinishedButtons);
     }
 
-    public void ButtonClear()
+    public void DettachButton()
     {
         for (int i = 0; i < eventContents.childCount; i++)
         {
-            Destroy(eventContents.GetChild(i));
+            eventContents.DetachChildren();
         }
-
     }
-
-    public void FinishedButtonInstantiate()
+    public void AttachButton(List<Button> list)
     {
-        foreach (Button bt in FinishedButtons)
+        for (int i = 0; i < list.Count; i++)
         {
-            Instantiate(bt).gameObject.transform.SetParent(eventContents);
-            bt.interactable = false;
-        }
+            list[i].transform.SetParent(eventContents);
+            int temp = i; //??
+            if(list == CurEventButtons)
+            {
+                list[i].onClick.RemoveAllListeners();
+                list[i].onClick.AddListener(() => eventUI.SetEventListTitleText(CurEvents[temp], temp)); //0704 
+                
+            }
 
+        }
     }
-    public void GenerateDailyEvent() //아침시점에 호출되어야 함
+    
+
+    public void GenerateDailyEvent() 
     {
         //중복발생불가 로직이 필요한가?
         CurEvents.Add(eventDict[10001]);
@@ -129,16 +141,10 @@ public class EventManager : MonoBehaviour
     public void EventButtonCreate(int eventIndex)
     {
         CurEventButtons.Add(Instantiate(eventButtonPrefab));
-        CurEventButtons[eventIndex].transform.SetParent(eventContents);
         eventUI.SetEventSubUIBtnTitle(CurEventButtons[eventIndex].gameObject, eventIndex); //추가한부분**서브타이틀용**
-
-
-
-        CurEventButtons[eventIndex].onClick
-            .AddListener(() => eventUI.SetEventListTitleText(CurEvents[eventIndex], eventIndex));
     }
 
-    public void GenerateRandomEvent() // ******아침시점에 호출되어야함 씬변경관련시스템살펴보기 
+    public void GenerateRandomEvent() 
     {
         int eventID = 0;
         if (3 >= StatusSystem.Instance.GetCurrentDay())
@@ -173,7 +179,7 @@ public class EventManager : MonoBehaviour
     }
 
     // 이벤트가 완료가능인지 판별
-    public bool DetermineEventComplete(GameEventData data) //*버튼에 호출 달아줘야함
+    public bool DetermineEventComplete(GameEventData data) 
     {
         if (data.requiredItemA != null && data.requiredItemB == null)
             return data.requiredAmountA <= Storage.Instance.GetItemCount(data.requiredItemA);
@@ -184,7 +190,7 @@ public class EventManager : MonoBehaviour
         return false;
     }
 
-    public void EventEffect(GameEventData data) //******날짜가 넘어갈때 적용되어야함 이함수가 어디선가 호출되어야 함 => 날짜넘어가는시스템쪽 확인해서 집어넣기
+    public void EventEffect(GameEventData data) 
     {
         if (data.isComplete)
         {
@@ -212,5 +218,27 @@ public class EventManager : MonoBehaviour
         FinishedButtons.Add(CurEventButtons[eventIndex]);
         CurEvents.RemoveAt(eventIndex);
         CurEventButtons.RemoveAt(eventIndex);
+
+        DettachButton();
+        AttachButton(CurEventButtons);
+        AttachButton(FinishedButtons);
+
+        //Storage.Instance.RemoveItem(data.requiredItemA, data.requiredAmountA);
+        //if (data.requiredItemB != null)
+        //    Storage.Instance.RemoveItem(data.requiredItemB, data.requiredAmountB);
+        //CurEventButtons[eventIndex].interactable = false;
+        //FinishedButtons.Add(CurEventButtons[eventIndex]);
+        //CurEvents.RemoveAt(eventIndex);
+
+        //CurEventButtons[eventIndex].transform.SetParent(eventContents); //추가
+
+        //CurEventButtons.RemoveAt(eventIndex);
+
+
+
+
+        //ButtonClear(); //0704 추가
+        //EventButtonInstantiate();//0704 추가
+        //FinishedButtonInstantiate();//0704 추가
     }
 }

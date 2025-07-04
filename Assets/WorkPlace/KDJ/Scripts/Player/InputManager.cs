@@ -9,6 +9,7 @@ public class InputManager : Singleton<InputManager>
 
     public bool IsUsingTool { get; private set; } // 테스트용 bool 값, 마이닝 애니메이션 실행 여부
     public bool CanMove => !PlayerManager.Instance.Player.IsSlipping && !PlayerManager.Instance.Player.IsUsingJetPack;
+    public int CurHotbar { get; private set; } = 1; // 현재 선택된 핫바 번호, 초기값은 1
 
     private Coroutine _itemCo;
 
@@ -75,7 +76,7 @@ public class InputManager : Singleton<InputManager>
         }
         #endregion
 
-        if (Input.GetKeyDown(KeyCode.Q)) // 'Q' 키를 눌렀을 때
+        if (Input.GetKeyDown(KeyCode.Tab)) // 'tab' 키를 눌렀을 때
         {
             SampleUIManager.Instance.ToggleInventoryUI(); // SampleUIManager의 인벤토리 토글 메서드 호출
         }
@@ -86,16 +87,18 @@ public class InputManager : Singleton<InputManager>
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
+                CurHotbar = 1;
                 PlayerManager.Instance.SelectItem = null;
                 PlayerManager.Instance.AkimboReset();
                 Destroy(PlayerManager.Instance.InHandItem);
                 Destroy(PlayerManager.Instance.InHandItem2); // 아킴보 상태일 때 두번째 아이템 제거
                 Destroy(PlayerManager.Instance.InHeadItem); // 머리에 착용한 아이템 제거
-                                                            // 인벤토리 핫바 1번 선택
+                // 인벤토리 핫바 1번 선택
                 Inventory.Instance.SelectHotbarSlot(0);
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
+                CurHotbar = 2;
                 PlayerManager.Instance.SelectItem = null;
                 PlayerManager.Instance.AkimboReset();
                 Destroy(PlayerManager.Instance.InHandItem);
@@ -106,6 +109,7 @@ public class InputManager : Singleton<InputManager>
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
+                CurHotbar = 3;
                 PlayerManager.Instance.SelectItem = null;
                 PlayerManager.Instance.AkimboReset();
                 Destroy(PlayerManager.Instance.InHandItem);

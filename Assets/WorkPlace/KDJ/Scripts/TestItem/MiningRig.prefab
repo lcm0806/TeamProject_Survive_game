@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4305621841781391433}
   - component: {fileID: 377540267812192439}
   - component: {fileID: 3532607408341225625}
-  - component: {fileID: 5085510478853288715}
+  - component: {fileID: 6649795360594344156}
   m_Layer: 6
   m_Name: MiningRig
   m_TagString: Untagged
@@ -127,8 +127,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!135 &5085510478853288715
-SphereCollider:
+--- !u!65 &6649795360594344156
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -146,5 +146,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 6.5015492
-  m_Center: {x: -0.01731801, y: 1.2850304, z: 3.999909}
+  m_Size: {x: 5.106542, y: 9.830201, z: 13.0030985}
+  m_Center: {x: -0.01731801, y: 1.2850285, z: 3.999909}

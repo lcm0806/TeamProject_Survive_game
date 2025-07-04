@@ -10,8 +10,14 @@ public class TestUI : MonoBehaviour
     [SerializeField] private TMP_Text _air;
     [SerializeField] private TMP_Text _electric;
     [SerializeField] private Image _interactDelay;
+    [SerializeField] private Image _hotbar1;
+    [SerializeField] private Image _hotbar2;
+    [SerializeField] private Image _hotbar3;
+    [SerializeField] private GameObject _shift;
+    [SerializeField] private GameObject _space;
 
     private ObseravableProperty<bool> _isInInteract = new();
+    private int _curhotbar;
 
     private void Start()
     {
@@ -23,31 +29,14 @@ public class TestUI : MonoBehaviour
 
     private void Update()
     {
-        _isInInteract.Value = PlayerManager.Instance.IsInIntercation;
-
-        if (PlayerManager.Instance.InteractableItem != null)
-        {
-            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableItem.name))
-            {
-                _itemName.text = PlayerManager.Instance.InteractableItem.name;
-            }
-        }
-        else if (PlayerManager.Instance.InteractableStructure != null)
-        {
-            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableStructure.name))
-            {
-                _itemName.text = PlayerManager.Instance.InteractableStructure.name;
-            }
-        }
-        else if (PlayerManager.Instance.InteractableTestItem != null)
-        {
-            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableTestItem.itemData.name))
-            {
-                _itemName.text = PlayerManager.Instance.InteractableTestItem.itemData.name;
-            }
-        }
-
+        SetInteractText();
+        SetHotbarHighlight();
         SetInteractDelay(PlayerManager.Instance.InteractDelay);
+    }
+
+    private void FixedUpdate()
+    {
+        ToggleKeyUI();
     }
 
     private void OnDestroy()
@@ -71,12 +60,90 @@ public class TestUI : MonoBehaviour
     }
     private void SetTextUI(float value)
     {
-        _air.text = "Air : " + PlayerManager.Instance.AirGauge.Value.ToString("F1");
-        _electric.text = "Electric : " + PlayerManager.Instance.ElecticGauge.Value.ToString("F1");
+        _air.text = "»ê¼Ò : " + PlayerManager.Instance.AirGauge.Value.ToString("F1");
     }
 
     private void SetInteractDelay(float value)
     {
         _interactDelay.fillAmount = value;
+    }
+
+    private void ToggleKeyUI()
+    {
+        if(PlayerManager.Instance.Player.CanJump)
+        {
+            _space.SetActive(true);
+        }
+        else
+        {
+            _space.SetActive(false);
+        }
+
+        if (!PlayerManager.Instance.Player.Controller.isGrounded &&
+            PlayerManager.Instance.IsUpgraded[0])
+        {
+            _shift.SetActive(true);
+        }
+        else
+        {
+            _shift.SetActive(false);
+        }
+    }
+
+    private void SetInteractText()
+    {
+        _isInInteract.Value = PlayerManager.Instance.IsInIntercation;
+
+        if (PlayerManager.Instance.InteractableItem != null)
+        {
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableItem.name))
+            {
+                _itemName.text = PlayerManager.Instance.InteractableItem.itemData.itemName;
+            }
+        }
+        else if (PlayerManager.Instance.InteractableStructure != null)
+        {
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableStructure.name))
+            {
+                _itemName.text = PlayerManager.Instance.InteractableStructure.StructureName;
+            }
+        }
+        else if (PlayerManager.Instance.InteractableTestItem != null)
+        {
+            if (!_itemName.text.Equals(PlayerManager.Instance.InteractableTestItem.itemData.name))
+            {
+                _itemName.text = PlayerManager.Instance.InteractableTestItem.itemData.name;
+            }
+        }
+    }
+
+    private void SetHotbarHighlight()
+    {
+        if (_curhotbar == InputManager.Instance.CurHotbar)
+        {
+            return;
+        }
+        else
+        {
+            _curhotbar = InputManager.Instance.CurHotbar;
+            switch (_curhotbar)
+            {
+                case 1:
+                    _hotbar1.enabled = true;
+                    _hotbar2.enabled = false;
+                    _hotbar3.enabled = false;
+                    break;
+                case 2:
+                    _hotbar1.enabled = false;
+                    _hotbar2.enabled = true;
+                    _hotbar3.enabled = false;
+                    break;
+                case 3:
+                    _hotbar1.enabled = false;
+                    _hotbar2.enabled = false;
+                    _hotbar3.enabled = true;
+                    break;
+            }
+        }
     }
 }

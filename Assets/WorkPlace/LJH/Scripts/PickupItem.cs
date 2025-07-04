@@ -58,7 +58,6 @@ public class PickupItem : Structure
         Vector3 pos = transform.position + Vector3.up * 1.2f;
         GameObject loot = Instantiate(prefab, pos, Quaternion.identity);
 
-        // ���ڿ� �浹 ����
         if (TryGetComponent<Collider>(out var boxCol) &&
             loot.TryGetComponent<Collider>(out var lootCol))
         {
@@ -118,17 +117,18 @@ public class PickupItem : Structure
     //}
 
     /* ------------------- UI �޽��� ------------------- */
-    private void ShowMessage(string message)
-    {
-        if (UIManager.Instance != null)
-        {
-            UIManager.Instance.ShowPopup(message);
-        }
-        else
-        {
-            Debug.LogWarning("UIManager가 씬에 없습니다.");
-        }
-    }
+    //보급상자가 빈 상태가 없어서 필요없어짐
+    //private void ShowMessage(string message)
+    //{
+    //    if (UIManager.Instance != null)
+    //    {
+    //        UIManager.Instance.ShowPopup(message);
+    //    }
+    //    else
+    //    {
+    //        Debug.LogWarning("UIManager가 씬에 없습니다.");
+    //    }
+    //}
 
     
 }

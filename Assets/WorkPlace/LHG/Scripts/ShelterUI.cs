@@ -15,12 +15,12 @@ public class ShelterUI : MonoBehaviour
     [SerializeField] public GameObject SystemCanvas;
 
 
-    public GameObject[] ShelterMenu, Tabs, EventContainer, CompleteBtn, MapLocations, ExitShelterCases;
+    public GameObject[] ShelterMenu, Tabs, EventContainer, MapLocations, ExitShelterCases;
     [SerializeField] public TMP_Text[] Indicators, TonightEventText;
     public Image[] TabButtons, MapLocationsButtons;
     public Sprite InactiveTabBG, ActiveTabBG; // 활성 비활성 시각화를 백그라운드스프라이트로 처리할 때 필요
     
-    [SerializeField] private EventState testState; //TODO 이벤트마다 스테이트를 가져야함, 충족시 해당 이벤트의 스테이트를 변경해주도록 만들어야
+    //[SerializeField] private EventState testState; //TODO 이벤트마다 스테이트를 가져야함, 충족시 해당 이벤트의 스테이트를 변경해주도록 만들어야
 
     // 250628 빌드 오류
     // [SerializeField] private double testOxygen = StatusSystem.Instance.GetOxygen();
@@ -53,7 +53,7 @@ public class ShelterUI : MonoBehaviour
         ShelterMenu[ShelterMenuID].SetActive(true);
         Debug.Log($"{ShelterMenuID.ToString()} UI Active");
 
-        EventCompleteBtnSwitcher(testState);
+        //EventCompleteBtnSwitcher(testState);
     }
     public void DeactiveUI(int ShelterMenuID)
     {
@@ -73,7 +73,7 @@ public class ShelterUI : MonoBehaviour
         //Tabs [패널탭] 0:이벤트, 1:맵, 2:제작
         //TabButtons(이미지변경용엘리먼트) [패널탭] 0:이벤트, 1:맵, 2:제작 
 
-        EventCompleteBtnSwitcher(testState);
+        //EventCompleteBtnSwitcher(testState);
 
         foreach (GameObject go in Tabs)
         {
@@ -186,41 +186,41 @@ public class ShelterUI : MonoBehaviour
     }
 
 
-    public void EventCompleteBtnSwitcher(EventState state)
-    {
-        //버튼엘리먼트 0:완료불가, 1:완료가능, 2:완료됨
-        foreach (GameObject go in CompleteBtn)
-        {
-            go.SetActive(false); //일단 비활성화 초기화 후,
-        }
+    //public void EventCompleteBtnSwitcher(EventState state)
+    //{
+    //    //버튼엘리먼트 0:완료불가, 1:완료가능, 2:완료됨
+    //    foreach (GameObject go in CompleteBtn)
+    //    {
+    //        go.SetActive(false); //일단 비활성화 초기화 후,
+    //    }
 
-        CompleteBtn[(int)state].SetActive(true); // 배열에담긴버튼과 상태에 따라 액티브
-    }
+    //    CompleteBtn[(int)state].SetActive(true); // 배열에담긴버튼과 상태에 따라 액티브
+    //}
 
-    public void EventCompleteBtn(int CompleteBtnID)
-    {
-        //TODO 이벤트매니저에서 이벤트완료시 처리되는 함수를 호출 = 종료효과 등
+    //public void EventCompleteBtn(int CompleteBtnID)
+    //{
+    //    //TODO 이벤트매니저에서 이벤트완료시 처리되는 함수를 호출 = 종료효과 등
 
-        foreach(GameObject go in CompleteBtn)
-        {
-            //기존버튼을 비활성화 후
-            go.SetActive(false);
-            //완료됨 버튼을 활성화
-            CompleteBtn[2].SetActive(true);
-        }
+    //    foreach(GameObject go in CompleteBtn)
+    //    {
+    //        //기존버튼을 비활성화 후
+    //        go.SetActive(false);
+    //        //완료됨 버튼을 활성화
+    //        CompleteBtn[2].SetActive(true);
+    //    }
         
-        //TODO 이벤트매니저에 이벤트의 상태를 완료됨으로 변경.
-        //TODO 이벤트 리스트 버튼을 회색처리해주고 정렬을 밑으로...
-    }
+    //    //TODO 이벤트매니저에 이벤트의 상태를 완료됨으로 변경.
+    //    //TODO 이벤트 리스트 버튼을 회색처리해주고 정렬을 밑으로...
+    //}
 
-    //완료,완료불가,완료됨 버튼의 상태 열거형
-    public enum EventState
-    {
-        //상태 변수명 나중에 다시 통일
-        CanNotComplete,
-        CanComplete,
-        AlreadyComplted
-    }
+    ////완료,완료불가,완료됨 버튼의 상태 열거형
+    //public enum EventState
+    //{
+    //    //상태 변수명 나중에 다시 통일
+    //    CanNotComplete,
+    //    CanComplete,
+    //    AlreadyComplted
+    //}
 
     private void TonightEventDisplay()
     {

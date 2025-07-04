@@ -17,6 +17,7 @@ MonoBehaviour:
   description: "\uB099\uB8B0\uB85C \uCD95\uC804\uAE30\uAC00 \uC791\uB3D9\uC744 \uBA48\uCDC4\uB2E4.
     \uAE30\uC9C0\uAC00 \uC554\uD751\uC5D0 \uBE60\uC9C0\uAE30 \uC804\uC5D0 \uBCF5\uAD6C\uD574\uC57C
     \uD55C\uB2E4."
+  isComplete: 0
   RandomMinusDuraValue: 15
   PlusDurability: 0
   MinusDurability: 0
@@ -26,9 +27,10 @@ MonoBehaviour:
   MinusEnergyEfficiency: 0.2
   PlusOxygenEfficiency: 0
   MinusOxygenEfficiency: 0
-  requiredItemA: 
-  requiredAmountA: 0
-  requiredItemB: 
+  requiredItemA: {fileID: 11400000, guid: 2fb31ccf69057da4e9c991c32d230f2d, type: 2}
+  requiredAmountA: 1
+  requiredItemB: {fileID: 0}
   requiredAmountB: 0
   reactiveAfterEnd: 0
   dialogue: "\uBBF8\uC815(id10005)"
+  isActivated: 0

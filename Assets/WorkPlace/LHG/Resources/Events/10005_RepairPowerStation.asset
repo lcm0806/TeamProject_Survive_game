@@ -17,6 +17,8 @@ MonoBehaviour:
   description: "\uB099\uB8B0\uB85C \uCD95\uC804\uAE30\uAC00 \uC791\uB3D9\uC744 \uBA48\uCDC4\uB2E4.
     \uAE30\uC9C0\uAC00 \uC554\uD751\uC5D0 \uBE60\uC9C0\uAE30 \uC804\uC5D0 \uBCF5\uAD6C\uD574\uC57C
     \uD55C\uB2E4."
+  eventEffectDesc: "\uBC30\uD130\uB9AC \uCDA9\uC804 \uD6A8\uC728 -20%"
+  eventRquirementDesc: "\uCD95\uC804\uC18C \uC218\uB9AC \uD0A4\uD2B8 1\uAC1C"
   isComplete: 0
   RandomMinusDuraValue: 15
   PlusDurability: 0

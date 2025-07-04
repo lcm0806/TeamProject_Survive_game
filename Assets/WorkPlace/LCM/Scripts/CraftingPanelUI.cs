@@ -29,6 +29,12 @@ public class CraftingPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _energyCostText;
     [SerializeField] private Button _craftButton;
 
+    [Header("Pagination Settings")]
+    [SerializeField] private int _recipesPerPage = 13; // 한 페이지당 보여줄 레시피 수
+    private int _currentPage = 0; // 현재 페이지 (0부터 시작)
+    public Button _nextPageButton; // 다음 페이지 버튼
+    public Button _previousPageButton; // 이전 페이지 버튼
+
 
     private Recipe _currentSelectedRecipe; // 현재 선택된 레시피
 
@@ -63,12 +69,26 @@ public class CraftingPanelUI : MonoBehaviour
             Debug.LogWarning("openStorageButton이 CraftingPanelUI 스크립트에 할당되지 않았습니다.");
         }
 
+        if (_nextPageButton != null)
+        {
+            _nextPageButton.onClick.AddListener(GoToNextPage);
+        }
+        if (_previousPageButton != null)
+        {
+            _previousPageButton.onClick.AddListener(GoToPreviousPage);
+        }
+        else
+        {
+            Debug.LogWarning("페이지네이션 버튼이 할당되지 않았습니다. _nextPageButton 또는 _previousPageButton.");
+        }
+
 
     }
 
     private void OnEnable()
     {
         // SampleCraftingUIController의 OnEnable 내용 통합
+        _currentPage = 0;
         PopulateCraftingList();
         _craftingDetailPanel.SetActive(false);
         _currentSelectedRecipe = null;
@@ -137,9 +157,18 @@ public class CraftingPanelUI : MonoBehaviour
         if (_craftingListContent == null) { Debug.LogError("_craftingListContent가 할당되지 않았습니다!"); return; }
         if (_craftingManager == null) { Debug.LogError("CraftingManager가 할당되지 않았습니다!"); return; }
 
-        foreach (Recipe recipe in _craftingManager.AllCraftingRecipes)
+        List<Recipe> allRecipes = _craftingManager.AllCraftingRecipes;
+        int totalRecipes = allRecipes.Count;
+
+        // 페이지 계산
+        int startIndex = _currentPage * _recipesPerPage;
+        int endIndex = Mathf.Min(startIndex + _recipesPerPage, totalRecipes);
+
+
+        for (int i = startIndex; i < endIndex; i++)
         {
-            if (recipe.craftedItem == null) { Debug.LogWarning($"레시피 '{recipe.name}'에 제작 아이템이 할당되지 않았습니다. 이 레시피는 건너뜝니다."); continue; }
+            Recipe recipe = allRecipes[i];
+            if (recipe.craftedItem == null) { Debug.LogWarning($"레시피 '{recipe.name}'에 제작 아이템이 할당되지 않았습니다. 이 레시피는 건너뜁니다."); continue; }
 
             GameObject slotGO = Instantiate(_craftingItemSlotPrefab, _craftingListContent);
             _instantiatedRecipeSlots.Add(slotGO);
@@ -150,6 +179,8 @@ public class CraftingPanelUI : MonoBehaviour
 
             uiSlot.SetUI(recipe, _craftingManager);
         }
+
+        UpdatePaginationButtons();
     }
 
     private void DisplayRecipeDetails(Recipe recipe)
@@ -197,7 +228,7 @@ public class CraftingPanelUI : MonoBehaviour
 
         if (_energyCostText != null)
         {
-            string energyStatus = $"전력 소모: {recipe.energyCost}";
+            string energyStatus = $"제작시 전력량: {recipe.energyCost}";
             if (StatusSystem.Instance != null && StatusSystem.Instance.GetEnergy() < recipe.energyCost)
             {
                 _energyCostText.color = Color.red; // 전력이 부족하면 빨간색으로 표시
@@ -247,5 +278,41 @@ public class CraftingPanelUI : MonoBehaviour
     {
         foreach (GameObject go in _instantiatedRecipeSlots) { Destroy(go); }
         _instantiatedRecipeSlots.Clear();
+    }
+
+    public void GoToNextPage()
+    {
+        int totalRecipes = _craftingManager.AllCraftingRecipes.Count;
+        int totalPages = Mathf.CeilToInt((float)totalRecipes / _recipesPerPage);
+
+        if (_currentPage < totalPages - 1) // 마지막 페이지가 아니면
+        {
+            _currentPage++;
+            PopulateCraftingList(); // 목록 다시 그리기
+        }
+    }
+
+    public void GoToPreviousPage()
+    {
+        if (_currentPage > 0) // 첫 페이지가 아니면
+        {
+            _currentPage--;
+            PopulateCraftingList(); // 목록 다시 그리기
+        }
+    }
+
+    private void UpdatePaginationButtons()
+    {
+        int totalRecipes = _craftingManager.AllCraftingRecipes.Count;
+        int totalPages = Mathf.CeilToInt((float)totalRecipes / _recipesPerPage);
+
+        if (_previousPageButton != null)
+        {
+            _previousPageButton.interactable = (_currentPage > 0); // 첫 페이지가 아니면 활성화
+        }
+        if (_nextPageButton != null)
+        {
+            _nextPageButton.interactable = (_currentPage < totalPages - 1); // 마지막 페이지가 아니면 활성화
+        }
     }
 }

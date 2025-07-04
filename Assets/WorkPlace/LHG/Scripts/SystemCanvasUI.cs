@@ -84,15 +84,21 @@ public class SystemCanvasUI : MonoBehaviour
         StatusSystem.Instance.NextCurrentDay();
         // 탐색 여부
         StatusSystem.Instance.SetIsToDay(false);
-        
-        
 
-        // TODO: 이벤트 - 부정 효과
-        // EventManager.Instance.EventEffect(dddd());
 
+
+        // 부정효과 날짜넘어가기직전 시점 *250704 12:30*
+        foreach (GameEventData data in EventManager.Instance.CurEvents) //나중에 다시 읽어보기(학습)
+        {
+            EventManager.Instance.EventEffect(data);
+        }
         
         // 씬이동 및 저장
         SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
+
+        // 새로운 날의 시작(이벤트들을 발생하는 시점) *250704 12:30*
+        EventManager.Instance.EventStart();
+
         LoadingSceneBG[0].SetActive(false);
     }
 

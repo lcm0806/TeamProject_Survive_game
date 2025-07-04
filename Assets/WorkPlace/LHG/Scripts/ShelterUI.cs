@@ -205,6 +205,7 @@ public class ShelterUI : MonoBehaviour
                 else
                 {
                     Debug.Log("보유산소 100미만");
+                    SystemCanvasUI.ExitWithEnoughOxygenTextDisplay();
                     foreach (GameObject go in ExitShelterCases)
                     {
                         go.SetActive(false);

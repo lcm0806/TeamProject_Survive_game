@@ -20,11 +20,29 @@ public class SystemCanvasUI : MonoBehaviour
     private int currentIndex;
 
     // 사용안하는 함수 주석처리
-    // public void ExitWithEnoughOxygenTextDisplay()
-    // {
-        // ExitWithEnoughOxygenText[0].SetText("탐색을 시작하겠습니까?\r\n하루에 한번만 탐색이 가능합니다.\n산소를 100 소모합니다.");
-        // ExitWithEnoughOxygenText[0].SetText($"탐색을 시작하겠습니까?{System.Environment.NewLine}하루에 한번만 탐색이 가능합니다.{System.Environment.NewLine}산소를 100 소모합니다.");
-    // }
+    public void ExitWithEnoughOxygenTextDisplay()
+    {
+        ExitWithNotEnoughOxygenText[0].SetText($"산소를 {StatusSystem.Instance.GetOxygen()} 소모해 탐색에 나갑니다.\r\n탐색은 하루에 한번만 가능합니다.\r\n정말로 나가시겠습니까?");
+    }
+    
+    public void ExitNotWithEnoughOxygenYes()
+    {
+        //산소를 현재 가지고있는 산소 만큼 제거
+        StatusSystem.Instance.SetMinusOxygen(StatusSystem.Instance.GetOxygen());
+        
+        // 탐색한걸로 세팅 
+        StatusSystem.Instance.SetIsToDay(true);
+        
+        // Singleton null 체크 추가
+        if (SceneSystem.Instance != null)
+        {
+            SceneSystem.Instance.LoadSceneWithDelay(SceneSystem.Instance.GetFarmingSceneName());
+        }
+        else
+        {
+            Debug.LogError("SceneSystem Instance is null!");
+        }
+    }
 
     public void ExitWithEnoughOxygenYes()
     {

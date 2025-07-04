@@ -18,19 +18,23 @@ MonoBehaviour:
     \uC811\uADFC \uC911\uC774\uB2E4. \uC804\uC790\uAE30\uAE30\uC5D0 \uC2EC\uAC01\uD55C
     \uD53C\uD574\uB97C \uC904 \uC218 \uC788\uC73C\uB2C8, \uBBF8\uB9AC \uB300\uBE44\uD574
     \uB450\uC790."
+  eventEffectDesc: "\uB9E4\uC77C \uBC24 \uC0B0\uC18C -50"
+  eventRquirementDesc: "\uC9C0\uBD95\uC870\uAC01 1\uAC1C, \uCC28\uB2E8\uB9CC 1\uAC1C"
+  isComplete: 0
   RandomMinusDuraValue: 0
   PlusDurability: 0
   MinusDurability: 0
   MinusOxygen: 50
   MinusEnergy: 0
-  PlusBatteryEfficiency: 0
-  MinusBatteryEfficiency: 0
+  PlusEnergyEfficiency: 0
+  MinusEnergyEfficiency: 0
   PlusOxygenEfficiency: 0
   MinusOxygenEfficiency: 0
-  requiredItemA: 
-  requiredAmountA: 0
-  requiredItemB: 
+  requiredItemA: {fileID: 11400000, guid: 1ef04d9095b4b234f9ffe7153ea7df60, type: 2}
+  requiredAmountA: 1
+  requiredItemB: {fileID: 0}
   requiredAmountB: 0
   reactiveAfterEnd: 0
   dialogue: "\uAC15\uB825\uD55C \uD0DC\uC591\uD48D\uC73C\uB85C \uC778\uD574 \uC0B0\uC18C\uAC00
     \uC678\uBD80\uB85C \uC720\uCD9C\uB418\uC5C8\uB2E4..."
+  isActivated: 0

@@ -29,6 +29,8 @@ public class EventUI : MonoBehaviour
         CanCompleteBtns.onClick.RemoveAllListeners();
         mainUIEventTitle.text = data.title;
         mainUIEventDesc.text = data.description;
+        mainUIEventEffectName.text = data.eventEffectDesc;
+        mainUIEEventRequireItemName.text = data.eventRquirementDesc;
         EventClearDetermine(data);
         CanCompleteBtns.onClick.AddListener(() => EventClearOnUI(data));
         eventIndex = _eventIndex;
@@ -57,5 +59,6 @@ public class EventUI : MonoBehaviour
         EventManager.Instance.EventClear(data, eventIndex);
     }
 
+    
     
 }

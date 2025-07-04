@@ -20,7 +20,7 @@ public class EventManager : MonoBehaviour
     [SerializeField] private Transform eventContents;
     [SerializeField] private Button eventButtonPrefab;
     [SerializeField] private EventUI eventUI;
-
+    
 
     ////참조연결 지붕조각 연결하기 **테스트용코드 반드시 삭제**
     //[SerializeField] Item testItem;
@@ -42,6 +42,15 @@ public class EventManager : MonoBehaviour
 
     private void Start()
     {
+        // 너무 빨리 불러와서 널 오류나옴 
+        // EventStart();
+        StartCoroutine(DelayedEventStart());
+    }
+    
+    // 250705 코루틴 추가
+    private IEnumerator DelayedEventStart()
+    {
+        yield return new WaitUntil(() => Storage.Instance != null); //대기
         EventStart();
     }
 
@@ -179,8 +188,22 @@ public class EventManager : MonoBehaviour
     }
 
     // 이벤트가 완료가능인지 판별
-    public bool DetermineEventComplete(GameEventData data) 
+    public bool DetermineEventComplete(GameEventData data)
     {
+        // null 오류
+        if (data == null)
+        {
+            Debug.LogError("GameEventData is null!");
+            return false;
+        }
+
+        // null 오류
+        if (Storage.Instance == null)
+        {
+            Debug.LogError("Storage.Instance is null!");
+            return false;
+        }
+
         if (data.requiredItemA != null && data.requiredItemB == null)
             return data.requiredAmountA <= Storage.Instance.GetItemCount(data.requiredItemA);
 

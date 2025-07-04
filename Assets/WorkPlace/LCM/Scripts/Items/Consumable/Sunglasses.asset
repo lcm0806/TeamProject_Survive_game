@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sunglasses
   description: "\uC36C\uAE00\uB77C\uC2A4\uC774\uB2E4."
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: f87cf12a73a70cd4e83fa083f93247cd, type: 3}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}
   equipmentPrefab: {fileID: 0}

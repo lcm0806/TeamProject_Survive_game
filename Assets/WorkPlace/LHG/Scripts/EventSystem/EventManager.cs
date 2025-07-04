@@ -47,7 +47,8 @@ public class EventManager : MonoBehaviour
 
         //**테스트용 코드 반드시 삭제**
         Storage.Instance.AddItemToStorage(testItem, 1);
-        Debug.Log($"{testItem.name}창고에 추가됨");
+        // 250704 프롤로그 스킵시  오류나서 주석처리
+        // Debug.Log($"{testItem.name}창고에 추가됨");
         //**테스트용 코드 반드시 삭제**
     }
 

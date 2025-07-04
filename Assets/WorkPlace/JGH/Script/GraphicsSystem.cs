@@ -40,6 +40,9 @@ public class GraphicsSystem : Singleton<GraphicsSystem>
     protected override void Awake()
     {
         base.Awake();
+        
+        // 해상도 지정
+        Screen.SetResolution(1920, 1080, true);
     }
         
 }

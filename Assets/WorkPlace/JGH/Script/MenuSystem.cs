@@ -641,7 +641,8 @@ public class MenuSystem : Singleton<MenuSystem>
         if (StatusSystem.Instance != null)
         {
             StatusSystem.Instance.SetCurrentDay(1);
-            StatusSystem.Instance.SetOxygen(100f);
+            // StatusSystem.Instance.SetOxygen(100f);
+            StatusSystem.Instance.SetOxygen(90f);
             StatusSystem.Instance.SetEnergy(300f);
             StatusSystem.Instance.SetDurability(100f);
             StatusSystem.Instance.SetIsToDay(false);
@@ -713,6 +714,7 @@ public class MenuSystem : Singleton<MenuSystem>
     private void OnClickBackToMenuYes()
     {
         AudioSystem.Instance.StopBGM();
+        AudioSystem.Instance.PlayBGMByName("SwingJazzMarsMellow");
         
         SceneSystem.Instance.LoadSceneWithCallback(SceneSystem.Instance.GetTitleSceneName(), () =>
         {

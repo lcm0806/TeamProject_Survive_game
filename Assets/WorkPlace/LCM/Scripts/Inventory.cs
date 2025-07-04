@@ -6,6 +6,7 @@ using DesignPattern;
 using System;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class Inventory : Singleton<Inventory>
 {
@@ -709,6 +710,7 @@ public class Inventory : Singleton<Inventory>
                         for (int k = 0; k < quantity; k++)
                         {
                             //airTank.Use(PlayerManager.Instance.Player); // AirTankItem 사용
+                            StatusSystem.Instance.SetPlusOxygen(airTank.OxygenRestoreAmount);
                             Debug.Log("에어탱크사용");
                         }
                         hotbarSlots[i].ClearSlot();
@@ -722,6 +724,7 @@ public class Inventory : Singleton<Inventory>
                         for (int k = 0; k < quantity; k++)
                         {
                             // batteryPack.Use(PlayerManager.Instance.Player); // 실제 BatteryPackItem 사용 로직 호출
+                            StatusSystem.Instance.SetPlusEnergy(batteryPack.ElectricRestoreAmount);
                             Debug.Log("배터리팩 사용 (핫바)"); // 임시 로그
                         }
                         hotbarSlots[i].ClearSlot();

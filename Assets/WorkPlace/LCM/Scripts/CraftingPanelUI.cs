@@ -197,7 +197,7 @@ public class CraftingPanelUI : MonoBehaviour
 
         if (_energyCostText != null)
         {
-            string energyStatus = $"전력 소모: {recipe.energyCost}";
+            string energyStatus = $"제작시 전력량: {recipe.energyCost}";
             if (StatusSystem.Instance != null && StatusSystem.Instance.GetEnergy() < recipe.energyCost)
             {
                 _energyCostText.color = Color.red; // 전력이 부족하면 빨간색으로 표시

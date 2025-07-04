@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76ed9cb9bcaabd4ba31d384a6d907ce, type: 3}
+  m_Name: EndingSpaceShip
+  m_EditorClassIdentifier: 
+  craftedItem: {fileID: 11400000, guid: 8e7d2b183b1e935468af5aa607ff4e97, type: 2}
+  craftedAmount: 1
+  requiredMaterials:
+  - materialItem: {fileID: 11400000, guid: 0e75b6e6f237d6d46acde45b0e4cd9d5, type: 2}
+    quantity: 2
+  - materialItem: {fileID: 11400000, guid: d7abb8f3714d5924eaa92f25dddd677b, type: 2}
+    quantity: 1
+  - materialItem: {fileID: 11400000, guid: dcb9d8f999db6c8428a5d9e970de5fe7, type: 2}
+    quantity: 1
+  - materialItem: {fileID: 11400000, guid: 2e8ad88021d9c3446aa895c9854fef94, type: 2}
+    quantity: 5
+  - materialItem: {fileID: 11400000, guid: 7fdc3ce51dcc7ef4686dac2e29d61f16, type: 2}
+    quantity: 2
+  description: EndingItem
+  energyCost: 10

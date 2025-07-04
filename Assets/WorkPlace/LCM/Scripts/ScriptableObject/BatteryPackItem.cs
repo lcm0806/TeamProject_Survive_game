@@ -7,7 +7,7 @@ public class BatteryPackItem : ConsumableItem
 {
     [Header("Battery Pack Specifics")]
     [Tooltip("이 아이템 사용 시 회복될 전기량입니다.")]
-    public float ElectricRestoreAmount;
+    public double ElectricRestoreAmount;
 
     public override void Use(GameObject user)
     {

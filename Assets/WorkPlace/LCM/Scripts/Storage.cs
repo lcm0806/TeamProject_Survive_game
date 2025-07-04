@@ -180,4 +180,19 @@ public class Storage : Singleton<Storage>
             Debug.LogWarning($"창고에서 '{itemData.itemName}' {quantityToRemove}개를 모두 제거할 수 없었습니다. 충분한 수량이 없습니다.");
         }
     }
+
+    public bool HasItem(Item itemData)
+    {
+        if(itemData == null) return false;
+
+        foreach(var slot in storageSlots)
+        {
+            if(slot.myItemData == itemData && slot.myItemUI != null && slot.myItemUI.CurrentQuantity > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

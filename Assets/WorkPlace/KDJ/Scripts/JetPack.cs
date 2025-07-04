@@ -15,16 +15,7 @@ public class JetPack : MonoBehaviour
 
     private void Awake()
     {
-        PlayerManager.Instance.IsUpgraded[0] = _isJetPackOn;
-
-        if (PlayerManager.Instance.IsUpgraded[0])
-        {
-            _jetPackObject.SetActive(true);
-        }
-        else
-        {
-            _jetPackObject.SetActive(false);
-        }
+        
     }
 
     private void Update()
@@ -47,7 +38,7 @@ public class JetPack : MonoBehaviour
     /// <param name="camForward">카메라 정면 방향</param>
     public Vector3 UseUpgrade(Vector3 camForward)
     {
-        if (!PlayerManager.Instance.IsUpgraded[0] || PlayerManager.Instance.AirGauge.Value <= 0) return Vector3.zero;
+        if (PlayerManager.Instance.AirGauge.Value <= 0) return Vector3.zero;
 
         // 제트팩 사용 시 0.5초당 플레이어의 산소 1 감소
         

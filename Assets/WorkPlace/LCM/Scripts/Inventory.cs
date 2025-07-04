@@ -660,7 +660,7 @@ public class Inventory : Singleton<Inventory>
         if (Storage.Instance == null)
         {
             // 이 로그가 뜬다면, Storage가 Inventory보다 늦게 초기화된 것입니다.
-            Debug.LogError("Inventory: Storage.Instance가 OnSceneLoaded 시점에 아직 초기화되지 않았습니다! 아이템 이동 불가.");
+            //Debug.LogError("Inventory: Storage.Instance가 OnSceneLoaded 시점에 아직 초기화되지 않았습니다! 아이템 이동 불가.");
             // 여기서 return하면 MoveAllInventoryItemsToStorage()는 호출되지 않습니다.
             // Script Execution Order를 조정하여 Storage가 먼저 초기화되도록 해야 합니다.
             return;

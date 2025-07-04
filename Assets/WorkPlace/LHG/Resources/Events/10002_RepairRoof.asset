@@ -17,19 +17,21 @@ MonoBehaviour:
   description: "\uBC24\uC0C8 \uBAB0\uC544\uCE5C \uD3ED\uD48D\uC5D0 \uC9C0\uBD95\uC774
     \uCC98\uCC38\uD788 \uBB34\uB108\uC84C\uB2E4. \uC0B0\uC18C\uAC00 \uBE60\uC838\uB098\uAC00\uAE30
     \uC804\uC5D0 \uC11C\uB458\uB7EC \uBCF5\uAD6C\uD574\uC57C \uD55C\uB2E4."
+  isComplete: 0
   RandomMinusDuraValue: 0
   PlusDurability: 0
   MinusDurability: 0
   MinusOxygen: 30
   MinusEnergy: 0
-  PlusBatteryEfficiency: 0
-  MinusBatteryEfficiency: 0
+  PlusEnergyEfficiency: 0
+  MinusEnergyEfficiency: 0
   PlusOxygenEfficiency: 0
   MinusOxygenEfficiency: 0
-  requiredItemA: 
-  requiredAmountA: 0
-  requiredItemB: 
+  requiredItemA: {fileID: 11400000, guid: d84ca822bfa17b0428dcfc97b3e00c8c, type: 2}
+  requiredAmountA: 2
+  requiredItemB: {fileID: 0}
   requiredAmountB: 0
   reactiveAfterEnd: 0
   dialogue: "\uCC9C\uC7A5\uC5D0 \uB6AB\uB9B0 \uAD6C\uBA4D\uC5D0\uC11C \uC0B0\uC18C\uAC00
     \uBE60\uC838 \uB098\uAC04\uB2E4.."
+  isActivated: 0

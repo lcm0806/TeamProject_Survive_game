@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
   m_Name: SpaceShip
   m_EditorClassIdentifier: 
-  itemName: New Item
-  description: A basic item.
+  itemName: "\uC6B0\uC8FC\uC120 \uC911\uC694 \uBD80\uD488"
+  description: "\uC6B0\uC8FC\uC120 \uC911\uC694 \uBD80\uD488\uC774\uB2E4."
   icon: {fileID: 0}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}

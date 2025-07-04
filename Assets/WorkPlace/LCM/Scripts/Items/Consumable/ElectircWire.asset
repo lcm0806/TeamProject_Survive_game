@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
   m_Name: ElectircWire
   m_EditorClassIdentifier: 
-  itemName: New Item
-  description: A basic item.
+  itemName: SunBarrier
+  description: "\uD0DC\uC591\uCC28\uB2E8\uB9C9\uC774\uB2E4"
   icon: {fileID: 0}
   WorldPrefab: {fileID: 0}
   HandleItem: {fileID: 0}

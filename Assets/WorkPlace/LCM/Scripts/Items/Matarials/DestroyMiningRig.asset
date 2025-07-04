@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80c94433e8ebb464da247dcb2b096056, type: 3}
   m_Name: DestroyMiningRig
   m_EditorClassIdentifier: 
-  itemName: New Item
-  description: A basic item.
-  icon: {fileID: 0}
-  WorldPrefab: {fileID: 0}
-  HandleItem: {fileID: 0}
+  itemName: "\uACE0\uC7A5\uB09C\uCC44\uAD74\uAE30"
+  description: "\uACE0\uC7A5\uB09C\uCC44\uAD74\uAE30\uC774\uB2E4. "
+  icon: {fileID: 21300000, guid: fe489cbfbf7ddb24d85d2047b053261c, type: 3}
+  WorldPrefab: {fileID: 3752825578907025319, guid: b92a26f3684bc8242a96c99c8778b6bc,
+    type: 3}
+  HandleItem: {fileID: 3752825578907025319, guid: 86fa091089a84b3459516bc1392c17b3,
+    type: 3}
   equipmentPrefab: {fileID: 0}
   isStackable: 0
   maxStackSize: 99

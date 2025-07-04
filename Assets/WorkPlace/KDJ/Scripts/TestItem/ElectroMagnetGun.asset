@@ -22,8 +22,9 @@ MonoBehaviour:
   equipmentPrefab: {fileID: 0}
   isStackable: 0
   maxStackSize: 99
+  upgradeType: 2
   miningPower: 1
   toolType: 0
   toolObject: {fileID: 0}
-  toolAction: {fileID: 8215819011452811507, guid: a168851e2628113409393c05d15f1ee9,
+  toolAction: {fileID: 5069537747549054294, guid: 297a47447daf78c4d8fc43c9daa765e2,
     type: 3}

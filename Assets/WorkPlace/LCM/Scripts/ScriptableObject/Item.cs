@@ -26,8 +26,18 @@ public class Item : ScriptableObject
     public bool isStackable = false; // 이 아이템이 스택 가능한지 여부
     public int maxStackSize = 99;
 
+    public PlayerUpgradeType upgradeType = PlayerUpgradeType.None;
+
     public virtual void Use(GameObject user)
     {
         Debug.Log($"{user.name} Used {itemName}");
     }
+}
+
+public enum PlayerUpgradeType
+{
+    None = 0,
+    JetPack = 1,
+    ElecMiningRig = 2,
+    MiningRigAkimbo = 3
 }

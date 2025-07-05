@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShelterEntrance : Structure
 {
-    [Tooltip("SceneSystem¿¡ µî·ÏµÈ ¡®½©ÅÍ¡¯ ¾ÀÀ¸·Î µ¹¾Æ°©´Ï´Ù.")]
+    [Tooltip("SceneSystemï¿½ï¿½ ï¿½ï¿½Ïµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¡ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Æ°ï¿½ï¿½Ï´ï¿½.")]
     [SerializeField] private ResultUI _resultUI;
 
     private int _interactCount = 0;
@@ -15,11 +15,21 @@ public class ShelterEntrance : Structure
 
     private void LateUpdate()
     {
-        if (MenuSystem.Instance.PauseMenu.activeSelf == false && SampleUIManager.Instance.inventoryPanel.activeSelf == false)
-            if (DayScriptSystem.Instance.DayScript.activeSelf == false && Cursor.lockState != CursorLockMode.Locked)
+        // MenuSystem ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½Ç´ï¿½ PauseMenuï¿½ï¿½ nullï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (MenuSystem.Instance == null || MenuSystem.Instance.PauseMenu == null)
+            return;
+
+        // DayScriptSystem ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½Ç´ï¿½ DayScriptï¿½ï¿½ nullï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (DayScriptSystem.Instance == null || DayScriptSystem.Instance.DayScript == null)
+            return;
+
+        if (!MenuSystem.Instance.PauseMenu.activeSelf)
+        {
+            if (!DayScriptSystem.Instance.DayScript.activeSelf && Cursor.lockState != CursorLockMode.Locked)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
+        }
     }
 
     public override void Interact()

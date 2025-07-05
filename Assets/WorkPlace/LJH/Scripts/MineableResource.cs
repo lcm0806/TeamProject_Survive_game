@@ -1,35 +1,35 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MineableResource : MonoBehaviour
 {
-    [Header("±¤¹° ¼³Á¤")]
+    [Header("ê´‘ë¬¼ ì„¤ì •")]
     public int maxHealth;
-    private float currentHealth;        //float ·Î! (¿¬¼Ó µ¥¹ÌÁö¿ë)
+    private float currentHealth;        //float ë¡œ! (ì—°ì† ë°ë¯¸ì§€ìš©)
 
-    [Header("µå·Ó ¼³Á¤")]
+    [Header("ë“œë¡­ ì„¤ì •")]
     public GameObject lootPrefab;
     public float lootLaunchForce = 5f;
 
-    [Header("ÆÄ±« ¿¬Ãâ")]
+    [Header("íŒŒê´´ ì—°ì¶œ")]
     public float shrinkDuration = 2f;
 
     /* -------------------- Unity -------------------- */
     private void Start()
     {
-        // HpCount ÄÄÆ÷³ÍÆ® ÂüÁ¶
+        // HpCount ì»´í¬ë„ŒíŠ¸ ì°¸ì¡°
         HpCount hpCount = GetComponent<HpCount>();
 
         if (hpCount != null)
         {
-            maxHealth = hpCount.InitialHp;       // ÃÖ´ë Ã¼·Â ¼³Á¤
-            currentHealth = maxHealth;           // ÇöÀç Ã¼·Â ÃÊ±âÈ­
+            maxHealth = hpCount.InitialHp;       // ìµœëŒ€ ì²´ë ¥ ì„¤ì •
+            currentHealth = maxHealth;           // í˜„ì¬ ì²´ë ¥ ì´ˆê¸°í™”
             UpdateEmissionColor();
         }
         else
         {
-            Debug.LogWarning($"{gameObject.name}¿¡ HpCount ÄÄÆ÷³ÍÆ®°¡ ¾ø½À´Ï´Ù. µğÆúÆ® maxHealth({maxHealth}) »ç¿ë.");
+            Debug.LogWarning($"{gameObject.name}ì— HpCount ì»´í¬ë„ŒíŠ¸ê°€ ì—†ìŠµë‹ˆë‹¤. ë””í´íŠ¸ maxHealth({maxHealth}) ì‚¬ìš©.");
             currentHealth = maxHealth;
         }
     }
@@ -47,7 +47,7 @@ public class MineableResource : MonoBehaviour
         if (currentHealth <= 0f)
         {
             UpdateEmissionColor();
-            Debug.Log($"{gameObject.name} Ã¤±¼ ¿Ï·á!");
+            Debug.Log($"{gameObject.name} ì±„êµ´ ì™„ë£Œ!");
         }
     }
 
@@ -56,30 +56,44 @@ public class MineableResource : MonoBehaviour
     {
         if (lootPrefab == null) return;
 
-        float chance = Random.value; // 0.0 ~ 1.0
+        // 10â€¯% í™•ë¥ 
+        if (Random.value > 0.1f) return;
 
-        if (chance > 0.1f) return; // 10% È®·ü¸¸ Åë°ú
+        /* 1)â€‰ë“œë¡­ ìœ„ì¹˜ ê³„ì‚° */
+        Vector3 spawnPos;
+        Vector3 launchDir;
 
-        // 1) »ı¼º À§Ä¡: À§·Î 1.2m + ¼öÆò ¡¾0.5m ·£´ı
-        Vector3 spread = Random.insideUnitSphere * 1.0f;
-        spread.y = Mathf.Abs(spread.y);          // ¾Æ·¡·Î ¶³¾îÁöÁö ¾Ê°Ô
-        Vector3 spawnPos = transform.position + Vector3.up * 1.2f + spread;
+        // íŒ€ì›ì´ ì €ì¥í•´ë‘” RaycastHit ì‚¬ìš©
+        RaycastHit hit = PlayerManager.Instance.HitInfo;
 
+        if (hit.collider != null && hit.collider.gameObject == gameObject)
+        {
+            // ì¶©ëŒ ì§€ì ì—ì„œ ë²•ì„  ë°©í–¥ìœ¼ë¡œ 0.3â€¯m ë°€ì–´ì„œ ìƒì„±
+            spawnPos = hit.point + hit.normal * 0.3f;
+            launchDir = (hit.normal + Vector3.up * 0.5f).normalized; // í‘œë©´ ë°”ê¹¥+ìœ„ìª½
+        }
+        else
+        {
+            // Fallback: ê¸°ì¡´ ë°©ì‹
+            Vector3 spread = Random.insideUnitSphere * 1.0f;
+            spread.y = Mathf.Abs(spread.y);
+            spawnPos = transform.position + Vector3.up * 1.2f + spread;
+            launchDir = (Vector3.up * 0.8f + Random.insideUnitSphere * 0.2f).normalized;
+        }
+
+        /* 2)â€‰Instantiate & ì¶©ëŒ ë¬´ì‹œ */
         GameObject loot = Instantiate(lootPrefab, spawnPos, Quaternion.identity);
 
-        // 2) ±¤¹° º»Ã¼¿Í Ãæµ¹ ¹«½Ã
         if (TryGetComponent<Collider>(out var parentCol) &&
             loot.TryGetComponent<Collider>(out var lootCol))
         {
             Physics.IgnoreCollision(parentCol, lootCol);
         }
 
-        // 3) À§ÂÊ °¡ÁßÄ¡ Èû Àû¿ë
+        /* 3)â€‰í˜ ì ìš© */
         if (loot.TryGetComponent<Rigidbody>(out var rb))
         {
-            Vector3 dir = (Vector3.up * 0.8f + Random.insideUnitSphere * 0.2f).normalized;
-            dir.y = Mathf.Max(dir.y, 0.5f);            // ÃÖ¼Ò À§·Î 0.5 ÀÌ»ó
-            rb.AddForce(dir * lootLaunchForce, ForceMode.Impulse);
+            rb.AddForce(launchDir * lootLaunchForce, ForceMode.Impulse);
         }
     }
 
@@ -94,7 +108,7 @@ public class MineableResource : MonoBehaviour
         Material[] materials = renderer.materials;
         Color emitColor = hpCount.GetEmitColor(Mathf.RoundToInt(currentHealth));
 
-        // Á¦¿ÜÇÒ ¸ÓÆ¼¸®¾ó ÀÌ¸§µé (Á¤È®È÷ ÀÏÄ¡ÇÏ´Â ÀÌ¸§)
+        // ì œì™¸í•  ë¨¸í‹°ë¦¬ì–¼ ì´ë¦„ë“¤ (ì •í™•íˆ ì¼ì¹˜í•˜ëŠ” ì´ë¦„)
         string[] excludeMaterialNames = { "rockTrack (Instance)", "rock (Instance)", "Gold Bady (Instance)" };
 
         for (int i = 0; i < materials.Length; i++)
@@ -102,7 +116,7 @@ public class MineableResource : MonoBehaviour
             Material mat = materials[i];
             string matName = mat.name;
 
-            // Á¤È®È÷ ÀÏÄ¡ÇÏ´Â ÀÌ¸§ÀÌ¸é Á¦¿Ü
+            // ì •í™•íˆ ì¼ì¹˜í•˜ëŠ” ì´ë¦„ì´ë©´ ì œì™¸
             bool isExcluded = System.Array.Exists(excludeMaterialNames, name => name == matName);
 
             if (!isExcluded && mat.HasProperty("_EmissionColor"))

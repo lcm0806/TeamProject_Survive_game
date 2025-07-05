@@ -93,6 +93,9 @@ public class ResultUI : MonoBehaviour
         _allGainElec.text = (batteryCount * 10).ToString("F1");
         _shelterRemainElec.text = shelterElec.ToString("F1");
         _shelterResultElec.text = (shelterElec + (batteryCount * 10)).ToString("F1");
+
+        // 산소만 적용
+        StatusSystem.Instance.SetPlusOxygen(remainO2);
     }
 
     private void SetGainItemList()

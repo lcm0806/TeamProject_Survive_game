@@ -11,9 +11,8 @@ public class PlayerManager : Singleton<PlayerManager>
     private Akimbo _akimboCheck;
     
     public float Speed;
-    /// <summary>
-    /// 플레이어 강화 상태를 표시하는 Bool 배열. 크기는 3. 0 = 제트팩, 1,2는 차후 추가 예정
-    /// </summary>
+    
+    public bool CanUseJetpack { get; set; } = false; // 제트팩 사용 가능 여부
     public bool IsInIntercation = false;
     public bool IsAkimbo { get; set; } = false;
     public WorldItem InteractableItem { get; set; }
@@ -54,15 +53,12 @@ public class PlayerManager : Singleton<PlayerManager>
 
     private void Init()
     {
-        AirGauge.Value = 100f;
-        ElecticGauge.Value = 100f;
         Speed = _baseSpeed;
     }
 
     private void PlayerInit()
     {
-
-
+        AirGaugeInit();
         GameObject player = Instantiate(_playerPrefab, new Vector3(255.087f, 10.225f, -123.6639f), Quaternion.identity);
 
         Player = player.GetComponent<PlayerController>();
@@ -85,5 +81,24 @@ public class PlayerManager : Singleton<PlayerManager>
         // 아킴보 상태 초기화
         IsAkimbo = false;
         _akimboCheck = null;
+    }
+
+    private void AirGaugeInit()
+    {
+        double shelterAir = StatusSystem.Instance.GetOxygen();
+
+        Debug.Log($"쉘터 산소량: {shelterAir}");
+
+        if (shelterAir > 100)
+        {
+            AirGauge.Value = 100;
+            StatusSystem.Instance.SetMinusOxygen(100);
+            Debug.Log("플레이어 산소 초기화: 100");
+            return;
+        }
+
+        AirGauge.Value = shelterAir;
+        StatusSystem.Instance.SetMinusOxygen(shelterAir);
+        Debug.Log($"플레이어 산소 초기화: {shelterAir}");
     }
 }

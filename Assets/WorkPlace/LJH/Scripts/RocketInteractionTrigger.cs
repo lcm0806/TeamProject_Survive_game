@@ -2,73 +2,28 @@ using UnityEngine;
 
 public class RocketInteractionTrigger : Structure
 {
-    public Rocket rocketDialogue; // 혹시 쓸 일이 있을 경우
-    public Item finalItem;        // 엔딩 아이템으로 사용할 ScriptableObject
+    public Rocket rocketDialogue;
+    public Item requiredFinalItem; // 인스펙터에서 세팅할 최종 제작 아이템
 
     public override void Interact()
     {
-        // UI 열기
+        // 대화 시작 시 다이얼로그 UI 활성화
         DayScriptSystem.Instance.ShowDialoguse();
 
-        // 인벤토리에 엔딩 아이템 있는지 확인
-        bool hasFinalItem = InventorySystem.Instance.HasItem(finalItem);
-
-        if (!GameState.Instance.HasFoundRocket) // 최초 발견
+        if (Storage.Instance.HasItem(requiredFinalItem))
         {
-            GameState.Instance.HasFoundRocket = true;
-
-            DayScriptSystem.Instance.SetDialogue(
-                DayScriptSystem.Instance.TriggerFirstSpaceshipScene()
-            );
+            // 엔딩 아이템이 있을 때 엔딩으로
+            DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.StartEndingSequence());
         }
-        else if (!hasFinalItem) // 아이템 없음
+        else
         {
-            DayScriptSystem.Instance.SetDialogue(
-                DayScriptSystem.Instance.TriggerSpaceshipDeniedEvent()
-            );
+            // 없을 때 제작 정보 대사 출력
+            DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.TriggerSpaceshipDeniedEvent());
         }
-        else if (!GameState.Instance.HasStartedEnding) // 아이템 있음 + 엔딩 아직 시작 안함
-        {
-            GameState.Instance.HasStartedEnding = true;
 
-            DayScriptSystem.Instance.SetDialogue(
-                DayScriptSystem.Instance.StartEndingSequence()
-            );
-
-            // 여기서 아이템 제거 로직도 추가 가능
-            // InventorySystem.Instance.RemoveItem(finalItem, 1); 
-        }
-        else // 마지막 엔딩 대사
-        {
-            DayScriptSystem.Instance.SetDialogue(
-                DayScriptSystem.Instance.EndingScript()
-            );
-        }
+        // 로켓 UI도 보여주려면 아래도 활성화
+        rocketDialogue.gameObject.SetActive(true);
     }
-    //private IEnumerator WaitForMouseClick()
-    //{
-    //    yield return null; // 1프레임 대기 (동일 프레임 클릭 무시)
-
-    //    // 마우스 버튼이 눌릴 때까지 대기
-    //    while (!Input.GetMouseButtonDown(0))
-    //        yield return null;
-        
-    //    Time.timeScale = 1f;
-    //    Cursor.lockState = CursorLockMode.Locked;
-    //    Cursor.visible = false;
-
-    //    popupActive = false;
-    //}
-
-    //private void ShowMessage(string message)
-    //{
-    //    if (UIManager.Instance != null)
-    //    {
-    //        UIManager.Instance.ShowPopup(message);
-    //    }
-    //    else
-    //    {
-    //        Debug.LogWarning("UIManager가 씬에 없습니다.");
-    //    }
-    //}
 }
+    
+

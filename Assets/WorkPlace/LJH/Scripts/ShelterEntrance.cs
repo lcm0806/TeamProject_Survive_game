@@ -15,11 +15,21 @@ public class ShelterEntrance : Structure
 
     private void LateUpdate()
     {
-        if (MenuSystem.Instance.PauseMenu.activeSelf == false)
-            if (DayScriptSystem.Instance.DayScript.activeSelf == false && Cursor.lockState != CursorLockMode.Locked)
+        // MenuSystem 인스턴스 또는 PauseMenu가 null이면 실행 안함
+        if (MenuSystem.Instance == null || MenuSystem.Instance.PauseMenu == null)
+            return;
+
+        // DayScriptSystem 인스턴스 또는 DayScript가 null이면 실행 안함
+        if (DayScriptSystem.Instance == null || DayScriptSystem.Instance.DayScript == null)
+            return;
+
+        if (!MenuSystem.Instance.PauseMenu.activeSelf)
+        {
+            if (!DayScriptSystem.Instance.DayScript.activeSelf && Cursor.lockState != CursorLockMode.Locked)
             {
                 Cursor.lockState = CursorLockMode.Locked;
             }
+        }
     }
 
     public override void Interact()

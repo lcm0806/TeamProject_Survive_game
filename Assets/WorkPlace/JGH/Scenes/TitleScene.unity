@@ -676,7 +676,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 2198364798193334946, guid: 977d34212d0044a8ca36680c3489159c,
         type: 3}
-      insertIndex: 4
+      insertIndex: 0
       addedObject: {fileID: 1992238707}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 977d34212d0044a8ca36680c3489159c, type: 3}
@@ -1411,7 +1411,7 @@ GameObject:
   - component: {fileID: 1992238706}
   - component: {fileID: 1992238705}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

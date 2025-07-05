@@ -20,7 +20,7 @@ MonoBehaviour:
   eventEffectDesc: "\uBC30\uD130\uB9AC \uCDA9\uC804 \uD6A8\uC728 -20%"
   eventRquirementDesc: "\uCD95\uC804\uC18C \uC218\uB9AC \uD0A4\uD2B8 1\uAC1C"
   isComplete: 0
-  RandomMinusDuraValue: 15
+  RandomMinusDuraValue: 0
   PlusDurability: 0
   MinusDurability: 0
   MinusOxygen: 0
@@ -34,5 +34,5 @@ MonoBehaviour:
   requiredItemB: {fileID: 0}
   requiredAmountB: 0
   reactiveAfterEnd: 0
-  dialogue: "\uBBF8\uC815(id10005)"
+  dialogue: "\uCD95\uC804\uC18C\uB97C \uC218\uB9AC\uD558\uC9C0 \uBABB\uD588\uB2E4."
   isActivated: 0

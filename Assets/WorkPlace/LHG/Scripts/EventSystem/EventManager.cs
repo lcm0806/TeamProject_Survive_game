@@ -140,15 +140,35 @@ public class EventManager : MonoBehaviour
     }
 
 
-    public void GenerateDailyEvent() 
+    public void GenerateDailyEvent()
     {
-        //중복발생불가 로직이 필요한가?
-        CurEvents.Add(eventDict[10001]);
-        CurEvents[CurEvents.Count - 1].GenerateRandomDuraValue();
-        CurEvents[CurEvents.Count - 1].isComplete = false;
+        // 중복 방지: CurEvents에 이미 id 10001이 있으면 추가 안 함
+        if (CurEvents.Any(e => e.id == 10001))
+        {
+            Debug.Log("DailyEvent(id:10001)는 이미 존재하여 중복 생성하지 않음.");
+            return;
+        }
+
+        var dailyEvent = eventDict[10001];
+        dailyEvent.GenerateRandomDuraValue();
+        dailyEvent.isComplete = false;
+
+        CurEvents.Add(dailyEvent);
         EventButtonCreate(CurEvents.Count - 1);
+
         Debug.Log("내구도 수리 이벤트 발생(매일)");
     }
+
+
+    //public void GenerateDailyEvent() 
+    //{
+    //    //중복발생불가 로직이 필요한가?
+    //    CurEvents.Add(eventDict[10001]);
+    //    CurEvents[CurEvents.Count - 1].GenerateRandomDuraValue();
+    //    CurEvents[CurEvents.Count - 1].isComplete = false;
+    //    EventButtonCreate(CurEvents.Count - 1);
+    //    Debug.Log("내구도 수리 이벤트 발생(매일)");
+    //}
 
     public void EventButtonCreate(int eventIndex)
     {
@@ -233,6 +253,8 @@ public class EventManager : MonoBehaviour
             StatusSystem.Instance.SetMinusOxygenGainMultiplier(data.MinusOxygenEfficiency);
             StatusSystem.Instance.SetMinusEnergyGainMultiplier(data.MinusEnergyEfficiency);
         }
+
+        Debug.Log($"완료여부 점검 : [EventEffect] {data.title}, isComplete: {data.isComplete}");
 
         Debug.Log($"[EventEffect] {data.title} 미완료로 패널티 적용: 산소 -{data.MinusOxygen}, 에너지 -{data.MinusEnergy}, 내구도 -{data.RandomMinusDuraValue + data.MinusDurability}");
     }

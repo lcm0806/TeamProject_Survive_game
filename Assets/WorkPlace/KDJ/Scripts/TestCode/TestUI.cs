@@ -79,7 +79,7 @@ public class TestUI : MonoBehaviour
             _space.SetActive(false);
         }
 
-        if (!PlayerManager.Instance.Player.Controller.isGrounded)
+        if (!PlayerManager.Instance.Player.Controller.isGrounded && PlayerManager.Instance.CanUseJetpack)
         {
             _shift.SetActive(true);
         }

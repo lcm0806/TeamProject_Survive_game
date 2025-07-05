@@ -453,8 +453,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "오늘은 이만 하고 쉘터로 돌아가야지…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "내일 다시 나오자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "오늘은 이만 하고 쉘터로 돌아가야지…\n내일 다시 나오자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
         };
     }
     

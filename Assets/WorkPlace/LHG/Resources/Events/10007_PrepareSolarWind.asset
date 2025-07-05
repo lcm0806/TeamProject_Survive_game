@@ -18,7 +18,7 @@ MonoBehaviour:
     \uC811\uADFC \uC911\uC774\uB2E4. \uC804\uC790\uAE30\uAE30\uC5D0 \uC2EC\uAC01\uD55C
     \uD53C\uD574\uB97C \uC904 \uC218 \uC788\uC73C\uB2C8, \uBBF8\uB9AC \uB300\uBE44\uD574
     \uB450\uC790."
-  eventEffectDesc: "\uB9E4\uC77C \uBC24 \uC0B0\uC18C -50"
+  eventEffectDesc: "\uC624\uB298 \uBC24 \uC0B0\uC18C -50"
   eventRquirementDesc: "\uC9C0\uBD95\uC870\uAC01 1\uAC1C, \uCC28\uB2E8\uB9CC 1\uAC1C"
   isComplete: 0
   RandomMinusDuraValue: 0

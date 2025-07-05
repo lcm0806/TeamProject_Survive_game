@@ -10,8 +10,6 @@ public class JetPack : MonoBehaviour
     [SerializeField] private GameObject _smokeEffect2;
 
     private float _airUsage = 0;
-    private GameObject _smokeEffectInstance1;
-    private GameObject _smokeEffectInstance2;
 
     private void Awake()
     {

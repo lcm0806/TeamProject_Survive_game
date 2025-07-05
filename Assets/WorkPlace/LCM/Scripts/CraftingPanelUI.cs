@@ -6,17 +6,17 @@ using UnityEngine.UI;
 
 public class CraftingPanelUI : MonoBehaviour
 {
-    public StorageManager storageManager; // StorageManager 스크립트 참조
+    public StorageManager storageManager; // StorageManager ?????? ????
     public Button openStorageButton;
 
     [Header("Dependencies")]
-    [SerializeField] private CraftingManager _craftingManager; // CraftingManager 참조
-    //[SerializeField] private Inventory _inventory;             // Inventory 참조
+    [SerializeField] private CraftingManager _craftingManager; // CraftingManager ????
+    //[SerializeField] private Inventory _inventory;             // Inventory ????
 
     [Header("UI References")]
-    [SerializeField] private GameObject _craftingPanel; // 전체 제작 UI를 담고 있는 부모 GameObject (이 스크립트가 붙을 GameObject 자체가 패널일 수도 있음)
-    [SerializeField] private RectTransform _craftingListContent; // 스크롤뷰의 Content
-    [SerializeField] private GameObject _craftingItemSlotPrefab; // 제작 아이템 슬롯 프리팹
+    [SerializeField] private GameObject _craftingPanel; // ??? ???? UI?? ??? ??? ???? GameObject (?? ???????? ???? GameObject ????? ?????? ???? ????)
+    [SerializeField] private RectTransform _craftingListContent; // ???????? Content
+    [SerializeField] private GameObject _craftingItemSlotPrefab; // ???? ?????? ???? ??????
 
     [Header("Detail Panel References")]
     [SerializeField] private GameObject _craftingDetailPanel;
@@ -24,49 +24,49 @@ public class CraftingPanelUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _craftedItemNameText;
     [SerializeField] private TextMeshProUGUI _craftedItemDescriptionText;
     [SerializeField] private TextMeshProUGUI _craftedItemCurrentAmountText;
-    [SerializeField] private Transform _materialListContainer; // 재료 목록이 들어갈 부모
-    [SerializeField] private GameObject _materialItemUIPrefab; // 재료 항목 UI 프리팹
+    [SerializeField] private Transform _materialListContainer; // ??? ????? ??? ????
+    [SerializeField] private GameObject _materialItemUIPrefab; // ??? ??? UI ??????
     [SerializeField] private TextMeshProUGUI _energyCostText;
     [SerializeField] private Button _craftButton;
 
     [Header("Pagination Settings")]
-    [SerializeField] private int _recipesPerPage = 13; // 한 페이지당 보여줄 레시피 수
-    private int _currentPage = 0; // 현재 페이지 (0부터 시작)
-    public Button _nextPageButton; // 다음 페이지 버튼
-    public Button _previousPageButton; // 이전 페이지 버튼
+    [SerializeField] private int _recipesPerPage = 13; // ?? ???????? ?????? ?????? ??
+    private int _currentPage = 0; // ???? ?????? (0???? ????)
+    public Button _nextPageButton; // ???? ?????? ???
+    public Button _previousPageButton; // ???? ?????? ???
 
 
-    private Recipe _currentSelectedRecipe; // 현재 선택된 레시피
+    private Recipe _currentSelectedRecipe; // ???? ????? ??????
 
-    private List<GameObject> _instantiatedRecipeSlots = new List<GameObject>(); // 생성된 레시피 슬롯 관리
-    private List<GameObject> _instantiatedMaterialUIs = new List<GameObject>(); // 생성된 재료 UI 관리
+    private List<GameObject> _instantiatedRecipeSlots = new List<GameObject>(); // ?????? ?????? ???? ????
+    private List<GameObject> _instantiatedMaterialUIs = new List<GameObject>(); // ?????? ??? UI ????
 
 
 
     private void Awake()
     {
-        // 기존 CraftingPanelUI의 Awake 내용 (만약 있었다면)
-        // Example: UI 시작 시 비활성화
-        // _craftingPanel.SetActive(false); // 만약 이 스크립트가 부모 패널이라면 필요
+        // ???? CraftingPanelUI?? Awake ???? (???? ??????)
+        // Example: UI ???? ?? ??????
+        // _craftingPanel.SetActive(false); // ???? ?? ???????? ???? ???????? ???
         // _craftingDetailPanel.SetActive(false);
 
-        // SampleCraftingUIController의 Awake 내용 통합
-        // 이 스크립트가 CraftingPanel 자체에 붙는다면 _craftingPanel 참조는 this.gameObject로 변경될 수 있습니다.
-        // 여기서는 _craftingPanel은 전체 Crafting UI를 의미한다고 가정하고 그대로 둡니다.
+        // SampleCraftingUIController?? Awake ???? ????
+        // ?? ???????? CraftingPanel ????? ?????? _craftingPanel ?????? this.gameObject?? ????? ?? ??????.
+        // ?????? _craftingPanel?? ??? Crafting UI?? ??????? ??????? ???? ????.
         if (_craftingDetailPanel != null) _craftingDetailPanel.SetActive(false);
 
-        // 안전성 체크
-        if (_craftingManager == null) { Debug.LogError("CraftingManager가 할당되지 않았습니다!", this); enabled = false; return; }
+        // ?????? ??
+        if (_craftingManager == null) { Debug.LogError("CraftingManager?? ?????? ???????!", this); enabled = false; return; }
         if (_craftButton != null) _craftButton.onClick.AddListener(OnCraftButtonClicked);
 
-        // 기존 CraftingPanelUI의 openStorageButton 연결
+        // ???? CraftingPanelUI?? openStorageButton ????
         if (openStorageButton != null)
         {
             openStorageButton.onClick.AddListener(OpenStorage);
         }
         else
         {
-            Debug.LogWarning("openStorageButton이 CraftingPanelUI 스크립트에 할당되지 않았습니다.");
+            Debug.LogWarning("openStorageButton?? CraftingPanelUI ???????? ?????? ???????.");
         }
 
         if (_nextPageButton != null)
@@ -79,7 +79,7 @@ public class CraftingPanelUI : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("페이지네이션 버튼이 할당되지 않았습니다. _nextPageButton 또는 _previousPageButton.");
+            Debug.LogWarning("??????????? ????? ?????? ???????. _nextPageButton ??? _previousPageButton.");
         }
 
 
@@ -87,7 +87,7 @@ public class CraftingPanelUI : MonoBehaviour
 
     private void OnEnable()
     {
-        // SampleCraftingUIController의 OnEnable 내용 통합
+        // SampleCraftingUIController?? OnEnable ???? ????
         _currentPage = 0;
         PopulateCraftingList();
         _craftingDetailPanel.SetActive(false);
@@ -106,7 +106,7 @@ public class CraftingPanelUI : MonoBehaviour
 
     private void OnDisable()
     {
-        // SampleCraftingUIController의 OnDisable 내용 통합
+        // SampleCraftingUIController?? OnDisable ???? ????
         if (_craftingManager != null)
         {
             _craftingManager.OnRecipeSelected -= DisplayRecipeDetails;
@@ -133,7 +133,7 @@ public class CraftingPanelUI : MonoBehaviour
         }
         else
         {
-            Debug.LogError("StorageManager 참조가 CraftingPanelUI에 할당되지 않았습니다!");
+            Debug.LogError("StorageManager ?????? CraftingPanelUI?? ?????? ???????!");
         }
     }
 
@@ -145,7 +145,7 @@ public class CraftingPanelUI : MonoBehaviour
         }
         else
         {
-            Debug.LogError("StorageManager 참조가 CraftingPanelUI에 할당되지 않았습니다!");
+            Debug.LogError("StorageManager ?????? CraftingPanelUI?? ?????? ???????!");
         }
     }
 
@@ -153,14 +153,14 @@ public class CraftingPanelUI : MonoBehaviour
     {
         ClearCraftingListSlots();
 
-        if (_craftingItemSlotPrefab == null) { Debug.LogError("_craftingItemSlotPrefab이 할당되지 않았습니다!"); return; }
-        if (_craftingListContent == null) { Debug.LogError("_craftingListContent가 할당되지 않았습니다!"); return; }
-        if (_craftingManager == null) { Debug.LogError("CraftingManager가 할당되지 않았습니다!"); return; }
+        if (_craftingItemSlotPrefab == null) { Debug.LogError("_craftingItemSlotPrefab?? ?????? ???????!"); return; }
+        if (_craftingListContent == null) { Debug.LogError("_craftingListContent?? ?????? ???????!"); return; }
+        if (_craftingManager == null) { Debug.LogError("CraftingManager?? ?????? ???????!"); return; }
 
         List<Recipe> allRecipes = _craftingManager.AllCraftingRecipes;
         int totalRecipes = allRecipes.Count;
 
-        // 페이지 계산
+        // ?????? ???
         int startIndex = _currentPage * _recipesPerPage;
         int endIndex = Mathf.Min(startIndex + _recipesPerPage, totalRecipes);
 
@@ -168,14 +168,14 @@ public class CraftingPanelUI : MonoBehaviour
         for (int i = startIndex; i < endIndex; i++)
         {
             Recipe recipe = allRecipes[i];
-            if (recipe.craftedItem == null) { Debug.LogWarning($"레시피 '{recipe.name}'에 제작 아이템이 할당되지 않았습니다. 이 레시피는 건너뜁니다."); continue; }
+            if (recipe.craftedItem == null) { Debug.LogWarning($"?????? '{recipe.name}'?? ???? ???????? ?????? ???????. ?? ??????? ??????."); continue; }
 
             GameObject slotGO = Instantiate(_craftingItemSlotPrefab, _craftingListContent);
             _instantiatedRecipeSlots.Add(slotGO);
 
             CraftingItemUISlot uiSlot = slotGO.GetComponent<CraftingItemUISlot>();
 
-            if (uiSlot == null) { Debug.LogError($"'{_craftingItemSlotPrefab.name}' 프리팹에 CraftingItemUISlot 컴포넌트가 없습니다! 확인해주세요."); Destroy(slotGO); continue; }
+            if (uiSlot == null) { Debug.LogError($"'{_craftingItemSlotPrefab.name}' ??????? CraftingItemUISlot ????????? ???????! ??????????."); Destroy(slotGO); continue; }
 
             uiSlot.SetUI(recipe, _craftingManager);
         }
@@ -193,7 +193,7 @@ public class CraftingPanelUI : MonoBehaviour
         if (recipe == null)
         {
             _craftedItemImage.sprite = null;
-            _craftedItemNameText.text = "아이템 선택 안됨";
+            _craftedItemNameText.text = "?????? ???? ???";
             _craftedItemDescriptionText.text = "";
             _craftedItemCurrentAmountText.text = "";
             ClearMaterialList();
@@ -206,7 +206,7 @@ public class CraftingPanelUI : MonoBehaviour
         if (_craftedItemDescriptionText != null) _craftedItemDescriptionText.text = recipe.description;
 
         int currentCraftedItemAmount = Storage.Instance.GetItemCount(recipe.craftedItem);
-        if (_craftedItemCurrentAmountText != null) _craftedItemCurrentAmountText.text = $"보유: {currentCraftedItemAmount}개";
+        if (_craftedItemCurrentAmountText != null) _craftedItemCurrentAmountText.text = $"????: {currentCraftedItemAmount}??";
 
         ClearMaterialList();
         foreach (var material in recipe.requiredMaterials)
@@ -217,7 +217,7 @@ public class CraftingPanelUI : MonoBehaviour
 
             MaterialItemUISlot uiSlot = materialUI.GetComponent<MaterialItemUISlot>();
 
-            if (uiSlot == null) { Debug.LogError($"'{_materialItemUIPrefab.name}' 프리팹에 MaterialItemUISlot 컴포넌트가 없습니다! 확인해주세요."); continue; }
+            if (uiSlot == null) { Debug.LogError($"'{_materialItemUIPrefab.name}' ??????? MaterialItemUISlot ????????? ???????! ??????????."); continue; }
 
             Sprite icon = material.materialItem?.icon;
             string name = material.materialItem?.itemName;
@@ -230,14 +230,14 @@ public class CraftingPanelUI : MonoBehaviour
 
         if (_energyCostText != null)
         {
-            string energyStatus = $"제작시 전력량: {recipe.energyCost}";
+            string energyStatus = $"????? ??????: {recipe.energyCost}";
             if (StatusSystem.Instance != null && StatusSystem.Instance.GetEnergy() < recipe.energyCost)
             {
-                _energyCostText.color = Color.red; // 전력이 부족하면 빨간색으로 표시
+                _energyCostText.color = Color.red; // ?????? ??????? ?????????? ???
             }
             else
             {
-                _energyCostText.color = Color.white; // 충분하면 흰색
+                _energyCostText.color = Color.white; // ?????? ???
             }
             _energyCostText.text = energyStatus;
         }
@@ -287,19 +287,19 @@ public class CraftingPanelUI : MonoBehaviour
         int totalRecipes = _craftingManager.AllCraftingRecipes.Count;
         int totalPages = Mathf.CeilToInt((float)totalRecipes / _recipesPerPage);
 
-        if (_currentPage < totalPages - 1) // 마지막 페이지가 아니면
+        if (_currentPage < totalPages - 1) // ?????? ???????? ????
         {
             _currentPage++;
-            PopulateCraftingList(); // 목록 다시 그리기
+            PopulateCraftingList(); // ??? ??? ?????
         }
     }
 
     public void GoToPreviousPage()
     {
-        if (_currentPage > 0) // 첫 페이지가 아니면
+        if (_currentPage > 0) // ? ???????? ????
         {
             _currentPage--;
-            PopulateCraftingList(); // 목록 다시 그리기
+            PopulateCraftingList(); // ??? ??? ?????
         }
     }
 
@@ -310,11 +310,11 @@ public class CraftingPanelUI : MonoBehaviour
 
         if (_previousPageButton != null)
         {
-            _previousPageButton.interactable = (_currentPage > 0); // 첫 페이지가 아니면 활성화
+            _previousPageButton.interactable = (_currentPage > 0); // ? ???????? ???? ????
         }
         if (_nextPageButton != null)
         {
-            _nextPageButton.interactable = (_currentPage < totalPages - 1); // 마지막 페이지가 아니면 활성화
+            _nextPageButton.interactable = (_currentPage < totalPages - 1); // ?????? ???????? ???? ????
         }
     }
 }

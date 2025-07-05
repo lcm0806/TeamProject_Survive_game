@@ -84,10 +84,10 @@ public class SystemCanvasUI : MonoBehaviour
             var uncompleted = EventManager.Instance.GetUnCompletedEvents(); // 따로 만들어야 함
             dayTransitionUI.StartDayTransition(uncompleted);
         }
+
     }
 
-    //private void DelayedSceneTransition()
-    //{
+
         
     //    // 탐색 여부
     //    StatusSystem.Instance.SetIsToDay(false);

@@ -195,7 +195,7 @@ public class InputManager : Singleton<InputManager>
             if (PlayerManager.Instance.ItemDelay >= 1f)
             {
                 Debug.Log("아이템 사용!");
-                PlayerManager.Instance.SelectItem.Use(this.gameObject);
+                PlayerManager.Instance.SelectItem?.Use(this.gameObject);
                 PlayerManager.Instance.ItemDelay = 0f; // 아이템 사용 후 딜레이 초기화
             }
         }

@@ -10,6 +10,12 @@ public class TestDrillMining : ToolAction
 
     public override void Action(int power)
     {
+        if(PlayerManager.Instance.InHandItem == null)
+        {
+            Debug.Log("InHandItem is null. Cannot perform mining action.");
+            return;
+        }
+
         Vector3 miningPos = PlayerManager.Instance.InHandItem.transform.position
             + PlayerManager.Instance.Player.transform.forward * 1.5f;
 

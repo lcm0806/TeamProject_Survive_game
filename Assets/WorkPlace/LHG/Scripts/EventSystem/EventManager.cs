@@ -122,22 +122,23 @@ public class EventManager : MonoBehaviour
             eventContents.DetachChildren();
         }
     }
+
     public void AttachButton(List<Button> list)
     {
         for (int i = 0; i < list.Count; i++)
         {
             list[i].transform.SetParent(eventContents);
             int temp = i; //??
-            if(list == CurEventButtons)
+            if (list == CurEventButtons)
             {
                 list[i].onClick.RemoveAllListeners();
                 list[i].onClick.AddListener(() => eventUI.SetEventListTitleText(CurEvents[temp], temp)); //0704 
-                
+
             }
 
         }
     }
-    
+
 
     public void GenerateDailyEvent() 
     {

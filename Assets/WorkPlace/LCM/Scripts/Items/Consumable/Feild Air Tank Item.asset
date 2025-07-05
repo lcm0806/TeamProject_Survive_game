@@ -22,4 +22,4 @@ MonoBehaviour:
   equipmentPrefab: {fileID: 0}
   isStackable: 1
   maxStackSize: 99
-  OxygenRestoreAmount: 0
+  OxygenRestoreAmount: 10

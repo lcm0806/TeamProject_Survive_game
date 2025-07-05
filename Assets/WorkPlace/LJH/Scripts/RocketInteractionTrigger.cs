@@ -3,39 +3,27 @@ using UnityEngine;
 public class RocketInteractionTrigger : Structure
 {
     public Rocket rocketDialogue;
-    string message;
+    public Item requiredFinalItem; // 인스펙터에서 세팅할 최종 제작 아이템
+
     public override void Interact()
     {
+        // 대화 시작 시 다이얼로그 UI 활성화
+        DayScriptSystem.Instance.ShowDialoguse();
 
-        // 대화 UI 켜고 첫 줄 표시
-        //rocketDialogue.gameObject.SetActive(true);   // RenpyCanvas도 켜짐
-
-        //UIManager.Instance.HidePopup();
-
-        // 플레이어 이동/공격 잠금
-        //InputManager.Instance.LockPlayerControl(true);
-
-        // 게임 일시 정지
-        //Time.timeScale = 0f;
-
-        ShowMessage(message);
-
-        // 커서 활성(PC라면)
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        enabled = false;               // 재진입 방지
-    }
-
-    private void ShowMessage(string message)
-    {
-        if (UIManager.Instance != null)
+        if (Storage.Instance.HasItem(requiredFinalItem))
         {
-            UIManager.Instance.ShowPopup(message);
+            // 엔딩 아이템이 있을 때 엔딩으로
+            DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.StartEndingSequence());
         }
         else
         {
-            Debug.LogWarning("UIManager가 씬에 없습니다.");
+            // 없을 때 제작 정보 대사 출력
+            DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.TriggerSpaceshipDeniedEvent());
         }
+
+        // 로켓 UI도 보여주려면 아래도 활성화
+        rocketDialogue.gameObject.SetActive(true);
     }
 }
+    
+

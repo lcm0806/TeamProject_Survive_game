@@ -122,8 +122,11 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
         // 이미 보여준 날이면 무시
         if (shownDays.Contains(currentDay))
         {
-            Debug.Log($"Day {currentDay} 스크립트는 이미 출력됨. 생략합니다.");
-            return;
+            if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetShelterSceneName())
+            {
+                Debug.Log($"Day {currentDay} 스크립트는 이미 출력됨. 생략합니다.");
+                return;
+            }
         }
 
         // 첫 실행이면 대사 로드 및 출력

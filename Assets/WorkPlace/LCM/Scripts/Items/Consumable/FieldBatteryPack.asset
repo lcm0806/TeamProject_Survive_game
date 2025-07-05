@@ -22,4 +22,4 @@ MonoBehaviour:
   equipmentPrefab: {fileID: 0}
   isStackable: 1
   maxStackSize: 99
-  ElectricRestoreAmount: 0
+  ElectricRestoreAmount: 10

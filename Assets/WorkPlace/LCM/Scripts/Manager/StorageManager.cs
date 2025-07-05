@@ -24,7 +24,7 @@ public class StorageManager : Singleton<StorageManager>
 
     private void Awake()
     {
-        base.Awake();
+        SingletonInit();
 
 
         if (_gameCanvas == null)

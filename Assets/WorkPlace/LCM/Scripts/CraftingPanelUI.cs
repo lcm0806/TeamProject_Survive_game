@@ -183,8 +183,6 @@ public class CraftingPanelUI : MonoBehaviour
         UpdatePaginationButtons();
     }
 
-
-
     private void DisplayRecipeDetails(Recipe recipe)
     {
         _currentSelectedRecipe = recipe;

@@ -6,20 +6,20 @@ using UnityEngine.UI;
 
 public class EventUI : MonoBehaviour
 {
-    //ÆÐ³Î, ¹öÆ°, ½ºÅ©·Ñ ºä µî ui¿¬µ¿ ÂüÁ¶ Á÷·ÄÈ­
+    //ï¿½Ð³ï¿½, ï¿½ï¿½Æ°, ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ uiï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È­
 
-    [Header("mainUI ¿Ï·áºÒ°¡, ¿Ï·á°¡´É, ¿Ï·áµÊ")]
+    [Header("mainUI ï¿½Ï·ï¿½Ò°ï¿½, ï¿½Ï·á°¡ï¿½ï¿½, ï¿½Ï·ï¿½ï¿½")]
     public Button CanNotCompleteBtns;
     public Button CanCompleteBtns;
     public Button Completed;
 
-    [Header("mainUI ÀÌº¥Æ® Å¸ÀÌÆ², ¼³¸í, È¿°ú, ¿Ï·áÁ¶°Ç")]
+    [Header("mainUI ï¿½Ìºï¿½Æ® Å¸ï¿½ï¿½Æ², ï¿½ï¿½ï¿½ï¿½, È¿ï¿½ï¿½, ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½")]
     public TMP_Text mainUIEventTitle;
     public TMP_Text mainUIEventDesc;
-    public TMP_Text mainUIEventEffectName; //µÎ°¡Áö ÀÌ»óÀÎ°æ¿ì?
-    public TMP_Text mainUIEEventRequireItemName; //µÎ°¡Áö ÀÌ»óÀÎ°æ¿ì?
+    public TMP_Text mainUIEventEffectName; //ï¿½Î°ï¿½ï¿½ï¿½ ï¿½Ì»ï¿½ï¿½Î°ï¿½ï¿½?
+    public TMP_Text mainUIEEventRequireItemName; //ï¿½Î°ï¿½ï¿½ï¿½ ï¿½Ì»ï¿½ï¿½Î°ï¿½ï¿½?
 
-    [Header("subUI ½ºÅ©·ÑºäÀÇ content")]
+    [Header("subUI ï¿½ï¿½Å©ï¿½Ñºï¿½ï¿½ï¿½ content")]
     public GameObject[] EventListContent;
 
     private int eventIndex;
@@ -34,17 +34,17 @@ public class EventUI : MonoBehaviour
         EventClearDetermine(data);
         CanCompleteBtns.onClick.AddListener(() => EventClearOnUI(data));
         eventIndex = _eventIndex;
-        Completed.gameObject.SetActive(false); //0704¿Ï·áµÊ¹öÆ°°ü·Ã ºñÈ°¼ºÈ­Á¶Ä¡
+        Completed.gameObject.SetActive(false); //0704ï¿½Ï·ï¿½Ê¹ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½ï¿½Ä¡
     }
 
 
-    public void SetEventSubUIBtnTitle(GameObject go, int eventIndex) //¼­ºêuiÅ¸ÀÌÆ²¸®½ºÆ®¿¬°á¿ë
+    public void SetEventSubUIBtnTitle(GameObject go, int eventIndex) //ï¿½ï¿½ï¿½ï¿½uiÅ¸ï¿½ï¿½Æ²ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         CanCompleteBtns.onClick.RemoveAllListeners();
         TMP_Text text = go.GetComponentInChildren<TMP_Text>();
         text.SetText(EventManager.Instance.CurEvents[eventIndex].title);
-        //go.GetComponent<Button>().interactable = false; ÀÌº¥Æ®ÀÇ ½ºÅ×ÀÌÆ®¿¡¼­ ¿Ï·áµÈ°æ¿ì
-            //ÄÃ·¯Æ¾Æ®·Î ÇÏÀÌ¶óÀÌÆ®¿Í µð½º¿¡ÀÌºíµå »ö»óÀ» ´Ù¸£°Ô ÇØÁà¾ßÇÔ
+        //go.GetComponent<Button>().interactable = false; ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½È°ï¿½ï¿½
+            //ï¿½Ã·ï¿½Æ¾Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ð½º¿ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     }
     public void EventClearDetermine(GameEventData data)
     {
@@ -55,7 +55,7 @@ public class EventUI : MonoBehaviour
 
     public void EventClearOnUI(GameEventData data)
     {
-        CanCompleteBtns.gameObject.SetActive(false);//0704¿Ï·á°¡´É¹öÆ°°ü·Ã ºñÈ°¼ºÈ­Á¶Ä¡
+        CanCompleteBtns.gameObject.SetActive(false);//0704ï¿½Ï·á°¡ï¿½É¹ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­ï¿½ï¿½Ä¡
         Completed.gameObject.SetActive(true);
         data.isComplete = true;
         EventManager.Instance.EventClear(data, eventIndex);

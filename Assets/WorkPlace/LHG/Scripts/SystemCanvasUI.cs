@@ -91,7 +91,6 @@ public class SystemCanvasUI : MonoBehaviour
         }
 
         //TODO 게임오버 확인(산소,전력,내구도) - 기훈님께 확인필요(처리 완료)
-        // 게임오버
         GameSystem.Instance.CheckGameOver();
     }
     
@@ -102,7 +101,6 @@ public class SystemCanvasUI : MonoBehaviour
         StatusSystem.Instance.NextCurrentDay();
         // 탐색 여부
         StatusSystem.Instance.SetIsToDay(false);
-
 
 
         // 부정효과 날짜넘어가기직전 시점 *250704 12:30*

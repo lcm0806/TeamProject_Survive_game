@@ -13,7 +13,15 @@ public class JetPack : MonoBehaviour
 
     private void Awake()
     {
-        
+        PlayerManager.Instance.CanUseJetpack = _isJetPackOn;
+        if (PlayerManager.Instance.CanUseJetpack)
+        {
+            _jetPackObject.SetActive(true);
+        }
+        else
+        {
+            _jetPackObject.SetActive(false);
+        }
     }
 
     private void Update()
@@ -50,5 +58,4 @@ public class JetPack : MonoBehaviour
 
         return camForward * 7.5f;
     }
-     
 }

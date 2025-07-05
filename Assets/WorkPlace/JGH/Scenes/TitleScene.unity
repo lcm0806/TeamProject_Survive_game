@@ -2044,6 +2044,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainMenu
       objectReference: {fileID: 0}
+    - target: {fileID: 7943621318217555284, guid: f26923c3529f9401181b8409823a3f41,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8550338832385172406, guid: f26923c3529f9401181b8409823a3f41,
         type: 3}
       propertyPath: m_AnchorMax.y

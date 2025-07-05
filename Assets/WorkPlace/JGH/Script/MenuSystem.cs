@@ -792,6 +792,8 @@ public class MenuSystem : Singleton<MenuSystem>
     {
         AudioSystem.Instance.StopBGM();
         AudioSystem.Instance.PlayBGMByName("SwingJazzMarsMellow");
+        
+        DayScriptSystem.Instance.HideDialoguse();
     }
 
     // 공개 메서드

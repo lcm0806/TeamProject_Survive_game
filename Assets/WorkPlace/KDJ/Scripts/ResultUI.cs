@@ -50,9 +50,11 @@ public class ResultUI : MonoBehaviour
     {
         if (_canvas != null)
         {
-            _canvas.enabled = false;
+            //_canvas.enabled = false;
             ResetGainItemList();
-            Cursor.lockState = CursorLockMode.Locked; // 커서 잠금
+            // Cursor.lockState = CursorLockMode.Locked; // 커서 잠금
+            // 테스트 끝나면 아래 코드로 교체
+            SceneSystem.Instance.LoadShelterScene();
         }
         else
         {

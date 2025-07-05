@@ -233,6 +233,8 @@ public class EventManager : MonoBehaviour
             StatusSystem.Instance.SetMinusOxygenGainMultiplier(data.MinusOxygenEfficiency);
             StatusSystem.Instance.SetMinusEnergyGainMultiplier(data.MinusEnergyEfficiency);
         }
+
+        Debug.Log($"[EventEffect] {data.title} 미완료로 패널티 적용: 산소 -{data.MinusOxygen}, 에너지 -{data.MinusEnergy}, 내구도 -{data.RandomMinusDuraValue + data.MinusDurability}");
     }
 
     public void EventClear(GameEventData data, int eventIndex)

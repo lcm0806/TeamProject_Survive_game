@@ -48,6 +48,9 @@ public class DayTransitionUI : MonoBehaviour
             }
         }
 
+        Debug.Log($"{StatusSystem.Instance.GetOxygen()}, {StatusSystem.Instance.GetEnergy()}, {StatusSystem.Instance.GetDurability()}");
+
+
         GameSystem.Instance.CheckGameOver();
 
         typingCoroutine = StartCoroutine(TypeText(eventText, fullEventText));

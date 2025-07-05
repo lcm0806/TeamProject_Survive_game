@@ -14,7 +14,7 @@ public class StorageManager : Singleton<StorageManager>
 
     public GameObject StorageUIPanel;
 
-
+ 
     [Header("UI Management")]
     [SerializeField] private Canvas _gameCanvas;
     private const string MAIN_CANVAS_TAG = "StorageUICanvas";
@@ -24,7 +24,7 @@ public class StorageManager : Singleton<StorageManager>
 
     private void Awake()
     {
-        SingletonInit();
+        base.Awake();
 
 
         if (_gameCanvas == null)

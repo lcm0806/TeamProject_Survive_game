@@ -26,12 +26,32 @@ public class ShelterUI : MonoBehaviour
     {
         AudioSystem.Instance.StopBGM();
         AudioSystem.Instance.PlayBGMByName("In the Science Lab");
+        
+        DayScript();
+        
         DisplayIndicators(0);
 
         // 초기 값 캐싱
         prevOxygen = StatusSystem.Instance.GetOxygen();
         prevEnergy = StatusSystem.Instance.GetEnergy();
         prevDurability = StatusSystem.Instance.GetDurability();
+    }
+
+    private void DayScript()
+    {
+        DayScriptSystem.Instance.ShowDialoguse();
+        switch (StatusSystem.Instance.GetCurrentDay())
+        {
+            case 1:
+                DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.Day1Script());
+                break;
+            case 2:
+                DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.Day2Script());
+                break;
+            case 3:
+                DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.Day3Script());
+                break;
+        }
     }
 
     private void Update()

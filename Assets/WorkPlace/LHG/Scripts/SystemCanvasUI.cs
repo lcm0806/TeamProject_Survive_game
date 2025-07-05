@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 
 public class SystemCanvasUI : MonoBehaviour
 {
+    [SerializeField] private DayTransitionUI dayTransitionUI;
     [SerializeField] public GameObject ShelterUICanvas, LoadingCanvas;
     public StatusSystem StatusSystem;
     public SceneSystem SceneSystem;
@@ -72,12 +73,7 @@ public class SystemCanvasUI : MonoBehaviour
 
     }
 
-    // public void BedRoomProceedConfirmTextDisplay()
-    // {
-    //     Debug.Log("잠자기 확인창 텍스트 출력");
-    //     // 수정
-    //     BedRoomProceedConfirmText[0].SetText("침대를 이용하시겠습니까");
-    // }
+
 
     //침실-수면실행시 yes버튼
     public void SleepAndNextDay()
@@ -85,60 +81,27 @@ public class SystemCanvasUI : MonoBehaviour
         if (LoadingCanvas.activeSelf == false)
         {
             LoadingCanvas.SetActive(true);
-        
-            // 코루틴 대신 Invoke 사용
-            Invoke(nameof(DelayedSceneTransition), 2f);
+            var uncompleted = EventManager.Instance.GetUnCompletedEvents(); // 따로 만들어야 함
+            dayTransitionUI.StartDayTransition(uncompleted);
         }
 
-        //TODO 게임오버 확인(산소,전력,내구도) - 기훈님께 확인필요(처리 완료)
-        // 게임오버
-        GameSystem.Instance.CheckGameOver();
     }
-    
-    private void DelayedSceneTransition()
-    {
-        // 250702 추가
-        // 날짜 + 1
-        StatusSystem.Instance.NextCurrentDay();
-        // 탐색 여부
-        StatusSystem.Instance.SetIsToDay(false);
 
 
-
-        // 부정효과 날짜넘어가기직전 시점 *250704 12:30*
-        foreach (GameEventData data in EventManager.Instance.CurEvents) //나중에 다시 읽어보기(학습)
-        {
-            EventManager.Instance.EventEffect(data);
-        }
         
-        // 씬이동 및 저장
-        SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
+    //    // 탐색 여부
+    //    StatusSystem.Instance.SetIsToDay(false);
 
-        // 새로운 날의 시작(이벤트들을 발생하는 시점) *250704 12:30*
-        EventManager.Instance.EventStart();
 
-        LoadingSceneBG[0].SetActive(false);
-    }
 
-    //public void NightTransitionTextDisplay()
-    //{
+        
+        
+    //    // 씬이동 및 저장
+    //    SceneSystem.Instance.LoadSceneWithDelayAndSave(SceneSystem.Instance.GetShelterSceneName());
 
-    //    StartCoroutine(TypingEffect());
-    //    NightTransitionText[0].SetText($"{StatusSystem.GetIsToDay()}일차.. \r\n 이벤트: {"event.name"} 가 발생. \r\n 효과 : {"event.effect"} \r\n ...");
+    //    // 새로운 날의 시작(이벤트들을 발생하는 시점) *250704 12:30*
+    //    EventManager.Instance.EventStart();
+
+    //    LoadingSceneBG[0].SetActive(false);
     //}
-
-    //IEnumerator TypingEffect()
-    //{
-    //    currentIndex = 0;
-    //    NightTransitionText[0].text = ""; 
-    //    while(currentIndex < fullText.Length)
-    //    {
-    //        NightTransitionText[0].text += fullText[currentIndex];
-    //        currentIndex++;
-    //        yield return new WaitForSeconds(typingSpeed);
-    //    }
-    //}
-    
-
-
 }

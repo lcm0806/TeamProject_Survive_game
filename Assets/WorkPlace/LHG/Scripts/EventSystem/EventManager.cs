@@ -1,6 +1,8 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -120,22 +122,23 @@ public class EventManager : MonoBehaviour
             eventContents.DetachChildren();
         }
     }
+
     public void AttachButton(List<Button> list)
     {
         for (int i = 0; i < list.Count; i++)
         {
             list[i].transform.SetParent(eventContents);
             int temp = i; //??
-            if(list == CurEventButtons)
+            if (list == CurEventButtons)
             {
                 list[i].onClick.RemoveAllListeners();
                 list[i].onClick.AddListener(() => eventUI.SetEventListTitleText(CurEvents[temp], temp)); //0704 
-                
+
             }
 
         }
     }
-    
+
 
     public void GenerateDailyEvent() 
     {
@@ -245,23 +248,10 @@ public class EventManager : MonoBehaviour
         DettachButton();
         AttachButton(CurEventButtons);
         AttachButton(FinishedButtons);
+    }
 
-        //Storage.Instance.RemoveItem(data.requiredItemA, data.requiredAmountA);
-        //if (data.requiredItemB != null)
-        //    Storage.Instance.RemoveItem(data.requiredItemB, data.requiredAmountB);
-        //CurEventButtons[eventIndex].interactable = false;
-        //FinishedButtons.Add(CurEventButtons[eventIndex]);
-        //CurEvents.RemoveAt(eventIndex);
-
-        //CurEventButtons[eventIndex].transform.SetParent(eventContents); //추가
-
-        //CurEventButtons.RemoveAt(eventIndex);
-
-
-
-
-        //ButtonClear(); //0704 추가
-        //EventButtonInstantiate();//0704 추가
-        //FinishedButtonInstantiate();//0704 추가
+    public List<GameEventData> GetUnCompletedEvents()
+    {
+        return CurEvents.Where(e => !e.isComplete).ToList();
     }
 }

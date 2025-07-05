@@ -29,9 +29,6 @@ public class ShelterMarker : MonoBehaviour
         // 플레이어에서 쉘터까지 거리 계산, 카메라가 20만큼의 넓이를 담을 수 있으므로 쉘터의 최대 거리는 20으로 제한되어야함
         float distance = Mathf.Clamp(direction.magnitude, 0, 20);
 
-        Debug.Log("플레이어 좌표: " + playerPos);
-        Debug.Log("쉘터 좌표: " + _shelterPos);
-
         direction.Normalize();
 
         // 구한 값을 기준으로 ui 마커의 위치를 업데이트

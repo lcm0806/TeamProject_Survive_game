@@ -41,12 +41,15 @@ public class DayTransitionUI : MonoBehaviour
         foreach (var evt in events)
         {
             fullEventText += $"- {evt.dialogue}\n{evt.eventEffectDesc}\n\n";
-
-            foreach (GameEventData data in EventManager.Instance.CurEvents) 
-            {
-                EventManager.Instance.EventEffect(data);
-            }
         }
+
+        foreach (GameEventData data in EventManager.Instance.GetUnCompletedEvents())
+        {
+            EventManager.Instance.EventEffect(data);
+        }
+
+        Debug.Log($"남은 산소/전력/내구도 : {StatusSystem.Instance.GetOxygen()}, {StatusSystem.Instance.GetEnergy()}, {StatusSystem.Instance.GetDurability()}");
+
 
         GameSystem.Instance.CheckGameOver();
 

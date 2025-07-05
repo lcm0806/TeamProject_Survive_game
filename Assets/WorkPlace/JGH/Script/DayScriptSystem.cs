@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DesignPattern;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class DayScriptLine
@@ -211,7 +212,10 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
         if (!string.IsNullOrEmpty(line.background))
         {
             Sprite bgSprite = Resources.Load<Sprite>(line.background);
-            if (bgSprite != null) BackgroundImage.sprite = bgSprite;
+            if (bgSprite != null)
+            {
+                BackgroundImage.sprite = bgSprite;
+            }
             else Debug.LogWarning($"배경 이미지 '{line.background}'을 찾을 수 없습니다.");
         }
 
@@ -276,7 +280,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     
     public void SetDialogue(List<DayScriptEntry> script)
     {
-        dialogues = script; // 이거면 OK
+        dialogues = script; 
         currentLine = 0;
         currentGroupLines.Clear();
         ShowNextLine();
@@ -290,7 +294,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "젠장, 나 혼자 화성에 떨어지다니…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string> { { "Gang", "Images/Characters/Gang" } } }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "젠장, 나 혼자 화성에 떨어지다니…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string> { { "Gang", "Images/Characters/Gang" } } }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "여긴 아무것도 없는데, 어떻게…살아남아야 하지?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string> {  } }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "….아니지, 지금은 살았다는 것에 기뻐하자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string> { } }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "여기서 어떻게 살아남아야 하지? 분명 방법이 있을꺼야!", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string> { } }),
@@ -308,7 +312,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "팀원들은 잘 살아서 돌아가고 있을까?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "팀원들은 잘 살아서 돌아가고 있을까?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "AI가 잘 안내하고 있겠지? 내가 끝까지 있었어야 했는데…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "언젠간….팀원들을 만날 수 있을까…?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
         };
@@ -325,7 +329,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
             new DayScriptEntry(new List<List<DayScriptLine>>
             {
                 new List<DayScriptLine> {
-                    new DayScriptLine { speaker = "강민준 박사", text = "내가 화성에서 하던 작업은 엔지니어 쪽이 많았지.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() },
+                    new DayScriptLine { speaker = "강민준 박사", text = "내가 화성에서 하던 작업은 엔지니어 쪽이 많았지.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() },
                     new DayScriptLine { speaker = "강민준 박사", text = "여기서 얼마나 기계가 망가지던지…화성이고 사람이고 날 너무 힘들게 했어.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }
                 },
                 new List<DayScriptLine>
@@ -435,7 +439,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "오늘은 이만 하고 쉘터로 돌아가야지…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "오늘은 이만 하고 쉘터로 돌아가야지…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "내일 다시 나오자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
         };
     }
@@ -448,7 +452,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "지금 들어가면 다시 탐색하러 나올 수 없다.\n조금 더 고민해볼까?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "지금 들어가면 다시 탐색하러 나올 수 없다.\n조금 더 고민해볼까?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
         };
     }
     
@@ -460,7 +464,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "더 탐색하는 것이 좋긴 하지만…이 정도면 충분히 한 것 같다.\n한번만 더 생각해보자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "더 탐색하는 것이 좋긴 하지만…이 정도면 충분히 한 것 같다.\n한번만 더 생각해보자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
         };
     }
     
@@ -472,7 +476,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "......에라 모르겠다.\n피곤한데 뭐, 그냥 들어가자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "......에라 모르겠다.\n피곤한데 뭐, 그냥 들어가자.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
         };
     }
     
@@ -484,7 +488,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "예쁜 불꽃놀이다...", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "예쁜 불꽃놀이다...", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
         };
     }
     
@@ -497,7 +501,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "설마, 이거 귀환선 맞지? 이게 왜 여기에…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "설마, 이거 귀환선 맞지? 이게 왜 여기에…", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "오디세우스", text = "안녕하세요. 여기는 귀환선 ‘오디세우스’ 입니다", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "으악 깜짝이야!!!...휴우, 이 귀환선 사용할 수 있어?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "오디세우스", text = "현재 ‘오디세우스’는 설비 결함으로 인해 무기한 점검중입니다. 해당 설비의 교체가 필요합니다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
@@ -515,7 +519,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "오디세우스", text = "'오디세우스'를 다시 검사합니다…설비 결함이 감지되었습니다. 시스템을 종료합니다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "오디세우스", text = "'오디세우스'를 다시 검사합니다…설비 결함이 감지되었습니다. 시스템을 종료합니다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
         };
     }
     
@@ -527,14 +531,11 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "오디세우스", text = "오디세우스를 다시 검사합니다…완료되었습니다. ‘오디세우스’ 기동 준비를 시작합니다. 탑승하시겠습니까?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "오디세우스", text = "오디세우스를 다시 검사합니다…완료되었습니다. ‘오디세우스’ 기동 준비를 시작합니다. 탑승하시겠습니까?", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/TransparentWhite", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "하, 드디어…드디어 떠날 수 있다. 많은 일이 있었지만, 어찌됐든 고맙다. 화성아", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
             new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "탑승할게. 목적지는, 지구야.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
         };
     }
-    
-    
-    
     
     
     
@@ -546,16 +547,16 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     {
         return new List<DayScriptEntry>
         {
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "나는 화성을 떠나 귀한선 '오디세우스'를 타고 지구로 향했다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/Space_station", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "가던 와중 지구 위의 우주 정거장에서 온 신호를 받아 목적지를 우주 정거장으로 돌렸다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "우주 정거장에 도착하자, 그곳에는 동료들이 나를 기다리고 있었다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/Meeting_colleague", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "나는 동료들에게 쿨하고 멋있게 등장해서 인사를 했고, 우리는 그동안 있었던 일들을 이야기했다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "돌아갈 준비를 마치고, 나는 드디어 그리워하던 지구에 도착했다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "지구에 돌아왔을 때 나는 엄청난 스타가 되어 있었다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/Lecture", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "화성에서 꿈꾸던 삶은 아니었지만, 그때 두번째로 배운 교훈인 ‘받아드리기’로 어찌저찌 살아가고 있다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "지금은 많은 사람들에게 화성에서 배운 첫번째 교훈을 전파하려고 노력중이다.", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "Images/Backgrounds/Black", characterImages = new Dictionary<string, string>() }),
-            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "포기하지 않기", appear = new List<string> { "Gang" }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "나는 화성을 떠나 귀한선 '오디세우스'를 타고 지구로 향했다.", appear = new List<string> { }, bgm = "", sfx = "", background = "Images/Backgrounds/Space_station", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "가던 와중 지구 위의 우주 정거장에서 온 신호를 받아 목적지를 우주 정거장으로 돌렸다.", appear = new List<string> { }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "우주 정거장에 도착하자, 그곳에는 동료들이 나를 기다리고 있었다.", appear = new List<string> {  }, bgm = "", sfx = "", background = "Images/Backgrounds/Meeting_colleague", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "나는 동료들에게 쿨하고 멋있게 등장해서 인사를 했고, 우리는 그동안 있었던 일들을 이야기했다.", appear = new List<string> { }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "돌아갈 준비를 마치고, 나는 드디어 그리워하던 지구에 도착했다.", appear = new List<string> {  }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "지구에 돌아왔을 때 나는 엄청난 스타가 되어 있었다.", appear = new List<string> { }, bgm = "", sfx = "", background = "Images/Backgrounds/Lecture", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "화성에서 꿈꾸던 삶은 아니었지만, 그때 두번째로 배운 교훈인 ‘받아드리기’로 어찌저찌 살아가고 있다.", appear = new List<string> { }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "지금은 많은 사람들에게 화성에서 배운 첫번째 교훈을 전파하려고 노력중이다.", appear = new List<string> { }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "", appear = new List<string> { }, bgm = "", sfx = "", background = "Images/Backgrounds/Black", characterImages = new Dictionary<string, string>() }),
+            new DayScriptEntry(new DayScriptLine { speaker = "강민준 박사", text = "포기하지 않기", appear = new List<string> { }, bgm = "", sfx = "", background = "", characterImages = new Dictionary<string, string>() }),
         };
     }
      

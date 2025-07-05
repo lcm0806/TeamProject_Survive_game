@@ -52,36 +52,6 @@ public class ShelterUI : MonoBehaviour
                 DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.Day3Script());
                 break;
         }
-        
-        
-        // TODO: TEST 삭제
-        // 파밍씬에서 쉘터씬으로 복귀시
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.ShToBack1());
-        // // 쉘터 상호작용 스크립트(탐색 시작 후 100초안에 다시 상호작용시 복귀 막기)
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.ShToBack2());
-        // // 쉘터 상호작용 스크립트(탐색 시작 후 100초안에 상호작용 세번 했을 때)
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.ShToBack3());
-        // // 쉘터 상호작용 스크립트(탐색 시작 후 100초안에 상호작용 네번 했을 때)
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.ShToBack4());
-        // // 아이템 20개이상을 한번에 떨어뜨릴 때
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.E_g());
-        //
-            // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.ShToBack1());
-        //     switch (StatusSystem.Instance.GetCurrentDay())
-        //     {
-        //         case 4:
-        //             break;
-        //         case 5:
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.TriggerSpaceshipDeniedEvent());
-        //             break;
-        //         case 6:
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.StartEndingSequence());
-        //             break;
-        //         case 7:
-        // DayScriptSystem.Instance.SetDialogue(DayScriptSystem.Instance.EndingScript());
-        //             break;
-        //     }
-        // }
     }
 
     private void Update()

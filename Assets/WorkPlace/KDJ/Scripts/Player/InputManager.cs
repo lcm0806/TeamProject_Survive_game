@@ -209,7 +209,7 @@ public class InputManager : Singleton<InputManager>
         // 제트팩은 공중에서만 사용
         if (PlayerManager.Instance.Player != null)
             if (Input.GetKeyDown(KeyCode.LeftShift) && !PlayerManager.Instance.Player.Controller.isGrounded &&
-            PlayerManager.Instance.AirGauge.Value > 0)
+            PlayerManager.Instance.AirGauge.Value > 0 && PlayerManager.Instance.CanUseJetpack)
             {
                 PlayerManager.Instance.Player.IsUsingJetPack = true;
                 MoveDir = Vector3.zero; // 제트팩 사용시 이동 방향 초기화

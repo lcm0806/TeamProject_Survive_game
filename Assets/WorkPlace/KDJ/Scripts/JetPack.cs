@@ -14,6 +14,7 @@ public class JetPack : MonoBehaviour
     private void Awake()
     {
         PlayerManager.Instance.CanUseJetpack = _isJetPackOn;
+
         if (PlayerManager.Instance.CanUseJetpack)
         {
             _jetPackObject.SetActive(true);

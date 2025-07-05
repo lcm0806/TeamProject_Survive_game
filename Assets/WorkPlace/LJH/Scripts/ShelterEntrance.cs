@@ -15,7 +15,7 @@ public class ShelterEntrance : Structure
 
     private void LateUpdate()
     {
-        if (MenuSystem.Instance.PauseMenu.activeSelf == false)
+        if (MenuSystem.Instance.PauseMenu.activeSelf == false && SampleUIManager.Instance.inventoryPanel.activeSelf == false)
             if (DayScriptSystem.Instance.DayScript.activeSelf == false && Cursor.lockState != CursorLockMode.Locked)
             {
                 Cursor.lockState = CursorLockMode.Locked;

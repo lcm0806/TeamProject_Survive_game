@@ -118,6 +118,7 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
     /// </summary>
     public void ShowDialoguse()
     {
+        
         int currentDay = StatusSystem.Instance.GetCurrentDay();
         
         // 이미 보여준 날이면 무시
@@ -136,12 +137,25 @@ public class DayScriptSystem : Singleton<DayScriptSystem>
         shownDays.Add(currentDay);
 
         DayScript.SetActive(true);
+
+        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true; 
+        }
+        
         ShowNextLine();
     }
     
     public void HideDialoguse()
     {
         DayScript.SetActive(false);
+        
+        if (SceneSystem.Instance.GetCurrentSceneName() == SceneSystem.Instance.GetFarmingSceneName())
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = true; 
+        }
     }
 
     // 다음 대사로 넘어가는 버튼용 함수
